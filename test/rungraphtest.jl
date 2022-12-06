@@ -3,7 +3,7 @@
  graph test
 =========================================================#
 
-
+using CFLG
 @testset "test graph functions" begin    
     graph = readGraph("../benchmarks/testbenchmark/testa.graph")
     @test graph != nothing

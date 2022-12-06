@@ -2,7 +2,6 @@
  Algorithm
 =========================================================#
 
-
 function solve!(problem::Problem, solver_name::String, option::Option, algo::AlgorithmSet)
     # prepare the problem
     CPUtic()
@@ -41,6 +40,12 @@ function solve!(problem::Problem, solver_name::String, option::Option, algo::Alg
         set_optimizer_attribute(cflg, "mip_gap", option.rel_gap)
         set_optimizer_attribute(cflg, "tm_lim", option.time_limit - preprocess_time) # n
         #to do
+    elseif solver_name == "SCIP"
+        cflg = Model(SCIP.Optimizer)
+        set_optimizer_attribute(cflg, "limits/gap", option.rel_gap)
+        set_optimizer_attribute(cflg, "limits/time", option.time_limit - preprocess_time) # n
+        set_optimizer_attribute(cflg, "limits/absgap", 1)
+        set_optimizer_attribute(cflg, "timing/clocktype", 1)
     else
         println("unkown solver name\n")
     end
@@ -49,21 +54,21 @@ function solve!(problem::Problem, solver_name::String, option::Option, algo::Alg
     if algo == F0
         stat, sol = solveF0!(problem, cflg)
     elseif algo == VF_BTCC
-        #boundTighten!(problem)
         stat, sol = solveVF_BTCC!(problem, cflg)
     elseif algo == F
         stat, sol = solveF!(problem, cflg)
     elseif algo == SF
-        #boundTighten!(problem)
         stat, sol = solveSF!(problem, cflg)
     elseif algo == SFD
-        #boundTighten!(problem)
         stat, sol = solveSFD!(problem, cflg)
     elseif algo == RF
-        #boundTighten!(problem)
         stat, sol = solveRF!(problem::Problem, cflg)
     elseif algo == EF
-        stat, sol = solveEF!(problem, cflg)    
+        stat, sol = solveEF!(problem, cflg) 
+    elseif algo == DF
+        stat, sol = solveDF!(problem, cflg) 
+    elseif algo == DFS
+        stat, sol = solveDFS!(problem, cflg)    
     end
 
     stat.preprocess_time = preprocess_time
@@ -803,3 +808,126 @@ function solveEF!(problem::Problem, cflg)
 
     return stat, sol
 end
+
+
+# disjunctive programming formulation with strengthenning options
+function solveDF!(problem::Problem, cflg)
+    graph = problem.prob_graph
+    EIp = problem.EIp
+    Vp = problem.Vp
+    Ep = problem.Ep
+
+
+    # variables
+    @variables(cflg, begin 
+        yv[vf_id in graph.node_ids], Bin # node facility
+        ye[ef_id in graph.edge_ids], Bin # edge facility
+        x[v_id in graph.node_ids], Bin #  node residual indictor cover
+        w[e_id in graph.edge_ids], Bin # complete cover indicator variable
+        0 <= q[ef_id in graph.edge_ids] <= graph.edges[ef_id].length # edge coordinate variable
+        0 <= qve[v_id in graph.node_ids, ef_id in Ep(v_id)] <= graph.edges[ef_id].length # disjunctive edge coordinate variable on 
+        0 <= qvei[v_id in graph.node_ids, efi in EIp[v_id]] <= graph.edges[efi[1]].length #  disjunctive edge coordinate variable on edges 
+        0 <= rv[v_id in graph.node_ids] <= problem.Uv[v_id] # residual cover variable
+        zv[v_id in graph.node_ids, vf_id in Vp[v_id]], Bin # disjunctive indicator variable on nodes
+        ze[v_id in graph.node_ids, efi in EIp[v_id]], Bin # disjunctive indicator variable on edges
+        0 <= rvv[v_id in graph.node_ids, vf_id in Vp[v_id]]  <= problem.Uv[v_id] # disjunctive residual cover variable on nodes
+        0 <= rvei[v_id in graph.node_ids, efi in EIp[v_id]]  <= problem.Uv[v_id] # disjunctive residual cover variable on edges
+    end) 
+    # constraints
+    @constraints(cflg, begin 
+        [e_id in graph.edge_ids, vf_id in problem.Vc[e_id]], w[e_id] >= yv[vf_id] # complete cover by nodes: open
+        [e_id in graph.edge_ids, ef_id in problem.Ec[e_id]], w[e_id] >= ye[ef_id] # complete cover by edges: open
+        [e_id in graph.edge_ids], w[e_id] <= sum(yv[vf_id] for vf_id in problem.Vc[e_id]) + sum(ye[ef_id] for ef_id in problem.Ec[e_id]) # complete cover: close
+        [v_id in graph.node_ids], sum(ye[ef_id] for ef_id in graph.adjacent_edges[v_id]) <= 1 - yv[v_id] # strong enforcing
+        [v_id in graph.node_ids], x[v_id] >= 1- sum( (1 - w[e_id]) for e_id in graph.adjacent_edges[v_id])  # ajdacent non covered 2
+        [v_id in graph.node_ids, e_id in graph.adjacent_edges[v_id]], x[v_id] <= w[e_id]  # ajdacent non covered 2
+        [e_id in graph.edge_ids], (graph.edges[e_id].length *  (1+problem.cr_tol) + problem.c_tol) * (1 - w[e_id]) <= rv[graph.edges[e_id].nodes[:a]] + rv[(graph.edges[e_id].nodes[:b])] # jointly complete cover condition
+        [e_id in graph.edge_ids], q[e_id] <= graph.edges[e_id].length * ye[e_id] # redundant bound
+        [v_id in graph.node_ids, vf_id in Vp[v_id]], zv[v_id, vf_id] <= yv[vf_id] # node activated constraint
+        [v_id in graph.node_ids, efi in EIp[v_id]], ze[v_id, efi] <= ye[efi[1]] # edge activated constraint        
+        [v_id in graph.node_ids], x[v_id] + sum(zv[v_id, vf_id] for vf_id in Vp[v_id]) + sum(ze[v_id, efi] for efi in EIp[v_id]) == 1 # disjunctive SOS-1 constraint
+        [v_id in graph.node_ids], sum(rvv[v_id, vf_id] for vf_id in Vp[v_id]) + sum(rvei[v_id, efi] for efi in EIp[v_id]) == rv[v_id] # disjunctive residual cover aggreagation constraint
+        [v_id in graph.node_ids, ef_id in Ep(v_id)], q[ef_id] == qve[v_id, ef_id] + sum( ifelse(efi[1] == ef_id, qvei[v_id, efi], 0) for efi in EIp[v_id] )  # disjunctive residual q aggregation constraint
+        [v_id in graph.node_ids, efi in EIp(v_id)],  qvei[v_id, efi] <= graph.edges[efi[1]].length * ze[v_id, efi]  # disjunctive upper bound for q on edge
+        [v_id in graph.node_ids, ef_id in Ep(v_id)], qve[v_id, ef_id] <= graph.edges[efi[1]].length * (1 -   sum( ifelse(efi[1] == ef_id, qvei[v_id, efi], 0) for efi in EIp[v_id] ) )# disjunctive upper bound for q on v
+        [v_id in graph.node_ids, vf_id in Vp[v_id]], rvv[v_id, vf_id] <= ( problem.dltv[(v_id, vf_id)] - problem.d[lor(v_id,vf_id)]) * zv[v_id, vf_id] # disjunctive residual cover constraints on nodes
+        [v_id in graph.node_ids, efi in EIp[v_id]], rvei[v_id, efi] <= ( problem.dlte[(v_id, efi[1], efi[2])] - problem.d[lor(v_id, graph.edges[efi[1]].nodes[efi[2]])] - ifelse( efi[2] == :a , 0, (graph.edges[efi[1]].length) ) ) * ze[v_id, efi] + ifelse(efi[2] == :a , -qvei[v_id, efi], qvei[v_id, efi] )  # disjunctive residual cover constraints on edges  
+    end) 
+
+
+    # valid inequalities
+    for v_id in graph.node_ids
+        # leave fixing
+        if length(graph.adjacent_edges[v_id]) == 1
+            # constraints
+            @constraints(cflg, begin
+                yv[v_id] == 0 # fixing
+                [ef_id in graph.adjacent_edges[v_id]], ye[ef_id] == 0 # fixing
+            end)
+        else # adjacent edges
+            #continue
+            @constraint(cflg, 
+                sum(ye[ef_id] for ef_id in graph.adjacent_edges[v_id])  + yv[v_id]<= 1)
+        end
+    end
+
+ 
+
+    added = Set{Int}()
+    function user_cut_callback(cb_data)
+        if length(added) == length(graph.node_ids)
+            return
+        end
+        ye_val = callback_value.(Ref(cb_data), ye)
+        yv_val = callback_value.(Ref(cb_data), yv)
+        #zv_val = callback_value.(Ref(cb_data), zv)
+        for v_id in graph.node_ids
+            if v_id in added
+                continue
+            end
+            viol = sum(ye_val[ef_id] for ef_id in graph.adjacent_edges[v_id]) - (1 - yv_val[v_id])
+            if viol > 1e-1
+                cut = @build_constraint(sum(ye[ef_id] for ef_id in graph.adjacent_edges[v_id]) <= 1 - yv[v_id])
+                push!(added, v_id)
+                MOI.submit(cflg, MOI.UserCut(cb_data), cut)
+            end
+        end
+    end
+
+    #MOI.set(cflg, MOI.UserCutCallback(), user_cut_callback)
+
+    # objective
+    @objective(cflg, Min, sum(yv[vf_id] for vf_id in graph.node_ids) + sum(ye[ef_id] for ef_id in graph.edge_ids))
+
+    println("\n model loaded\n")  
+    optimize!(cflg)
+    stat = Stat();
+    sol = Vector{Tuple{Symbol,Int, Float64}}();
+    stat.termintaion_status = termination_status(cflg)
+    stat.bound = objective_bound(cflg)
+    stat.gap = relative_gap(cflg)
+    stat.time = solve_time(cflg)
+    if solver_name(cflg) == "CPLEX"
+        cpx = backend(cflg).optimizer.model
+        stat.node = CPLEX.CPXgetnodecnt(cpx.env, cpx.lp)
+    else
+        stat.node = Int32(node_count(cflg))
+    end
+    stat.algo = DF
+    stat.instance = problem.instance
+    if has_values(cflg)
+        stat.sol_val = objective_value(cflg)
+        for ef_id in graph.edge_ids
+            if value(ye[ef_id]) >= 0.5
+                push!(sol, (:e, ef_id,  value(q[ef_id])))
+            end
+        end
+        for v_id in graph.node_ids
+            if value(yv[v_id]) >= 0.5
+                push!(sol, (:v, v_id,  0))
+            end
+        end
+    end
+    return stat, sol
+end
+

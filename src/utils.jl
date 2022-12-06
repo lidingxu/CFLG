@@ -13,7 +13,9 @@
     F = 4 # vertex formulation, trivial bound: delta
     F0 = 5 # vertex formulation, full cover
     EF = 6 # edge formulation, from "Covering edges in networks", Fröhlich et al.
-    None= 7 # just record statistics of original graph, degree-2-free graph, subdivided graph
+    DF = 7 # vertex formulation, disjunctive programming reformulation, complete cover
+    DFS = 8 # vertex formulation, disjunctive programming reformulation, complete cover,  valid inequalities
+    None = 9 # just record statistics of original graph, degree-2-free graph, subdivided graph
 end
 
 struct GraphStat

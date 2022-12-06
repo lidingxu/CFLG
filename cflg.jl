@@ -14,8 +14,8 @@ function main(args)
     algorithm = args[4]
     dlt= parse(Float64, args[5])
 
-    algorithms = ["F0", "F", "SF", "SFD", "RF", "EF", "None"]
-    solver_names = ["Gurobi", "CPLEX", "GLPK"]
+    algorithms = ["F0", "F", "SF", "DF", "DFS", "SFD", "RF", "EF", "None"]
+    solver_names = ["Gurobi", "CPLEX", "GLPK", "SCIP"]
     println( solver_name, " ", time_limit, " ", instance, " ", algorithm)
     @assert(algorithm in algorithms)
     @assert(solver_name in solver_names)
@@ -29,6 +29,10 @@ function main(args)
         algo = F
     elseif algorithm == "SF"
         algo = SF
+    elseif algorithm == "DF"
+        algo = DF
+    elseif algorithm == "DFS"
+        algo = DFS
     elseif algorithm == "SFD"
         algo = SFD
     elseif algorithm == "RF"

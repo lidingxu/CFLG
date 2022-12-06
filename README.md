@@ -5,6 +5,10 @@
 Facility location is an important appication in operations research.  Continuous set covering on networks generalizes the classical dicrete set covering problems in graphs, which allows both the demands and facilities continuously locating in edges.
 cflg contains several algorithms for solving continuous set covering on networks. cflg is written in Julia based on [JuMP](https://jump.dev/JuMP.jl/stable/installation/).
 
+## Updates
+The version 2.0.0 supports disjunctive programming formulation and new valid inequalities, and SCIP.
+The package now is generated and managed by `pkg`.
+
 
 ## Installation
 cflg has been developped and tested in *Linux* System. 
@@ -16,7 +20,8 @@ To use cflg, it requires:
 and one of the following MILP solvers:
 - CPLEX,
 - GLPK,
-- Gurobi.
+- Gurobi,
+- SCIP.
 
 
 ## Benchmarks

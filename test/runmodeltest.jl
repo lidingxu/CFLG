@@ -4,6 +4,7 @@
 =========================================================#
 
 
+using CFLG
 @testset "test models" begin    
     solver_names = ["CPLEX"]
     for solver_name in solver_names

@@ -2,8 +2,7 @@
  unit tests
 =========================================================#
 
-include("../src/CFLG.jl")
-using .CFLG
+
 using Test
 using Printf
 
