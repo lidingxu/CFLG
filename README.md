@@ -1,9 +1,9 @@
 
 
-# cflg: an algorithmic toolkit for continuous set covering on networks
+# CFLG: an algorithmic toolkit for continuous set covering on networks
 
 Facility location is an important appication in operations research.  Continuous set covering on networks generalizes the classical dicrete set covering problems in graphs, which allows both the demands and facilities continuously locating in edges.
-cflg contains several algorithms for solving continuous set covering on networks. cflg is written in Julia based on [JuMP](https://jump.dev/JuMP.jl/stable/installation/).
+CFLG contains several algorithms for solving continuous set covering on networks. CFLG is written in Julia based on [JuMP](https://jump.dev/JuMP.jl/stable/installation/).
 
 ## Updates
 The version 2.0.0 supports disjunctive programming formulation and new valid inequalities, and SCIP.
@@ -11,9 +11,9 @@ The package now is generated and managed by `pkg`.
 
 
 ## Installation
-cflg has been developped and tested in *Linux* System. 
+CFLG has been developped and tested in *Linux* System. 
 
-To use cflg, it requires:
+To use CFLG, it requires:
 - Julia,
 - JuMP,
 
@@ -31,9 +31,9 @@ Each instance file contains data of a graph. Its first line contains the number 
 
 ## Usage
 
-You can run `cflg.jl`  via the following command:
+You can run `CFLG.jl`  via the following command:
 ```
-julia ./cflg.jl solver time_limit instance algorithm raidus
+julia ./CFLG.jl solver time_limit instance algorithm raidus
 ```
 
 The settings of the above arguments are as follows.
@@ -69,7 +69,7 @@ The `None` option is used for computing the parameters of subdivided and degree-
 
 ## References
 
-If you find cflg useful in your work, we kindly request that you cite the following paper draft ([arXiv preprint](https://arxiv.org/abs/2203.00284)), which is recommended reading for advanced users:
+If you find CFLG useful in your work, we kindly request that you cite the following paper draft ([arXiv preprint](https://arxiv.org/abs/2203.00284)), which is recommended reading for advanced users:
 
     @misc{pelegrín2022continuous,
         title={Continuous Covering on Networks: Strong Mixed Integer Programming Formulations}, 
