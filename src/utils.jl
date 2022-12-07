@@ -38,7 +38,7 @@ struct Option
     thread::Int # thread number
     silent::Bool # silent model
 
-    function Option(time_limit::Float64=40.0, rel_gap::Float64=1e-4, log_level::Int=1, thread::Int=1, silent::Bool=true)
+    function Option(time_limit::Float64=360.0, rel_gap::Float64=1e-4, log_level::Int=1, thread::Int=1, silent::Bool=true)
         new(time_limit, rel_gap, log_level, thread, silent)
     end
 end

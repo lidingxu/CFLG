@@ -6,7 +6,7 @@ Facility location is an important appication in operations research.  Continuous
 CFLG contains several algorithms for solving continuous set covering on networks. CFLG is written in Julia based on [JuMP](https://jump.dev/JuMP.jl/stable/installation/).
 
 ## Updates
-The version 2.0.0 supports disjunctive programming formulation and new valid inequalities, and SCIP.
+The version 2.0.0 supports disjunctive programming formulation, new valid inequalities, and an implementation in SCIP.
 The package now is generated and managed by `pkg`.
 
 
@@ -22,6 +22,8 @@ and one of the following MILP solvers:
 - GLPK,
 - Gurobi,
 - SCIP.
+
+
 
 
 ## Benchmarks

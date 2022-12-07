@@ -27,4 +27,5 @@ module CFLG
     include("Reader.jl")
     include("Problem.jl")
     include("Algorithm.jl")
+    export readGraph, Option, AlgorithmSet, GraphStat, Stat, Problem, solve!
 end

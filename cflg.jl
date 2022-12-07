@@ -23,26 +23,7 @@ function main(args)
     option = Option(time_limit)
     println("data loaded\n")
     problem = Problem(graph, dlt)
-    if algorithm == "F0"
-        algo = F0
-    elseif algorithm == "F"
-        algo = F
-    elseif algorithm == "SF"
-        algo = SF
-    elseif algorithm == "DF"
-        algo = DF
-    elseif algorithm == "DFS"
-        algo = DFS
-    elseif algorithm == "SFD"
-        algo = SFD
-    elseif algorithm == "RF"
-        algo = RF
-    elseif algorithm == "EF"
-        algo = EF
-    elseif algorithm == "None"
-        algo = None
-    end
-    stat = solve!(problem, solver_name, option, algo)
+    stat = solve!(problem, solver_name, option, algorithm)
     if algo == None
         stat_info = string("instance: ", instance, "\n", 
         "org_node: ", string(stat[1].num_node), "\n", "org_edge: ", string(stat[1].num_edge),  "\n", "org_min_len: ", string(stat[1].min_len),  "\n", "org_avg_len: ", string(stat[1].avg_len),  "\n", "org_max_len: ", string(stat[1].max_len),  "\n",

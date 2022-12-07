@@ -2,7 +2,28 @@
  Algorithm
 =========================================================#
 
-function solve!(problem::Problem, solver_name::String, option::Option, algo::AlgorithmSet)
+function solve!(problem::Problem, solver_name::String, option::Option, algorithm::String)
+
+    if algorithm == "F0"
+        algo = F0
+    elseif algorithm == "F"
+        algo = F
+    elseif algorithm == "SF"
+        algo = SF
+    elseif algorithm == "DF"
+        algo = DF
+    elseif algorithm == "DFS"
+        algo = DFS
+    elseif algorithm == "SFD"
+        algo = SFD
+    elseif algorithm == "RF"
+        algo = RF
+    elseif algorithm == "EF"
+        algo = EF
+    elseif algorithm == "None"
+        algo = None
+    end
+    
     # prepare the problem
     CPUtic()
     graph_stats = preprocess!(problem, algo)
@@ -10,7 +31,7 @@ function solve!(problem::Problem, solver_name::String, option::Option, algo::Alg
     if algo == None
         return graph_stats
     end
-    if algo in [VF_BTCC, SF, SFD, RF]
+    if algo in [VF_BTCC, SF, SFD, RF, DF, DFS]
         boundTighten!(problem)
     end
 
@@ -50,6 +71,7 @@ function solve!(problem::Problem, solver_name::String, option::Option, algo::Alg
         println("unkown solver name\n")
     end
     
+ 
 
     if algo == F0
         stat, sol = solveF0!(problem, cflg)
@@ -825,7 +847,7 @@ function solveDF!(problem::Problem, cflg)
         x[v_id in graph.node_ids], Bin #  node residual indictor cover
         w[e_id in graph.edge_ids], Bin # complete cover indicator variable
         0 <= q[ef_id in graph.edge_ids] <= graph.edges[ef_id].length # edge coordinate variable
-        0 <= qve[v_id in graph.node_ids, ef_id in Ep(v_id)] <= graph.edges[ef_id].length # disjunctive edge coordinate variable on 
+        0 <= qve[v_id in graph.node_ids, ef_id in Ep[v_id]] <= graph.edges[ef_id].length # disjunctive edge coordinate variable on 
         0 <= qvei[v_id in graph.node_ids, efi in EIp[v_id]] <= graph.edges[efi[1]].length #  disjunctive edge coordinate variable on edges 
         0 <= rv[v_id in graph.node_ids] <= problem.Uv[v_id] # residual cover variable
         zv[v_id in graph.node_ids, vf_id in Vp[v_id]], Bin # disjunctive indicator variable on nodes
@@ -847,9 +869,9 @@ function solveDF!(problem::Problem, cflg)
         [v_id in graph.node_ids, efi in EIp[v_id]], ze[v_id, efi] <= ye[efi[1]] # edge activated constraint        
         [v_id in graph.node_ids], x[v_id] + sum(zv[v_id, vf_id] for vf_id in Vp[v_id]) + sum(ze[v_id, efi] for efi in EIp[v_id]) == 1 # disjunctive SOS-1 constraint
         [v_id in graph.node_ids], sum(rvv[v_id, vf_id] for vf_id in Vp[v_id]) + sum(rvei[v_id, efi] for efi in EIp[v_id]) == rv[v_id] # disjunctive residual cover aggreagation constraint
-        [v_id in graph.node_ids, ef_id in Ep(v_id)], q[ef_id] == qve[v_id, ef_id] + sum( ifelse(efi[1] == ef_id, qvei[v_id, efi], 0) for efi in EIp[v_id] )  # disjunctive residual q aggregation constraint
-        [v_id in graph.node_ids, efi in EIp(v_id)],  qvei[v_id, efi] <= graph.edges[efi[1]].length * ze[v_id, efi]  # disjunctive upper bound for q on edge
-        [v_id in graph.node_ids, ef_id in Ep(v_id)], qve[v_id, ef_id] <= graph.edges[efi[1]].length * (1 -   sum( ifelse(efi[1] == ef_id, qvei[v_id, efi], 0) for efi in EIp[v_id] ) )# disjunctive upper bound for q on v
+        [v_id in graph.node_ids, ef_id in Ep[v_id]], q[ef_id] == qve[v_id, ef_id] + sum( ifelse(efi[1] == ef_id, qvei[v_id, efi], 0) for efi in EIp[v_id] )  # disjunctive residual q aggregation constraint
+        [v_id in graph.node_ids, efi in EIp[v_id]], qvei[v_id, efi] <= graph.edges[efi[1]].length * ze[v_id, efi]  # disjunctive upper bound for q on edge
+        [v_id in graph.node_ids, ef_id in Ep[v_id]], qve[v_id, ef_id] <= graph.edges[ef_id].length * (1 -   sum( ifelse( efi[1] == ef_id, ze[v_id, efi], 0) for efi in EIp[v_id]) )# disjunctive upper bound for q on v
         [v_id in graph.node_ids, vf_id in Vp[v_id]], rvv[v_id, vf_id] <= ( problem.dltv[(v_id, vf_id)] - problem.d[lor(v_id,vf_id)]) * zv[v_id, vf_id] # disjunctive residual cover constraints on nodes
         [v_id in graph.node_ids, efi in EIp[v_id]], rvei[v_id, efi] <= ( problem.dlte[(v_id, efi[1], efi[2])] - problem.d[lor(v_id, graph.edges[efi[1]].nodes[efi[2]])] - ifelse( efi[2] == :a , 0, (graph.edges[efi[1]].length) ) ) * ze[v_id, efi] + ifelse(efi[2] == :a , -qvei[v_id, efi], qvei[v_id, efi] )  # disjunctive residual cover constraints on edges  
     end) 
