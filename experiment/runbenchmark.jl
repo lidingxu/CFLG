@@ -34,7 +34,7 @@ function main(args)
     end
     println("data loaded\n")
     problem = Problem(graph, dlt)
-    stat = solve!(problem, solver_name, option, algo)
+    stat = solve!(problem, solver_name, option, algorithm)
     abs_output =  string(output_dir , "/" , instance_name , "." , algorithm , "." , cover) 
     if algo == None
         stat_info = string("instance: ", instance_name, "\n", 
