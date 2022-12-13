@@ -18,8 +18,8 @@ function main(args)
     cover= args[7]
 
     abs_instance =  string(instance_dir ,"/", instance_name)
-    algorithms = ["F0", "F", "SF", "SFD", "RF", "EF", "None"]
-    solver_names = ["Gurobi", "CPLEX", "GLPK"]
+    algorithms = ["EF", "SF", "RF",  "ESF", "ERF", "EDF", "ESFV", "None"]
+    solver_names = ["Gurobi", "CPLEX", "GLPK", "SCIP"]
     covers = ["Small", "Large"]
     println(instance_dir, " ", solver_name, " ", time_limit, " ", output_dir, " ", instance_name, " ", algorithm, " ", cover)
     @assert(algorithm in algorithms)
@@ -34,21 +34,6 @@ function main(args)
     end
     println("data loaded\n")
     problem = Problem(graph, dlt)
-    if algorithm == "F0"
-        algo = F0
-    elseif algorithm == "F"
-        algo = F
-    elseif algorithm == "SF"
-        algo = SF
-    elseif algorithm == "SFD"
-        algo = SFD
-    elseif algorithm == "RF"
-        algo = RF
-    elseif algorithm == "EF"
-        algo = EF
-    elseif algorithm == "None"
-        algo = None
-    end
     stat = solve!(problem, solver_name, option, algo)
     abs_output =  string(output_dir , "/" , instance_name , "." , algorithm , "." , cover) 
     if algo == None

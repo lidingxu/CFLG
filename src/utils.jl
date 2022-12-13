@@ -6,16 +6,20 @@
 
 
 @enum AlgorithmSet begin
-    SFD = 0 # discrete vertex formulation, bound tightenning, complete cover, valid inequalities
-    RF = 1 # vertex formulation with long edge, bound tightenning, complete cover
-    SF = 2 # vertex formulation, bound tightenning, complete cover, valid inequalities
-    VF_BTCC = 3 # vertex formulation, bound tightenning, complete cover
+    SFD = 0 # discrete vertex formulation, bound tightenning, delimited cover, valid inequalities
+    RF = 1 # vertex formulation with long edge, bound tightenning, delimited cover
+    SF = 2 # vertex formulation, bound tightenning, delimited cover, valid inequalities
+    VF_BTCC = 3 # vertex formulation, bound tightenning, delimited cover
     F = 4 # vertex formulation, trivial bound: delta
     F0 = 5 # vertex formulation, full cover
     EF = 6 # edge formulation, from "Covering edges in networks", Fröhlich et al.
-    DF = 7 # vertex formulation, disjunctive programming reformulation, complete cover
-    DFS = 8 # vertex formulation, disjunctive programming reformulation, complete cover,  valid inequalities
-    None = 9 # just record statistics of original graph, degree-2-free graph, subdivided graph
+    DF = 7 # vertex formulation, disjunctive programming reformulation, delimited cover
+    EDF = 8 # edge formulation, disjunctive programming reformulation, delimited cover
+    ESF = 9 # edge formulation, bound tightenning, delimited cover
+    ESF2 = 10 # edge formulation, delimited cover
+    ERF = 11 # edge formulation with long edge, bound tightenning, delimited cover
+    ESFV = 12 # edge formulation, bound tightenning, delimited cover, valid inequalities
+    None = 9999 # just record statistics of original graph, degree-2-free graph, subdivided graph
 end
 
 struct GraphStat
