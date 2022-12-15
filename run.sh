@@ -1,7 +1,7 @@
 #!/bin/bash
 timelimit=1800
 timebound=2200
-algorithms=("EF" "SF", "RF"  "ESF" "ERF" "EDF" "ESFV" "None")
+algorithms=("EDF")
 covers=("Small" "Large")
 solver="CPLEX"
 datapath="/home/lxu/experiments/CFLG/benchmarks"
@@ -62,7 +62,7 @@ do
             done
         done
     else
-        parallel --will-cite --jobs 5% --timeout $timebound runInstance  "$datapath/$benchmark" "$solver" "$timelimit" "$resultpath/$benchmark"  ::: "$instances" :::  "${algorithms[@]}" :::  "${covers[@]}"
+        parallel --will-cite --jobs 80% --timeout $timebound runInstance  "$datapath/$benchmark" "$solver" "$timelimit" "$resultpath/$benchmark"  ::: "$instances" :::  "${algorithms[@]}" :::  "${covers[@]}"
         #parallel --will-cite --jobs 37% julia ./runbenchmark.jl  "$datapath/$benchmark" "CPLEX" "$timelimit" "$resultpath/$benchmark"  ::: "$instances" :::  "${algorithms[@]}" :::  "${covers[@]}"
         #$instances | parallel --will-cite   --dryrun  "printls {}"
         #parallel --will-cite  printls0 para ::: 1
