@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 min_primal_bound = 2**31
 max_dual_bound = -1
 time_limit =1800
-algorithms  = ["EF", "F0", "F", "SF", "RF",  "SFD", "None"]
+algorithms  = ["SF", "RF",  "ESF", "ERF", "EDF", "ESFV", "None"]
 coverages = ["Small", "Large"]
 benchmarks = ["city", "Kgroup_A", "Kgroup_B", "random_A", "random_B"]
 
@@ -415,9 +415,12 @@ def printtable(algorithms_, has_obj_):
             benchdict[("all", cover_, algo_, 1 )] = gettab(stat, has_obj_ , 1)
             #allbench_tab += "\n"
     #print(allbench_tab)
-    if len(algorithms_) != 2: 
 
-        fig, axes = plt.subplots(nrows=3, ncols=2, figsize=(10, 6))  # define the figure and subplots
+    if len(algorithms_) == -1: 
+
+        nrows_ = len(algorithms_) // 2
+        fig, axes = plt.subplots(nrows=nrows_, ncols=2, figsize=(10, 6))  # define the figure and subplots
+
 
         pairs = [("F0", "F"), ("F","SF"), ("SF", "RF")]
 
@@ -444,7 +447,7 @@ def printtable(algorithms_, has_obj_):
 
         fig.tight_layout()
         plt.savefig('scatter5.pdf') 
-    else:
+    elif False:
         fig, axes = plt.subplots(nrows=1, ncols=2, figsize=(10, 6))  # define the figure and subplots
 
         pairs = [("SFD", "RF")]
@@ -477,6 +480,7 @@ def printtable(algorithms_, has_obj_):
     groudsize = int(np.floor(len(algorithms_) / 2))
     for groudid in range(groudsize):
         algos = [algorithms_[2*groudid], algorithms_[2*groudid + 1]]
+        print(algos,"\n")
         tab = ""
         for benchmark in benchmarks_:
             tab+= "\\multirow{2}{*}{\\texttt{"+ parsed(benchmark) +"}}"
@@ -513,20 +517,14 @@ def printtable(algorithms_, has_obj_):
 
 # display table 2
 print("table 2\n")
-algorithms_  = ["EF", "F0", "F", "SF", "RF"]
+algorithms_  = ["SF", "RF",  "ESF", "ERF", "EDF", "ESFV"]
 has_obj_ = False
-printtable(algorithms_, has_obj_)
-
-# display table 3
-print("table 3\n")
-
-algorithms_  = ["RF", "SFD"]
-has_obj_ = True
 printtable(algorithms_, has_obj_)
 
 # write details
 
-algorithms_  = ["EF", "F0", "F", "SF", "RF", "SFD"]
+
+algorithms_  = ["SF", "RF",  "ESF", "ERF", "EDF", "ESFV"]
 has_obj_ = False
 details = printtable(algorithms_, has_obj_)
 

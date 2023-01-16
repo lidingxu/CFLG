@@ -287,7 +287,7 @@ function solveRF!(problem::Problem, cflg)
 
     # long edge constraints
     @constraints(cflg,begin
-        [e_id in Elong], ye[e_id] == 1 # fixing long edges y
+        [e_id in Elong], ye[e_id] == 0 # fixing long edges y
         [e_id in Elong], w[e_id] == 0 # fixing long edges w
         [ef_id in Elong], q[ef_id] <=  tail_len[ef_id] * (1 - u[ef_id]) + 2 * problem.dlt *  u[ef_id] # phase transition
         [ef_id in Elong], q[ef_id] >=  tail_len[ef_id] *  u[ef_id] # phase transition
@@ -1238,7 +1238,6 @@ function solveERF!(problem::Problem, cflg)
         [v_id in graph.node_ids, e_id in graph.adjacent_edges[v_id]], x[v_id] <= w[e_id]  # ajdacent non covered 2
         [e_id in Enormal], (graph.edges[e_id].length *  (1+problem.cr_tol) + problem.c_tol) * (1 - w[e_id]) <= rv[graph.edges[e_id].nodes[:a]] + rv[(graph.edges[e_id].nodes[:b])] # jointly complete cover condition
         [v_id in graph.node_ids], x[v_id] + sum(ze[v_id, efi] for efi in EIp[v_id]) == 1 # big-M SOS-1 constraint
-        [e_id in Enormal], q[e_id] <= graph.edges[e_id].length * ye[e_id] # redundant bound
         [v_id in graph.node_ids, efi in EIp[v_id]], ze[v_id, efi] <= ye[efi[1]] # edge activated constraint
         [v_id in graph.node_ids], rv[v_id] <= problem.Uv[v_id] * (1 - x[v_id]) # big M on x
         [v_id in graph.node_ids, efi in EIp[v_id]], rv[v_id] <= problem.Me[(v_id, efi[1], efi[2])] * (1 - ze[v_id, efi]) + problem.dlte[(v_id, efi[1], efi[2])] -
@@ -1247,7 +1246,7 @@ function solveERF!(problem::Problem, cflg)
 
     # long edge constraints
     @constraints(cflg,begin
-        [e_id in Elong],  ye[e_id] == 1 # fixing long edges y
+        [e_id in Elong],  ye[e_id] == 0 # fixing long edges y
         [e_id in Elong],  w[e_id] == 0 # fixing long edges w
         [ef_id in Elong], q[ef_id] <=  tail_len[ef_id] * (1 - u[ef_id]) + 2 * problem.dlt *  u[ef_id] # phase transition
         [ef_id in Elong], q[ef_id] >=  tail_len[ef_id] *  u[ef_id] # phase transition
