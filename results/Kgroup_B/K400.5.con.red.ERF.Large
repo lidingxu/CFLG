@@ -1,8 +1,8 @@
 instance: K400.5.con.red
-obj: 874.0
-bound: 18.03305617470905
-gap: 0.9793672126146373
-time: 1800.3411028385162
-preprocess_time: 0.153149
-node: 0
+obj: 66.0
+bound: 16.969136460131228
+gap: 0.742891871815068
+time: 1800.415874004364
+preprocess_time: 0.152284
+node: 515
 algo: ERF

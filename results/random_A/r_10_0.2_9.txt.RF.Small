@@ -1,8 +1,8 @@
 instance: r_10_0.2_9.txt
-obj: 5.0
-bound: 5.0
+obj: 6.0
+bound: 6.0
 gap: 0.0
-time: 0.006330013275146484
-preprocess_time: 0.056928
+time: 0.004060983657836914
+preprocess_time: 0.051984
 node: 0
 algo: RF

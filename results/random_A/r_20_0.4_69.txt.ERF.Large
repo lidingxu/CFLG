@@ -1,8 +1,8 @@
 instance: r_20_0.4_69.txt
 obj: 2.0
-bound: 1.0
+bound: 0.9999999999999999
 gap: 0.499999999975
-time: 1.1366798877716064
-preprocess_time: 0.018004
-node: 0
+time: 2.6216189861297607
+preprocess_time: 0.021657
+node: 91
 algo: ERF

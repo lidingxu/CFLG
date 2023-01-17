@@ -2,7 +2,7 @@ instance: r_25_0.4_112.txt
 obj: 2.0
 bound: 1.0
 gap: 0.499999999975
-time: 3.7123589515686035
-preprocess_time: 0.02187
-node: 0
+time: 11.772105932235718
+preprocess_time: 0.01901
+node: 260
 algo: ERF

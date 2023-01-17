@@ -1,8 +1,8 @@
 instance: r_25_0.1_36.txt
-obj: 4.0
-bound: 4.0
-gap: 0.0
-time: 1.5629370212554932
-preprocess_time: 0.019131
-node: 571
+obj: 5.0
+bound: 3.999999999999974
+gap: 0.19999999999600523
+time: 1.599452018737793
+preprocess_time: 0.015306
+node: 1159
 algo: ERF

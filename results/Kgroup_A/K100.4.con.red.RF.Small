@@ -1,8 +1,8 @@
 instance: K100.4.con.red
-obj: 22.0
-bound: 16.80328698622124
-gap: 0.2362142278979608
-time: 1801.49489402771
-preprocess_time: 0.06098
-node: 35040
+obj: 24.0
+bound: 18.683254884525997
+gap: 0.22153104647716043
+time: 1801.5123188495636
+preprocess_time: 0.059707
+node: 25964
 algo: RF

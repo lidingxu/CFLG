@@ -1,8 +1,8 @@
 instance: K400.7.con.red
-obj: 290.0
-bound: 22.40960503012549
-gap: 0.9227254998958009
-time: 1800.4090309143066
-preprocess_time: 0.115029
-node: 18
+obj: 288.0
+bound: 23.537098166524558
+gap: 0.9182739646992486
+time: 1800.4501287937164
+preprocess_time: 0.167526
+node: 11
 algo: RF

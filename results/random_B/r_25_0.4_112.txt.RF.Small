@@ -2,7 +2,7 @@ instance: r_25_0.4_112.txt
 obj: 18.999999921113766
 bound: 6.060897186842852
 gap: 0.6810054098907772
-time: 1800.6508049964905
-preprocess_time: 0.060746
-node: 3014
+time: 1800.4155988693237
+preprocess_time: 0.09568
+node: 2691
 algo: RF

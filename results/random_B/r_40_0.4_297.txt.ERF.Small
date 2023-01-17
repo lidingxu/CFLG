@@ -1,8 +1,8 @@
 instance: r_40_0.4_297.txt
-obj: 31.0
-bound: 7.358253276809712
-gap: 0.7626369910681944
-time: 1800.3416390419006
-preprocess_time: 0.086073
-node: 340
+obj: 35.0
+bound: 7.126047129810054
+gap: 0.796398653431723
+time: 1800.6131598949432
+preprocess_time: 0.083334
+node: 636
 algo: ERF

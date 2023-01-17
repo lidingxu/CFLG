@@ -2,7 +2,7 @@ instance: r_30_0.4_188.txt
 obj: 2.0
 bound: 0.9999999999999999
 gap: 0.499999999975
-time: 862.1475110054016
-preprocess_time: 0.045905
+time: 1153.5190811157227
+preprocess_time: 0.026096
 node: 970
 algo: RF

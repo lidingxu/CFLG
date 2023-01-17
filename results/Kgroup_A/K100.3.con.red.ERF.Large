@@ -1,8 +1,8 @@
 instance: K100.3.con.red
 obj: 7.0
-bound: 5.999999999999996
-gap: 0.14285714285510268
-time: 445.6554539203644
-preprocess_time: 0.087555
-node: 3456
+bound: 5.999999999999998
+gap: 0.1428571428551023
+time: 184.1115369796753
+preprocess_time: 0.052978
+node: 1569
 algo: ERF

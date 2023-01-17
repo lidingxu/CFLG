@@ -1,7 +1,7 @@
 #!/bin/bash
 timelimit=1800
 timebound=2200
-algorithms=("EDF")
+algorithms=("ERF" "RF")
 covers=("Small" "Large")
 solver="CPLEX"
 datapath="/home/lxu/experiments/CFLG/benchmarks"

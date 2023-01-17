@@ -1,8 +1,8 @@
 instance: K200.con.red
-obj: 13.0
-bound: 8.040607603165876
-gap: 0.3814917228304596
-time: 1800.488904953003
-preprocess_time: 0.048579
-node: 6779
+obj: 14.0
+bound: 7.687406774874008
+gap: 0.4508995160772073
+time: 1800.5010180473328
+preprocess_time: 0.052649
+node: 3832
 algo: ERF
