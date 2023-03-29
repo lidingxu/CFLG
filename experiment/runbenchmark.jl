@@ -18,11 +18,9 @@ function main(args)
     cover= args[7]
 
     abs_instance =  string(instance_dir ,"/", instance_name)
-    algorithms = ["EF", "SF", "RF",  "ESF", "ERF", "EDF", "ESFV", "None"]
     solver_names = ["Gurobi", "CPLEX", "GLPK", "SCIP"]
     covers = ["Small", "Large"]
     println(instance_dir, " ", solver_name, " ", time_limit, " ", output_dir, " ", instance_name, " ", algorithm, " ", cover)
-    @assert(algorithm in algorithms)
     @assert(solver_name in solver_names)
     @assert(cover in covers)
     graph = readGraph(abs_instance)
