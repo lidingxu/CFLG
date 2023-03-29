@@ -54,20 +54,21 @@ function preprocess!(prob::Problem, algo::AlgorithmSet)
         sdb_stat = GraphStat(sbd_graph.node_num, sbd_graph.edge_num, sbd_graph.min_len, sbd_graph.max_len, sbd_graph.avg_len)
         return [org_stat, dtf_stat, sdb_stat]
     end
+
     if prob.dlt < prob.graph.max_len
-        prob.prob_graph = breakGraph(prob.graph, prob.dlt, true, ifelse(algo == RF, true, false))
+        prob.prob_graph = breakGraph(prob.graph, prob.dlt, true,  mask(algo, MSK_ISL) )
     else
         prob.prob_graph = prob.graph
     end
+
     print("problem_graph/original graph:", " node: ", prob.prob_graph.node_num, "/", prob.graph.node_num, " edge: ",
     prob.prob_graph.edge_num, "/", prob.graph.edge_num, " dlt: ", prob.dlt, " break_avg_len: ", prob.prob_graph.avg_len, " break_max_len: ", prob.prob_graph.max_len)
-    if algo == EF # edge formulation
-        (prob.bigM_EF, prob.d) = processEFGraph(prob.prob_graph, prob.dlt)
-        # initilization
-    elseif algo == F0
-        prob.d = computeDistance(prob.prob_graph)
-    else # vertex formulations
-        (prob.Ec, prob.Vc, prob.Ep, prob.Vp, prob.EIp, prob.d) = processVFGraph(prob.prob_graph, prob.dlt, :Partial, prob.cr_tol, prob.c_tol)
+    
+    if algo == EF # edge formulation needs a simple process
+        (prob.bigM_EF, prob.d) = processGraphSimple(prob.prob_graph, prob.dlt)
+    else # normal process
+        mode = ifelse( mask(algo, MSK_ISP0), :full, :Partial)
+        (prob.Ec, prob.Vc, prob.Ep, prob.Vp, prob.EIp, prob.d) = processGraph(prob.prob_graph, prob.dlt, :Partial, prob.cr_tol, prob.c_tol)
     end
 end
 

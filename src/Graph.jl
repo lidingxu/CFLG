@@ -29,7 +29,7 @@ struct Edge
     end
 end
 
-# return wether contain a node
+# return whether contain a node
 function contain(edge::Edge, node_id::Int)
     return edge.nodes[:a] == node_id || edge.nodes[:b] == node_id  
 end
@@ -142,6 +142,12 @@ function incidentNodes(graph::Graph, node_id::Int)
     end   
     return node_ids
 end
+
+# return wether two nodes are incident
+function isIncident(graph::Graph, node_id::Int, node_id_::Int)
+    return node_id_ in  incidentNodes(graph, node_id)
+end
+
 
 
 # nodeCover, mode: :partial: stop nodeCover earlier, :full : no stop, used as shotest distance algorithm
@@ -423,7 +429,7 @@ end
 
 
 # graph process for vertex formulation, notice dlt should greater than edge length
-function processVFGraph(graph::Graph, dlt::Float64, mode::Symbol, cr_tol::Float64, c_tol::Float64)
+function processGraph(graph::Graph, dlt::Float64, mode::Symbol, cr_tol::Float64, c_tol::Float64)
     #@assert(dlt >= graph.max_len)
     Ec = Dict{Int, Set{Int}}() # edges can completely cover edges
     Vc = Dict{Int, Set{Int}}() # nodes can completely cover edges
@@ -546,17 +552,18 @@ function computeDistance(graph::Graph)
         end
     end
 
-    # only distance informulation is used
+    # only distance information is used
     for v_id in graph.node_ids
         nodeCover(graph, v_id, typemax(Float64), d, :full) # run node cover in full mode
     end
+
     return d
 end
 
 
 
 # graph process for edge formulation
-function processEFGraph(graph::Graph, dlt::Float64)
+function processGraphSimple(graph::Graph, dlt::Float64)
     d = computeDistance(graph::Graph)
 
     # compute big M

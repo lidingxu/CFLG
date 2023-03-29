@@ -14,7 +14,7 @@ function main(args)
     algorithm = args[4]
     dlt= parse(Float64, args[5])
 
-    algorithms = ["EF", "SF", "RF",  "ESF", "ERF", "EDF", "None"]
+    algorithms = [ "None"]
     solver_names = ["Gurobi", "CPLEX", "GLPK", "SCIP"]
     println( solver_name, " ", time_limit, " ", instance, " ", algorithm)
     @assert(algorithm in algorithms)

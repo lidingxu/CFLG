@@ -2,6 +2,7 @@ module CFLG
     using DataStructures
     using JuMP
     using CPUTime
+    using Combinatorics
     try 
         import CPLEX
     catch e

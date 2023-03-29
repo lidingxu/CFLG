@@ -3,23 +3,34 @@
 =========================================================#
 
 @inline lor(a::Int, b::Int)= min(a,b), max(a,b)
+@inline non(MSK::UInt8)= ( MSK & UInt8(0b00000000) )
 
 
-@enum AlgorithmSet begin
-    SFD = 0 # discrete vertex formulation, bound tightenning, delimited cover, valid inequalities
-    RF = 1 # vertex formulation with long edge, bound tightenning, delimited cover
-    SF = 2 # vertex formulation, bound tightenning, delimited cover, valid inequalities
-    VF_BTCC = 3 # vertex formulation, bound tightenning, delimited cover
-    F = 4 # vertex formulation, trivial bound: delta
-    F0 = 5 # vertex formulation, full cover
-    EF = 6 # edge formulation, from "Covering edges in networks", Fröhlich et al.
-    DF = 7 # vertex formulation, disjunctive programming reformulation, delimited cover
-    EDF = 8 # edge formulation, disjunctive programming reformulation, delimited cover
-    ESF = 9 # edge formulation, bound tightenning, delimited cover
-    ESF2 = 10 # edge formulation, delimited cover
-    ERF = 11 # edge formulation with long edge, bound tightenning, delimited cover
-    ESFV = 12 # edge formulation, bound tightenning, delimited cover, valid inequalities
-    None = 9999 # just record statistics of original graph, degree-2-free graph, subdivided graph
+MSK_ZERO =  UInt8(0b00000000)
+MSK_ISMOD = UInt8(0b10000000)   # is this a model
+MSK_ISE =   UInt8(0b01000000)   # edge or edge-vertex model
+MSK_ISP0 =  UInt8(0b00100000)   # is processing by delimitation
+MSK_ISP1 =  UInt8(0b00010000)   # is processing by bound tightenning
+MSK_ISV =   UInt8(0b00001000)   # is using valid inequalities 
+MSK_ISD =   UInt8(0b00000100)   # is disjunctive programming 
+MSK_ISL =   UInt8(0b00000010)   # is a long edge model
+
+@inline mask(algo, MSK::UInt8)= ( UInt8(algo) & MSK != MSK_ZERO )
+
+
+@enum AlgorithmSet::UInt8 begin
+    EF =     MSK_ISMOD | MSK_ISE                                  # edge formulation, from "Covering edges in networks", Fröhlich et al.
+    EFP0 =   MSK_ISMOD | MSK_ISE | MSK_ISP0                       # edge formulation with simple processing (delimited cover) 
+    EFP  =   MSK_ISMOD | MSK_ISE | MSK_ISP0 | MSK_ISP1            # edge formulation with processing (bound tightenning and delimited cover)
+    EFPV =   MSK_ISMOD | MSK_ISE | MSK_ISP0 | MSK_ISP1 | MSK_ISV  # edge formulation with processing (bound tightenning and delimited cover) and valid inequalities
+    EFPD =   MSK_ISMOD | MSK_ISE | MSK_ISP0 | MSK_ISP1 | MSK_ISD             # edge disjunctive programming formulation with processing (delimited cover)
+    EFPL =   MSK_ISMOD | MSK_ISE | MSK_ISP0 | MSK_ISP1 | MSK_ISL  # long edge formulation with processing (bound tightenning and delimited cover)
+    EVF =    MSK_ISMOD                                            # edge-vertex formulation 
+    EVFP0 =  MSK_ISMOD | MSK_ISP0                                 # edge-vertex formulation with simple processing (delimited cover)
+    EVFP  =  MSK_ISMOD | MSK_ISP0 | MSK_ISP1                      # edge-vertex formulation with processing (bound tightenning and delimited cover)
+    EVFPV =  MSK_ISMOD | MSK_ISP0 | MSK_ISP1 | MSK_ISV            # edge-vertex formulation with processing (bound tightenning and delimited cover) and valid inequalities
+    EVFPL =  MSK_ISMOD | MSK_ISP0 | MSK_ISP1 | MSK_ISL            # long edge-vertex formulation with processing (bound tightenning and delimited cover)
+    None =   MSK_ZERO                                             # not a model, just record statistics of original graph, degree-2-free graph, subdivided graph
 end
 
 struct GraphStat
