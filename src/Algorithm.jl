@@ -242,6 +242,7 @@ function solve!(problem::Problem, solver_name::String, option::Option, algorithm
     if algo == EF
         stat, sol = solveEF!(problem, algo, cflg)
     elseif algo == EFPL || algo == EVFPL
+        #stat, sol = solveRF!(problem, cflg)
         stat, sol = solveFLs!(problem, algo, cflg)
     elseif algo == EFPD
         stat, sol = solveEFPD!(problem, algo, cflg)
@@ -482,8 +483,9 @@ function solveFPVs!(problem::Problem, algo::AlgorithmSet, cflg, Pi)
 end
 
 
-# 
+# long edge models
 function solveFLs!(problem::Problem, algo::AlgorithmSet, cflg)
+
     # get graph
     graph = problem.prob_graph
 
@@ -523,6 +525,7 @@ function solveFLs!(problem::Problem, algo::AlgorithmSet, cflg)
         end) 
     end
 
+
     E = Set{Int}(graph.edge_ids)
     Enormal = setdiff(E, Elong)
 
@@ -541,13 +544,13 @@ function solveFLs!(problem::Problem, algo::AlgorithmSet, cflg)
 
     if usev
         @constraints(cflg, begin 
+            [e_id in Enormal, vf_id in problem.Vc[e_id]], w[e_id] >= yv[vf_id] # complete cover by nodes: open
             [e_id in Enormal], w[e_id] <= sum(yv[vf_id] for vf_id in problem.Vc[e_id]) + sum(ye[ef_id] for ef_id in problem.Ec[e_id]) # complete cover: close
             [ef_id in Enormal, node in [:a,:b]], yv[graph.edges[ef_id].nodes[node]] + ye[ef_id] <= 1 # facility is efither in interior or at end nodes
-            [e_id in Enormal, vf_id in problem.Vc[e_id]], w[e_id] >= yv[vf_id] # complete cover by nodes: open
+            [v_id in graph.node_ids], x[v_id] +  sum(zv[v_id, vf_id] for vf_id in Vp[v_id])  + sum(ze[v_id, efi] for efi in EIp[v_id]) == 1 # big-M SOS-1 constraint
             [v_id in graph.node_ids, vf_id in Vp[v_id]], zv[v_id, vf_id] <= yv[vf_id] # node activated constraint
             [v_id in graph.node_ids, vf_id in Vp[v_id]], rv[v_id] <=  problem.Mv[(v_id, vf_id)]  * (1 - zv[v_id, vf_id]) + problem.dltv[(v_id, vf_id)] - problem.d[lor(v_id,vf_id)] # big M on nodes
             [ef_id in Elong], yv[edges[ef_id].nodes[:a]] == 0  #valid inequalities fixing
-            [v_id in graph.node_ids], x[v_id] +  sum(zv[v_id, vf_id] for vf_id in Vp[v_id])  + sum(ze[v_id, efi] for efi in EIp[v_id]) == 1 # big-M SOS-1 constraint
         end) 
     else
         @constraints(cflg, begin 
@@ -558,26 +561,20 @@ function solveFLs!(problem::Problem, algo::AlgorithmSet, cflg)
 
     # long edge constraints
     @constraints(cflg,begin
-        [e_id in Elong], ye[e_id] == 0 # fixing long edges y
+        [e_id in Elong], ye[e_id] == 1 # fixing long edges y
         [e_id in Elong], w[e_id] == 0 # fixing long edges w
         [ef_id in Elong], q[ef_id] <=  tail_len[ef_id] * (1 - u[ef_id]) + 2 * problem.dlt *  u[ef_id] # phase transition
         [ef_id in Elong], q[ef_id] >=  tail_len[ef_id] *  u[ef_id] # phase transition
         [ef_id in Elong], rv[edges[ef_id].nodes[:a]] + problem.dlt >=   q[ef_id]  # head cover
         [ef_id in Elong], rv[edges[ef_id].nodes[:b]] +  q[ef_id] - (2*  u[ef_id] - 1) * problem.dlt  >=  tail_len[ef_id]  # tail cover
-    end)
-
-
+    end) # to do valid inequalities
+    
     # objective
-    @objective(cflg, Min, (usev ? sum(yv[vf_id] for vf_id in graph.node_ids) : 0) + sum((edges[ef_id].etype == :e_long ? fac_num[ef_id] - u[ef_id] : ye[ef_id]) for ef_id in graph.edge_ids))
-
-    #for v_id in graph.node_ids
-    #    for  efi in EIp[v_id]
-    #        if problem.Me[(v_id, efi[1], efi[2])] + problem.dlte[(v_id, efi[1], efi[2])] - ( problem.d[lor(v_id, graph.edges[efi[1]].nodes[efi[2]])] +   graph.edges[efi[1]].length  ) < problem.Uv[v_id]
-    #            println("\n", problem.Me[(v_id, efi[1], efi[2])] + problem.dlte[(v_id, efi[1], efi[2])] - ( problem.d[lor(v_id, graph.edges[efi[1]].nodes[efi[2]])] +   graph.edges[efi[1]].length  ) - problem.Uv[v_id])
-    #        end
-    #        @assert(problem.Me[(v_id, efi[1], efi[2])] + problem.dlte[(v_id, efi[1], efi[2])] - ( problem.d[lor(v_id, graph.edges[efi[1]].nodes[efi[2]])] +   graph.edges[efi[1]].length ) >= problem.Uv[v_id])
-    #    end
-    #end
+    if usev
+        @objective(cflg, Min,  sum(yv[vf_id] for vf_id in graph.node_ids) + sum((edges[ef_id].etype == :e_long ? fac_num[ef_id] - u[ef_id] : ye[ef_id]) for ef_id in graph.edge_ids))
+    else
+        @objective(cflg, Min,  sum((edges[ef_id].etype == :e_long ? fac_num[ef_id] - u[ef_id] : ye[ef_id]) for ef_id in graph.edge_ids))
+    end
 
     println("\n model loaded\n")
     optimize!(cflg)

@@ -7,7 +7,7 @@
 using CFLG
 
 @testset "test models" begin    
-    solver_names = ["Gurobi"]
+    solver_names = ["CPLEX"]
     for solver_name in solver_names
         if solver_name == "Gurobi"
 	    try 
@@ -33,11 +33,11 @@ using CFLG
             @test false
             println("unkown solver name\n")
         end
-        graph = readGraph("../benchmarks/test/city_132.txt")
+        graph = readGraph("../benchmarks/test/city_213.txt")
         #@test graph != nothing
         default_option = Option(100.0)
         #  ["EFP0", "EFP", "EFPV", "EFPD", "EFPL",  "EVFP0", "EVFP", "EVFPV", "EVFPL"]          
-        for algo in [ "EFPV"]          
+        for algo in [ "EFPL"]          
             problem = Problem(graph, Float64(graph.avg_len))
             solve!(problem, solver_name, default_option, algo)
         end
