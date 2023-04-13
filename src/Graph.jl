@@ -143,9 +143,14 @@ function incidentNodes(graph::Graph, node_id::Int)
     return node_ids
 end
 
-# return wether two nodes are incident
+# return whether two nodes are incident
 function isIncident(graph::Graph, node_id::Int, node_id_::Int)
     return node_id_ in  incidentNodes(graph, node_id)
+end
+
+# return wether two edges are adjacent
+function isAdjacent(graph::Graph, edge_id::Int, edge_id_::Int)
+    return contain(graph.edges[edge_id], graph.edges[edge_id_].nodes[:a]) ||  contain(graph.edges[edge_id], graph.edges[edge_id_].nodes[:b])
 end
 
 

@@ -11,7 +11,8 @@ MSK_ISMOD = UInt8(0b10000000)   # is this a model
 MSK_ISE =   UInt8(0b01000000)   # edge or edge-vertex model
 MSK_ISP0 =  UInt8(0b00100000)   # is processing by delimitation
 MSK_ISP1 =  UInt8(0b00010000)   # is processing by bound tightenning
-MSK_ISV =   UInt8(0b00001000)   # is using valid inequalities 
+MSK_ISV =   UInt8(0b00001000)   # is using valid inequalities
+MSK_ISK2 =  UInt8(0b00000001)   # K = 2 
 MSK_ISD =   UInt8(0b00000100)   # is disjunctive programming 
 MSK_ISL =   UInt8(0b00000010)   # is a long edge model
 
@@ -19,18 +20,19 @@ MSK_ISL =   UInt8(0b00000010)   # is a long edge model
 
 
 @enum AlgorithmSet::UInt8 begin
-    EF =     MSK_ISMOD | MSK_ISE                                  # edge formulation, from "Covering edges in networks", Fröhlich et al.
-    EFP0 =   MSK_ISMOD | MSK_ISE | MSK_ISP0                       # edge formulation with simple processing (delimited cover) 
-    EFP  =   MSK_ISMOD | MSK_ISE | MSK_ISP0 | MSK_ISP1            # edge formulation with processing (bound tightenning and delimited cover)
-    EFPV =   MSK_ISMOD | MSK_ISE | MSK_ISP0 | MSK_ISP1 | MSK_ISV  # edge formulation with processing (bound tightenning and delimited cover) and valid inequalities
-    EFPD =   MSK_ISMOD | MSK_ISE | MSK_ISP0 | MSK_ISP1 | MSK_ISD             # edge disjunctive programming formulation with processing (delimited cover)
-    EFPL =   MSK_ISMOD | MSK_ISE | MSK_ISP0 | MSK_ISP1 | MSK_ISL  # long edge formulation with processing (bound tightenning and delimited cover)
-    EVF =    MSK_ISMOD                                            # edge-vertex formulation 
-    EVFP0 =  MSK_ISMOD | MSK_ISP0                                 # edge-vertex formulation with simple processing (delimited cover)
-    EVFP  =  MSK_ISMOD | MSK_ISP0 | MSK_ISP1                      # edge-vertex formulation with processing (bound tightenning and delimited cover)
-    EVFPV =  MSK_ISMOD | MSK_ISP0 | MSK_ISP1 | MSK_ISV            # edge-vertex formulation with processing (bound tightenning and delimited cover) and valid inequalities
-    EVFPL =  MSK_ISMOD | MSK_ISP0 | MSK_ISP1 | MSK_ISL            # long edge-vertex formulation with processing (bound tightenning and delimited cover)
-    None =   MSK_ZERO                                             # not a model, just record statistics of original graph, degree-2-free graph, subdivided graph
+    EF =     MSK_ISMOD | MSK_ISE                                           # edge formulation, from "Covering edges in networks", Fröhlich et al.
+    EFP0 =   MSK_ISMOD | MSK_ISE | MSK_ISP0                                # edge formulation with simple processing (delimited cover) 
+    EFP  =   MSK_ISMOD | MSK_ISE | MSK_ISP0 | MSK_ISP1                     # edge formulation with processing (bound tightenning and delimited cover)
+    EFPV =   MSK_ISMOD | MSK_ISE | MSK_ISP0 | MSK_ISP1 | MSK_ISV           # edge formulation with processing (bound tightenning and delimited cover) and valid inequalities
+    EFPV2=   MSK_ISMOD | MSK_ISE | MSK_ISP0 | MSK_ISP1 | MSK_ISV| MSK_ISK2 # edge-vertex formulation with processing (bound tightenning and delimited cover) and valid inequalities (K = 2)    
+    EFPD =   MSK_ISMOD | MSK_ISE | MSK_ISP0 | MSK_ISP1 | MSK_ISD           # edge disjunctive programming formulation with processing (delimited cover)
+    EFPL =   MSK_ISMOD | MSK_ISE | MSK_ISP0 | MSK_ISP1 | MSK_ISL           # long edge formulation with processing (bound tightenning and delimited cover)
+    EVF =    MSK_ISMOD                                                     # edge-vertex formulation 
+    EVFP0 =  MSK_ISMOD | MSK_ISP0                                          # edge-vertex formulation with simple processing (delimited cover)
+    EVFP  =  MSK_ISMOD | MSK_ISP0 | MSK_ISP1                               # edge-vertex formulation with processing (bound tightenning and delimited cover)
+    EVFPV =  MSK_ISMOD | MSK_ISP0 | MSK_ISP1 | MSK_ISV                     # edge-vertex formulation with processing (bound tightenning and delimited cover) and valid inequalities
+    EVFPL =  MSK_ISMOD | MSK_ISP0 | MSK_ISP1 | MSK_ISL                     # long edge-vertex formulation with processing (bound tightenning and delimited cover)
+    None =   MSK_ZERO                                                      # not a model, just record statistics of original graph, degree-2-free graph, subdivided graph
 end
 
 struct GraphStat
@@ -83,4 +85,43 @@ function try_import(name::Symbol)
     catch e
         return false
     end
+end
+
+
+
+function initModel(solver_name::String,  option::Option, time_limit_sec)
+    # set solver
+    if solver_name == "Gurobi"  
+        #@eval import Gurobi
+        #model = optimizer_with_attributes(Gurobi.Optimizer, "Threads" => option.thread, "MIPGap" => option.rel_gap, "MIPGAPABS" => 1,  "TimeLimit" => option.time_limit)
+        model = Model(Gurobi.Optimizer)
+        set_optimizer_attribute(model, "Threads", option.thread)
+        set_optimizer_attribute(model, "OutputFlag", option.log_level)
+        set_optimizer_attribute(model, "MIPGap", option.rel_gap)
+        set_optimizer_attribute(model, "MIPGapAbs", 1)
+        set_optimizer_attribute(model, "TimeLimit", time_limit_sec) # note Gurobi only supports wall-clock time
+    elseif solver_name == "CPLEX"
+        #model = optimizer_with_attributes(CPLEX.Optimizer, "CPXPARAM_Threads" => option.thread, "CPXPARAM_MIP_Tolerances_MIPGap" => option.rel_gap, "CPXPARAM_MIP_Tolerances_AbsMIPGap" => 1, "CPXPARAM_ClockType" => 1, "CPXPARAM_TimeLimit" => option.time_limit)
+        model =  JuMP.Model(() -> CPLEX.Optimizer())
+        set_optimizer_attribute(model, "CPXPARAM_Threads", option.thread)
+        set_optimizer_attribute(model, "CPXPARAM_MIP_Tolerances_MIPGap", option.rel_gap)
+        set_optimizer_attribute(model, "CPXPARAM_MIP_Tolerances_AbsMIPGap", 1)
+        set_optimizer_attribute(model, "CPXPARAM_ClockType", 1) # CPU clock time
+        set_optimizer_attribute(model, "CPXPARAM_TimeLimit", time_limit_sec) # n
+    elseif solver_name == "GLPK"
+        model = Model(GLPK.Optimizer)
+        set_optimizer_attribute(model, "mip_gap", option.rel_gap)
+        set_optimizer_attribute(model, "tm_lim", time_limit_sec) # n
+        #to do
+    elseif solver_name == "SCIP"
+        model = Model(SCIP.Optimizer)
+        set_optimizer_attribute(model, "limits/gap", option.rel_gap)
+        set_optimizer_attribute(model, "limits/time", time_limit_sec) # n
+        set_optimizer_attribute(model, "limits/absgap", 1)
+        set_optimizer_attribute(model, "timing/clocktype", 1)
+    else
+        println("unkown solver name\n")
+        @assert(false)
+    end
+    return model
 end

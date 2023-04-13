@@ -3,7 +3,7 @@
 =========================================================#
 
 
-# problemdata
+# problem data
 mutable struct Problem
     # parameters
     graph::Graph # graph

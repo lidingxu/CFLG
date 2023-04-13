@@ -3,6 +3,7 @@ module CFLG
     using JuMP
     using CPUTime
     using Combinatorics
+    using MutableNamedTuples
     try 
         import CPLEX
     catch e
@@ -27,6 +28,7 @@ module CFLG
     include("Graph.jl")
     include("Reader.jl")
     include("Problem.jl")
+    include("Infeas.jl")
     include("Algorithm.jl")
     export readGraph, Option, AlgorithmSet, GraphStat, Stat, Problem, solve!
 end

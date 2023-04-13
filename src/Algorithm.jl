@@ -2,183 +2,6 @@
  Algorithm
 =========================================================#
 
-function initModel(solver_name::String,  option::Option, time_limit_sec)
-    # set solver
-    if solver_name == "Gurobi"  
-        #@eval import Gurobi
-        #model = optimizer_with_attributes(Gurobi.Optimizer, "Threads" => option.thread, "MIPGap" => option.rel_gap, "MIPGAPABS" => 1,  "TimeLimit" => option.time_limit)
-        model = Model(Gurobi.Optimizer)
-        set_optimizer_attribute(model, "Threads", option.thread)
-        set_optimizer_attribute(model, "OutputFlag", option.log_level)
-        set_optimizer_attribute(model, "MIPGap", option.rel_gap)
-        set_optimizer_attribute(model, "MIPGapAbs", 1)
-        set_optimizer_attribute(model, "TimeLimit", time_limit_sec) # note Gurobi only supports wall-clock time
-    elseif solver_name == "CPLEX"
-        #model = optimizer_with_attributes(CPLEX.Optimizer, "CPXPARAM_Threads" => option.thread, "CPXPARAM_MIP_Tolerances_MIPGap" => option.rel_gap, "CPXPARAM_MIP_Tolerances_AbsMIPGap" => 1, "CPXPARAM_ClockType" => 1, "CPXPARAM_TimeLimit" => option.time_limit)
-        model =  JuMP.Model(() -> CPLEX.Optimizer())
-        set_optimizer_attribute(model, "CPXPARAM_Threads", option.thread)
-        set_optimizer_attribute(model, "CPXPARAM_MIP_Tolerances_MIPGap", option.rel_gap)
-        set_optimizer_attribute(model, "CPXPARAM_MIP_Tolerances_AbsMIPGap", 1)
-        set_optimizer_attribute(model, "CPXPARAM_ClockType", 1) # CPU clock time
-        set_optimizer_attribute(model, "CPXPARAM_TimeLimit", time_limit_sec) # n
-    elseif solver_name == "GLPK"
-        model = Model(GLPK.Optimizer)
-        set_optimizer_attribute(model, "mip_gap", option.rel_gap)
-        set_optimizer_attribute(model, "tm_lim", time_limit_sec) # n
-        #to do
-    elseif solver_name == "SCIP"
-        model = Model(SCIP.Optimizer)
-        set_optimizer_attribute(model, "limits/gap", option.rel_gap)
-        set_optimizer_attribute(model, "limits/time", time_limit_sec) # n
-        set_optimizer_attribute(model, "limits/absgap", 1)
-        set_optimizer_attribute(model, "timing/clocktype", 1)
-    else
-        println("unkown solver name\n")
-        @assert(false)
-    end
-    return model
-end
-
-
-function checkFeasible(model, prev_vars, prev_cons, pi, edge_set, node_set, problem, graph, solver_name, option, time_limit_sec)
-    set_silent(model)
-    pimap = Dict()
-    ef_set = Set()
-    for tple in pi
-        pimap[tple[1]] = tple[2]
-        push!(ef_set, tple[2][1])
-    end
-    
-    # delete 
-    for con in prev_cons
-        delete(model, con)
-        unregister(model, :con)
-    end
-
-    for var in prev_vars
-        delete(model, var)
-        unregister(model, :var)
-    end
-    if !isempty(prev_vars)
-        unregister(model, :q)
-        unregister(model, :rv)
-    end
-
-    # variables
-    @variables(model, begin 
-        0 <= q[ef_id in ef_set] <= graph.edges[ef_id].length # edge coordinate variable
-        0 <= rv[v_id in node_set] <= problem.Uv[v_id] # residual cover variable
-    end) 
-
-    # basic constraints
-    @constraints(model, begin 
-        [e_id in edge_set], (graph.edges[e_id].length *  (1+problem.cr_tol) + problem.c_tol) <= rv[graph.edges[e_id].nodes[:a]] + rv[graph.edges[e_id].nodes[:b]] # jointly complete cover condition
-        [v_id in node_set], rv[v_id] ==  problem.dlt - ( problem.d[lor(v_id, graph.edges[pimap[v_id][1]].nodes[pimap[v_id][2]])] +  ifelse(pimap[v_id][2] == :a , q[pimap[v_id][1]], (graph.edges[pimap[v_id][1]].length - q[pimap[v_id][1]]) ))   # big M on x
-    end) 
-
-
-    # objective
-    @objective(model, Min, 0)
-    optimize!(model)
-
-    prev_vars = all_variables(model)
-    prev_cons = all_constraints(model; include_variable_in_set_constraints = false)
-
-    return termination_status(model) == INFEASIBLE, prev_vars, prev_cons
-end
-
-
-function enumCoverPatterns(problem::Problem,  option::Option, solver_name::String, K::Int, time_limit_sec)
-    graph = problem.prob_graph
-    Pi = Vector{Vector{Tuple{Int, Int, Symbol}}}()
-
-    function getNodes(edge_set)
-        return Set([[graph.edges[id].nodes[:a] for id in edge_set]; [graph.edges[id].nodes[:b] for id in edge_set]])
-    end
-
-    function getPatterns(node_set)
-        node_set = collect(node_set)
-        patterns = [[(node_set[1], enode)] for enode in problem.EIp[node_set[1]]]
-        for vid in node_set[2:end]
-            vpatterns = [(vid, enode) for enode in problem.EIp[vid]]
-            patterns = [[pattern; tple] for pattern in patterns for tple in vpatterns]
-        end
-        return patterns
-    end
-
-    function isConnect(pattern)
-        len = length(pattern)
-        connects = Set{Int}([1])
-        added = true
-        while added
-            added = false
-            for i in collect(2:len)
-                if !(i in connects)
-                    for j in connects
-                        if isIncident(graph, pattern[i][1], pattern[j][1]) || pattern[i][2][1] == pattern[j][2][1]
-                            push!(connects, i) 
-                            added = true  
-                            break
-                        end
-                    end
-                end
-                if added
-                    break
-                end
-            end 
-        end
-        return length(connects) == len
-    end
-
-    function dominate(pi, pi_)
-        isdominate = true
-        for tple in pi
-            isdominate &= tple in pi_
-            if !isdominate
-                break
-            end
-        end
-        return isdominate
-    end
-
-    model = initModel(solver_name, option, time_limit_sec)
-    pre_vars = []
-    prev_cons = []
-
-    for k in collect(1:K)
-        Pik = Vector{Vector{Tuple{Int, Tuple{Int, Symbol}}}}()
-        power_edge_ids = powerset(graph.edge_ids, k, k)
-        for edge_set in power_edge_ids
-            node_set = getNodes(edge_set)
-            patterns = getPatterns(node_set)
-            for pattern in patterns
-                if !isConnect(pattern)
-                    continue
-                else
-                    isdominate = false
-                    for pi in Pi
-                        isdominate = dominate(pi, pattern)
-                        if isdominate 
-                            break
-                        end 
-                    end
-                    if isdominate
-                        continue
-                    end
-                end
-                infeasible, pre_vars, prev_cons = checkFeasible(model, pre_vars, prev_cons, pattern, edge_set, node_set, problem, graph, solver_name, option, time_limit_sec)
-                if infeasible
-                    push!(Pik, pattern)
-                end
-            end
-        end
-        Pi = [Pi; Pik]
-    end
-    return Pi
-end
-
-
-
 function solve!(problem::Problem, solver_name::String, option::Option, algorithm::String)
 
     # parse string format algorithm setting
@@ -229,10 +52,12 @@ function solve!(problem::Problem, solver_name::String, option::Option, algorithm
     # enumerate cover patterns
     Pi = nothing
     if algo == EFPV
-        K = 1
+        K = mask(algo, MSK_ISK2) ? 2 : 1 
         print("\nenumerate cover pattern\n")
-        Pi = enumCoverPatterns(problem, option, solver_name, K, option.time_limit)
-        print("\n find cover pattern: ", length(Pi), "\n")
+        if  K != 0
+            Pi = enumCoverPatterns(problem, option, solver_name, K, option.time_limit)
+            print("\n find cover pattern: ", length(Pi), "\n")
+        end
     end
 
 
@@ -437,11 +262,11 @@ function solveFPVs!(problem::Problem, algo::AlgorithmSet, cflg, Pi)
             end
         end
     elseif mask(algo, MSK_ISE) && mask(algo, MSK_ISV)
-        @assert(Pi !== nothing)
-
-        @constraints(cflg, begin
-            [pi in Pi],  sum( (1 - ze[tple[1], tple[2]]) for tple in pi) >= 1
-        end)
+        if Pi !== nothing
+            @constraints(cflg, begin
+                [pi in Pi],  sum( (1 - ze[tple[1], tple[2]]) for tple in pi) >= 1
+            end)
+        end
     end
     #MOI.set(cflg, MOI.UserCutCallback(), user_cut_callback)
 

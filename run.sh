@@ -1,9 +1,9 @@
 #!/bin/bash
 timelimit=1800
 timebound=2200
-algorithms=("EFP" "EFPV" "EFPD" "EFPL")
+algorithms=("EFP" "EFPV" "EFPV2" "EFPD" "EFPL")
 covers=("Small" "Large")
-solver="Gurobi"
+solver="CPLEX"
 datapath="/home/lxu/experiments/CFLG/benchmarks"
 resultpath="/home/lxu/experiments/CFLG/results"
 gnuparalleltest=1

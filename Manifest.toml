@@ -267,6 +267,11 @@ git-tree-sha1 = "3295d296288ab1a0a2528feb424b854418acff57"
 uuid = "d8a4904e-b15c-11e9-3269-09a3773c0cb0"
 version = "1.2.3"
 
+[[MutableNamedTuples]]
+git-tree-sha1 = "0faaabea6ebbfde9a5a01455f851009fb2603aac"
+uuid = "af6c499f-54b4-48cc-bbd2-094bba7533c7"
+version = "0.1.3"
+
 [[NaNMath]]
 deps = ["OpenLibm_jll"]
 git-tree-sha1 = "0877504529a3e5c3343c6f8b4c0381e57e4387e4"
