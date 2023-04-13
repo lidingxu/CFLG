@@ -17,6 +17,8 @@ function solve!(problem::Problem, solver_name::String, option::Option, algorithm
         algo = EFPD
     elseif algorithm == "EFPV"
         algo = EFPV
+    elseif algorithm == "EFPV2"
+        algo = EFPV2
     elseif algorithm == "EFPL"
         algo = EFPL
     elseif algorithm == "EVF"
@@ -51,7 +53,7 @@ function solve!(problem::Problem, solver_name::String, option::Option, algorithm
 
     # enumerate cover patterns
     Pi = nothing
-    if algo == EFPV
+    if algo == EFPV || algo == EFPV2
         K = mask(algo, MSK_ISK2) ? 2 : 1 
         print("\nenumerate cover pattern\n")
         if  K != 0
