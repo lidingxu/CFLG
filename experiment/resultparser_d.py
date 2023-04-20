@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 min_primal_bound = 2**31
 max_dual_bound = -1
 time_limit =1800
-algorithms  = ["SF", "RF",  "ESF", "ERF", "EDF", "ESFV", "None"]
+algorithms  = ["EFP0", "EFP", "EFPV", "EFPD", "EVFP0", "EVFP", "EVFPD", "EVFPL", "None"]
 coverages = ["Small", "Large"]
 benchmarks = ["city", "Kgroup_A", "Kgroup_B", "random_A", "random_B"]
 
@@ -39,6 +39,7 @@ def extractInstanceResult(file_path):
     entries["node"] = int(stat_dict["node"].split()[1])
     entries["obj"] = float(stat_dict["obj"].split()[1])
     entries["bound"] = float(stat_dict["bound"].split()[1])
+    print(file_path, entries["obj"],  entries["bound"])
     entries["gap"] = abs(entries["obj"] - entries["bound"])/ entries["obj"] * 100# float(stat_dict["relgap"].split()[1])*10000
     #print(entries["gap"])
     entries["absgap"] = abs(entries["obj"] - entries["bound"])
@@ -231,14 +232,7 @@ def printtable(algorithms_, has_obj_):
                     if entry["instance"] == instance_stat["instance"] and entry["coverage"] == instance_stat["coverage"]:
                         entry["cdual"] = max( abs(instance_stat["dual"]  - instance_stat["primal"]) ,1e-6) / max( abs(entry["bound"]  - instance_stat["primal"]) ,1e-6)
                         entry["cprimal"] = max( abs(instance_stat["dual"]  - instance_stat["primal"]) ,1e-6) / max( abs(instance_stat["dual"]  - entry["obj"]) ,1e-6)
-        
-        change_mode = False
-        if "SFD" in algorithms_ and  "RF" in algorithms_ and len(algorithms_) == 2:
-            change_mode = True
-            for instance_stat in instance_stats:
-                for entry in entries:
-                    if entry["instance"] == instance_stat["instance"] and entry["coverage"] == instance_stat["coverage"] and entry["algo"] == "SFD":
-                        instance_stat["norm"] = entry["obj"]      
+            
 
         #print(entries)
         # fill non solution
@@ -416,66 +410,40 @@ def printtable(algorithms_, has_obj_):
             #allbench_tab += "\n"
     #print(allbench_tab)
 
-    if len(algorithms_) == -1: 
-
+    algos = copy(algorithms_)
+    if len(algos) % 2 == 0:
+        nrows_ = len(algos) // 2
+    else:
+        algos.append(algos[-1])
         nrows_ = len(algorithms_) // 2
-        fig, axes = plt.subplots(nrows=nrows_, ncols=2, figsize=(10, 6))  # define the figure and subplots
+    fig, axes = plt.subplots(nrows=nrows_, ncols=2, figsize=(10, 6))  # define the figure and subplots
+    pairs = []
 
+    for i in range(nrows_):
+        pairs.append((algos[2*i], algos[2*i + 1]))
 
-        pairs = [("F0", "F"), ("F","SF"), ("SF", "RF")]
+    i = 0
+    for pair in pairs:
+        algo1 = pair[0]
+        algo2 = pair[1]
+        dual_results = {algo1:[], algo2:[]}
+        primal_results = {algo1:[], algo2:[]}
+        instances = []
+        for entry in allentries:
+            if entry["algo"] == algo1 and not entry["isnotfind"]:
+                has_entry = False
+                for entry_ in allentries:
+                    if entry_["algo"] == algo2 and entry_["instance"] == entry["instance"] and not entry["isnotfind"]:
+                        has_entry = True
+                        dual_results[algo1].append(entry["gap"] / 100.0)
+                        dual_results[algo2].append(entry_["gap"] / 100.0)
+                        primal_results[algo1].append(entry["obj"] / 100.0)
+                        primal_results[algo2].append(entry_["obj"] / 100.0)
+        addaxes(axes, i, algo1, algo2, dual_results, primal_results)
+        i+=1
+    fig.tight_layout()
+    plt.savefig('scatter5.pdf') 
 
-        i = 0
-        for pair in pairs:
-            algo1 = pair[0]
-            algo2 = pair[1]
-            dual_results = {algo1:[], algo2:[]}
-            primal_results = {algo1:[], algo2:[]}
-            instances = []
-            for entry in allentries:
-                if entry["algo"] == algo1 and not entry["isnotfind"]:
-                    has_entry = False
-                    for entry_ in allentries:
-                        if entry_["algo"] == algo2 and entry_["instance"] == entry["instance"] and not entry["isnotfind"]:
-                            has_entry = True
-                            dual_results[algo1].append(entry["gap"] / 100.0)
-                            dual_results[algo2].append(entry_["gap"] / 100.0)
-                            primal_results[algo1].append(entry["obj"] / 100.0)
-                            primal_results[algo2].append(entry_["obj"] / 100.0)
-            addaxes(axes, i, algo1, algo2, dual_results, primal_results)
-            i+=1
-
-
-        fig.tight_layout()
-        plt.savefig('scatter5.pdf') 
-    elif False:
-        fig, axes = plt.subplots(nrows=1, ncols=2, figsize=(10, 6))  # define the figure and subplots
-
-        pairs = [("SFD", "RF")]
-
-        i = 0;
-        for pair in pairs:
-            algo1 = pair[0]
-            algo2 = pair[1]
-            dual_results = {algo1:[], algo2:[]}
-            primal_results = {algo1:[], algo2:[]}
-            instances = []
-            for entry in alldisentries:
-                if entry["algo"] == algo1 and "isnotfind" in entry and not entry["isnotfind"]:
-                    has_entry = False
-                    for entry_ in alldisentries:
-                        if entry_["algo"] == algo2 and entry_["instance"] == entry["instance"] and "isnotfind" in entry and not entry["isnotfind"]:
-                            has_entry = True
-                            dual_results[algo1].append(entry["gap"] / 100.0)
-                            dual_results[algo2].append(entry_["gap"] / 100.0)
-                            primal_results[algo1].append(entry["obj"] / 100.0)
-                            primal_results[algo2].append(entry_["obj"] / 100.0)
-            addaxes_(axes, i, algo1, algo2, dual_results, primal_results)
-            i+=1
-
-
-        fig.tight_layout()
-        #plt.show()
-        plt.savefig('scatter2.pdf') 
     benchmarks_ = benchmarks + ["all"]
     groudsize = int(np.floor(len(algorithms_) / 2))
     for groudid in range(groudsize):
@@ -517,14 +485,13 @@ def printtable(algorithms_, has_obj_):
 
 # display table 2
 print("table 2\n")
-algorithms_  = ["SF", "RF",  "ESF", "ERF", "EDF", "ESFV"]
+algorithms_  = [ algo for algo in algorithms if algo != "None"]
 has_obj_ = False
 printtable(algorithms_, has_obj_)
 
 # write details
 
-
-algorithms_  = ["SF", "RF",  "ESF", "ERF", "EDF", "ESFV"]
+algorithms_  = [ algo for algo in algorithms if algo != "None"]
 has_obj_ = False
 details = printtable(algorithms_, has_obj_)
 

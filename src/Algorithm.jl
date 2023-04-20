@@ -210,6 +210,7 @@ function solveFPVs!(problem::Problem, algo::AlgorithmSet, cflg, Pi)
 
     # vertex facility related variables
     if usev
+        print("vertex var\n")
         @variables(cflg, begin 
             yv[vf_id in graph.node_ids], Bin # node facility
             zv[v_id in graph.node_ids, vf_id in Vp[v_id]], Bin # big-M modelling variable on nodes
@@ -273,7 +274,7 @@ function solveFPVs!(problem::Problem, algo::AlgorithmSet, cflg, Pi)
     #MOI.set(cflg, MOI.UserCutCallback(), user_cut_callback)
 
     # objective
-    @objective(cflg, Min, usev ? sum(yv[vf_id] for vf_id in graph.node_ids) : 0 +  sum(ye[ef_id] for ef_id in graph.edge_ids))
+    @objective(cflg, Min, (usev ? sum(yv[vf_id] for vf_id in graph.node_ids) : 0) +  sum(ye[ef_id] for ef_id in graph.edge_ids))
 
     println("\n model loaded\n")  
     optimize!(cflg)
