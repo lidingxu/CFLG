@@ -1,8 +1,8 @@
 instance: K400.9.con.red
-obj: 0.0
-bound: 0.0
-gap: 0.0
-time: 30.05191683769226
-preprocess_time: 0.248425
+obj: 405.0
+bound: 73.88200615298392
+gap: 0.8175752934492205
+time: 1800.2051491737366
+preprocess_time: 0.307415
 node: 0
 algo: EVFP0

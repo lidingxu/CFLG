@@ -1,8 +1,8 @@
 instance: K100.5.con.red
-obj: 0.0
-bound: 0.0
-gap: 0.0
-time: 0.64768385887146
-preprocess_time: 0.083671
-node: 0
+obj: 8.0
+bound: 5.792629898614836
+gap: 0.2759212626696965
+time: 1801.0247831344604
+preprocess_time: 0.043944
+node: 22751
 algo: EVFPV

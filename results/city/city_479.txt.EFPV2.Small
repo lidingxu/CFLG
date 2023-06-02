@@ -1,8 +1,8 @@
 instance: city_479.txt
-obj: 201.0
+obj: 202.0
 bound: 171.21105174537522
-gap: 0.14820372265975107
-time: 1794.2390668392181
-preprocess_time: 7.468466
-node: 15576
+gap: 0.15242053591390864
+time: 1789.1815659999847
+preprocess_time: 11.988946
+node: 15634
 algo: EFPV2

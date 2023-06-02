@@ -1,8 +1,8 @@
 instance: city_268.txt
-obj: 0.0
-bound: 0.0
-gap: 0.0
-time: 4.78183913230896
-preprocess_time: 0.117828
-node: 21
+obj: 107.99999987500063
+bound: 82.721229530683
+gap: 0.23406268864399912
+time: 1800.9517838954926
+preprocess_time: 0.164899
+node: 11565
 algo: EVFP0

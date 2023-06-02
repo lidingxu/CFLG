@@ -1,8 +1,8 @@
 instance: r_25_0.1_36.txt
-obj: 0.0
-bound: 0.0
+obj: 4.0
+bound: 4.0
 gap: 0.0
-time: 0.058418989181518555
-preprocess_time: 0.025452
-node: 0
+time: 7.473062038421631
+preprocess_time: 0.023597
+node: 993
 algo: EVFP

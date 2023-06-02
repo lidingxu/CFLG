@@ -1,8 +1,8 @@
 instance: K100.8.con.red
-obj: 0.0
-bound: 0.0
-gap: 0.0
-time: 1.100193977355957
-preprocess_time: 0.071918
-node: 0
+obj: 10.0
+bound: 6.0
+gap: 0.399999999996
+time: 1801.064906835556
+preprocess_time: 0.053601
+node: 2751
 algo: EVFP0

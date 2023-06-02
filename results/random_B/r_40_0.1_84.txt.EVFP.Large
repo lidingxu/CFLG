@@ -1,8 +1,8 @@
 instance: r_40_0.1_84.txt
-obj: 0.0
-bound: 0.0
-gap: 0.0
-time: 0.16274309158325195
-preprocess_time: 0.023919
-node: 0
+obj: 6.0
+bound: 5.0
+gap: 0.16666666666388888
+time: 79.0903000831604
+preprocess_time: 0.037408
+node: 1165
 algo: EVFP

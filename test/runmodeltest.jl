@@ -33,11 +33,11 @@ using CFLG
             @test false
             println("unkown solver name\n")
         end
-        graph = readGraph("../benchmarks/test/city_276.txt")
+        graph = readGraph("../benchmarks/test/city_138.txt")
         #@test graph != nothing
         default_option = Option(60.0)
         #  ["EFP0", "EFP", "EFPV", "EFPD", "EFPL",  "EVFP0", "EVFP", "EVFPV", "EVFPL"]          
-        for algo in [ "EVFP"]          
+        for algo in [ "EFPLg"]          
             problem = Problem(graph, Float64(graph.avg_len))
             solve!(problem, solver_name, default_option, algo)
         end

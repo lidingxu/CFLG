@@ -1,8 +1,8 @@
 instance: r_10_0.4_13.txt
-obj: 0.0
-bound: 0.0
+obj: 2.0
+bound: 2.0
 gap: 0.0
-time: 0.022294998168945312
-preprocess_time: 0.020377
+time: 0.037928104400634766
+preprocess_time: 0.019302
 node: 0
 algo: EVFP

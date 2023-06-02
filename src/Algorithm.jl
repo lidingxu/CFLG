@@ -15,6 +15,8 @@ function solve!(problem::Problem, solver_name::String, option::Option, algorithm
         algo = EFP
     elseif algorithm == "EFPD"
         algo = EFPD
+    elseif algorithm == "EFPLg"
+        algo = EFPLg
     elseif algorithm == "EFPV"
         algo = EFPV
     elseif algorithm == "EFPV2"
@@ -71,6 +73,8 @@ function solve!(problem::Problem, solver_name::String, option::Option, algorithm
     elseif algo == EFPL || algo == EVFPL
         #stat, sol = solveRF!(problem, cflg)
         stat, sol = solveFLs!(problem, algo, cflg)
+    elseif algo == EFPLg
+        stat, sol = solveEFPLg!(problem, algo, cflg)
     elseif algo == EFPD
         stat, sol = solveEFPD!(problem, algo, cflg)
     else 
@@ -485,6 +489,73 @@ function solveEFPD!(problem::Problem, algo::AlgorithmSet, cflg)
         [v_id in graph.node_ids, efi in EIp[v_id]], rvei[v_id, efi] <= ( problem.dlte[(v_id, efi[1], efi[2])] - problem.d[lor(v_id, graph.edges[efi[1]].nodes[efi[2]])] - ifelse( efi[2] == :a , 0, (graph.edges[efi[1]].length) ) ) * ze[v_id, efi] + ifelse(efi[2] == :a , -qvei[v_id, efi], qvei[v_id, efi] )  # disjunctive residual cover constraints on edges  
     end) 
 
+
+    # objective
+    @objective(cflg, Min,  sum(ye[ef_id] for ef_id in graph.edge_ids))
+
+    println("\n model loaded\n")  
+    optimize!(cflg)
+    stat = Stat();
+    sol = Vector{Tuple{Symbol,Int, Float64}}();
+    stat.termintaion_status = termination_status(cflg)
+    stat.bound = objective_bound(cflg)
+    stat.gap = relative_gap(cflg)
+    stat.time = solve_time(cflg)
+    if solver_name(cflg) == "CPLEX"
+        cpx = backend(cflg).optimizer.model
+        stat.node = CPLEX.CPXgetnodecnt(cpx.env, cpx.lp)
+    else
+        stat.node = Int32(node_count(cflg))
+    end
+    stat.algo = algo
+
+    stat.instance = problem.instance
+    if has_values(cflg)
+        stat.sol_val = objective_value(cflg)
+        for ef_id in graph.edge_ids
+            if value(ye[ef_id]) >= 0.5
+                push!(sol, (:e, ef_id,  value(q[ef_id])))
+            end
+        end
+    end
+    return stat, sol
+end
+
+
+#
+function solveEFPLg!(problem::Problem, algo::AlgorithmSet, cflg)
+    print("Lg\n")
+    graph = problem.prob_graph
+    EIp = problem.EIp
+    Vp = problem.Vp
+    Ep = problem.Ep
+
+    # variables
+    @variables(cflg, begin 
+        ye[ef_id in graph.edge_ids], Bin # edge facility
+        x[v_id in graph.node_ids], Bin # node residual indictor cover
+        w[e_id in graph.edge_ids], Bin # complete cover indicator variable
+        0 <= q[ef_id in graph.edge_ids] <= graph.edges[ef_id].length # edge coordinate variable
+        0 <= rv[v_id in graph.node_ids] <= problem.Uv[v_id] # residual cover variable
+        ze[v_id in graph.node_ids, efi in EIp[v_id]], Bin # indicator modelling variable on edges
+    end) 
+
+    
+    #problem.Me[(v_id, efi[1], efi[2])]  +  problem.dlte[(v_id, efi[1], efi[2])]  -
+    #( problem.d[lor(v_id, graph.edges[efi[1]].nodes[efi[2]])] +  ifelse(efi[2] == :a , q[efi[1]], graph.edges[efi[1]].length - q[efi[1]]))
+    # constraints
+    @constraints(cflg, begin 
+        [e_id in graph.edge_ids, ef_id in problem.Ec[e_id]], w[e_id] >= ye[ef_id] # complete cover by edges: open
+        [e_id in graph.edge_ids], w[e_id] <=  sum(ye[ef_id] for ef_id in problem.Ec[e_id]) # complete cover: close
+        [v_id in graph.node_ids], x[v_id] >= 1- sum( (1 - w[e_id]) for e_id in graph.adjacent_edges[v_id])  # ajdacent non covered 2
+        [v_id in graph.node_ids, e_id in graph.adjacent_edges[v_id]], x[v_id] <= w[e_id]  # ajdacent non covered 2
+        [e_id in graph.edge_ids], (graph.edges[e_id].length *  (1+problem.cr_tol) + problem.c_tol) * (1 - w[e_id]) <= rv[graph.edges[e_id].nodes[:a]] + rv[graph.edges[e_id].nodes[:b]] # jointly complete cover condition
+        [e_id in graph.edge_ids], q[e_id] <= graph.edges[e_id].length * ye[e_id] # redundant bound   
+        [v_id in graph.node_ids], x[v_id] + sum(ze[v_id, efi] for efi in EIp[v_id]) == 1 # big-M SOS-1 constraint
+        [v_id in graph.node_ids, efi in EIp[v_id]], ze[v_id, efi] <= ye[efi[1]] # edge activated constraint
+        [v_id in graph.node_ids, efi in EIp[v_id]], ze[v_id, efi] => { rv[v_id] <=  problem.dlte[(v_id, efi[1], efi[2])]  -
+        ( problem.d[lor(v_id, graph.edges[efi[1]].nodes[efi[2]])] +  ifelse(efi[2] == :a , q[efi[1]], graph.edges[efi[1]].length - q[efi[1]])) }
+    end) 
 
     # objective
     @objective(cflg, Min,  sum(ye[ef_id] for ef_id in graph.edge_ids))

@@ -1,8 +1,8 @@
 instance: K400.5.con.red
-obj: 1.0
-bound: 0.0
-gap: 0.9999999999
-time: 90.86973404884338
-preprocess_time: 0.257967
-node: 0
+obj: 236.0
+bound: 16.983388323066393
+gap: 0.9280364901561052
+time: 1800.2146830558777
+preprocess_time: 0.207881
+node: 7
 algo: EVFPV

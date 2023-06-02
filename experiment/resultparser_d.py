@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 min_primal_bound = 2**31
 max_dual_bound = -1
 time_limit =1800
-algorithms  = ["EFP0", "EFP", "EFPV", "EFPD", "EVFP0", "EVFP", "EVFPD", "EVFPL", "None"]
+algorithms  = ["EFP0", "EFP", "EFPV", "EFPV2", "EFPD", "EVFP0", "EVFP", "EVFPV", "EVFPL", "None"]
 coverages = ["Small", "Large"]
 benchmarks = ["city", "Kgroup_A", "Kgroup_B", "random_A", "random_B"]
 
@@ -39,7 +39,6 @@ def extractInstanceResult(file_path):
     entries["node"] = int(stat_dict["node"].split()[1])
     entries["obj"] = float(stat_dict["obj"].split()[1])
     entries["bound"] = float(stat_dict["bound"].split()[1])
-    print(file_path, entries["obj"],  entries["bound"])
     entries["gap"] = abs(entries["obj"] - entries["bound"])/ entries["obj"] * 100# float(stat_dict["relgap"].split()[1])*10000
     #print(entries["gap"])
     entries["absgap"] = abs(entries["obj"] - entries["bound"])
@@ -242,13 +241,8 @@ def printtable(algorithms_, has_obj_):
                 for entry in entries:
                     if entry["instance"] == instance_stat["instance"] and entry["coverage"] == instance_stat["coverage"] and entry["algo"] == algo:
                         is_find = True
-                        if change_mode:
-                            val = entry["obj"] 
-                            entry["obj"] = val / instance_stat["org_node"] * 100
-                            entry["obj_"] = val / instance_stat["norm"] * 100
-                        else:
-                            val = entry["obj"] 
-                            entry["obj"] = val / instance_stat["org_node"] * 100
+                        val = entry["obj"] 
+                        entry["obj"] = val / instance_stat["org_node"] * 100
                         entry["isnotfind"] = False
                 if not is_find:
                     entry = copy.copy(defualt_entry)
@@ -410,14 +404,15 @@ def printtable(algorithms_, has_obj_):
             #allbench_tab += "\n"
     #print(allbench_tab)
 
-    algos = copy(algorithms_)
+    algos = copy.copy(algorithms_)
     if len(algos) % 2 == 0:
         nrows_ = len(algos) // 2
     else:
-        algos.append(algos[-1])
-        nrows_ = len(algorithms_) // 2
+        nrows_ = len(algos) // 2
     fig, axes = plt.subplots(nrows=nrows_, ncols=2, figsize=(10, 6))  # define the figure and subplots
     pairs = []
+
+    print(algos, algorithms_)
 
     for i in range(nrows_):
         pairs.append((algos[2*i], algos[2*i + 1]))
@@ -448,7 +443,7 @@ def printtable(algorithms_, has_obj_):
     groudsize = int(np.floor(len(algorithms_) / 2))
     for groudid in range(groudsize):
         algos = [algorithms_[2*groudid], algorithms_[2*groudid + 1]]
-        print(algos,"\n")
+        print(groudid, " ", algos,"\n")
         tab = ""
         for benchmark in benchmarks_:
             tab+= "\\multirow{2}{*}{\\texttt{"+ parsed(benchmark) +"}}"
@@ -464,9 +459,11 @@ def printtable(algorithms_, has_obj_):
                 tab += " \\\\"
                 tab += "\n"
         print(tab)
+        print("\n")  
     if len(algorithms_)- 2 *(groudsize) != 0:
         tab = ""
         algos = [algorithms_[-1]]
+        print( " ", algos,"\n")
         for benchmark in benchmarks_:
             tab+= "\\multirow{2}{*}{\\texttt{"+ parsed(benchmark) +"}}"
             for cover in  coverages:
@@ -480,7 +477,7 @@ def printtable(algorithms_, has_obj_):
                         tab += benchdict[(benchmark, cover, algo, 0)]
                 tab += " \\\\"
                 tab += "\n"
-        print(tab)    
+        print(tab)
     return details
 
 # display table 2
@@ -488,6 +485,7 @@ print("table 2\n")
 algorithms_  = [ algo for algo in algorithms if algo != "None"]
 has_obj_ = False
 printtable(algorithms_, has_obj_)
+
 
 # write details
 

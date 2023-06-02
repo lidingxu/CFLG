@@ -1,8 +1,8 @@
 instance: K200.con.red
-obj: 0.0
-bound: 0.0
-gap: 0.0
-time: 2.365370035171509
-preprocess_time: 0.078425
-node: 0
+obj: 15.0
+bound: 7.666617244775514
+gap: 0.4888921836783731
+time: 1800.4422028064728
+preprocess_time: 0.078576
+node: 1804
 algo: EVFP

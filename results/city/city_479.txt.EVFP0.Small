@@ -1,8 +1,8 @@
 instance: city_479.txt
-obj: 0.0
-bound: 0.0
-gap: 0.0
-time: 2.5248191356658936
-preprocess_time: 0.181784
-node: 96
+obj: 206.0
+bound: 166.43714389622266
+gap: 0.19205269953280646
+time: 1801.12735080719
+preprocess_time: 0.279738
+node: 11803
 algo: EVFP0

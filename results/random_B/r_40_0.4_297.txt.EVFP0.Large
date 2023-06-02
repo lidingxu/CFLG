@@ -1,8 +1,8 @@
 instance: r_40_0.4_297.txt
-obj: 0.0
-bound: 0.0
-gap: 0.0
-time: 4.185657978057861
-preprocess_time: 0.030466
-node: 0
+obj: 3.0
+bound: 1.0
+gap: 0.6666666666444444
+time: 1800.3022480010986
+preprocess_time: 0.031212
+node: 947
 algo: EVFP0

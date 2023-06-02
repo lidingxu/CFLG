@@ -2,7 +2,7 @@ instance: K100.6.red
 obj: 4.0
 bound: 2.9999999999999893
 gap: 0.24999999999375266
-time: 25.76932382583618
-preprocess_time: 1689.926225
+time: 14.793503999710083
+preprocess_time: 1214.328399
 node: 150
 algo: EFPV2

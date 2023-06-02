@@ -1,8 +1,8 @@
 instance: city_265.txt
-obj: 0.0
-bound: 0.0
-gap: 0.0
-time: 0.840656042098999
-preprocess_time: 0.168817
-node: 0
+obj: 113.00000434449946
+bound: 80.63742649158972
+gap: 0.2863944832623046
+time: 1800.7578151226044
+preprocess_time: 0.166019
+node: 11711
 algo: EVFP
