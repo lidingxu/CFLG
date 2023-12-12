@@ -37,7 +37,7 @@ using CFLG
         #@test graph != nothing
         default_option = Option(60.0)
         #  ["EFP0", "EFP", "EFPV", "EFPD", "EFPL",  "EVFP0", "EVFP", "EVFPV", "EVFPL"]          
-        for algo in [ "EFPLg"]          
+        for algo in [ "EFPV"]          
             problem = Problem(graph, Float64(graph.avg_len))
             solve!(problem, solver_name, default_option, algo)
         end

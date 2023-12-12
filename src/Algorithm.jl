@@ -251,6 +251,7 @@ function solveFPVs!(problem::Problem, algo::AlgorithmSet, cflg, Pi)
         end) 
     end
 
+    bool_user_cut = true
     # valid inequalities
     if !mask(algo, MSK_ISE) && mask(algo, MSK_ISV)
         # valid inequalities
@@ -270,9 +271,21 @@ function solveFPVs!(problem::Problem, algo::AlgorithmSet, cflg, Pi)
         end
     elseif mask(algo, MSK_ISE) && mask(algo, MSK_ISV)
         if Pi !== nothing
-            @constraints(cflg, begin
-                [pi in Pi],  sum( (1 - ze[tple[1], tple[2]]) for tple in pi) >= 1
-            end)
+            if bool_user_cut
+                function cut_function(cb_data)
+                    for pi in Pi
+                        if sum( (1 - callback_value(cb_data, ze[tple[1], tple[2]]) ) for tple in pi) < 0.99
+                            con = @build_constraint( sum( (1 - ze[tple[1], tple[2]]) for tple in pi) >= 1 )
+                            MOI.submit(cflg, MOI.UserCut(cb_data), con)
+                        end
+                    end
+                end
+                set_attribute(cflg, MOI.UserCutCallback(), cut_function)
+            else
+                @constraints(cflg, begin
+                    [pi in Pi],  sum( (1 - ze[tple[1], tple[2]]) for tple in pi) >= 1
+                end)
+            end
         end
     end
     #MOI.set(cflg, MOI.UserCutCallback(), user_cut_callback)

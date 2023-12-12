@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 min_primal_bound = 2**31
 max_dual_bound = -1
 time_limit =1800
-algorithms  = ["EFP0", "EFP", "EFPV", "EFPV2", "EFPD", "EVFP0", "EVFP", "EVFPV", "EVFPL", "None"]
+algorithms  = ["EF", "EVF", "EFP0", "EFP", "EFPV", "EFPV2", "EFPLg", "EFPD", "EVFP0", "EVFP", "EVFPV", "EVFPL", "None"]
 coverages = ["Small", "Large"]
 benchmarks = ["city", "Kgroup_A", "Kgroup_B", "random_A", "random_B"]
 
