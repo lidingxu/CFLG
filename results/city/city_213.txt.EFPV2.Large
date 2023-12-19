@@ -1,8 +1,8 @@
 instance: city_213.txt
-obj: 30.0
-bound: 19.834009974730296
-gap: 0.3388663341745273
-time: 1747.9557089805603
-preprocess_time: 52.769899
-node: 26407
+obj: 31.0
+bound: 17.87960105902662
+gap: 0.4232386755139051
+time: 1795.661432981491
+preprocess_time: 55.194961
+node: 7011
 algo: EFPV2

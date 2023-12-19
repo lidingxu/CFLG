@@ -1,8 +1,8 @@
 instance: K400.7.con.red
-obj: 642.0
-bound: 114.13370069815407
-gap: 0.8222216500027472
-time: 1778.5318820476532
-preprocess_time: 22.34148
-node: 35
+obj: 536.0
+bound: 75.97884951352029
+gap: 0.8582484150865557
+time: 1787.8119947910309
+preprocess_time: 27.774178
+node: 7
 algo: EFPV

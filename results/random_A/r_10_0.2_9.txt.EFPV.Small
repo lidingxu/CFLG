@@ -2,7 +2,7 @@ instance: r_10_0.2_9.txt
 obj: 5.0
 bound: 4.0
 gap: 0.199999999996
-time: 0.008409976959228516
-preprocess_time: 0.061291
+time: 0.004765033721923828
+preprocess_time: 0.046315
 node: 0
 algo: EFPV

@@ -1,8 +1,8 @@
 instance: r_30_0.3_131.txt
-obj: 3.0
-bound: 1.1147595556698244
-gap: 0.6284134814224447
-time: 1750.332993030548
-preprocess_time: 52.095116
-node: 0
+obj: 4.0
+bound: 1.0
+gap: 0.74999999998125
+time: 1914.5600810050964
+preprocess_time: 47.350363
+node: 98
 algo: EFPV

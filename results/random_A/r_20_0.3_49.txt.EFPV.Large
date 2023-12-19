@@ -1,8 +1,8 @@
 instance: r_20_0.3_49.txt
 obj: 2.0
-bound: 2.0
-gap: 0.0
-time: 2.357512950897217
-preprocess_time: 1.627296
-node: 0
+bound: 1.0
+gap: 0.499999999975
+time: 11.564823865890503
+preprocess_time: 1.906087
+node: 40
 algo: EFPV

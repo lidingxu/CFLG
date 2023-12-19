@@ -1,8 +1,8 @@
 instance: city_132.txt
-obj: 56.0
-bound: 49.25848559517949
-gap: 0.12038418580015121
-time: 1802.3291399478912
-preprocess_time: 0.195842
-node: 107893
+obj: 55.0
+bound: 49.29125619464169
+gap: 0.10379534191541691
+time: 1849.2908449172974
+preprocess_time: 0.148571
+node: 56973
 algo: EFPV

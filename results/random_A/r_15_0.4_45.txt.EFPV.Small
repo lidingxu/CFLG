@@ -1,8 +1,8 @@
 instance: r_15_0.4_45.txt
-obj: 8.0
-bound: 6.718575689547141
-gap: 0.16017803880460518
-time: 1800.8584141731262
-preprocess_time: 0.657562
-node: 56614
+obj: 9.0
+bound: 4.999999417413582
+gap: 0.44444450917133044
+time: 1864.9797518253326
+preprocess_time: 0.538883
+node: 9092
 algo: EFPV

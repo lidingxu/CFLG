@@ -251,7 +251,7 @@ function solveFPVs!(problem::Problem, algo::AlgorithmSet, cflg, Pi)
         end) 
     end
 
-    bool_user_cut = true
+    bool_user_cut = false
     # valid inequalities
     if !mask(algo, MSK_ISE) && mask(algo, MSK_ISV)
         # valid inequalities
@@ -464,7 +464,7 @@ function solveFLs!(problem::Problem, algo::AlgorithmSet, cflg)
 end
 
 
-#
+# EF disjunctive formulation
 function solveEFPD!(problem::Problem, algo::AlgorithmSet, cflg)
     graph = problem.prob_graph
     EIp = problem.EIp
@@ -482,7 +482,6 @@ function solveEFPD!(problem::Problem, algo::AlgorithmSet, cflg)
         0 <= qvei[v_id in graph.node_ids, efi in EIp[v_id]] <= graph.edges[efi[1]].length #  disjunctive edge coordinate variable on edges 
         0 <= rv[v_id in graph.node_ids] <= problem.Uv[v_id] # residual cover variable
         ze[v_id in graph.node_ids, efi in EIp[v_id]], Bin # disjunctive indicator variable on edges
-        0 <= rvei[v_id in graph.node_ids, efi in EIp[v_id]]  <= problem.Uv[v_id] # disjunctive residual cover variable on edges
     end) 
 
     # constraints
@@ -495,11 +494,10 @@ function solveEFPD!(problem::Problem, algo::AlgorithmSet, cflg)
         [e_id in graph.edge_ids], q[e_id] <= graph.edges[e_id].length * ye[e_id] # redundant bound
         [v_id in graph.node_ids, efi in EIp[v_id]], ze[v_id, efi] <= ye[efi[1]] # edge activated constraint        
         [v_id in graph.node_ids], x[v_id] +  sum(ze[v_id, efi] for efi in EIp[v_id]) == 1 # disjunctive SOS-1 constraint
-        [v_id in graph.node_ids], sum(rvei[v_id, efi] for efi in EIp[v_id]) == rv[v_id] # disjunctive residual cover aggreagation constraint
+        [v_id in graph.node_ids], rv[v_id]  <=  sum( ( problem.dlte[(v_id, efi[1], efi[2])] - problem.d[lor(v_id, graph.edges[efi[1]].nodes[efi[2]])] - ifelse( efi[2] == :a , 0, (graph.edges[efi[1]].length) ) ) * ze[v_id, efi] + ifelse(efi[2] == :a , -qvei[v_id, efi], qvei[v_id, efi] ) for efi in EIp[v_id]) # disjunctive residual cover aggreagation constraint
         [v_id in graph.node_ids, ef_id in Ep[v_id]], q[ef_id] ==   qve[v_id, ef_id] + sum( ifelse(efi[1] == ef_id, qvei[v_id, efi], 0) for efi in EIp[v_id] )  # disjunctive residual q aggregation constraint
         [v_id in graph.node_ids, efi in EIp[v_id]], qvei[v_id, efi] <= graph.edges[efi[1]].length * ze[v_id, efi]  # disjunctive upper bound for q on edge
         [v_id in graph.node_ids, ef_id in Ep[v_id]], qve[v_id, ef_id] <= graph.edges[ef_id].length * (1 -   sum( ifelse( efi[1] == ef_id, ze[v_id, efi], 0) for efi in EIp[v_id])) # disjunctive upper bound for q on v
-        [v_id in graph.node_ids, efi in EIp[v_id]], rvei[v_id, efi] <= ( problem.dlte[(v_id, efi[1], efi[2])] - problem.d[lor(v_id, graph.edges[efi[1]].nodes[efi[2]])] - ifelse( efi[2] == :a , 0, (graph.edges[efi[1]].length) ) ) * ze[v_id, efi] + ifelse(efi[2] == :a , -qvei[v_id, efi], qvei[v_id, efi] )  # disjunctive residual cover constraints on edges  
     end) 
 
 
@@ -535,7 +533,7 @@ function solveEFPD!(problem::Problem, algo::AlgorithmSet, cflg)
 end
 
 
-#
+# EF logical formulation indicator
 function solveEFPLg!(problem::Problem, algo::AlgorithmSet, cflg)
     print("Lg\n")
     graph = problem.prob_graph
