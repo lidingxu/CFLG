@@ -15,7 +15,8 @@ MSK_ISV =   UInt16(0b0000100000000000)   # is using valid inequalities
 MSK_ISK2 =  UInt16(0b0000010000000000)   # K = 2 
 MSK_ISD =   UInt16(0b0000001000000000)   # is disjunctive programming 
 MSK_ISL =   UInt16(0b0000000100000000)   # is a long edge model
-MSK_ISLg=   UInt16(0b0000000010000000)   # is Logical 
+MSK_ISLg =  UInt16(0b0000000010000000)   # is Logical 
+MSK_ISC  =  UInt16(0b0000000001000000)   # is cover preprocessing
 
 @inline mask(algo, MSK::UInt16)= ( UInt16(algo) & MSK != MSK_ZERO )
 
@@ -24,9 +25,11 @@ MSK_ISLg=   UInt16(0b0000000010000000)   # is Logical
     EF     =   MSK_ISMOD | MSK_ISE                                           # edge formulation, from "Covering edges in networks", Fröhlich et al.
     EFP0   =   MSK_ISMOD | MSK_ISE | MSK_ISP0                                # edge formulation with simple processing (delimited cover) 
     EFP    =   MSK_ISMOD | MSK_ISE | MSK_ISP0 | MSK_ISP1                     # edge formulation with processing (bound tightenning and delimited cover)
+    EFPC   =   MSK_ISMOD | MSK_ISE | MSK_ISP0 | MSK_ISP1 | MSK_ISC           # edge formulation with processing (bound tightenning and delimited cover) and cover preprocessing
     EFPV   =   MSK_ISMOD | MSK_ISE | MSK_ISP0 | MSK_ISP1 | MSK_ISV           # edge formulation with processing (bound tightenning and delimited cover) and valid inequalities
-    EFPV2  =   MSK_ISMOD | MSK_ISE | MSK_ISP0 | MSK_ISP1 | MSK_ISV| MSK_ISK2 # edge-vertex formulation with processing (bound tightenning and delimited cover) and valid inequalities (K = 2)    
-    EFPD   =   MSK_ISMOD | MSK_ISE | MSK_ISP0 | MSK_ISP1 | MSK_ISD           # edge disjunctive programming formulation with processing (delimited cover)
+    EFPV2  =   MSK_ISMOD | MSK_ISE | MSK_ISP0 | MSK_ISP1 | MSK_ISV | MSK_ISK2# edge-vertex formulation with processing (bound tightenning and delimited cover) and valid inequalities (K = 2)    
+    EFPD   =   MSK_ISMOD | MSK_ISE | MSK_ISP0 | MSK_ISP1 | MSK_ISD 	     # edge disjunctive programming formulation with processing (delimited cover)
+    EFPDC  =   MSK_ISMOD | MSK_ISE | MSK_ISP0 | MSK_ISP1 | MSK_ISD | MSK_ISC # edge disjunctive programming formulation with processing (delimited cover) and cover preprocessing
     EFPLg  =   MSK_ISMOD | MSK_ISE | MSK_ISP0 | MSK_ISP1 | MSK_ISLg          # edge logical formulation with processing (delimited cover)
     EFPL   =   MSK_ISMOD | MSK_ISE | MSK_ISP0 | MSK_ISP1 | MSK_ISL           # long edge formulation with processing (bound tightenning and delimited cover)
     EVF    =   MSK_ISMOD                                                     # edge-vertex formulation 
@@ -57,7 +60,7 @@ struct Option
     thread::Int # thread number
     silent::Bool # silent model
 
-    function Option(time_limit::Float64=360.0, rel_gap::Float64=1e-4, log_level::Int=1, thread::Int=1, silent::Bool=true)
+    function Option(time_limit::Float64=360.0,  rel_gap::Float64=1e-4, log_level::Int=1, thread::Int=1, silent::Bool=true)
         new(time_limit, rel_gap, log_level, thread, silent)
     end
 end

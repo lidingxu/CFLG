@@ -75,7 +75,7 @@ function solve!(problem::Problem, solver_name::String, option::Option, algorithm
         stat, sol = solveFLs!(problem, algo, cflg)
     elseif algo == EFPLg
         stat, sol = solveEFPLg!(problem, algo, cflg)
-    elseif algo == EFPD
+    elseif algo == EFPD 
         stat, sol = solveEFPD!(problem, algo, cflg)
     else 
         stat, sol = solveFPVs!(problem, algo, cflg, Pi) 
@@ -178,6 +178,7 @@ function solveFPVs!(problem::Problem, algo::AlgorithmSet, cflg, Pi)
     if mask(algo, MSK_ISP0)
         EIp = problem.EIp
         Vp = problem.Vp
+
     elseif algo == EVF
         EIp = Dict{Int, Set{Tuple{Int, Symbol}}}()
         Vp = Dict{Int, Set{Int}}()
@@ -251,7 +252,7 @@ function solveFPVs!(problem::Problem, algo::AlgorithmSet, cflg, Pi)
         end) 
     end
 
-    bool_user_cut = false
+    root_user_cut = true
     # valid inequalities
     if !mask(algo, MSK_ISE) && mask(algo, MSK_ISV)
         # valid inequalities
@@ -271,17 +272,7 @@ function solveFPVs!(problem::Problem, algo::AlgorithmSet, cflg, Pi)
         end
     elseif mask(algo, MSK_ISE) && mask(algo, MSK_ISV)
         if Pi !== nothing
-            if bool_user_cut
-                function cut_function(cb_data)
-                    for pi in Pi
-                        if sum( (1 - callback_value(cb_data, ze[tple[1], tple[2]]) ) for tple in pi) < 0.99
-                            con = @build_constraint( sum( (1 - ze[tple[1], tple[2]]) for tple in pi) >= 1 )
-                            MOI.submit(cflg, MOI.UserCut(cb_data), con)
-                        end
-                    end
-                end
-                set_attribute(cflg, MOI.UserCutCallback(), cut_function)
-            else
+            if root_user_cut
                 @constraints(cflg, begin
                     [pi in Pi],  sum( (1 - ze[tple[1], tple[2]]) for tple in pi) >= 1
                 end)
@@ -328,7 +319,7 @@ function solveFPVs!(problem::Problem, algo::AlgorithmSet, cflg, Pi)
 end
 
 
-# long edge models
+# long edge vertex models
 function solveFLs!(problem::Problem, algo::AlgorithmSet, cflg)
 
     # get graph
@@ -471,6 +462,20 @@ function solveEFPD!(problem::Problem, algo::AlgorithmSet, cflg)
     Vp = problem.Vp
     Ep = problem.Ep
 
+    # bound tightenning
+    isboundtight = false
+    if isboundtight
+        Lbs = Dict{Tuple{Int, Tuple{Int, Symbol}}, Float64}()
+        Ubs = Dict{Tuple{Int, Tuple{Int, Symbol}}, Float64}()
+        for v_id in graph.node_ids
+            for efi in EIp[v_id]
+                exceed_len = min( max(problem.dlte[(v_id, efi[1], efi[2])] - problem.d[lor(v_id, graph.edges[efi[1]].nodes[efi[2]])], 0), graph.edges[efi[1]].length)
+                exceed_len = isboundtight * exceed_len
+                Ubs[(v_id, efi)] = ifelse(efi[2] == :a, exceed_len, graph.edges[efi[1]].length )  * (1+problem.cr_tol)
+                Lbs[(v_id, efi)] = ifelse(efi[2] == :a, 0, (graph.edges[efi[1]].length - exceed_len) * (1 - problem.cr_tol) )
+            end
+        end
+    end
 
     # variables
     @variables(cflg, begin 
@@ -478,8 +483,8 @@ function solveEFPD!(problem::Problem, algo::AlgorithmSet, cflg)
         x[v_id in graph.node_ids], Bin # node residual indictor cover
         w[e_id in graph.edge_ids], Bin # complete cover indicator variable
         0 <= q[ef_id in graph.edge_ids] <= graph.edges[ef_id].length # edge coordinate variable
-        0 <= qve[v_id in graph.node_ids, ef_id in Ep[v_id]] <= graph.edges[ef_id].length # disjunctive edge coordinate variable on nodes
-        0 <= qvei[v_id in graph.node_ids, efi in EIp[v_id]] <= graph.edges[efi[1]].length #  disjunctive edge coordinate variable on edges 
+        0 <= qve[v_id in graph.node_ids, ef_id in Ep[v_id]] <= graph.edges[ef_id].length  # disjunctive edge coordinate variable on nodes
+        0<= qvei[v_id in graph.node_ids, efi in EIp[v_id]]
         0 <= rv[v_id in graph.node_ids] <= problem.Uv[v_id] # residual cover variable
         ze[v_id in graph.node_ids, efi in EIp[v_id]], Bin # disjunctive indicator variable on edges
     end) 
@@ -496,9 +501,11 @@ function solveEFPD!(problem::Problem, algo::AlgorithmSet, cflg)
         [v_id in graph.node_ids], x[v_id] +  sum(ze[v_id, efi] for efi in EIp[v_id]) == 1 # disjunctive SOS-1 constraint
         [v_id in graph.node_ids], rv[v_id]  <=  sum( ( problem.dlte[(v_id, efi[1], efi[2])] - problem.d[lor(v_id, graph.edges[efi[1]].nodes[efi[2]])] - ifelse( efi[2] == :a , 0, (graph.edges[efi[1]].length) ) ) * ze[v_id, efi] + ifelse(efi[2] == :a , -qvei[v_id, efi], qvei[v_id, efi] ) for efi in EIp[v_id]) # disjunctive residual cover aggreagation constraint
         [v_id in graph.node_ids, ef_id in Ep[v_id]], q[ef_id] ==   qve[v_id, ef_id] + sum( ifelse(efi[1] == ef_id, qvei[v_id, efi], 0) for efi in EIp[v_id] )  # disjunctive residual q aggregation constraint
-        [v_id in graph.node_ids, efi in EIp[v_id]], qvei[v_id, efi] <= graph.edges[efi[1]].length * ze[v_id, efi]  # disjunctive upper bound for q on edge
-        [v_id in graph.node_ids, ef_id in Ep[v_id]], qve[v_id, ef_id] <= graph.edges[ef_id].length * (1 -   sum( ifelse( efi[1] == ef_id, ze[v_id, efi], 0) for efi in EIp[v_id])) # disjunctive upper bound for q on v
+        [v_id in graph.node_ids, efi in EIp[v_id]], qvei[v_id, efi] <=  graph.edges[efi[1]].length * (1+problem.cr_tol)  * ze[v_id, efi] # disjunctive upper bound for q on edge
+        #[v_id in graph.node_ids, efi in EIp[v_id]], Lbs[(v_id, efi)] * ze[v_id, efi]  <= qvei[v_id, efi]  # disjunctive lower bound for q on edge
+        [v_id in graph.node_ids, ef_id in Ep[v_id]], qve[v_id, ef_id] <= graph.edges[ef_id].length * (1+problem.cr_tol) * (1 -   sum( ifelse( efi[1] == ef_id, ze[v_id, efi], 0) for efi in EIp[v_id])) # disjunctive upper bound for q on v
     end) 
+
 
 
     # objective
@@ -551,7 +558,7 @@ function solveEFPLg!(problem::Problem, algo::AlgorithmSet, cflg)
         ze[v_id in graph.node_ids, efi in EIp[v_id]], Bin # indicator modelling variable on edges
     end) 
 
-    
+
     #problem.Me[(v_id, efi[1], efi[2])]  +  problem.dlte[(v_id, efi[1], efi[2])]  -
     #( problem.d[lor(v_id, graph.edges[efi[1]].nodes[efi[2]])] +  ifelse(efi[2] == :a , q[efi[1]], graph.edges[efi[1]].length - q[efi[1]]))
     # constraints
