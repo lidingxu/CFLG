@@ -64,6 +64,10 @@ function solve!(problem::Problem, solver_name::String, option::Option, algorithm
         end
     end
 
+    if algo == EFPF
+        
+    end
+
 
     preprocess_time = CPUtoc()
 
@@ -170,7 +174,7 @@ end
 
 
 # 
-function solveFPVs!(problem::Problem, algo::AlgorithmSet, cflg, Pi)
+function solveFPVs!(problem::Problem, algo::AlgorithmSet, cflg, Pi, is_bounding = false)
     # get graph
     graph = problem.prob_graph
 
@@ -220,6 +224,13 @@ function solveFPVs!(problem::Problem, algo::AlgorithmSet, cflg, Pi)
             yv[vf_id in graph.node_ids], Bin # node facility
             zv[v_id in graph.node_ids, vf_id in Vp[v_id]], Bin # big-M modelling variable on nodes
         end) 
+    end
+
+    if is_bounding
+        @constraints(cflg, begin
+            [e_id in graph.edge_ids], ye[e_id] == 0
+        end)
+
     end
 
     # basic constraints

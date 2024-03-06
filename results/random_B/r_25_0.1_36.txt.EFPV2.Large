@@ -2,7 +2,7 @@ instance: r_25_0.1_36.txt
 obj: 4.0
 bound: 4.0
 gap: 0.0
-time: 7.42079496383667
-preprocess_time: 7.694054
-node: 176
+time: 2.858346939086914
+preprocess_time: 9.090538
+node: 185
 algo: EFPV2

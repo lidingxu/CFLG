@@ -2,7 +2,6 @@
  Problem Data
 =========================================================#
 
-
 # problem data
 mutable struct Problem
     # parameters
@@ -30,6 +29,7 @@ mutable struct Problem
     dlte::Dict{Tuple{Int, Int, Symbol}, Float64}
     Mv::Dict{Tuple{Int, Int}, Float64}
     Me::Dict{Tuple{Int, Int, Symbol}, Float64}
+    upper_bd::Int
 
     # for edge formulation
     bigM_EF::Float64    
@@ -134,7 +134,6 @@ function boundTighten!(prob::Problem)
     prob.Mv = Mv
     prob.Me = Me
 end
-
 
 
 

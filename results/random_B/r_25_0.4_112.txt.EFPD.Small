@@ -1,8 +1,8 @@
 instance: r_25_0.4_112.txt
-obj: 18.0
-bound: 8.181663158349926
-gap: 0.5454631578664183
-time: 1800.5077378749847
-preprocess_time: 0.080445
-node: 1727
+obj: 15.0
+bound: 9.134270826322743
+gap: 0.39104861157587684
+time: 1801.0700659751892
+preprocess_time: 0.065573
+node: 7793
 algo: EFPD

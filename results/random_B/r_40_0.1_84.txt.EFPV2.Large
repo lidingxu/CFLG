@@ -1,8 +1,8 @@
 instance: r_40_0.1_84.txt
-obj: 7.0
-bound: 4.0
-gap: 0.4285714285653061
-time: 450.24844694137573
-preprocess_time: 1379.266201
-node: 341
+obj: 6.0
+bound: 5.000000000000077
+gap: 0.166666666663876
+time: 499.87926292419434
+preprocess_time: 1370.807103
+node: 470
 algo: EFPV2

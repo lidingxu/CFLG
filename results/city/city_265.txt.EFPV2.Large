@@ -1,8 +1,8 @@
 instance: city_265.txt
-obj: 40.0
-bound: 29.78340819390615
-gap: 0.2554147951517077
-time: 1812.8689930438995
-preprocess_time: 44.681115
-node: 7046
+obj: 39.0
+bound: 30.993623619196786
+gap: 0.2052917020713509
+time: 1774.39146900177
+preprocess_time: 27.113334
+node: 26381
 algo: EFPV2

@@ -93,8 +93,6 @@ percent_keys = ["gap", "obj", "obj_"]
 int_keys = [ "solved", "total"]
 
 
-
-
 def Stat(algo, coverage):
     return {"algorithm": algo, "cover": coverage, "solved": 0, "total": 0, "solution": 0, "gap": 0.0, "time":0.0, "node":  0.0, "cdual": 0.0, "cprimal": 0.0, "obj": 0.0, "obj_": 0.0} 
 
@@ -157,7 +155,6 @@ def gettab( stat,  has_obj_, end):
     return bench_tab
 
 
-
 def addaxes(axes, i, algo1, algo2, dual_results, primal_results):
     #print(dual_results[algo1], dual_results[algo2])
     axes[i,0].scatter(dual_results[algo1],dual_results[algo2], color = 'blue', marker = '+')
@@ -165,7 +162,6 @@ def addaxes(axes, i, algo1, algo2, dual_results, primal_results):
     axes[i,0].set_xlabel(algo1)
     axes[i,0].set_ylabel(algo2)
     axes[i,0].set_title("relative dual gap")
-
 
     axes[i,1].scatter(primal_results[algo1],primal_results[algo2], color = 'red', marker = 'x')
     axes[i,1].plot(primal_results[algo1],primal_results[algo1], color = 'orange')
@@ -187,7 +183,9 @@ def addaxes_(axes, i, algo1, algo2, dual_results, primal_results):
     axes[1].set_title("relative primal bound")
 
 def printtable(algorithms_, has_obj_):
-    allentries = []
+    normal_entries = []
+    extreme_entries = []
+
     details = ""
 
     benchdict = {}  
@@ -253,7 +251,11 @@ def printtable(algorithms_, has_obj_):
                     entry["isnotfind"] = True
                     entries.append(entry)
                 
-        allentries += entries
+        if benchmark == "Kgroup_B":
+            extreme_entries += entries
+        else:
+            normal_entries += entries
+
 
 
         # benchmark_wise statistics 
@@ -424,10 +426,10 @@ def printtable(algorithms_, has_obj_):
         dual_results = {algo1:[], algo2:[]}
         primal_results = {algo1:[], algo2:[]}
         instances = []
-        for entry in allentries:
+        for entry in normal_entries:
             if entry["algo"] == algo1 and not entry["isnotfind"]:
                 has_entry = False
-                for entry_ in allentries:
+                for entry_ in normal_entries:
                     if entry_["algo"] == algo2 and entry_["instance"] == entry["instance"] and not entry["isnotfind"]:
                         has_entry = True
                         dual_results[algo1].append(entry["gap"] / 100.0)

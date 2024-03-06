@@ -1,8 +1,8 @@
 instance: r_30_0.4_188.txt
-obj: 3.0
+obj: 2.0
 bound: 1.0
-gap: 0.6666666666444444
-time: 1800.5735409259796
-preprocess_time: 0.027834
-node: 606
+gap: 0.499999999975
+time: 985.0628299713135
+preprocess_time: 0.029133
+node: 470
 algo: EFPD

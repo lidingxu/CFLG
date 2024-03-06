@@ -1,8 +1,8 @@
 instance: r_30_0.2_75.txt
-obj: 18.0
-bound: 11.333333333333334
-gap: 0.3703703703683128
-time: 1854.541706085205
-preprocess_time: 0.747775
-node: 7073
+obj: 17.0
+bound: 12.472435086383921
+gap: 0.2663273478582027
+time: 1802.1229159832
+preprocess_time: 0.560272
+node: 70919
 algo: EFPV

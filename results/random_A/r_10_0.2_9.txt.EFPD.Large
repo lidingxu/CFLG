@@ -1,8 +1,8 @@
 instance: r_10_0.2_9.txt
-obj: 2.0
+obj: 3.0
 bound: 2.0
-gap: 0.0
-time: 0.014494895935058594
-preprocess_time: 0.021044
+gap: 0.3333333333222222
+time: 0.01023411750793457
+preprocess_time: 0.013583
 node: 0
 algo: EFPD

@@ -1,8 +1,8 @@
 instance: r_40_0.4_297.txt
-obj: 4.0
-bound: 0.9999999999999997
-gap: 0.7499999999812501
-time: 1800.167815208435
-preprocess_time: 0.155966
-node: 50
+obj: 3.0
+bound: 1.0
+gap: 0.6666666666444444
+time: 1800.2607400417328
+preprocess_time: 0.036535
+node: 800
 algo: EFPD

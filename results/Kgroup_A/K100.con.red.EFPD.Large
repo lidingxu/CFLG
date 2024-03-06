@@ -1,8 +1,8 @@
 instance: K100.con.red
-obj: 10.0
-bound: 5.567270797188531
-gap: 0.44327292027671417
-time: 1800.1831851005554
-preprocess_time: 0.080337
-node: 2986
+obj: 9.0
+bound: 5.684723561407456
+gap: 0.368364048728412
+time: 1800.4137570858002
+preprocess_time: 0.05198
+node: 1990
 algo: EFPD

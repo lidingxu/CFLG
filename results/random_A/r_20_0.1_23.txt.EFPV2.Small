@@ -1,8 +1,8 @@
 instance: r_20_0.1_23.txt
-obj: 10.0
-bound: 9.0
-gap: 0.099999999999
-time: 1.302380084991455
-preprocess_time: 0.635735
-node: 199
+obj: 11.0
+bound: 9.999999999999998
+gap: 0.09090909090826463
+time: 1.1631550788879395
+preprocess_time: 0.638711
+node: 1218
 algo: EFPV2
