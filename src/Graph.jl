@@ -155,7 +155,7 @@ end
 
 
 
-# nodeCover, mode: :partial: stop nodeCover earlier, :full : no stop, used as shotest distance algorithm
+# nodeCover, mode: :partial: stop nodeCover earlier, :full : no stop, used as shotest distance formulationrithm
 function nodeCover(graph::Graph, s_id::Int, dlt::Float64, d::Dict{Tuple{Int, Int}, Float64}, mode::Symbol)
     Ec = Set{Int}() # complete covered edges
     E = Set{Int}() # affected edges
@@ -177,7 +177,7 @@ function nodeCover(graph::Graph, s_id::Int, dlt::Float64, d::Dict{Tuple{Int, Int
         # current nearest point
         (u_id, dist) = peek(Q)
         dequeue!(Q) 
-        if mode == :Partial && dist > dlt # end the algorithm
+        if mode == :Partial && dist > dlt # end the formulationrithm
             break
         end
         #@assert(u_id in V)

@@ -45,8 +45,8 @@ end
 
 
 # preprocess problem
-function preprocess!(prob::Problem, algo::AlgorithmSet)
-    if algo == None
+function preprocess!(prob::Problem, formulation::FormulationSet)
+    if formulation == None
         dtf_graph = breakGraph(prob.graph, prob.dlt, true, true)
         sbd_graph = breakGraph(prob.graph, prob.dlt, true, false)
         org_stat = GraphStat(prob.graph.node_num, prob.graph.edge_num, prob.graph.min_len, prob.graph.max_len, prob.graph.avg_len)
@@ -56,7 +56,7 @@ function preprocess!(prob::Problem, algo::AlgorithmSet)
     end
 
     if prob.dlt < prob.graph.max_len
-        prob.prob_graph = breakGraph(prob.graph, prob.dlt, true,  mask(algo, MSK_ISL) )
+        prob.prob_graph = breakGraph(prob.graph, prob.dlt, true,  mask(formulation, MSK_ISL) )
     else
         prob.prob_graph = prob.graph
     end
@@ -64,10 +64,10 @@ function preprocess!(prob::Problem, algo::AlgorithmSet)
     print("problem_graph/original graph:", " node: ", prob.prob_graph.node_num, "/", prob.graph.node_num, " edge: ",
     prob.prob_graph.edge_num, "/", prob.graph.edge_num, " dlt: ", prob.dlt, " break_avg_len: ", prob.prob_graph.avg_len, " break_max_len: ", prob.prob_graph.max_len)
     
-    if algo == EF # edge formulation needs a simple process
+    if formulation == EF # edge formulation needs a simple process
         (prob.bigM_EF, prob.d) = processGraphSimple(prob.prob_graph, prob.dlt)
     else # normal process
-        mode = ifelse( mask(algo, MSK_ISP0), :full, :Partial)
+        mode = ifelse( mask(formulation, MSK_ISP0), :full, :Partial)
         (prob.Ec, prob.Vc, prob.Ep, prob.Vp, prob.EIp, prob.d) = processGraph(prob.prob_graph, prob.dlt, :Partial, prob.cr_tol, prob.c_tol)
     end
 end
@@ -100,8 +100,6 @@ function boundTighten!(prob::Problem)
     for v_id in graph.node_ids
         for vf_id in prob.Vp[v_id]
             dlen = prob.d[lor(v_id, vf_id)]
-            #dltv[(v_id, vf_id)] = min(Uv[v_id]+ dlen, prob.dlt)
-            #Mv[(v_id, vf_id)] = max(0, Uv[v_id]+ dlen-  prob.dlt)
             # numerical stable version
             @assert(prob.dlt - dlen > -1e-6)
             dltv[(v_id, vf_id)] = min(prob.dlt, min(Uv[v_id]+ dlen, prob.dlt) * (1+ prob.cr_tol) + prob.c_tol)
@@ -112,19 +110,10 @@ function boundTighten!(prob::Problem)
             vf_id = ef.nodes[end_node]
             dlen = prob.d[lor(v_id, vf_id)]
             elen =  ifelse(ef.etype == :e_long, 2*prob.dlt, ef.length)
-            #dlte[(v_id, ef_id, end_node)] = min(Uv[v_id]+ dlen + elen, prob.dlt)  
-            #Me[(v_id, ef_id, end_node)] = max(0, Uv[v_id]+ dlen + elen - prob.dlt)
             # numerical stable version
             dlte[(v_id, ef_id, end_node)] = min(prob.dlt, min(Uv[v_id]+ dlen + elen, prob.dlt) * (1+ prob.cr_tol) + prob.c_tol) # min(Uv[v_id]+ dlen + elen, prob.dlt) + prob.c_tol
             Me[(v_id, ef_id, end_node)] =  max(0, Uv[v_id]+ dlen + elen - prob.dlt) * (1+ prob.cr_tol) + prob.c_tol
-            #if(Me[(v_id, ef_id, end_node)] + (dlte[(v_id, ef_id, end_node)] - dlen - elen ) < Uv[v_id])
-            #    println(Me[(v_id, ef_id, end_node)] + (dlte[(v_id, ef_id, end_node)] - dlen - elen) - Uv[v_id])
-            #end
             @assert(Me[(v_id, ef_id, end_node)] + (dlte[(v_id, ef_id, end_node)] - dlen - elen) >= Uv[v_id])
-                
-            #if (max(0, Uv[v_id]+ dlen + elen - prob.dlt) * (1+ prob.cr_tol) + prob.c_tol) > prob.dlt
-            #    #println(Me[(v_id, ef_id, end_node)] , prob.dlt)
-            #end
         end
     end
 

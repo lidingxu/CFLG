@@ -243,11 +243,9 @@ function checkFeasibleElimination(pi, edge_set, node_set, problem, graph)
       end
    end
 
-
    return false, 0
 
 end
-
 
 
 function checkFeasibleLP(model, prev_vars, prev_cons, pi, edge_set, node_set, problem, graph, solver_name, option, time_limit_sec)

@@ -30,5 +30,5 @@ module CFLG
     include("Problem.jl")
     include("Infeas.jl")
     include("Algorithm.jl")
-    export readGraph, Option, AlgorithmSet, GraphStat, Stat, Problem, solve!
+    export readGraph, Option, FormulationSet, GraphStat, Stat, Problem, solve!
 end

@@ -1,11 +1,11 @@
 #!/bin/bash
 timelimit=1800
 timebound=2200
-algorithms=("EFP" "EFPV" "EFPV2" "EFPD" "EFPL")
+formulations=("EF" "EFP" "EFPV" "EFPV2" "EFPI" "EFPD" "EVFP" "LEVFP")
 covers=("Small" "Large")
 solver="CPLEX"
-datapath="/home/lxu/experiments/CFLG/benchmarks"
-resultpath="/home/lxu/experiments/CFLG/results"
+datapath="benchmarks"
+resultpath="results"
 gnuparalleltest=1
 
 
@@ -16,17 +16,12 @@ runInstance() {
     timelimit=$3
     result_dir=$4
     instance=$5
-    algo=$6
+    formulation=$6
     cover=$7
 
-    echo "$instance" "$algo" "$cover"
-    #python ./checkexec.py  $result_dir $instance $algo $cover
-    #if [ $? == 1 ]
-    #then
-    #    return 1
-    #fi
+    echo "$instance" "$formulation" "$cover"
 
-    /home/lxu/software/julia-1.8.3/bin/julia  experiment/runbenchmark.jl $benchmark_dir $solver "$timelimit" "$result_dir" "$instance" "$algo" "$cover"
+    julia  src/main.jl "$benchmark_dir" "$instance" "$result_dir" "$solver" "$timelimit"  "$formulation" "$cover"
                 
 }
 export -f runInstance
@@ -51,26 +46,16 @@ do
     then
         for instance in  $instances
         do
-            for algo in ${algorithms[@]}
+            for formulation in ${formulations[@]}
                 do
                 for cover in ${covers[@]}
                 do
-                    #continue
-                    #echo "$instance" "$algo" "$cover"
-                    timeout $timebound runInstance  "$datapath/$benchmark" "$solver" "$timelimit" "$resultpath/$benchmark"  "$instance"  "$algo"  "$cover"
+                    timeout $timebound runInstance  "$datapath/$benchmark" "$solver" "$timelimit" "$resultpath/$benchmark"  "$instance"  "$formulation"  "$cover"
                 done
             done
         done
     else
-        parallel --will-cite --jobs 80% --timeout $timebound runInstance  "$datapath/$benchmark" "$solver" "$timelimit" "$resultpath/$benchmark"  ::: "$instances" :::  "${algorithms[@]}" :::  "${covers[@]}"
-        #parallel --will-cite --jobs 37% julia ./runbenchmark.jl  "$datapath/$benchmark" "CPLEX" "$timelimit" "$resultpath/$benchmark"  ::: "$instances" :::  "${algorithms[@]}" :::  "${covers[@]}"
-        #$instances | parallel --will-cite   --dryrun  "printls {}"
-        #parallel --will-cite  printls0 para ::: 1
-        #parallel --will-cite  printls "$benchmark" para  ::: "$instances" :::  "${algorithms[@]}"
-        #break 
-        #parallel --will-cite -j 4 --dryrun  printls ::: "${instances[@]}" :::  "${algorithms[@]}"  
-        #parallel --will-cite  runInstance ::: "$algorithms"  "${instances[@]}"  "$benchmark" "para"
+        parallel --will-cite --jobs 80% --timeout $timebound runInstance  "$datapath/$benchmark" "$solver" "$timelimit" "$resultpath/$benchmark"  ::: "$instances" :::  "${formulations[@]}" :::  "${covers[@]}"
     fi
-    #find   $datapath/$benchmark -name *.cbp
 done
 

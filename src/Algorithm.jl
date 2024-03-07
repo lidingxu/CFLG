@@ -2,101 +2,94 @@
  Algorithm
 =========================================================#
 
-function solve!(problem::Problem, solver_name::String, option::Option, algorithm::String)
-
-    # parse string format algorithm setting
-    if algorithm == "EF"
-        algo = EF
-    elseif algorithm == "EFP"
-        algo = EFP
-    elseif algorithm == "EFP0"
-        algo = EFP0
-    elseif algorithm == "EFP"
-        algo = EFP
-    elseif algorithm == "EFPD"
-        algo = EFPD
-    elseif algorithm == "EFPLg"
-        algo = EFPLg
-    elseif algorithm == "EFPV"
-        algo = EFPV
-    elseif algorithm == "EFPV2"
-        algo = EFPV2
-    elseif algorithm == "EFPL"
-        algo = EFPL
-    elseif algorithm == "EVF"
-        algo = EVF
-    elseif algorithm == "EVFP0"
-        algo = EVFP0
-    elseif algorithm == "EVFP"
-        algo = EVFP
-    elseif algorithm == "EVFPV"
-        algo = EVFPV
-    elseif algorithm == "EVFPL"
-        algo = EVFPL
-    elseif algorithm == "None"
-        algo = None
+function solve!(problem::Problem, solver_name::String, option::Option, formulation::String)
+    # parse string format formulation setting
+    if formulation == "EF"
+        formulation = EF
+    elseif formulation == "EFP"
+        formulation = EFP
+    elseif formulation == "EFP0"
+        formulation = EFP0
+    elseif formulation == "EFP"
+        formulation = EFP
+    elseif formulation == "EFPD"
+        formulation = EFPD
+    elseif formulation == "EFPI"
+        formulation = EFPI
+    elseif formulation == "EFPV"
+        formulation = EFPV
+    elseif formulation == "EFPV2"
+        formulation = EFPV2
+    elseif formulation == "EFPL"
+        formulation = EFPL
+    elseif formulation == "EVF"
+        formulation = EVF
+    elseif formulation == "EVFP0"
+        formulation = EVFP0
+    elseif formulation == "EVFP"
+        formulation = EVFP
+    elseif formulation == "EVFPV"
+        formulation = EVFPV
+    elseif formulation == "LEVFP"
+        formulation = LEVFP
+    elseif formulation == "None"
+        formulation = None
     else
-        print("%s not a formulation!!\n", string(algo))
+        print("%s not a formulation!!\n", string(formulation))
         @assert(false)
     end
     
     # preprocess the problem
     CPUtic()
-    graph_stats = preprocess!(problem, algo)
+    graph_stats = preprocess!(problem, formulation)
 
-    if algo == None
+    if formulation == None
         return graph_stats
     end
 
     # bound tightenning
-    if mask(algo, MSK_ISP0) && mask(algo, MSK_ISP1) 
+    if mask(formulation, MSK_ISP0) && mask(formulation, MSK_ISP1) 
         boundTighten!(problem)
     end
 
     # enumerate cover patterns
     Pi = nothing
-    if algo == EFPV || algo == EFPV2
-        K = mask(algo, MSK_ISK2) ? 2 : 1 
-        print("\nenumerate cover pattern\n")
+    if formulation == EFPV || formulation == EFPV2
+        K = mask(formulation, MSK_ISK2) ? 2 : 1 
+        print("\n enumerate cover pattern\n")
         if  K != 0
             Pi = enumCoverPatterns(problem, option, solver_name, K, option.time_limit)
             print("\n find cover pattern: ", length(Pi), "\n")
         end
     end
 
-    if algo == EFPF
-        
-    end
-
-
     preprocess_time = CPUtoc()
 
+    # initialize a JuMP with the option
     cflg = initModel(solver_name, option, option.time_limit - preprocess_time)
-    if algo == EF
-        stat, sol = solveEF!(problem, algo, cflg)
-    elseif algo == EFPL || algo == EVFPL
-        #stat, sol = solveRF!(problem, cflg)
-        stat, sol = solveFLs!(problem, algo, cflg)
-    elseif algo == EFPLg
-        stat, sol = solveEFPLg!(problem, algo, cflg)
-    elseif algo == EFPD 
-        stat, sol = solveEFPD!(problem, algo, cflg)
+
+    # solve the formulation
+    if formulation == EF
+        stat, sol = solveEF!(problem, formulation, cflg)
+    elseif formulation == LEVFP
+        stat, sol = solveLEVF!(problem, formulation, cflg)
+    elseif formulation == EFPI
+        stat, sol = solveEFPI!(problem, formulation, cflg)
+    elseif formulation == EFPD 
+        stat, sol = solveEFPD!(problem, formulation, cflg)
     else 
-        stat, sol = solveFPVs!(problem, algo, cflg, Pi) 
+        stat, sol = solveFPVs!(problem, formulation, cflg, Pi) 
     end
 
     stat.preprocess_time = preprocess_time
-    #verification(problem, sol)
-
-    #println("Optimal value: ", objective_value(cflg))
     println(stat)
 
     return stat
 
 end
 
-# algo == EF
-function solveEF!(problem::Problem, algo::AlgorithmSet, cflg)
+# formulation == EF
+function solveEF!(problem::Problem, formulation::FormulationSet, cflg)
     graph = problem.prob_graph
     edges = graph.edges
     dlt = problem.dlt
@@ -158,7 +151,7 @@ function solveEF!(problem::Problem, algo::AlgorithmSet, cflg)
         stat.node = Int32(node_count(cflg))
     end
 
-    stat.algo = algo
+    stat.formulation = formulation
     stat.instance = problem.instance
     if has_values(cflg)
         stat.sol_val = objective_value(cflg)
@@ -173,17 +166,17 @@ function solveEF!(problem::Problem, algo::AlgorithmSet, cflg)
 end
 
 
-# 
-function solveFPVs!(problem::Problem, algo::AlgorithmSet, cflg, Pi, is_bounding = false)
+# edge or edge-vertex model big-M formulations
+function solveFPVs!(problem::Problem, formulation::FormulationSet, cflg, Pi, is_bounding = false)
     # get graph
     graph = problem.prob_graph
 
     # get delimitation
-    if mask(algo, MSK_ISP0)
+    if mask(formulation, MSK_ISP0)
         EIp = problem.EIp
         Vp = problem.Vp
 
-    elseif algo == EVF
+    elseif formulation == EVF
         EIp = Dict{Int, Set{Tuple{Int, Symbol}}}()
         Vp = Dict{Int, Set{Int}}()
         Eid = Set{Tuple{Int, Symbol}}()
@@ -200,12 +193,12 @@ function solveFPVs!(problem::Problem, algo::AlgorithmSet, cflg, Pi, is_bounding 
 
     # get bounds
     is_trivial_bound = false
-    if !mask(algo, MSK_ISP1)
+    if !mask(formulation, MSK_ISP1)
         is_trivial_bound = true
         bigM = problem.dlt * (problem.cr_tol + 1) + problem.c_tol
     end
 
-    usev = !mask(algo, MSK_ISE)
+    usev = !mask(formulation, MSK_ISE)
 
     # basic variables
     @variables(cflg, begin 
@@ -265,7 +258,7 @@ function solveFPVs!(problem::Problem, algo::AlgorithmSet, cflg, Pi, is_bounding 
 
     root_user_cut = true
     # valid inequalities
-    if !mask(algo, MSK_ISE) && mask(algo, MSK_ISV)
+    if !mask(formulation, MSK_ISE) && mask(formulation, MSK_ISV)
         # valid inequalities
         for v_id in graph.node_ids
             # leave fixing
@@ -281,7 +274,7 @@ function solveFPVs!(problem::Problem, algo::AlgorithmSet, cflg, Pi, is_bounding 
                     sum(ye[ef_id] for ef_id in graph.adjacent_edges[v_id])  + yv[v_id]<= 1)
             end
         end
-    elseif mask(algo, MSK_ISE) && mask(algo, MSK_ISV)
+    elseif mask(formulation, MSK_ISE) && mask(formulation, MSK_ISV)
         if Pi !== nothing
             if root_user_cut
                 @constraints(cflg, begin
@@ -309,7 +302,7 @@ function solveFPVs!(problem::Problem, algo::AlgorithmSet, cflg, Pi, is_bounding 
     else
         stat.node = Int32(node_count(cflg))
     end
-    stat.algo = algo
+    stat.formulation = formulation
     stat.instance = problem.instance
     if has_values(cflg)
         stat.sol_val = objective_value(cflg)
@@ -330,8 +323,8 @@ function solveFPVs!(problem::Problem, algo::AlgorithmSet, cflg, Pi, is_bounding 
 end
 
 
-# long edge vertex models
-function solveFLs!(problem::Problem, algo::AlgorithmSet, cflg)
+# long edge vertex model
+function solveLEVF!(problem::Problem, formulation::FormulationSet, cflg)
 
     # get graph
     graph = problem.prob_graph
@@ -351,7 +344,7 @@ function solveFLs!(problem::Problem, algo::AlgorithmSet, cflg)
         end
     end
 
-    usev = !mask(algo, MSK_ISE)
+    usev = !mask(formulation, MSK_ISE)
 
     # variables
     @variables(cflg, begin 
@@ -365,12 +358,10 @@ function solveFLs!(problem::Problem, algo::AlgorithmSet, cflg)
     end) 
 
     # vertex facility related variables
-    if usev
-        @variables(cflg, begin 
-            yv[vf_id in graph.node_ids], Bin # node facility
-            zv[v_id in graph.node_ids, vf_id in Vp[v_id]], Bin # big-M modelling variable on nodes
-        end) 
-    end
+    @variables(cflg, begin 
+        yv[vf_id in graph.node_ids], Bin # node facility
+        zv[v_id in graph.node_ids, vf_id in Vp[v_id]], Bin # big-M modelling variable on nodes
+    end) 
 
 
     E = Set{Int}(graph.edge_ids)
@@ -389,22 +380,17 @@ function solveFLs!(problem::Problem, algo::AlgorithmSet, cflg)
          ( problem.d[lor(v_id, graph.edges[efi[1]].nodes[efi[2]])] +  ifelse(efi[2] == :a , q[efi[1]], edges[efi[1]].etype == :e_normal ? graph.edges[efi[1]].length - q[efi[1]] : 2*problem.dlt * u[efi[1]]+ tail_len[efi[1]]  - q[efi[1]]  )) # # big M on edges
     end) 
 
-    if usev
-        @constraints(cflg, begin 
-            [e_id in Enormal, vf_id in problem.Vc[e_id]], w[e_id] >= yv[vf_id] # complete cover by nodes: open
-            [e_id in Enormal], w[e_id] <= sum(yv[vf_id] for vf_id in problem.Vc[e_id]) + sum(ye[ef_id] for ef_id in problem.Ec[e_id]) # complete cover: close
-            [ef_id in Enormal, node in [:a,:b]], yv[graph.edges[ef_id].nodes[node]] + ye[ef_id] <= 1 # facility is efither in interior or at end nodes
-            [v_id in graph.node_ids], x[v_id] +  sum(zv[v_id, vf_id] for vf_id in Vp[v_id])  + sum(ze[v_id, efi] for efi in EIp[v_id]) == 1 # big-M SOS-1 constraint
-            [v_id in graph.node_ids, vf_id in Vp[v_id]], zv[v_id, vf_id] <= yv[vf_id] # node activated constraint
-            [v_id in graph.node_ids, vf_id in Vp[v_id]], rv[v_id] <=  problem.Mv[(v_id, vf_id)]  * (1 - zv[v_id, vf_id]) + problem.dltv[(v_id, vf_id)] - problem.d[lor(v_id,vf_id)] # big M on nodes
-            [ef_id in Elong], yv[edges[ef_id].nodes[:a]] == 0  #valid inequalities fixing
-        end) 
-    else
-        @constraints(cflg, begin 
-            [e_id in Enormal], w[e_id] <= sum(ye[ef_id] for ef_id in problem.Ec[e_id]) # complete cover: close
-            [v_id in graph.node_ids], x[v_id] + sum(ze[v_id, efi] for efi in EIp[v_id]) == 1 # big-M SOS-1 constraint
-        end) 
-    end
+
+    @constraints(cflg, begin 
+        [e_id in Enormal, vf_id in problem.Vc[e_id]], w[e_id] >= yv[vf_id] # complete cover by nodes: open
+        [e_id in Enormal], w[e_id] <= sum(yv[vf_id] for vf_id in problem.Vc[e_id]) + sum(ye[ef_id] for ef_id in problem.Ec[e_id]) # complete cover: close
+        [ef_id in Enormal, node in [:a,:b]], yv[graph.edges[ef_id].nodes[node]] + ye[ef_id] <= 1 # facility is efither in interior or at end nodes
+        [v_id in graph.node_ids], x[v_id] +  sum(zv[v_id, vf_id] for vf_id in Vp[v_id])  + sum(ze[v_id, efi] for efi in EIp[v_id]) == 1 # big-M SOS-1 constraint
+        [v_id in graph.node_ids, vf_id in Vp[v_id]], zv[v_id, vf_id] <= yv[vf_id] # node activated constraint
+        [v_id in graph.node_ids, vf_id in Vp[v_id]], rv[v_id] <=  problem.Mv[(v_id, vf_id)]  * (1 - zv[v_id, vf_id]) + problem.dltv[(v_id, vf_id)] - problem.d[lor(v_id,vf_id)] # big M on nodes
+        [ef_id in Elong], yv[edges[ef_id].nodes[:a]] == 0  #valid inequalities fixing
+    end) 
+
 
     # long edge constraints
     @constraints(cflg,begin
@@ -417,14 +403,11 @@ function solveFLs!(problem::Problem, algo::AlgorithmSet, cflg)
     end) # to do valid inequalities
     
     # objective
-    if usev
-        @objective(cflg, Min,  sum(yv[vf_id] for vf_id in graph.node_ids) + sum((edges[ef_id].etype == :e_long ? fac_num[ef_id] - u[ef_id] : ye[ef_id]) for ef_id in graph.edge_ids))
-    else
-        @objective(cflg, Min,  sum((edges[ef_id].etype == :e_long ? fac_num[ef_id] - u[ef_id] : ye[ef_id]) for ef_id in graph.edge_ids))
-    end
+    @objective(cflg, Min,  sum(yv[vf_id] for vf_id in graph.node_ids) + sum((edges[ef_id].etype == :e_long ? fac_num[ef_id] - u[ef_id] : ye[ef_id]) for ef_id in graph.edge_ids))
 
     println("\n model loaded\n")
     optimize!(cflg)
+    
     stat = Stat();
     sol = Vector{Tuple{Symbol,Int, Float64}}();
     stat.termintaion_status = termination_status(cflg)
@@ -438,7 +421,7 @@ function solveFLs!(problem::Problem, algo::AlgorithmSet, cflg)
         stat.node = Int32(node_count(cflg))
     end
 
-    stat.algo = algo
+    stat.formulation = formulation
     stat.instance = problem.instance
     if has_values(cflg)
         stat.sol_val = objective_value(cflg)
@@ -453,11 +436,9 @@ function solveFLs!(problem::Problem, algo::AlgorithmSet, cflg)
                 end
             end
         end
-        if usev
-            for v_id in graph.node_ids
-                if value(yv[v_id]) >= 0.5
-                    push!(sol, (:v, v_id,  0))
-                end
+        for v_id in graph.node_ids
+            if value(yv[v_id]) >= 0.5
+                push!(sol, (:v, v_id,  0))
             end
         end
     end
@@ -466,8 +447,8 @@ function solveFLs!(problem::Problem, algo::AlgorithmSet, cflg)
 end
 
 
-# EF disjunctive formulation
-function solveEFPD!(problem::Problem, algo::AlgorithmSet, cflg)
+# edge model disjunctive formulation
+function solveEFPD!(problem::Problem, formulation::FormulationSet, cflg)
     graph = problem.prob_graph
     EIp = problem.EIp
     Vp = problem.Vp
@@ -536,7 +517,7 @@ function solveEFPD!(problem::Problem, algo::AlgorithmSet, cflg)
     else
         stat.node = Int32(node_count(cflg))
     end
-    stat.algo = algo
+    stat.formulation = formulation
 
     stat.instance = problem.instance
     if has_values(cflg)
@@ -551,8 +532,8 @@ function solveEFPD!(problem::Problem, algo::AlgorithmSet, cflg)
 end
 
 
-# EF logical formulation indicator
-function solveEFPLg!(problem::Problem, algo::AlgorithmSet, cflg)
+# Edge model indicator formulation indicator
+function solveEFPI!(problem::Problem, formulation::FormulationSet, cflg)
     print("Lg\n")
     graph = problem.prob_graph
     EIp = problem.EIp
@@ -569,10 +550,6 @@ function solveEFPLg!(problem::Problem, algo::AlgorithmSet, cflg)
         ze[v_id in graph.node_ids, efi in EIp[v_id]], Bin # indicator modelling variable on edges
     end) 
 
-
-    #problem.Me[(v_id, efi[1], efi[2])]  +  problem.dlte[(v_id, efi[1], efi[2])]  -
-    #( problem.d[lor(v_id, graph.edges[efi[1]].nodes[efi[2]])] +  ifelse(efi[2] == :a , q[efi[1]], graph.edges[efi[1]].length - q[efi[1]]))
-    # constraints
     @constraints(cflg, begin 
         [e_id in graph.edge_ids, ef_id in problem.Ec[e_id]], w[e_id] >= ye[ef_id] # complete cover by edges: open
         [e_id in graph.edge_ids], w[e_id] <=  sum(ye[ef_id] for ef_id in problem.Ec[e_id]) # complete cover: close
@@ -603,7 +580,7 @@ function solveEFPLg!(problem::Problem, algo::AlgorithmSet, cflg)
     else
         stat.node = Int32(node_count(cflg))
     end
-    stat.algo = algo
+    stat.formulation = formulation
 
     stat.instance = problem.instance
     if has_values(cflg)
@@ -617,122 +594,5 @@ function solveEFPLg!(problem::Problem, algo::AlgorithmSet, cflg)
     return stat, sol
 end
 
-
-# verify the graph is covered, not for long edge formulation
-function verification(problem::Problem, sol::Vector{Tuple{Symbol,Int, Float64}})
-    graph = problem.prob_graph
-    edges = graph.edges
-    dlt = problem.dlt
-
-    d = Dict{Tuple{Int, Int}, Float64}() # distance record
-
-    # initilization
-    for v_id in graph.node_ids
-        for v_id_ in graph.node_ids
-            if v_id <= v_id_
-                d[lor(v_id,v_id_)] = typemax(Float64)
-            end
-        end
-    end
-
-    # only distance informulation is used
-    for v_id in graph.node_ids
-        nodeCover(graph, v_id, dlt, d, :full) # run node cover in full mode
-    end
-
-    range = Vector{Dict{Symbol, Float64}}()
-    rangect = Vector{Dict{Symbol, Tuple{Symbol,Int, Symbol}}}()
-    is_cover = Vector{Bool}()
-
-    for e_id in graph.edge_ids  
-        push!(range,  Dict{Symbol, Float64}(:a=>0., :b=>0.))
-        push!(rangect,  Dict{Symbol, Tuple{Symbol,Int, Symbol}}(:a=>(:v,-1,:zero), :b=>(:v,-1, :zero)))
-        push!(is_cover, false)
-    end
-
-
-    for fac in sol
-        if fac[1] == :e
-            ef_id = fac[2]
-            q = fac[3]
-            len = edges[ef_id].length
-            is_cover[ef_id] = true
-            for e_id in graph.edge_ids
-                if is_cover[e_id]
-                    continue
-                end
-                a_symb = :zero
-                if d[lor(edges[ef_id].nodes[:a], edges[e_id].nodes[:a])] + q <  d[lor(edges[ef_id].nodes[:b], edges[e_id].nodes[:a])] + len -q
-                    a_symb = :a
-                else
-                    a_symb = :b
-                end
-                b_symb = :zero
-                if d[lor(edges[ef_id].nodes[:a], edges[e_id].nodes[:b])] + q < d[lor(edges[ef_id].nodes[:b], edges[e_id].nodes[:b])] + len - q
-                    b_symb = :a
-                else
-                    b_symb = :b
-                end
-                range_a = dlt - min(d[lor(edges[ef_id].nodes[:a], edges[e_id].nodes[:a])] + q, d[lor(edges[ef_id].nodes[:b], edges[e_id].nodes[:a])] + len -q)
-                range_b = dlt - min(d[lor(edges[ef_id].nodes[:a], edges[e_id].nodes[:b])] + q, d[lor(edges[ef_id].nodes[:b], edges[e_id].nodes[:b])] + len - q)
-                if range_a >= range[e_id][:a]
-                    rangect[e_id][:a] = (:e, ef_id, a_symb) 
-                end
-                if range_b >= range[e_id][:b]
-                    rangect[e_id][:b] = (:e, ef_id, b_symb) 
-                end
-                range[e_id][:a] = max(range_a, range[e_id][:a])
-                range[e_id][:b] = max(range_b, range[e_id][:b])
-                if range[e_id][:a] + range[e_id][:b] >= edges[e_id].length
-                    is_cover[e_id] = true
-                end
-            end
-        elseif fac[1] == :v
-            v_id = fac[2]
-            for e_id in graph.edge_ids
-                if is_cover[e_id]
-                    continue
-                end
-                range_a = dlt - d[lor(v_id, edges[e_id].nodes[:a])]
-                range_b = dlt - d[lor(v_id, edges[e_id].nodes[:b])]
-                if range_a >= range[e_id][:a]
-                    rangect[e_id][:a] = (:v, v_id, :zero) 
-                end
-                if range_b >= range[e_id][:b]
-                    rangect[e_id][:b] = (:v, v_id, :zero) 
-                end
-                range[e_id][:a] = max(range_a, range[e_id][:a])
-                range[e_id][:b] = max(range_b, range[e_id][:b])
-                if range[e_id][:a] + range[e_id][:b] >= edges[e_id].length
-                    is_cover[e_id] = true
-                end
-            end        
-        end
-    end
-
-    is_covered = true
-
-    for e_id in graph.edge_ids
-        if  !is_cover[e_id]
-            is_covered = false
-            break
-        end
-    end
-
-    cover_info = []
-
-    for e_id in graph.edge_ids
-        push!(cover_info, (e_id, is_cover[e_id], :a, range[e_id][:a], rangect[e_id][:a], range[e_id][:b], :b, rangect[e_id][:b], edges[e_id].length, range[e_id][:a] + range[e_id][:b] - edges[e_id].length))
-        if !is_cover[e_id] && problem.verbose 
-            print("\n",cover_info[end])
-        end
-    end
-    if problem.verbose
-        print("\n:",sol)
-    end
-
-    println("\n is covered:", is_covered, "\n")
-
-end
 
 

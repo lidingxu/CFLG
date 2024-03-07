@@ -25,11 +25,12 @@ and at least one package of the following MILP solvers:
 
 
 ## Installation
-The installation is manual. 
+Clone the repository: 
 ```
 git clone https://github.com/lidingxu/CFLG.git
 cd CFLG
 ```
+
 
 
 ## Benchmarks
@@ -40,17 +41,33 @@ Each instance file contains data of a graph. Its first line contains the number 
 
 ## Usage
 
-You can run `CFLG.jl`  via the following command:
+You can run `CFLG`  via the following command:
 ```
-julia ./CFLG.jl solver time_limit instance algorithm raidus
+julia src/main.jl instance_dir instance_name  output_dir solver_name time_limit formulation cover
 ```
 
 The settings of the above arguments are as follows.
-  * `solver`: one of the solvers in `CPLEX`, `GLPK`, `Gurobi`， and `SCIP`.
+  * `instance_dir`: directory of the instance.
+  * `instance_name`:  the instance's name.
+  * `output_dir`: the directory for the output result.
+  * `solver_name`: one of `CPLEX`, `GLPK`, `Gurobi`, and `SCIP`.
   * `time_limit`:  time limit in seconds.
-  * `instance`:  the instance path.
-  * `algorithm`: one of the algorithms in ``.
-  * `raidus`: the coverage raidus.
+  * `formulation`: one of the following options:
+  ```
+    EF: edge model formulation, from "Covering edges in networks", Fröhlich et al.
+    EFP: edge model big-M formulation with processing (bound tightenning and delimited cover)
+    EFPV: edge model big-M formulation with processing (bound tightenning and delimited cover) and rank-1 valid inequalities
+    EFPV2: edge model big-M formulation with processing (bound tightenning and delimited cover) and rank-2 valid inequalities   
+    EFPD: edge model disjunctive programming formulation with processing (delimited cover)
+    EFPI: edge model indicator constraint formulation with processing (delimited cover)
+    EVF: edge-vertex model big-M formulation 
+    EVFP0: edge-vertex model big-M with simple processing (delimited cover)
+    EVFP: edge-vertex model big-M with processing (bound tightenning and delimited cover)
+    EVFPV: -vertex model big-M with processing (bound tightenning and delimited cover) and simple valid inequalities
+    LEVFP: long edge-vertex model big-M with processing (bound tightenning and delimited cover)
+    None: not a model, just record statistics of original graph, degree-2-free graph, subdivided (splitted) graph
+  ```
+  * `cover`: the covering raidus, `Small` or `Large`.
 
 To reproduce the computational results in the accompanied paper, clear the `results` directory, go to the `test` directory, and execute the following command in the terminal (in *Linux*)
 ```
