@@ -6,29 +6,37 @@ Facility location is an important appication in operations research.  Continuous
 CFLG contains several algorithms for solving continuous set covering on networks. CFLG is written in Julia based on [JuMP](https://jump.dev/JuMP.jl/stable/installation/).
 
 ## Updates
-The version 2.0.0 supports disjunctive programming and SOS formulations, new valid inequalities, and an implementation in SCIP.
+Newer version supports disjunctive programming and indicator formulations, new valid inequalities, and SCIP as solver option.
 The package now is generated and managed by `pkg`.
 
 
-## Installation
+## Prerequisite
 CFLG has been developped and tested in *Linux* System. 
 
-To use CFLG, it requires:
+To use CFLG, it requires the following installation:
 - Julia,
 - JuMP,
 
-and one of the following MILP solvers:
-- CPLEX,
-- GLPK,
-- Gurobi,
-- SCIP.
+and at least one package of the following MILP solvers:
+- CPLEX.jl,
+- GLPK.jl,
+- Gurobi.jl,
+- SCIP.jl.
 
+
+## Installation
+The installation is manual. 
+```
+git clone https://github.com/lidingxu/CFLG.git
+cd CFLG
+```
 
 
 ## Benchmarks
 There are six benchmarks `city`, `Kgroup_A`, `Kgroup_B`, `random_A`, `random_B` and `test`. Each benchmark contains instances in `.txt` file format.
 
 Each instance file contains data of a graph. Its first line contains the number of nodes and edges of the graph; Edges are represented as a list from the second line: each line indicates an edge's end nodes and weight.  
+
 
 ## Usage
 
@@ -38,10 +46,10 @@ julia ./CFLG.jl solver time_limit instance algorithm raidus
 ```
 
 The settings of the above arguments are as follows.
-  * `solver`: one of the solvers in `CPLEX`, `GLPK` and `Gurobi`.
+  * `solver`: one of the solvers in `CPLEX`, `GLPK`, `Gurobi`， and `SCIP`.
   * `time_limit`:  time limit in seconds.
   * `instance`:  the instance path.
-  * `algorithm`: one of the algorithms in `EF`, `F0`, `F`, `SF`, `RF`, `SFD` and `None`.
+  * `algorithm`: one of the algorithms in ``.
   * `raidus`: the coverage raidus.
 
 To reproduce the computational results in the accompanied paper, clear the `results` directory, go to the `test` directory, and execute the following command in the terminal (in *Linux*)
