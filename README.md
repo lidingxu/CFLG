@@ -73,7 +73,7 @@ The settings of the above arguments are as follows.
     EVF: edge-vertex model big-M formulation 
     EVFP0: edge-vertex model big-M with simple processing (delimited cover)
     EVFP: edge-vertex model big-M with processing (bound tightenning and delimited cover)
-    EVFPV: -vertex model big-M with processing (bound tightenning and delimited cover) and simple valid inequalities
+    EVFPV: edge-vertex model big-M with processing (bound tightenning and delimited cover) and simple valid inequalities
     LEVFP: long edge-vertex model big-M with processing (bound tightenning and delimited cover)
     None: not a model, just record statistics of original graph, degree-2-free graph, subdivided (splitted) graph
   ```

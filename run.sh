@@ -1,7 +1,7 @@
 #!/bin/bash
 timelimit=1800
 timebound=2200
-formulations=("EF" "EFP" "EFPV" "EFPV2" "EFPI" "EFPD" "EVFP" "LEVFP")
+formulations=("None" "EF" "EFP" "EFPV" "EFPV2" "EFPI" "EFPD" "EVFP" "LEVFP")
 covers=("Small" "Large")
 solver="CPLEX" # "Gurobi", "CPLEX", "GLPK", "SCIP"
 datapath="benchmarks"
