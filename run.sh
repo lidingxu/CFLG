@@ -4,10 +4,10 @@ timebound=2200
 formulations=("None" "EF" "EFP" "EFPV" "EFPV2" "EFPI" "EFPD" "EVFP" "LEVFP")
 covers=("Small" "Large")
 solver="CPLEX" # "Gurobi", "CPLEX", "GLPK", "SCIP"
-datapath="$(PWD)/benchmarks"
-resultpath="$(PWD)results"
+datapath="$PWD/benchmarks"
+resultpath="$PWD/results"
 gnuparalleltest=1 # enable: 1, disable: 0
-juliabin="/home/lxu/software/julia-1.10.2/bin/julia"
+juliabin="julia" #"/home/lxu/software/julia-1.10.2/bin/julia"
 
 
 runInstance() {
@@ -50,7 +50,9 @@ do
                 do
                 for cover in ${covers[@]}
                 do
+                    echo  "$juliabin" "src/main.jl" "$datapath/$benchmark" "$instance" "$resultpath/$benchmark" "$solver" "$timelimit"  "$formulation" "$cover"
                     timeout $timebound "$juliabin" src/main.jl "$datapath/$benchmark" "$instance" "$resultpath/$benchmark" "$solver" "$timelimit"  "$formulation" "$cover"
+                    exit
                 done
             done
         done
