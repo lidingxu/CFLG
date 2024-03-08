@@ -80,7 +80,12 @@ The settings of the above arguments are as follows.
   * `cover`: the covering raidus, `Small` or `Large`.
 
 To reproduce the computational results in the accompanied paper, clear the `results` directory.
-Edit the arguments in the `run.sh` file. Use the solver option `solver` and/or enable the GNU parallel test option `gnuparalleltest` according to their availability in your system.
+Edit the options in the `run.sh` file:
+* `formulations`: an array of test formulations, for example, `("None" "EF" "EFP" "EFPV" "EFPV2" "EFPI" "EFPD" "EVFP" "LEVFP")`
+* `covers`: an array of test coverage, for example, `("Small" "Large")`
+* `solver`: one of the solver "Gurobi", "CPLEX", "GLPK", "SCIP"
+* `gnuparalleltest=1`: enable the GNU parallel test option `gnuparalleltest` according to their availability in your system. # enable: 1, disable: 0
+* `juliabin`: the path of julia binary executable
 
 Execute the following command to run all tests:
 ```
