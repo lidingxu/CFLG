@@ -4,8 +4,8 @@ timebound=2200
 formulations=("None" "EF" "EFP" "EFPV" "EFPV2" "EFPI" "EFPD" "EVFP" "LEVFP")
 covers=("Small" "Large")
 solver="CPLEX" # "Gurobi", "CPLEX", "GLPK", "SCIP"
-datapath="benchmarks"
-resultpath="results"
+datapath="$(PWD)/benchmarks"
+resultpath="$(PWD)results"
 gnuparalleltest=1 # enable: 1, disable: 0
 juliabin="/home/lxu/software/julia-1.10.2/bin/julia"
 
