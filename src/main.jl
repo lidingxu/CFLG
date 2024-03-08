@@ -5,7 +5,6 @@
 
 using Pkg
 Pkg.activate("..")
-
 include("../src/CFLG.jl")
 using .CFLG
 
