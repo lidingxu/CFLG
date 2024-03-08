@@ -30,7 +30,17 @@ Clone the repository:
 git clone https://github.com/lidingxu/CFLG.git
 cd CFLG
 ```
-
+We recommend to build the package locally (do not forget to set the locall environment varaibles):
+```
+julia
+julia> ]
+pkg> activate .
+(CFLG) pkg> build
+```
+If you have CPLEX,jl install, run a simple test:
+```
+(CFLG) pkg> test
+```
 
 
 ## Benchmarks
@@ -69,12 +79,18 @@ The settings of the above arguments are as follows.
   ```
   * `cover`: the covering raidus, `Small` or `Large`.
 
-To reproduce the computational results in the accompanied paper, clear the `results` directory, go to the `test` directory, and execute the following command in the terminal (in *Linux*)
-```
-/bin/bash run.sh
-```
-Note that you should change the solver option `solver` and the GNU parallel test option `gnuparalleltest` according to their availability in your system.
+To reproduce the computational results in the accompanied paper, clear the `results` directory.
+Edit the arguments in the `run.sh` file. Use the solver option `solver` and/or enable the GNU parallel test option `gnuparalleltest` according to their availability in your system.
 
+Execute the following command to run all tests:
+```
+/bin/bash run.sh 
+```
+
+Run the following codes to produce the figures and tables in the `experiment` directory:
+```
+/bin/bash parse_result.sh
+```
 
 
 ## References

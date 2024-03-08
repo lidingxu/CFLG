@@ -3,10 +3,10 @@ timelimit=1800
 timebound=2200
 formulations=("EF" "EFP" "EFPV" "EFPV2" "EFPI" "EFPD" "EVFP" "LEVFP")
 covers=("Small" "Large")
-solver="CPLEX"
+solver="CPLEX" # "Gurobi", "CPLEX", "GLPK", "SCIP"
 datapath="benchmarks"
 resultpath="results"
-gnuparalleltest=1
+gnuparalleltest=1 # enable: 1, disable: 0
 
 
 
@@ -20,7 +20,8 @@ runInstance() {
     cover=$7
 
     echo "$instance" "$formulation" "$cover"
-
+    
+    # example: julia  src/main.jl "benchmarks/test" "city_132.txt" "results/test" "SCIP" "100" "EF" "Small"
     julia  src/main.jl "$benchmark_dir" "$instance" "$result_dir" "$solver" "$timelimit"  "$formulation" "$cover"
                 
 }
