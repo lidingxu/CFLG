@@ -7,7 +7,7 @@ solver="CPLEX" # "Gurobi", "CPLEX", "GLPK", "SCIP"
 datapath="benchmarks"
 resultpath="results"
 gnuparalleltest=1 # enable: 1, disable: 0
-juliabin="julia"
+juliabin="/home/lxu/software/julia-1.10.2/bin/julia"
 
 
 runInstance() {
@@ -19,8 +19,6 @@ runInstance() {
     instance=$6
     formulation=$7
     cover=$8
-
-    echo "$instance" "$formulation" "$cover"
     
     # example: julia  src/main.jl "benchmarks/test" "city_132.txt" "results/test" "SCIP" "100" "EF" "Small"
     "$juliabin"  src/main.jl "$benchmark_dir" "$instance" "$result_dir" "$solver" "$timelimit"  "$formulation" "$cover"
@@ -52,7 +50,7 @@ do
                 do
                 for cover in ${covers[@]}
                 do
-                    timeout $timebound runInstance  "$juliabin" "$datapath/$benchmark" "$solver" "$timelimit" "$resultpath/$benchmark"  "$instance"  "$formulation"  "$cover"
+                    timeout $timebound "$juliabin" src/main.jl "$datapath/$benchmark" "$instance" "$resultpath/$benchmark" "$solver" "$timelimit"  "$formulation" "$cover"
                 done
             done
         done

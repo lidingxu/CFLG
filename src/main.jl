@@ -4,7 +4,7 @@
 =========================================================#
 
 using Pkg
-Pkg.activate("..")
+Pkg.activate(".")
 include("../src/CFLG.jl")
 using .CFLG
 
@@ -13,8 +13,8 @@ function main(args)
     @assert(length(args) == 7)
     # parse arguments
     instance_dir = args[1]
-    output_dir = args[2]
-    instance_name = args[3]
+    instance_name = args[2]
+    output_dir = args[3]
     solver_name = args[4]
     time_limit =  parse(Float64, args[5])
     formulation = args[6]
