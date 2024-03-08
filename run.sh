@@ -11,13 +11,14 @@ juliabin="julia"
 
 
 runInstance() {
-    benchmark_dir=$1
-    solver=$2
-    timelimit=$3
-    result_dir=$4
-    instance=$5
-    formulation=$6
-    cover=$7
+    juliabin=$1
+    benchmark_dir=$2
+    solver=$3
+    timelimit=$4
+    result_dir=$5
+    instance=$6
+    formulation=$7
+    cover=$8
 
     echo "$instance" "$formulation" "$cover"
     
@@ -51,12 +52,12 @@ do
                 do
                 for cover in ${covers[@]}
                 do
-                    timeout $timebound runInstance  "$datapath/$benchmark" "$solver" "$timelimit" "$resultpath/$benchmark"  "$instance"  "$formulation"  "$cover"
+                    timeout $timebound runInstance  "$juliabin" "$datapath/$benchmark" "$solver" "$timelimit" "$resultpath/$benchmark"  "$instance"  "$formulation"  "$cover"
                 done
             done
         done
     else
-        parallel --will-cite --jobs 80% --timeout $timebound runInstance  "$datapath/$benchmark" "$solver" "$timelimit" "$resultpath/$benchmark"  ::: "$instances" :::  "${formulations[@]}" :::  "${covers[@]}"
+        parallel --will-cite --jobs 80% --timeout $timebound runInstance  "$juliabin" "$datapath/$benchmark" "$solver" "$timelimit" "$resultpath/$benchmark"  ::: "$instances" :::  "${formulations[@]}" :::  "${covers[@]}"
     fi
 done
 
