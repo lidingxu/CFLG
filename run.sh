@@ -7,8 +7,7 @@ solver="CPLEX" # "Gurobi", "CPLEX", "GLPK", "SCIP"
 datapath="benchmarks"
 resultpath="results"
 gnuparalleltest=1 # enable: 1, disable: 0
-julianbin="julia"
-
+juliabin="julia"
 
 
 runInstance() {
@@ -23,7 +22,7 @@ runInstance() {
     echo "$instance" "$formulation" "$cover"
     
     # example: julia  src/main.jl "benchmarks/test" "city_132.txt" "results/test" "SCIP" "100" "EF" "Small"
-    "$julianbin"  src/main.jl "$benchmark_dir" "$instance" "$result_dir" "$solver" "$timelimit"  "$formulation" "$cover"
+    "$juliabin"  src/main.jl "$benchmark_dir" "$instance" "$result_dir" "$solver" "$timelimit"  "$formulation" "$cover"
                 
 }
 export -f runInstance
