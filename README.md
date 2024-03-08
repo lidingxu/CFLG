@@ -17,12 +17,13 @@ To use CFLG, it requires the following installation:
 - Julia,
 - JuMP,
 
-and at least one package of the following MILP solvers:
+and the following packages of MILP solvers:
 - CPLEX.jl,
 - GLPK.jl,
 - Gurobi.jl,
 - SCIP.jl.
 
+It is necessary to have CPLEX.jl to build CFLG, the installation of CPLEX.jl requires a cplex binary executable. To use Gurobi, the system should have a licence installed.
 
 ## Installation
 Clone the repository: 
@@ -30,14 +31,14 @@ Clone the repository:
 git clone https://github.com/lidingxu/CFLG.git
 cd CFLG
 ```
-We recommend to build the package locally (do not forget to set the locall environment varaibles):
+We recommend to build the package locally:
 ```
 julia
 julia> ]
 pkg> activate .
 (CFLG) pkg> build
 ```
-If you have CPLEX,jl install, run a simple test:
+Run a simple test:
 ```
 (CFLG) pkg> test
 ```
