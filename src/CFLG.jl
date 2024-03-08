@@ -2,7 +2,6 @@ module CFLG
     using DataStructures
     using JuMP
     using CPUTime
-    using Combinatorics
     using MutableNamedTuples
     try 
         import CPLEX
