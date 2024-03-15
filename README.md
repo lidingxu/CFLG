@@ -72,10 +72,9 @@ The settings of the above arguments are as follows.
     EFPD: edge model disjunctive programming formulation with processing (delimited cover)
     EFPI: edge model indicator constraint formulation with processing (delimited cover)
     EVF: edge-vertex model big-M formulation 
-    EVFP0: edge-vertex model big-M with simple processing (delimited cover)
-    EVFP: edge-vertex model big-M with processing (bound tightenning and delimited cover)
-    EVFPV: edge-vertex model big-M with processing (bound tightenning and delimited cover) and simple valid inequalities
-    LEVFP: long edge-vertex model big-M with processing (bound tightenning and delimited cover)
+    EVFP0: edge-vertex model big-M formulation with simple processing (delimited cover)
+    EVFP: edge-vertex model big-M formulation with processing (bound tightenning and delimited cover)
+    LEVFP: long edge-vertex model big-M formulation with processing (bound tightenning and delimited cover)
     None: not a model, just record statistics of original graph, degree-2-free graph, subdivided (splitted) graph
   ```
   * `cover`: the covering raidus, `Small` or `Large`.

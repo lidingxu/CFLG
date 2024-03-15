@@ -10,18 +10,18 @@ import matplotlib.pyplot as plt
 min_primal_bound = 2**31
 max_dual_bound = -1
 time_limit =1800
-algorithms  = ["EF", "EFP", "EFPLg", "EFPD", "EFPV", "EFPV2", "EVFP", "EVFPL", "None"]
+algorithms  = ["EF", "EFP", "EFPI", "EFPD", "EFPV", "EFPV2", "EVFP", "LEVFP", "None"]
 coverages = ["Small", "Large"]
 benchmarks = ["city", "Kgroup_A", "Kgroup_B", "random_A", "random_B"]
 
 
-comp_algos = [ "EFP", "EFPD", "EFPV", "EVFPL"]
+comp_algos = [ "EFP", "EFPD", "EFPV", "LEVFP"]
 
 styles = ['solid', 'dashed', 'dotted', 'dashdot']
 markers = ['o', "d", "*", "X" ]
 colors = ['magenta', 'blue', 'red', 'green']
 
-algonm_map = {"EVFPL" : "LEVF-P", "EFP":"EF-P", "EFPD": "EF-PD", "EFPV": "EF-PV"}
+algonm_map = {"EF": "EF", "EFPI" : "EF-PI",   "EVFP" : "EVF-P", "LEVFP" : "LEVF-P", "EFP":"EF-P", "EFPD": "EF-PD", "EFPV": "EF-PV1", "EFPV2": "EF-PV2"}
 
 def parse_name(name):
     s = ""
@@ -35,7 +35,7 @@ def parse_name(name):
 def extractInstanceResult(file_path):
     ls = open(file_path).readlines()
     #print(file)
-    stat_keys = ["time", "node", "gap", "obj", "bound", "instance", "algo"]
+    stat_keys = ["time", "node", "gap", "obj", "bound", "instance", "formulation"]
     stat_dict = {}
     entries = {}
     for l in ls:
@@ -51,7 +51,7 @@ def extractInstanceResult(file_path):
     #print(entries["gap"])
     entries["absgap"] = abs(entries["obj"] - entries["bound"])
     entries["instance"] = stat_dict["instance"].split()[1]
-    entries["algo"] = stat_dict["algo"].split()[1]
+    entries["formulation"] = stat_dict["formulation"].split()[1]
     entries["missing"] = False
     return entries
     #writer.writerow([name, algo, primal_bound, gap, total_time, pricing_time, pricing_calls, columns_gen, nodes])
@@ -59,7 +59,7 @@ def extractInstanceResult(file_path):
 def extractInstance(file_path):
     ls = open(file_path).readlines()
     #print(file)
-    stat_keys = ["instance", "algo", "dlt", "org_node", "org_edge", "org_min_len", "org_avg_len", "org_max_len",  "sdb_node", "sdb_edge", "sdb_min_len", "sdb_avg_len", "sdb_max_len",  "dtf_node", "dtf_edge", "dtf_min_len", "dtf_avg_len", "dtf_max_len"]
+    stat_keys = ["instance", "formulation", "dlt", "org_node", "org_edge", "org_min_len", "org_avg_len", "org_max_len",  "sdb_node", "sdb_edge", "sdb_min_len", "sdb_avg_len", "sdb_max_len",  "dtf_node", "dtf_edge", "dtf_min_len", "dtf_avg_len", "dtf_max_len"]
     stat_dict = {}
     entries = {}
     for l in ls:
@@ -86,7 +86,7 @@ def extractInstance(file_path):
     entries["dtf_avg_len"] = float(stat_dict["dtf_avg_len"].split()[1]) / entries["dlt"]
     entries["dtf_max_len"] = float(stat_dict["dtf_max_len"].split()[1]) / entries["dlt"]
     entries["instance"] = stat_dict["instance"].split()[1]
-    entries["algo"] = stat_dict["algo"].split()[1]
+    entries["formulation"] = stat_dict["formulation"].split()[1]
     entries["isnotfind"] = False
     #print(entries)
     return entries
@@ -154,7 +154,7 @@ def gettab(stat, end):
     bench_tab += str(round(stat["time"],1)) + " & "
     bench_tab += str(round(stat["gap"],1)) +  str("\%")  + " & "
     bench_tab += str(round(stat["obj"],1)) + str("\%")  + " & "
-    bench_tab +=  "\\multicolumn{1}{l|}{" + str(stat["solved"])  + "/"  + str(stat["solution"])  + "/" + str(stat["total"]) +"}"
+    bench_tab +=  "\\multicolumn{1}{l|}{" + str(stat["solved"])  + "/"  + str(stat["solution"])  +"}"
     bench_tab += " \\\\ \n" if end else " & "
     return bench_tab
 
@@ -169,7 +169,7 @@ def avg(lst):
 
 def printtable(algorithms_, benchmarks, has_obj_):
 
-    details = ""
+    detail = ""
 
     benchdict = {}  
 
@@ -177,6 +177,8 @@ def printtable(algorithms_, benchmarks, has_obj_):
     bench_entries = {}
 
     instances_entries = {}
+
+    instances_stats = {}
 
     path = Path(os.getcwd())
 
@@ -205,23 +207,35 @@ def printtable(algorithms_, benchmarks, has_obj_):
         # fill non solution and normalize
         for instance in instances:
             for cover in coverages:
+                if cover == "Small":
+                    detail +=  "\\multirow{2}{*}{\\texttt{"+ str(instance).replace(".txt", "").replace("_", "") +"}}" 
+                detail +=  "&" +  ("S" if cover == "Small" else "L") + " & " + str(int(instances_entries[(instance, cover)]["sdb_node"])) + " & " + str(instances_entries[(instance, cover)]["sdb_edge"]) 
                 for algo in algorithms_:
                     is_find = False
                     for entry in work_entries:
-                        if entry["instance"] == instance and entry["coverage"] == cover and entry["algo"] == algo:
+                        if entry["instance"] == instance and entry["coverage"] == cover and entry["formulation"] == algo:
                             is_find = True
                             val = entry["obj"] 
                             entry["obj"] = val / instances_entries[(instance, cover)]["sdb_node"] * 100
                             entry["isnotfind"] = False
                             bench_entries[benchmark].append(entry)
+                            detail += "&" + str(round(entry["time"]/1800,1)) + " & "  + str(round(entry["gap"],1)) + "\% & " +  str(round(entry["obj"],1)) + "\%"
                     if not is_find:
                         entry = copy.copy(defualt_entry)
-                        entry["algo"]  = algo
+                        entry["formulation"]  = algo
                         entry["instance"] = instance
                         entry["coverage"] = cover
                         entry["obj"] = 100
                         entry["isnotfind"] = True
                         bench_entries[benchmark].append(entry)
+                        detail += "&" + str("-") + " & "  + str("-") + " & " +  str("-") 
+                detail += "\\\\" + "\n"
+
+    file = open("detail.txt", "w")
+    file.write(detail)
+    file.close()
+
+
 
     bench_instances = {}
     bench_instances["Small"] = []
@@ -273,7 +287,7 @@ def printtable(algorithms_, benchmarks, has_obj_):
                 stat = Stat(algo, cover)
                 #print(algo, cover)
                 for entry in bench_entries[benchmark]:
-                    if entry["algo"] == algo and entry["coverage"] == cover:
+                    if entry["formulation"] == algo and entry["coverage"] == cover:
                         add(stat, entry)
                         #print(entry)
                 #print(stat)
@@ -287,7 +301,7 @@ def printtable(algorithms_, benchmarks, has_obj_):
     for benchmark, subbench_name in zip(test_benchs, ["Small", "Large"]):
         tab = ""
         for algo_ in algorithms_:
-            tab += algo_ + " & "
+            tab += algonm_map[algo_] + " & "
             for cover_ in coverages:
                 tab += benchdict[(subbench_name, cover_, algo_)]
         print(tab, "\n")
@@ -299,7 +313,7 @@ def printtable(algorithms_, benchmarks, has_obj_):
                 ys[algo_] = []
             for algo_ in comp_algos:
                 for entry in bench_entries[benchmark]: 
-                    if entry["algo"] == algo_ and entry["coverage"] == cover_:
+                    if entry["formulation"] == algo_ and entry["coverage"] == cover_:
                         ys[algo_].append( entry["gap"] )   
             for algo_, style, color, marker in zip(comp_algos, styles, colors, markers):
                 #print(ys[algo_])
@@ -326,5 +340,4 @@ print("table \n")
 algorithms_  = [ algo for algo in algorithms if algo != "None"]
 has_obj_ = False
 printtable(algorithms_, benchmarks, has_obj_)
-
 

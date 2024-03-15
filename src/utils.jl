@@ -27,13 +27,13 @@ MSK_ISC  =  UInt16(0b0000000001000000)   # is cover preprocessing
     EFPC   =   MSK_ISMOD | MSK_ISE | MSK_ISP0 | MSK_ISP1 | MSK_ISC           # edge model big-M formulation with processing (bound tightenning and delimited cover) and cover preprocessing
     EFPV   =   MSK_ISMOD | MSK_ISE | MSK_ISP0 | MSK_ISP1 | MSK_ISV           # edge model big-M formulation with processing (bound tightenning and delimited cover) and rank-1 valid inequalities
     EFPV2  =   MSK_ISMOD | MSK_ISE | MSK_ISP0 | MSK_ISP1 | MSK_ISV | MSK_ISK2# edge model big-M formulation with processing (bound tightenning and delimited cover) and rank-2 valid inequalities   
-    EFPD   =   MSK_ISMOD | MSK_ISE | MSK_ISP0 | MSK_ISP1 | MSK_ISD 	         # edge model disjunctive programming formulation with processing (delimited cover)
+    EFPD   =   MSK_ISMOD | MSK_ISE | MSK_ISP0 | MSK_ISP1 | MSK_ISD 	     # edge model disjunctive programming formulation with processing (delimited cover)
     EFPDC  =   MSK_ISMOD | MSK_ISE | MSK_ISP0 | MSK_ISP1 | MSK_ISD | MSK_ISC # edge model disjunctive programming formulation with processing (delimited cover) and cover preprocessing
     EFPI  =   MSK_ISMOD | MSK_ISE | MSK_ISP0 | MSK_ISP1 | MSK_ISI            # edge model indicator constraint formulation with processing (delimited cover)
     EVF    =   MSK_ISMOD                                                     # edge-vertex model big-M formulation 
-    EVFP0  =   MSK_ISMOD | MSK_ISP0                                          # edge-vertex model big-M with simple processing (delimited cover)
-    EVFP   =   MSK_ISMOD | MSK_ISP0 | MSK_ISP1                               # edge-vertex model big-M with processing (bound tightenning and delimited cover)
-    EVFPV  =   MSK_ISMOD | MSK_ISP0 | MSK_ISP1 | MSK_ISV                     # edge-vertex model big-M with processing (bound tightenning and delimited cover) and simple valid inequalities
+    EVFP0  =   MSK_ISMOD | MSK_ISP0                                          # edge-vertex model big-M formulation  with simple processing (delimited cover)
+    EVFP   =   MSK_ISMOD | MSK_ISP0 | MSK_ISP1                               # edge-vertex model big-M formulation  with processing (bound tightenning and delimited cover)
+    EVFPV  =   MSK_ISMOD | MSK_ISP0 | MSK_ISP1 | MSK_ISV                     # edge-vertex model big-M formulation  with processing (bound tightenning and delimited cover) and simple valid inequalities
     LEVFP  =   MSK_ISMOD | MSK_ISP0 | MSK_ISP1 | MSK_ISL                     # long edge-vertex model big-M with processing (bound tightenning and delimited cover)
     None   =   MSK_ZERO                                                      # not a model, just record statistics of original graph, degree-2-free graph, subdivided graph
 end
