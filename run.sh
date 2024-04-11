@@ -1,12 +1,12 @@
 #!/bin/bash
 timelimit=1800
 timebound=2200
-formulations=("None" "EF" "EFP" "EFPV" "EFPV2" "EFPI" "EFPD" "EVFP" "LEVFP")
+formulations=("EF" "EFP" "EFPV" "EFPV2" "EFPI" "EFPD" "EVFP" "LEVFP" "None")
 covers=("Small" "Large")
 solver="CPLEX" # "Gurobi", "CPLEX", "GLPK", "SCIP"
 datapath="$PWD/benchmarks"
 resultpath="$PWD/results"
-gnuparalleltest=1 # enable: 1, disable: 0
+gnuparalleltest=0 # enable: 1, disable: 0
 juliabin="julia" #"/home/lxu/software/julia-1.10.2/bin/julia"
 
 
