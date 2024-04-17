@@ -100,15 +100,26 @@ Run the following codes to produce the figures and tables in the `experiment` di
 
 ## References
 
-If you find CFLG useful in your work, we kindly request that you cite the following paper draft ([arXiv preprint](https://arxiv.org/abs/2203.00284)), which is recommended reading for advanced users:
+If you find CFLG useful in your work, we kindly request that you cite the following papers, which are recommended reading for advanced users:
 
-    @misc{pelegrín2022continuous,
-        title={Continuous Covering on Networks: Strong Mixed Integer Programming Formulations}, 
-        author={Mercedes Pelegrín and Liding Xu},
-        year={2022},
-        eprint={2203.00284},
-        archivePrefix={arXiv},
-        primaryClass={math.OC}
+    @misc{xu2024formulations,
+        title={Formulations of the continuous set-covering problem on networks: a comparative study},
+        author={Liding Xu and Claudia D'Ambrosio},
+        year={2024},
+        eprint={2404.10467},
+        archivePrefix={arXiv}
+    }
+
+    @article{PELEGRIN2023102835,
+      title = {Continuous covering on networks: Improved mixed integer programming formulations},
+      journal = {Omega},
+      volume = {117},
+      pages = {102835},
+      year = {2023},
+      issn = {0305-0483},
+      doi = {https://doi.org/10.1016/j.omega.2023.102835},
+      url = {https://www.sciencedirect.com/science/article/pii/S0305048323000014},
+      author = {Mercedes Pelegrín and Liding Xu},
     }
 
 
