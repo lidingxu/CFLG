@@ -1,5 +1,5 @@
 #=========================================================
- utility 
+ utility
 =========================================================#
 
 @inline lor(a::Int, b::Int)= min(a,b), max(a,b)
@@ -15,22 +15,25 @@ MSK_ISV =   UInt16(0b0000100000000000)   # is using valid inequalities
 MSK_ISK2 =  UInt16(0b0000010000000000)   # if using valid inequalities, whether the rank is 2, otherwise the rank is 1 by default
 MSK_ISD =   UInt16(0b0000001000000000)   # is disjunctive programming formulation
 MSK_ISL =   UInt16(0b0000000100000000)   # is using long edge modeling
-MSK_ISI =   UInt16(0b0000000010000000)   # is using indicator constraint modelling 
+MSK_ISI =   UInt16(0b0000000010000000)   # is using indicator constraint modelling
 MSK_ISC  =  UInt16(0b0000000001000000)   # is cover preprocessing
+MSK_ISB  =  UInt16(0b0000000000100000)   # is Benders decomposition
 
 @inline mask(formulation, MSK::UInt16)= ( UInt16(formulation) & MSK != MSK_ZERO )
 
 @enum FormulationSet::UInt16 begin
     EF     =   MSK_ISMOD | MSK_ISE                                           # edge model formulation, from "Covering edges in networks", Fröhlich et al.
-    EFP0   =   MSK_ISMOD | MSK_ISE | MSK_ISP0                                # edge model formulation with simple processing (delimited cover) 
+    EFP0   =   MSK_ISMOD | MSK_ISE | MSK_ISP0                                # edge model formulation with simple processing (delimited cover)
     EFP    =   MSK_ISMOD | MSK_ISE | MSK_ISP0 | MSK_ISP1                     # edge model big-M formulation with processing (bound tightenning and delimited cover)
+    EFPB   =   MSK_ISMOD | MSK_ISE | MSK_ISP0 | MSK_ISP1 | MSK_ISB           # edge model big-M formulation with processing (bound tightenning and delimited cover) and Benders decomposition
     EFPC   =   MSK_ISMOD | MSK_ISE | MSK_ISP0 | MSK_ISP1 | MSK_ISC           # edge model big-M formulation with processing (bound tightenning and delimited cover) and cover preprocessing
     EFPV   =   MSK_ISMOD | MSK_ISE | MSK_ISP0 | MSK_ISP1 | MSK_ISV           # edge model big-M formulation with processing (bound tightenning and delimited cover) and rank-1 valid inequalities
-    EFPV2  =   MSK_ISMOD | MSK_ISE | MSK_ISP0 | MSK_ISP1 | MSK_ISV | MSK_ISK2# edge model big-M formulation with processing (bound tightenning and delimited cover) and rank-2 valid inequalities   
-    EFPD   =   MSK_ISMOD | MSK_ISE | MSK_ISP0 | MSK_ISP1 | MSK_ISD 	     # edge model disjunctive programming formulation with processing (delimited cover)
+    EFPV2  =   MSK_ISMOD | MSK_ISE | MSK_ISP0 | MSK_ISP1 | MSK_ISV | MSK_ISK2# edge model big-M formulation with processing (bound tightenning and delimited cover) and rank-2 valid inequalities
+    EFPD   =   MSK_ISMOD | MSK_ISE | MSK_ISP0 | MSK_ISP1 | MSK_ISD 	         # edge model disjunctive programming formulation with processing (delimited cover)
+    EFPDB  =   MSK_ISMOD | MSK_ISE | MSK_ISP0 | MSK_ISP1 | MSK_ISD | MSK_ISB # edge model disjunctive programming formulation with processing (delimited cover) and Benders decomposition
     EFPDC  =   MSK_ISMOD | MSK_ISE | MSK_ISP0 | MSK_ISP1 | MSK_ISD | MSK_ISC # edge model disjunctive programming formulation with processing (delimited cover) and cover preprocessing
-    EFPI  =   MSK_ISMOD | MSK_ISE | MSK_ISP0 | MSK_ISP1 | MSK_ISI            # edge model indicator constraint formulation with processing (delimited cover)
-    EVF    =   MSK_ISMOD                                                     # edge-vertex model big-M formulation 
+    EFPI   =   MSK_ISMOD | MSK_ISE | MSK_ISP0 | MSK_ISP1 | MSK_ISI           # edge model indicator constraint formulation with processing (delimited cover)
+    EVF    =   MSK_ISMOD                                                     # edge-vertex model big-M formulation
     EVFP0  =   MSK_ISMOD | MSK_ISP0                                          # edge-vertex model big-M formulation  with simple processing (delimited cover)
     EVFP   =   MSK_ISMOD | MSK_ISP0 | MSK_ISP1                               # edge-vertex model big-M formulation  with processing (bound tightenning and delimited cover)
     EVFPV  =   MSK_ISMOD | MSK_ISP0 | MSK_ISP1 | MSK_ISV                     # edge-vertex model big-M formulation  with processing (bound tightenning and delimited cover) and simple valid inequalities
@@ -38,7 +41,7 @@ MSK_ISC  =  UInt16(0b0000000001000000)   # is cover preprocessing
     None   =   MSK_ZERO                                                      # not a model, just record statistics of original graph, degree-2-free graph, subdivided graph
 end
 
-# statistics of a graph 
+# statistics of a graph
 struct GraphStat
     num_node::Int # node number
     num_edge::Int # node number
@@ -67,17 +70,17 @@ end
 
 # result statistics
 mutable struct Stat
-    termintaion_status # termintaion status 
+    termintaion_status # termintaion status
     sol_val::Float64 # best solution found
     bound::Float64 # best bound found
     gap::Float64 # gap obtained
     preprocess_time::Float64 # preprocess time
     time::Float64 # total time
     node::Int32 # nodes of search tree
-    formulation::FormulationSet 
+    formulation::FormulationSet
     instance::String
     solver_name::String
-    
+
 
     function Stat()
         new()
@@ -96,7 +99,7 @@ end
 
 function initModel(solver_name::String,  option::Option, time_limit_sec)
     # set solver
-    if solver_name == "Gurobi"  
+    if solver_name == "Gurobi"
         model = Model(Gurobi.Optimizer)
         set_optimizer_attribute(model, "Threads", option.thread)
         set_optimizer_attribute(model, "OutputFlag", option.log_level)
@@ -104,21 +107,21 @@ function initModel(solver_name::String,  option::Option, time_limit_sec)
         set_optimizer_attribute(model, "MIPGapAbs", 1)
         set_optimizer_attribute(model, "TimeLimit", time_limit_sec) # note Gurobi only supports wall-clock time
     elseif solver_name == "CPLEX"
-        model =  JuMP.Model(() -> CPLEX.Optimizer())
+        model = direct_model(CPLEX.Optimizer())
         set_optimizer_attribute(model, "CPXPARAM_Threads", option.thread)
         set_optimizer_attribute(model, "CPXPARAM_MIP_Tolerances_MIPGap", option.rel_gap)
         set_optimizer_attribute(model, "CPXPARAM_MIP_Tolerances_AbsMIPGap", 1)
         set_optimizer_attribute(model, "CPXPARAM_ClockType", 1) # CPU clock time
-        set_optimizer_attribute(model, "CPXPARAM_TimeLimit", time_limit_sec) 
+        set_optimizer_attribute(model, "CPXPARAM_TimeLimit", time_limit_sec)
     elseif solver_name == "GLPK"
         model = Model(GLPK.Optimizer)
         set_optimizer_attribute(model, "mip_gap", option.rel_gap)
-        set_optimizer_attribute(model, "tm_lim", time_limit_sec) # 
+        set_optimizer_attribute(model, "tm_lim", time_limit_sec) #
         #to do
     elseif solver_name == "SCIP"
         model = Model(SCIP.Optimizer)
         set_optimizer_attribute(model, "limits/gap", option.rel_gap)
-        set_optimizer_attribute(model, "limits/time", time_limit_sec) 
+        set_optimizer_attribute(model, "limits/time", time_limit_sec)
         set_optimizer_attribute(model, "limits/absgap", 1)
         set_optimizer_attribute(model, "timing/clocktype", 1) # CPU clock time
     else
@@ -126,4 +129,54 @@ function initModel(solver_name::String,  option::Option, time_limit_sec)
         @assert(false)
     end
     return model
+end
+
+
+
+function add_annotation(
+    model::JuMP.Model,
+    variable_classification::Dict;
+    all_variables::Bool = true,
+)
+    num_variables = sum(length(it) for it in values(variable_classification))
+    if all_variables
+        @assert num_variables == JuMP.num_variables(model)
+    end
+    indices, annotations = CPXINT[], CPXLONG[]
+    for (key, value) in variable_classification
+        for variable_ref in value
+            push!(indices, variable_ref.index.value - 1)
+            push!(annotations, CPX_BENDERS_MASTERVALUE + key)
+        end
+    end
+    cplex = backend(model)
+    index_p = Ref{CPXINT}()
+    CPXnewlongannotation(
+        cplex.env,
+        cplex.lp,
+        CPX_BENDERS_ANNOTATION,
+        CPX_BENDERS_MASTERVALUE,
+    )
+    CPXgetlongannotationindex(
+        cplex.env,
+        cplex.lp,
+        CPX_BENDERS_ANNOTATION,
+        index_p,
+    )
+    CPXsetlongannotations(
+        cplex.env,
+        cplex.lp,
+        index_p[],
+        CPX_ANNOTATIONOBJ_COL,
+        length(indices),
+        indices,
+        annotations,
+    )
+    return
+end
+
+function setModelAnottion(model::JuMP.Model, master_variables, sub_variables)
+    set_optimizer_attribute(model, "CPXPARAM_Benders_Strategy", 1)
+    variable_classification = Dict(0 => master_variables, 1 => sub_variables)
+    add_annotation(model, variable_classification)
 end

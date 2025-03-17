@@ -7,7 +7,7 @@ cflg contains several algorithms for solving continuous set covering on networks
 
 
 ## Installation
-cflg has been developped and tested under *Linux* System. 
+cflg has been developped and tested under *Linux* System.
 
 To use cflg, it requires:
 - Julia,
@@ -22,13 +22,13 @@ and one of the following MILP solvers:
 ## Benchmarks
 There are six benchmarks `city`, `Kgroup_A`, `Kgroup_B`, `random_A`, `random_B` and `test`. Each benchmark contains instances in `.txt` file format.
 
-Each instance file contains data of a graph. Its first line contains the number of nodes and edges of the graph; Edges are represented as a list from the second line: each line indicates an edge's end nodes and weight.  
+Each instance file contains data of a graph. Its first line contains the number of nodes and edges of the graph; Edges are represented as a list from the second line: each line indicates an edge's end nodes and weight.
 
 ## Usage
 
-You can run `cflg.jl`  via the following command:
+You can run `cflg.jl` via the following command as the following example:
 ```
-julia ./cflg.jl solver time_limit instance algorithm raidus
+julia src/main.jl data_folder instance result_folder solver time_limit algorithm raidus
 ```
 
 The settings of the above arguments are as follows.
@@ -49,9 +49,9 @@ Note that you should change the solver option `solver` and the GNU parallel test
 The algorithm option is summarized in the following table.
 
 
-|     | Continuous demand |  Continuous facility |   Set delimitation  | Strengthenning| Long edge| Model size | Input graph     | Comment|  
+|     | Continuous demand |  Continuous facility |   Set delimitation  | Strengthenning| Long edge| Model size | Input graph     | Comment|
 |-----|-------------------|----------------------|---------------------|---------------|----------|------------|-----------------|--------|
-| `EF`|      Yes          | Yes                  | No                  |   No          | No       | Very large | Subdivided graph|From [Covering edges in networks](https://onlinelibrary.wiley.com/doi/full/10.1002/net.21924) 
+| `EF`|      Yes          | Yes                  | No                  |   No          | No       | Very large | Subdivided graph|From [Covering edges in networks](https://onlinelibrary.wiley.com/doi/full/10.1002/net.21924)
 | `F0`|      Yes          | Yes                  | No                  |   No          | No       | Large     | Subdivided graph| Naive model
 | `F` |      Yes          | Yes                  | Yes                 |   No          | No       | Medium     | Subdivided graph|Complete model
 | `SF`|      Yes          | Yes                  | Yes                 |   Yes         | No       | Meidum     | Subdivided graph|Strenghtenned model
@@ -67,7 +67,7 @@ The `None` option is used for computing the parameters of subdivided and degree-
 If you find cflg useful in your work, we kindly request that you cite the following paper draft ([arXiv preprint](http://arxiv.org/abs/1808.05290)), which is recommended reading for advanced users:
 
     @misc{pelegrín2022continuous,
-        title={Continuous Covering on Networks: Strong Mixed Integer Programming Formulations}, 
+        title={Continuous Covering on Networks: Strong Mixed Integer Programming Formulations},
         author={Mercedes Pelegrín and Liding Xu},
         year={2022},
         eprint={2203.00284},

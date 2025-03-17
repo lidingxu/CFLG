@@ -3,23 +3,23 @@ module CFLG
     using JuMP
     using CPUTime
     using MutableNamedTuples
-    try 
-        import CPLEX
+    try
+        using CPLEX
     catch e
     end
 
-    try 
-        import Gurobi
+    try
+        using Gurobi
     catch e
     end
 
-    try 
-        import GLPK
+    try
+        using GLPK
     catch e
     end
 
-    try 
-        import SCIP
+    try
+        using SCIP
     catch e
     end
 
