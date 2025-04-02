@@ -36,6 +36,16 @@ function solve!(problem::Problem, solver_name::String, option::Option, formulati
         formulation = EVFPV
     elseif formulation == "LEVFP"
         formulation = LEVFP
+    elseif formulation == "LEFP"
+        formulation = LEFP
+    elseif formulation == "LEFPB"
+        formulation = LEFPB
+    elseif formulation == "LEFPI"
+        formulation = LEFPI
+    elseif formulation == "LEFPD"
+        formulation = LEFPD
+    elseif formulation == "LEFPDB"
+        formulation = LEFPDB
     elseif formulation == "None"
         formulation = None
     else
@@ -73,24 +83,192 @@ function solve!(problem::Problem, solver_name::String, option::Option, formulati
     cflg = initModel(solver_name, option, option.time_limit - preprocess_time)
 
     # solve the formulation
+    is_edge = mask(formulation, MSK_ISE)
+    is_preprocess = mask(formulation, MSK_ISP0) || mask(formulation, MSK_ISP1)
     is_benders = mask(formulation, MSK_ISB)
-    if formulation == EF
-        stat, sol = solveEF!(problem, formulation, cflg)
+    is_long = mask(formulation, MSK_ISL)
+
+    if is_edge
+        if is_preprocess
+            stat, sol = solveEFP!(problem, formulation, cflg)
+        else
+            stat, sol = solveEF!(problem, formulation, cflg)
+        end
     elseif formulation == LEVFP
         stat, sol = solveLEVF!(problem, formulation, cflg)
-    elseif formulation == EFPI
-        stat, sol = solveEFPI!(problem, formulation, cflg)
-    elseif formulation == EFPD || formulation == EFPDB
-        stat, sol = solveEFPD!(problem, formulation, cflg, is_benders)
-    else
-        stat, sol = solveFPVs!(problem, formulation, cflg, Pi, is_benders)
     end
+
+    #if formulation == EF
+    #    stat, sol = solveEF!(problem, formulation, cflg)
+    #elseif formulation == LEVFP
+    #    stat, sol = solveLEVF!(problem, formulation, cflg)
+    #elseif formulation == EFPI
+    #    stat, sol = solveEFPI!(problem, formulation, cflg)
+    #elseif formulation == EFPD || formulation == EFPDB
+    #    stat, sol = solveEFPD!(problem, formulation, cflg, is_benders)
+    #else
+    #    stat, sol = solveFPVs!(problem, formulation, cflg, Pi, is_benders)
+    #end
 
     stat.preprocess_time = preprocess_time
     println(stat)
 
     return stat
 
+end
+
+# edge model disjunctive formulation (preprocessed)
+function solveEFP!(problem::Problem, formulation::FormulationSet, cflg)
+    is_indicator = mask(formulation, MSK_ISI)
+    is_lifted = mask(formulation, MSK_ISD)
+    is_benders = mask(formulation, MSK_ISB)
+    graph = problem.prob_graph
+    EIp = problem.EIp
+    dlt = problem.dlt
+
+    Es = [ef_id for ef_id in graph.edge_ids if graph.edges[ef_id].etype == :e_normal]
+    El = [ef_id for ef_id in graph.edge_ids if graph.edges[ef_id].etype == :e_long]
+    Vs = [v_id for v_id in graph.node_ids if all(graph.edges[ef_id].etype == :e_normal for ef_id in graph.adjacent_edges[v_id])]
+    #Vscomp = setdiff(graph.node_ids, Vs)
+    ab = (:a, :b)
+
+    print("formulation:", formulation, length(El), " ", length(Es), " ", length(Vs), "\n")
+    # variables
+    @variables(cflg, begin
+        ye[ef_id in graph.edge_ids], Bin # edge facility
+        yei[ef_id in El, i in ab], Int # other edge facility of long edge
+        x[v_id in graph.node_ids], Bin # node residual indictor cover
+        w[e_id in Es], Bin # complete cover indicator variable
+        0 <= q[ef_id in graph.edge_ids, i in ab] <= graph.edges[ef_id].length # edge coordinate variable
+        0 <= qq[ef_id in graph.edge_ids] <= 2 * dlt # edge coordinate variable
+        0 <= rv[v_id in graph.node_ids] <= problem.Uv[v_id] # residual cover variable
+        ze[v_id in graph.node_ids, efi in EIp[v_id]], Bin # disjunctive indicator variable on edges
+    end)
+
+    for ef_id in El
+        q[ef_id, :a]
+        graph.edges[ef_id]
+        graph.edges[ef_id].nodes[:a]
+        rv[graph.edges[ef_id].nodes[:a]]
+    end
+
+    qLBs = Dict{Tuple{Int, Symbol}, Float64}()
+    qUBs = Dict{Tuple{Int, Symbol}, Float64}()
+    for ef_id in graph.edge_ids
+        if ef_id in Es
+            for i in ab
+                qLBs[(ef_id, i)] = 0.0
+                qUBs[(ef_id, i)] = graph.edges[ef_id].length
+            end
+        else
+            qLBs[(ef_id, :a)] = 0.0
+            qLBs[(ef_id, :b)] = 2 * dlt
+            qUBs[(ef_id, :a)] = graph.edges[ef_id].length - 2 * dlt
+            qUBs[(ef_id, :b)] = graph.edges[ef_id].length
+        end
+    end
+    # basic constraints
+    @constraints(cflg, begin
+        # bounds on variables
+        [ef_id in El],  ye[ef_id] == 1 # at least one point long edge must be used
+        [ef_id in Es], q[ef_id, :a] == q[ef_id, :b]  # same coordinate in short edges
+        [ef_id in El], 0 <= q[ef_id, :a]  # leftmost coordinate in long edges
+        [ef_id in El], q[ef_id, :a] <= 2 * dlt  # leftmost coordinate in long edges
+        [ef_id in El], graph.edges[ef_id].length - 2 * dlt <= q[ef_id, :b] # right coordinate in long edges
+        [ef_id in El], q[ef_id, :b] <= graph.edges[ef_id].length # right coordinate in long edges
+        [ef_id in El], 0 <= yei[ef_id, :b] # long edge facility
+        [ef_id in El], yei[ef_id, :b] <= 1 # long edge facility
+        [ef_id in El], -1 + ceil(graph.edges[ef_id].length / (2 * dlt) ) - problem.c_tol <= yei[ef_id, :a]  # long edge facility
+        [ef_id in El], yei[ef_id, :a] <= ceil(graph.edges[ef_id].length / (2 * dlt) ) + problem.c_tol # long edge facility
+        # shared constraints on complete covers
+        [e_id in Es, ef_id in problem.Ec[e_id]], w[e_id] >= ye[ef_id] # complete cover by edges: open
+        [e_id in Es], w[e_id] <=  sum(ye[ef_id] for ef_id in problem.Ec[e_id]) # complete cover: close
+        [v_id in Vs], x[v_id] >= 1 - sum( (1 - w[e_id]) for e_id in graph.adjacent_edges[v_id])  # ajdacent non covered 2
+        # shared constraints on short edge covering
+        [e_id in Es], (graph.edges[e_id].length *  (1+problem.cr_tol) + problem.c_tol) * (1 - w[e_id]) <= rv[graph.edges[e_id].nodes[:a]] + rv[graph.edges[e_id].nodes[:b]] # jointly complete cover condition
+        # shared constraints on long edge modelling
+        [ef_id in El], q[ef_id, :b] == q[ef_id, :a] + 2 * dlt * yei[ef_id, :a] + qq[ef_id] # long edge coordinate relation
+        [ef_id in El], q[ef_id, :b] >= graph.edges[ef_id].length * (1 - problem.cr_tol) * yei[ef_id, :b] # long edge coordinate lower bound
+        [ef_id in El], qq[ef_id] <= 2 * dlt * yei[ef_id, :b] # long edge coordinate upper bound
+        [ef_id in El], q[ef_id, :a] <= rv[graph.edges[ef_id].nodes[:a]] + dlt # long edge left cover
+        [ef_id in El], graph.edges[ef_id].length - q[ef_id, :b] <= rv[graph.edges[ef_id].nodes[:b]] + dlt # long edge right cover
+        # disjunctive activation constraints
+        [v_id in graph.node_ids], x[v_id] + sum(ze[v_id, efi] for efi in EIp[v_id]) == 1 # big-M SOS-1 constraint
+        [v_id in graph.node_ids, efi in EIp[v_id]], ze[v_id, efi] <= ye[efi[1]] # edge activated constraint
+    end)
+
+    if is_indicator
+        @constraints(cflg, begin
+        [v_id in graph.node_ids], x[v_id] => { rv[v_id] <= 0 } # if x[v]=1 then rv=0
+        [v_id in graph.node_ids, efi in EIp[v_id]], ze[v_id, efi] => { rv[v_id] <=  problem.dlte[(v_id, efi[1], efi[2])]  -
+        ( problem.d[lor(v_id, graph.edges[efi[1]].nodes[efi[2]])] +  ifelse(efi[2] == :a , q[efi[1], :a], graph.edges[efi[1]].length - q[efi[1], :b])) }
+    end)
+    else
+        if is_lifted
+            @variables(cflg, begin
+                0 <= qvei[v_id in graph.node_ids, efi in EIp[v_id]] <= graph.edges[efi[1]].length # disjunctive edge coordinate variable on nodes
+            end)
+            @constraints(cflg, begin
+                [v_id in graph.node_ids], rv[v_id]  ==  sum( ( problem.dlte[(v_id, efi[1], efi[2])] - problem.d[lor(v_id, graph.edges[efi[1]].nodes[efi[2]])] - ifelse( efi[2] == :a , 0, (graph.edges[efi[1]].length) ) ) * ze[v_id, efi] + ifelse(efi[2] == :a , -qvei[v_id, efi], qvei[v_id, efi] ) for efi in EIp[v_id]) # disjunctive residual cover aggreagation constraint
+                [v_id in graph.node_ids, efi in EIp[v_id]], qLBs[efi[1], efi[2]]  * ze[v_id, efi] <= qvei[v_id, efi]  # disjunctive upper bound for q on edge
+                [v_id in graph.node_ids, efi in EIp[v_id]], qvei[v_id, efi] <=  qUBs[efi[1], efi[2]]  * ze[v_id, efi] # disjunctive upper bound for q on edge
+                [v_id in graph.node_ids, efi in EIp[v_id]], qLBs[efi[1], efi[2]]  * x[v_id] <= q[efi[1], efi[2]] - qvei[v_id, efi]  # disjunctive upper bound for q on edge
+                [v_id in graph.node_ids, efi in EIp[v_id]], q[efi[1], efi[2]] - qvei[v_id, efi] <=  qUBs[efi[1], efi[2]]  * x[v_id] # disjunctive upper bound for q on edge
+            end)
+        else
+            # bigM constraints
+            @constraints(cflg, begin
+                [v_id in graph.node_ids], rv[v_id] <=  problem.Uv[v_id] * (1 - x[v_id]) # big M on x
+                [v_id in graph.node_ids, efi in EIp[v_id]], rv[v_id] <= problem.Me[(v_id, efi[1], efi[2])]  * (1 - ze[v_id, efi]) + problem.dlte[(v_id, efi[1], efi[2])]  -
+                ( problem.d[lor(v_id, graph.edges[efi[1]].nodes[efi[2]])] +  ifelse(efi[2] == :a , q[efi[1],:a], (graph.edges[efi[1]].length - q[efi[1],:b]) ))  # big M on edges
+            end)
+        end
+
+        if is_benders
+            # Benders decomposition
+            if is_lifted
+                master_variables = [ye..., yei..., x..., w..., ze..., q..., qq..., rv...]
+                sub_variables = [qvei...]
+            else
+                master_variables = [ye..., yei..., x..., w..., ze..., q..., qq...]
+                sub_variables = [rv...]
+            end
+            setModelAnottion(cflg, master_variables, sub_variables)
+            #@constraints(cflg, begin
+            #[v_id in graph.node_ids], rv[v_id] <=  problem.Uv[v_id]  * (1 - x[v_id]) # big M on x
+            #[v_id in graph.node_ids, efi in EIp[v_id]], rv[v_id] <= (
+            # problem.Me[(v_id, efi[1], efi[2])] ) * (1 - ze[v_id, efi]) + ( problem.dlte[(v_id, efi[1], efi[2])] ) -
+            # ( problem.d[lor(v_id, graph.edges[efi[1]].nodes[efi[2]])] +  ifelse(efi[2] == :a , q[efi[1]], (graph.edges[efi[1]].length - q[efi[1]]) ))  # big M on edges
+            #end)
+        end
+
+    end
+
+    # objective
+    @objective(cflg, Min,  sum(ye[ef_id] for ef_id in graph.edge_ids) + sum(yei[ef_id, :a] + yei[ef_id, :b] for ef_id in El))
+
+    println("\n model loaded\n")
+    optimize!(cflg)
+    stat = Stat();
+    sol = Vector{Tuple{Symbol,Int, Float64}}();
+    stat.termintaion_status = termination_status(cflg)
+    stat.bound = objective_bound(cflg)
+    stat.gap = relative_gap(cflg)
+    stat.time = solve_time(cflg)
+    if solver_name(cflg) == "CPLEX"
+        cpx = backend(cflg)
+        stat.node = CPLEX.CPXgetnodecnt(cpx.env, cpx.lp)
+    else
+        stat.node = Int32(node_count(cflg))
+    end
+    if has_values(cflg)
+        stat.sol_val = objective_value(cflg)
+    end
+    stat.formulation = formulation
+
+    stat.instance = problem.instance
+
+    return stat, sol
 end
 
 # formulation == EF
@@ -150,7 +328,7 @@ function solveEF!(problem::Problem, formulation::FormulationSet, cflg)
     stat.gap = relative_gap(cflg)
     stat.time = solve_time(cflg)
     if solver_name(cflg) == "CPLEX"
-        cpx = backend(cflg).optimizer.model
+        cpx = backend(cflg)
         stat.node = CPLEX.CPXgetnodecnt(cpx.env, cpx.lp)
     else
         stat.node = Int32(node_count(cflg))
@@ -306,7 +484,7 @@ function solveFPVs!(problem::Problem, formulation::FormulationSet, cflg, Pi, is_
     stat.gap = relative_gap(cflg)
     stat.time = solve_time(cflg)
     if solver_name(cflg) == "CPLEX"
-        cpx = backend(cflg).optimizer.model
+        cpx = backend(cflg)
         stat.node = CPLEX.CPXgetnodecnt(cpx.env, cpx.lp)
     else
         stat.node = Int32(node_count(cflg))
@@ -424,7 +602,7 @@ function solveLEVF!(problem::Problem, formulation::FormulationSet, cflg)
     stat.gap = relative_gap(cflg)
     stat.time = solve_time(cflg)
     if solver_name(cflg) == "CPLEX"
-        cpx = backend(cflg).optimizer.model
+        cpx = backend(cflg)
         stat.node = CPLEX.CPXgetnodecnt(cpx.env, cpx.lp)
     else
         stat.node = Int32(node_count(cflg))
@@ -484,16 +662,22 @@ function solveEFPD!(problem::Problem, formulation::FormulationSet, cflg, is_bend
         x[v_id in graph.node_ids], Bin # node residual indictor cover
         w[e_id in graph.edge_ids], Bin # complete cover indicator variable
         0 <= q[ef_id in graph.edge_ids] <= graph.edges[ef_id].length # edge coordinate variable
-        0 <= qve[v_id in graph.node_ids, ef_id in Ep[v_id]] <= graph.edges[ef_id].length  # disjunctive edge coordinate variable on nodes
-        0<= qvei[v_id in graph.node_ids, efi in EIp[v_id]]
+        0 <= barqvei[v_id in graph.node_ids, efi in EIp[v_id]] <= graph.edges[efi[1]].length  # disjunctive edge coordinate variable on nodes
+        0 <= qvei[v_id in graph.node_ids, efi in EIp[v_id]] <= graph.edges[efi[1]].length # disjunctive edge coordinate variable on nodes
         0 <= rv[v_id in graph.node_ids] <= problem.Uv[v_id] # residual cover variable
         ze[v_id in graph.node_ids, efi in EIp[v_id]], Bin # disjunctive indicator variable on edges
     end)
 
     if is_benders
-        master_variables = [ye..., x..., w..., ze..., q..., rv...]
-        sub_variables = [qve..., qvei...]
+        master_variables = [ye..., x..., w..., ze..., q...]
+        sub_variables = [rv..., barqvei..., qvei...]
         setModelAnottion(cflg, master_variables, sub_variables)
+        #@constraints(cflg, begin
+        #[v_id in graph.node_ids], rv[v_id] <=  problem.Uv[v_id]  * (1 - x[v_id]) # big M on x
+        #[v_id in graph.node_ids, efi in EIp[v_id]], rv[v_id] <= (
+        # problem.Me[(v_id, efi[1], efi[2])] ) * (1 - ze[v_id, efi]) + ( problem.dlte[(v_id, efi[1], efi[2])] ) -
+        # ( problem.d[lor(v_id, graph.edges[efi[1]].nodes[efi[2]])] +  ifelse(efi[2] == :a , q[efi[1]], (graph.edges[efi[1]].length - q[efi[1]]) ))  # big M on edges
+        #end)
     end
 
     # constraints
@@ -506,13 +690,11 @@ function solveEFPD!(problem::Problem, formulation::FormulationSet, cflg, is_bend
         [e_id in graph.edge_ids], q[e_id] <= graph.edges[e_id].length * ye[e_id] # redundant bound
         [v_id in graph.node_ids, efi in EIp[v_id]], ze[v_id, efi] <= ye[efi[1]] # edge activated constraint
         [v_id in graph.node_ids], x[v_id] +  sum(ze[v_id, efi] for efi in EIp[v_id]) == 1 # disjunctive SOS-1 constraint
-        [v_id in graph.node_ids], rv[v_id]  <=  sum( ( problem.dlte[(v_id, efi[1], efi[2])] - problem.d[lor(v_id, graph.edges[efi[1]].nodes[efi[2]])] - ifelse( efi[2] == :a , 0, (graph.edges[efi[1]].length) ) ) * ze[v_id, efi] + ifelse(efi[2] == :a , -qvei[v_id, efi], qvei[v_id, efi] ) for efi in EIp[v_id]) # disjunctive residual cover aggreagation constraint
-        [v_id in graph.node_ids, ef_id in Ep[v_id]], q[ef_id] ==   qve[v_id, ef_id] + sum( ifelse(efi[1] == ef_id, qvei[v_id, efi], 0) for efi in EIp[v_id] )  # disjunctive residual q aggregation constraint
+        [v_id in graph.node_ids], rv[v_id]  ==  sum( ( problem.dlte[(v_id, efi[1], efi[2])] - problem.d[lor(v_id, graph.edges[efi[1]].nodes[efi[2]])] - ifelse( efi[2] == :a , 0, (graph.edges[efi[1]].length) ) ) * ze[v_id, efi] + ifelse(efi[2] == :a , -qvei[v_id, efi], qvei[v_id, efi] ) for efi in EIp[v_id]) # disjunctive residual cover aggreagation constraint
+        [v_id in graph.node_ids, efi in EIp[v_id]], q[efi[1]] ==   barqvei[v_id, efi] + qvei[v_id, efi]  # disjunctive residual q aggregation constraint
         [v_id in graph.node_ids, efi in EIp[v_id]], qvei[v_id, efi] <=  graph.edges[efi[1]].length * (1+problem.cr_tol)  * ze[v_id, efi] # disjunctive upper bound for q on edge
-        #[v_id in graph.node_ids, efi in EIp[v_id]], Lbs[(v_id, efi)] * ze[v_id, efi]  <= qvei[v_id, efi]  # disjunctive lower bound for q on edge
-        [v_id in graph.node_ids, ef_id in Ep[v_id]], qve[v_id, ef_id] <= graph.edges[ef_id].length * (1+problem.cr_tol) * (1 -   sum( ifelse( efi[1] == ef_id, ze[v_id, efi], 0) for efi in EIp[v_id])) # disjunctive upper bound for q on v
+        [v_id in graph.node_ids, efi in EIp[v_id]], barqvei[v_id, efi] <=  graph.edges[efi[1]].length * (1+problem.cr_tol)  * x[v_id] # disjunctive upper bound for q on edge
     end)
-
 
 
     # objective
@@ -527,7 +709,7 @@ function solveEFPD!(problem::Problem, formulation::FormulationSet, cflg, is_bend
     stat.gap = relative_gap(cflg)
     stat.time = solve_time(cflg)
     if solver_name(cflg) == "CPLEX"
-        cpx = backend(cflg).optimizer.model
+        cpx = backend(cflg)
         stat.node = CPLEX.CPXgetnodecnt(cpx.env, cpx.lp)
     else
         stat.node = Int32(node_count(cflg))
@@ -590,7 +772,7 @@ function solveEFPI!(problem::Problem, formulation::FormulationSet, cflg)
     stat.gap = relative_gap(cflg)
     stat.time = solve_time(cflg)
     if solver_name(cflg) == "CPLEX"
-        cpx = backend(cflg).optimizer.model
+        cpx = backend(cflg)
         stat.node = CPLEX.CPXgetnodecnt(cpx.env, cpx.lp)
     else
         stat.node = Int32(node_count(cflg))

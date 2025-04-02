@@ -22,7 +22,7 @@ mutable struct Problem
     Ep::Dict{Int, Set{Int}} # edges can partially cover incident edges of nodes
     Vp::Dict{Int, Set{Int}} # nodes can partially cover incident edges of nodes
     EIp::Dict{Int, Set{Tuple{Int, Symbol}}} # edges, nodes can partially cover incident edges of nodes
-   
+
     # bounds
     Uv::Vector{Float64}
     dltv::Dict{Tuple{Int, Int}, Float64}
@@ -32,7 +32,7 @@ mutable struct Problem
     upper_bd::Int
 
     # for edge formulation
-    bigM_EF::Float64    
+    bigM_EF::Float64
 
 
     # construtor
@@ -63,7 +63,7 @@ function preprocess!(prob::Problem, formulation::FormulationSet)
 
     print("problem_graph/original graph:", " node: ", prob.prob_graph.node_num, "/", prob.graph.node_num, " edge: ",
     prob.prob_graph.edge_num, "/", prob.graph.edge_num, " dlt: ", prob.dlt, " break_avg_len: ", prob.prob_graph.avg_len, " break_max_len: ", prob.prob_graph.max_len)
-    
+
     if formulation == EF # edge formulation needs a simple process
         (prob.bigM_EF, prob.d) = processGraphSimple(prob.prob_graph, prob.dlt)
     else # normal process
@@ -83,7 +83,7 @@ function boundTighten!(prob::Problem)
     dlte = Dict{Tuple{Int, Int, Symbol}, Float64}()
     Mv = Dict{Tuple{Int, Int}, Float64}()
     Me = Dict{Tuple{Int, Int, Symbol}, Float64}()
-    
+
     # compute Uv
     for v_id in graph.node_ids
         len = typemin(Float64)
@@ -92,7 +92,7 @@ function boundTighten!(prob::Problem)
         end
         # numerical stable
         #Uv[v_id] = len
-        Uv[v_id] = len*(1+prob.cr_tol) + prob.c_tol
+        Uv[v_id] = min(len*(1+prob.cr_tol), prob.dlt) + prob.c_tol
     end
 
 

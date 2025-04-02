@@ -20,7 +20,7 @@ runInstance() {
     formulation=$7
     cover=$8
     "
-    # example: julia  src/main.jl "benchmarks/test" "city_132.txt" "results/test" "CPLEX" "100" "EFP" "Small"
+    # example: julia  src/main.jl "benchmarks/test" "K400.10.con.red" "results/test" "CPLEX" "100" "LEFP" "Small"
     "$juliabin"  src/main.jl "$benchmark_dir" "$instance" "$result_dir" "$solver" "$timelimit"  "$formulation" "$cover"
                 
 }

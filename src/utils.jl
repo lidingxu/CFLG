@@ -38,6 +38,11 @@ MSK_ISB  =  UInt16(0b0000000000100000)   # is Benders decomposition
     EVFP   =   MSK_ISMOD | MSK_ISP0 | MSK_ISP1                               # edge-vertex model big-M formulation  with processing (bound tightenning and delimited cover)
     EVFPV  =   MSK_ISMOD | MSK_ISP0 | MSK_ISP1 | MSK_ISV                     # edge-vertex model big-M formulation  with processing (bound tightenning and delimited cover) and simple valid inequalities
     LEVFP  =   MSK_ISMOD | MSK_ISP0 | MSK_ISP1 | MSK_ISL                     # long edge-vertex model big-M with processing (bound tightenning and delimited cover)
+    LEFPI  =   MSK_ISMOD | MSK_ISE  | MSK_ISP0 | MSK_ISP1 | MSK_ISL | MSK_ISI                      # edge model big-M formulation with processing (bound tightenning and delimited cover) and Benders decomposition
+    LEFP   =   MSK_ISMOD | MSK_ISE  | MSK_ISP0 | MSK_ISP1 | MSK_ISL                       # edge model big-M formulation with processing (bound tightenning and delimited cover) and Benders decomposition
+    LEFPB  =   MSK_ISMOD | MSK_ISE  | MSK_ISP0 | MSK_ISP1 | MSK_ISB | MSK_ISL             # edge model big-M formulation with processing (bound tightenning and delimited cover) and Benders decomposition
+    LEFPD  =   MSK_ISMOD | MSK_ISE  | MSK_ISP0 | MSK_ISP1 | MSK_ISD | MSK_ISL             # edge model disjunctive programming formulation with processing (delimited cover)
+    LEFPDB =   MSK_ISMOD | MSK_ISE  | MSK_ISP0 | MSK_ISP1 | MSK_ISD | MSK_ISB | MSK_ISL   # edge model disjunctive programming formulation with processing (delimited cover) and Benders decomposition
     None   =   MSK_ZERO                                                      # not a model, just record statistics of original graph, degree-2-free graph, subdivided graph
 end
 

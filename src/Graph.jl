@@ -31,7 +31,7 @@ end
 
 # return whether contain a node
 function contain(edge::Edge, node_id::Int)
-    return edge.nodes[:a] == node_id || edge.nodes[:b] == node_id  
+    return edge.nodes[:a] == node_id || edge.nodes[:b] == node_id
 end
 
 
@@ -117,7 +117,7 @@ function printGraph(graph::Graph)
     println(graph.edges)
 end
 
-# return edges ajdacent to a node 
+# return edges ajdacent to a node
 function adjacentEdges(graph::Graph, node_id::Int)
     edge_ids = Set{Int}()
     for edge in graph.edges
@@ -128,7 +128,7 @@ function adjacentEdges(graph::Graph, node_id::Int)
     return edge_ids
 end
 
-# return nodes incident to a node 
+# return nodes incident to a node
 function incidentNodes(graph::Graph, node_id::Int)
     node_ids = Set{Int}()
     for edge in graph.edges
@@ -139,7 +139,7 @@ function incidentNodes(graph::Graph, node_id::Int)
                 push!(node_ids, edge.nodes[:a])
             end
         end
-    end   
+    end
     return node_ids
 end
 
@@ -176,7 +176,7 @@ function nodeCover(graph::Graph, s_id::Int, dlt::Float64, d::Dict{Tuple{Int, Int
     while !isempty(Q)
         # current nearest point
         (u_id, dist) = peek(Q)
-        dequeue!(Q) 
+        dequeue!(Q)
         if mode == :Partial && dist > dlt # end the formulationrithm
             break
         end
@@ -195,7 +195,7 @@ function nodeCover(graph::Graph, s_id::Int, dlt::Float64, d::Dict{Tuple{Int, Int
             if r <= dist_ # update distance
                 Q[v_id] = r
                 #prev[v_id] = u_id
-                if r <= dlt 
+                if r <= dlt
                     push!(Ec,e_id) # edge completed cover
                     push!(V, v_id) # node completed cover
                 else
@@ -230,7 +230,7 @@ function mutual(dlt::Float64, e::Edge, ef::Edge, d::Dict{Tuple{Int, Int}, Float6
             return dlt - (defa + q)
         elseif q <= Qub_id
             return 0
-        else 
+        else
             return dlt - (defb + len  - q)
         end
     end
@@ -242,7 +242,7 @@ function mutual(dlt::Float64, e::Edge, ef::Edge, d::Dict{Tuple{Int, Int}, Float6
         Qub_id = min(max(Q_id, defb + len - dlt),len)
         Qlb = min(Qlb, Qlb_id)
         Qub = max(Qub, Qub_id)
-        r_id(q) = r_idf(q, defa, defb, Qlb_id, Qub_id) 
+        r_id(q) = r_idf(q, defa, defb, Qlb_id, Qub_id)
         rs[v_id] = r_id
     end
     r(q) = rs[va_id](q) + rs[vb_id](q)
@@ -292,10 +292,10 @@ function absorbGraph(graph::Graph)
                 continue
             else
                 # delete edges
-                e1_id = v2e[lor(v_id, v1_id)]    
-                e2_id = v2e[lor(v_id, v2_id)]     
-                delete!(e_ids, e1_id) 
-                delete!(e_ids, e2_id)    
+                e1_id = v2e[lor(v_id, v1_id)]
+                e2_id = v2e[lor(v_id, v2_id)]
+                delete!(e_ids, e1_id)
+                delete!(e_ids, e2_id)
                 # delete nodes
                 delete!(v_ids, v_id)
                 delete!(inc[v1_id], v_id)
@@ -365,7 +365,7 @@ function breakGraph(graph::Graph, dlt::Float64, isabsorb::Bool = true, long::Boo
             end
             piece_num = Int(ceil(edge.length / (2 * dlt))) # to do int
             if piece_num >= 2
-                push!(edge_fields, Tuple{Int, Int, Float64, Symbol}([edge.nodes[:a], edge.nodes[:b], edge.length, :e_long]))       
+                push!(edge_fields, Tuple{Int, Int, Float64, Symbol}([edge.nodes[:a], edge.nodes[:b], edge.length, :e_long]))
             else # still break
                 piece_num = Int(ceil(edge.length / dlt))
                 v_ids = Vector{Int}( (node_num + 1) : (node_num + piece_num - 1) )
@@ -383,7 +383,7 @@ function breakGraph(graph::Graph, dlt::Float64, isabsorb::Bool = true, long::Boo
                 edge_num += piece_num - 1
             end
             max_piece = max(piece_num * 2, max_piece)
-        end        
+        end
     else
         edge_fields = Vector{Tuple{Int, Int, Float64}}()
         for edge in graph.edges
@@ -413,7 +413,7 @@ function breakGraph(graph::Graph, dlt::Float64, isabsorb::Bool = true, long::Boo
     println("\nmax_piece:", max_piece)
 
     breakgraph = Graph(node_num, edge_num, edge_fields)
-    
+
     # checking
     num_e = 0
     num_v = 0
@@ -472,8 +472,8 @@ function processGraph(graph::Graph, dlt::Float64, mode::Symbol, cr_tol::Float64,
     for v_id in graph.node_ids
         (Ec_, E_, V_) = nodeCover(graph, v_id, dlt, d, mode) # run node cover
         # record
-        EcV[v_id] = Ec_ 
-        EV[v_id] = E_ 
+        EcV[v_id] = Ec_
+        EV[v_id] = E_
         VV[v_id] = V_
         for e_id in Ec_
             push!(Vc[e_id], v_id) # nodes are completely covered
@@ -536,7 +536,7 @@ function processGraph(graph::Graph, dlt::Float64, mode::Symbol, cr_tol::Float64,
                         push!(EIp[v_id], (ef_id, :b))
                         push!(Ep[v_id],ef_id)
                     end
-                    break 
+                    break
                 end
             end
         end
