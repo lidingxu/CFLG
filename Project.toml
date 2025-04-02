@@ -14,3 +14,6 @@ MutableNamedTuples = "af6c499f-54b4-48cc-bbd2-094bba7533c7"
 Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
 SCIP = "82193955-e24f-5292-bf16-6f2c5261a85f"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[compat]
+CPLEX = "1.0.3"

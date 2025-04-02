@@ -27,6 +27,7 @@ function main(args)
     println(instance_dir, " ", solver_name, " ", time_limit, " ", output_dir, " ", instance_name, " ", formulation, " ", cover)
     @assert(solver_name in solver_names)
     @assert(cover in covers)
+    println(abs_instance)
     graph = readGraph(abs_instance)
     option = Option(time_limit)
     if cover == "Small"
