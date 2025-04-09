@@ -1,0 +1,21 @@
+Data path: /scratch/opt/lxu/CFLG/benchmarks/city
+Instance: city_276.txt
+Result path: /scratch/opt/lxu/CFLG/results/city
+Solver: CPLEX
+Time limit: 3600
+Formulation: EF
+Cover: Large
+julia --project=. src/main.jl /scratch/opt/lxu/CFLG/benchmarks/city city_276.txt /scratch/opt/lxu/CFLG/results/city CPLEX 3600 EF Large
+/scratch/opt/lxu/CFLG/benchmarks/city CPLEX 3600.0 /scratch/opt/lxu/CFLG/results/city city_276.txt EF Large
+/scratch/opt/lxu/CFLG/benchmarks/city/city_276.txt
+
+ read graph
+data loaded
+
+
+after absorb:149 191
+
+max_piece:4
+problem_graph/original graph: node: 186/191 edge: 271/276 dlt: 0.4194827941479497 break_avg_len: 0.21361116454766468 break_max_len: 0.41948237466515553elapsed CPU time: 0.066227 seconds
+slurmstepd-htc-cmp449: error: Detected 1 oom_kill event in StepId=11571767.0. Some of the step tasks have been OOM Killed.
+srun: error: htc-cmp449: task 0: Out Of Memory

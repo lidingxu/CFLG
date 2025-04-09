@@ -1,8 +1,8 @@
 #!/bin/bash
 # Set variables
-timelimit=4600
+timelimit=3600
 timebound=4200
-formulations=("None") #("EF" "EFP" "LEVFP" "LEFP" "LEFPI" "LEVFP" "LEVFPD" "LEVFPB" "LEVFPDB" "None")
+formulations=("LEFPD" "LEFPDB" "EF" "EFP" "LEFP" "LEFPI" "LEVFP" "None")
 covers=("Small" "Large")
 solver="CPLEX" # "Gurobi", "CPLEX", "GLPK", "SCIP".
 datapath="$PWD/benchmarks"
@@ -14,7 +14,7 @@ juliabin="julia" #"/home/lxu/software/julia-1.10.2/bin/julia"
 rm -f job_list.txt
 for benchmark in $(ls ${datapath})
 do
-  if [ $benchmark == "test" ]
+  if [ $benchmark != "city" ]
   then
     continue
   fi

@@ -1,0 +1,22 @@
+Data path: /scratch/opt/lxu/CFLG/benchmarks/city
+Instance: city_268.txt
+Result path: /scratch/opt/lxu/CFLG/results/city
+Solver: CPLEX
+Time limit: 3600
+Formulation: None
+Cover: Large
+julia --project=. src/main.jl /scratch/opt/lxu/CFLG/benchmarks/city city_268.txt /scratch/opt/lxu/CFLG/results/city CPLEX 3600 None Large
+/scratch/opt/lxu/CFLG/benchmarks/city CPLEX 3600.0 /scratch/opt/lxu/CFLG/results/city city_268.txt None Large
+/scratch/opt/lxu/CFLG/benchmarks/city/city_268.txt
+
+ read graph
+data loaded
+
+
+after absorb:151 195
+
+max_piece:6
+
+after absorb:151 195
+
+max_piece:6

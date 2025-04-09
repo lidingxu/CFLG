@@ -3,8 +3,6 @@
  the main function receive the arguments: #instance_directory #solver_name #time_limit #output_directory #instance_name #formulation #cover
 =========================================================#
 
-using Pkg
-Pkg.activate(".")
 include("../src/CFLG.jl")
 using .CFLG
 
