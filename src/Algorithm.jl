@@ -209,11 +209,14 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg)
                 0 <= qvei[v_id in graph.node_ids, efi in EIp[v_id]] <= graph.edges[efi[1]].length # disjunctive edge coordinate variable on nodes
             end)
             @constraints(cflg, begin
-                [v_id in graph.node_ids], rv[v_id]  ==  sum( ( problem.dlte[(v_id, efi[1], efi[2])] - problem.d[lor(v_id, graph.edges[efi[1]].nodes[efi[2]])] - ifelse( efi[2] == :a , 0, (graph.edges[efi[1]].length) ) ) * ze[v_id, efi] + ifelse(efi[2] == :a , -qvei[v_id, efi], qvei[v_id, efi] ) for efi in EIp[v_id]) # disjunctive residual cover aggreagation constraint
+                [v_id in graph.node_ids], rv[v_id]  <=  sum( ( problem.dlte[(v_id, efi[1], efi[2])] - problem.d[lor(v_id, graph.edges[efi[1]].nodes[efi[2]])] - ifelse( efi[2] == :a , 0, (graph.edges[efi[1]].length) ) ) * ze[v_id, efi] + ifelse(efi[2] == :a , -qvei[v_id, efi], qvei[v_id, efi] ) for efi in EIp[v_id]) # disjunctive residual cover aggreagation constraint
                 [v_id in graph.node_ids, efi in EIp[v_id]], qLBs[efi[1], efi[2]]  * ze[v_id, efi] <= qvei[v_id, efi]  # disjunctive upper bound for q on edge
                 [v_id in graph.node_ids, efi in EIp[v_id]], qvei[v_id, efi] <=  qUBs[efi[1], efi[2]]  * ze[v_id, efi] # disjunctive upper bound for q on edge
-                [v_id in graph.node_ids, efi in EIp[v_id]], qLBs[efi[1], efi[2]]  * x[v_id] <= q[efi[1], efi[2]] - qvei[v_id, efi]  # disjunctive upper bound for q on edge
-                [v_id in graph.node_ids, efi in EIp[v_id]], q[efi[1], efi[2]] - qvei[v_id, efi] <=  qUBs[efi[1], efi[2]]  * x[v_id] # disjunctive upper bound for q on edge
+                [v_id in graph.node_ids, efi in EIp[v_id]], qLBs[efi[1], efi[2]]  * (1 - ze[v_id, efi]) <= q[efi[1], efi[2]] - qvei[v_id, efi]  # disjunctive upper bound for q on edge
+                [v_id in graph.node_ids, efi in EIp[v_id]], q[efi[1], efi[2]] - qvei[v_id, efi] <=  qUBs[efi[1], efi[2]]  * (1 - ze[v_id, efi]) # disjunctive upper bound for q on edge
+                #[v_id in graph.node_ids], rv[v_id] <=  problem.Uv[v_id] * (1 - x[v_id]) # big M on x
+                #[v_id in graph.node_ids, efi in EIp[v_id]], rv[v_id] <= problem.Me[(v_id, efi[1], efi[2])]  * (1 - ze[v_id, efi]) + problem.dlte[(v_id, efi[1], efi[2])]  -
+                #( problem.d[lor(v_id, graph.edges[efi[1]].nodes[efi[2]])] +  ifelse(efi[2] == :a , q[efi[1],:a], (graph.edges[efi[1]].length - q[efi[1],:b]) ))  # big M on edges
             end)
         else
             # bigM constraints
