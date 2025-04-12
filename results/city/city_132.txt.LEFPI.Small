@@ -1,8 +1,8 @@
 instance: city_132.txt
-obj: 63.0
-bound: 61.999999999999986
-gap: 0.015873015872990903
-time: 31.131185054779053
-preprocess_time: 0.062414
-node: 12225
+obj: 56.0
+bound: 50.06666666666666
+gap: 0.10595238095219181
+time: 3614.874946117401
+preprocess_time: 0.03981
+node: 603389
 formulation: LEFPI

@@ -145,13 +145,6 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg)
         ze[v_id in graph.node_ids, efi in EIp[v_id]], Bin # disjunctive indicator variable on edges
     end)
 
-    for ef_id in El
-        q[ef_id, :a]
-        graph.edges[ef_id]
-        graph.edges[ef_id].nodes[:a]
-        rv[graph.edges[ef_id].nodes[:a]]
-    end
-
     qLBs = Dict{Tuple{Int, Symbol}, Float64}()
     qUBs = Dict{Tuple{Int, Symbol}, Float64}()
     for ef_id in graph.edge_ids
@@ -178,8 +171,8 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg)
         [ef_id in El], q[ef_id, :b] <= graph.edges[ef_id].length # right coordinate in long edges
         [ef_id in El], 0 <= yei[ef_id, :b] # long edge facility
         [ef_id in El], yei[ef_id, :b] <= 1 # long edge facility
-        [ef_id in El], -1 + ceil(graph.edges[ef_id].length / (2 * dlt) ) - problem.c_tol <= yei[ef_id, :a]  # long edge facility
-        [ef_id in El], yei[ef_id, :a] <= ceil(graph.edges[ef_id].length / (2 * dlt) ) + problem.c_tol # long edge facility
+        [ef_id in El], -1 + floor(graph.edges[ef_id].length / (2 * dlt) )  <= yei[ef_id, :a]  # long edge facility
+        [ef_id in El], yei[ef_id, :a] <= floor(graph.edges[ef_id].length / (2 * dlt) )  # long edge facility
         # shared constraints on complete covers
         [e_id in Es, ef_id in problem.Ec[e_id]], w[e_id] >= ye[ef_id] # complete cover by edges: open
         [e_id in Es], w[e_id] <=  sum(ye[ef_id] for ef_id in problem.Ec[e_id]) # complete cover: close
@@ -188,7 +181,7 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg)
         [e_id in Es], (graph.edges[e_id].length *  (1+problem.cr_tol) + problem.c_tol) * (1 - w[e_id]) <= rv[graph.edges[e_id].nodes[:a]] + rv[graph.edges[e_id].nodes[:b]] # jointly complete cover condition
         # shared constraints on long edge modelling
         [ef_id in El], q[ef_id, :b] == q[ef_id, :a] + 2 * dlt * yei[ef_id, :a] + qq[ef_id] # long edge coordinate relation
-        [ef_id in El], q[ef_id, :b] >= graph.edges[ef_id].length * (1 - problem.cr_tol) * yei[ef_id, :b] # long edge coordinate lower bound
+        [ef_id in El], q[ef_id, :b] >= graph.edges[ef_id].length * yei[ef_id, :b] # long edge coordinate lower bound
         [ef_id in El], qq[ef_id] <= 2 * dlt * yei[ef_id, :b] # long edge coordinate upper bound
         [ef_id in El], q[ef_id, :a] <= rv[graph.edges[ef_id].nodes[:a]] + dlt # long edge left cover
         [ef_id in El], graph.edges[ef_id].length - q[ef_id, :b] <= rv[graph.edges[ef_id].nodes[:b]] + dlt # long edge right cover
@@ -266,6 +259,12 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg)
     end
     if has_values(cflg)
         stat.sol_val = objective_value(cflg)
+        #for ef_id in graph.edge_ids
+        #    print((ef_id,value(ye[ef_id])))
+        #end
+        #for ef_id in El
+        #    print((floor(graph.edges[ef_id].length / (2 * dlt) ), value(yei[ef_id,:a]), " ",value(yei[ef_id,:b]), value(q[ef_id, :a]), value(q[ef_id, :b]),value(qq[ef_id]) ,value(graph.edges[ef_id].length) )  )
+        #end
     end
     stat.formulation = formulation
 
