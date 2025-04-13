@@ -297,7 +297,7 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg)
                 end
             end
         end
-        set_optimizer_attribute(clfg, "PreCrush", 1)
+        set_optimizer_attribute(cflg, "PreCrush", 1)
         MOI.set(cflg, Gurobi.CallbackFunction(), user_cut_callback)
     end
 
