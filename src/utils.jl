@@ -106,7 +106,7 @@ end
 function initModel(solver_name::String,  option::Option, time_limit_sec)
     # set solver
     if solver_name == "Gurobi"
-        model = Model(Gurobi.Optimizer)
+        model = direct_model(Gurobi.Optimizer())
         set_optimizer_attribute(model, "Threads", option.thread)
         set_optimizer_attribute(model, "OutputFlag", option.log_level)
         set_optimizer_attribute(model, "MIPGap", option.rel_gap)
