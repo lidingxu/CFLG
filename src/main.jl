@@ -37,15 +37,15 @@ function main(args)
     println("data loaded\n")
     problem = Problem(graph, dlt)
     stat = solve!(problem, solver_name, option, formulation)
-    abs_output =  string(output_dir , "/" , instance_name , "." , formulation , "." , cover) 
+    abs_output =  string(output_dir , "/" , instance_name , "." , formulation , "." , cover)
     if formulation == "None"
-        stat_info = string("instance: ", instance_name, "\n", 
+        stat_info = string("instance: ", instance_name, "\n",
         "org_node: ", string(stat[1].num_node), "\n", "org_edge: ", string(stat[1].num_edge),  "\n", "org_min_len: ", string(stat[1].min_len),  "\n", "org_avg_len: ", string(stat[1].avg_len),  "\n", "org_max_len: ", string(stat[1].max_len),  "\n",
         "dtf_node: ", string(stat[2].num_node), "\n", "dtf_edge: ", string(stat[2].num_edge),  "\n", "dtf_min_len: ", string(stat[2].min_len),  "\n", "dtf_avg_len: ", string(stat[2].avg_len),  "\n", "dtf_max_len: ", string(stat[2].max_len),  "\n",
-        "sdb_node: ", string(stat[3].num_node), "\n", "sdb_edge: ", string(stat[3].num_edge),  "\n", "sdb_min_len: ", string(stat[3].min_len),  "\n", "sdb_avg_len: ", string(stat[3].avg_len),  "\n", "sdb_max_len: ", string(stat[3].max_len),  "\n", 
-        "dlt: ", string(dlt), "\n", "formulation: ", formulation)        
+        "sdb_node: ", string(stat[3].num_node), "\n", "sdb_edge: ", string(stat[3].num_edge),  "\n", "sdb_min_len: ", string(stat[3].min_len),  "\n", "sdb_avg_len: ", string(stat[3].avg_len),  "\n", "sdb_max_len: ", string(stat[3].max_len),  "\n",
+        "dlt: ", string(dlt), "\n", "formulation: ", formulation)
     else
-        stat_info = string("instance: ", instance_name, "\n", "obj: ", string(stat.sol_val), "\n", "bound: ", string(stat.bound), "\n", "gap: ", string(stat.gap), "\n", "time: ", string(stat.time), "\n", 
+        stat_info = string("instance: ", instance_name, "\n", "obj: ", string(stat.sol_val), "\n", "bound: ", string(stat.bound), "\n", "gap: ", string(stat.gap), "\n", "time: ", string(stat.time), "\n",
         "preprocess_time: ", string(stat.preprocess_time), "\n",  "node: ", string(stat.node), "\n", "formulation: ", formulation)
     end
     io = open(abs_output, "w")

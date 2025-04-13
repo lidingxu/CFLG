@@ -395,16 +395,17 @@ function breakGraph(graph::Graph, dlt::Float64, isabsorb::Bool = true, long::Boo
             len = edge.length / piece_num
             max_piece = max(piece_num, max_piece)
             v_ids = Vector{Int}( (node_num + 1) : (node_num + piece_num - 1) )
-            len_last = edge.length - (piece_num - 1) * (dlt * (1- 1e-6))
-            @assert(len_last < dlt)
+            #len_last = edge.length - (piece_num - 1) * (dlt * (1- 1e-9))
+            #print( edge.length, " ", piece_num, " ", len_last, " ", dlt)
+            #@assert(len_last < dlt)
             for v_id in v_ids
                 if v_id == node_num + 1
-                    push!(edge_fields, Tuple{Int, Int, Float64}([edge.nodes[:a], v_id, dlt * (1- 1e-6)]))
+                    push!(edge_fields, Tuple{Int, Int, Float64}([edge.nodes[:a], v_id, len]))
                 else
-                    push!(edge_fields, Tuple{Int, Int, Float64}([v_id - 1, v_id, dlt * (1- 1e-6)]))
+                    push!(edge_fields, Tuple{Int, Int, Float64}([v_id - 1, v_id, len]))
                 end
             end
-            push!(edge_fields, Tuple{Int, Int, Float64}([node_num + piece_num - 1, edge.nodes[:b], len_last]))
+            push!(edge_fields, Tuple{Int, Int, Float64}([node_num + piece_num - 1, edge.nodes[:b], len]))
             node_num += piece_num - 1
             edge_num += piece_num - 1
         end
