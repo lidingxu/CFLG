@@ -248,14 +248,16 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg)
     if is_cuts
         alladded = false
         function user_cut_callback(cb_data, cb_where::Cint)
-            if alladded && cb_where != GRB_CB_MIPNODE
+            if alladded && cb_where != GRB_CB_MIPSOL && cb_where != GRB_CB_MIPNODE
                 return
             end
             resultP = Ref{Cdouble}()
             GRBcbget(cb_data, cb_where, GRB_CB_MIPNODE_NODCNT, resultP)
             if resultP[] >= 1.0
+                GRBterminate(backend(model))
                 return
             end
+            Gurobi.load_callback_variable_primal(cb_data, cb_where)
             ze_val = callback_value.(Ref(cb_data), ze)
             q_val = callback_value.(Ref(cb_data), q)
             rv_val = callback_value.(Ref(cb_data), rv)
@@ -296,7 +298,7 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg)
             end
         end
 
-        MOI.set(cflg, MOI.UserCutCallback(), user_cut_callback)
+        MOI.set(cflg, Gurobi.CallbackFunction(), user_cut_callback)
     end
 
     # objective
