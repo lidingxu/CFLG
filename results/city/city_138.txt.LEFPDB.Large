@@ -1,8 +1,8 @@
 instance: city_138.txt
-obj: 39.0
-bound: 18.53919002100261
-gap: 0.5246361533062801
-time: 3602.922703027725
-preprocess_time: 0.061642
-node: 167870
+obj: 21.0
+bound: 15.910473815461359
+gap: 0.24235838973878124
+time: 3613.6212000846863
+preprocess_time: 0.051195
+node: 298200
 formulation: LEFPDB

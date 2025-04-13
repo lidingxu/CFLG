@@ -14,7 +14,7 @@ juliabin="julia" #"/home/lxu/software/julia-1.10.2/bin/julia"
 rm -f job_list.txt
 for benchmark in $(ls ${datapath})
 do
-  if [ $benchmark != "city" ]
+  if [ $benchmark != "random_B" ]
   then
     continue
   fi

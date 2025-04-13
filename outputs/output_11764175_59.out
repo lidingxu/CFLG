@@ -1,0 +1,83 @@
+Data path: /scratch/opt/lxu/CFLG/benchmarks/random_B
+Instance: r_25_0.4_112.txt
+Result path: /scratch/opt/lxu/CFLG/results/random_B
+Solver: CPLEX
+Time limit: 3600
+Formulation: LEFPI
+Cover: Large
+julia --project=. src/main.jl /scratch/opt/lxu/CFLG/benchmarks/random_B r_25_0.4_112.txt /scratch/opt/lxu/CFLG/results/random_B CPLEX 3600 LEFPI Large
+/scratch/opt/lxu/CFLG/benchmarks/random_B CPLEX 3600.0 /scratch/opt/lxu/CFLG/results/random_B r_25_0.4_112.txt LEFPI Large
+/scratch/opt/lxu/CFLG/benchmarks/random_B/r_25_0.4_112.txt
+
+ read graph
+data loaded
+
+problem_graph/original graph: node: 25/25 edge: 112/112 dlt: 1.2844245833368715 break_avg_len: 0.6422122916684357 break_max_len: 0.9982318395224349elapsed CPU time: 0.043968 seconds
+formulation:LEFPI0 112 25
+
+ model loaded
+
+Version identifier: 12.10.0.0 | 2019-11-26 | 843d4de
+CPXPARAM_ClockType                               1
+CPXPARAM_Threads                                 1
+CPXPARAM_TimeLimit                               3599.9560320000001
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1
+Tried aggregator 2 times.
+MIP Presolve eliminated 2660 rows and 112 columns.
+MIP Presolve modified 2652 coefficients.
+Aggregator did 120 substitutions.
+Reduced MIP has 14730 rows, 11235 columns, and 43969 nonzeros.
+Reduced MIP has 5682 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.06 sec. (90.60 ticks)
+Found incumbent of value 112.000000 after 0.13 sec. (148.19 ticks)
+Probing time = 0.01 sec. (5.89 ticks)
+Tried aggregator 2 times.
+MIP Presolve eliminated 25 rows and 25 columns.
+Aggregator did 5416 substitutions.
+Reduced MIP has 9289 rows, 5794 columns, and 33012 nonzeros.
+Reduced MIP has 5657 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.03 sec. (39.64 ticks)
+Probing time = 0.00 sec. (4.23 ticks)
+Tried aggregator 1 time.
+Detecting symmetries...
+Reduced MIP has 9289 rows, 5794 columns, and 33012 nonzeros.
+Reduced MIP has 5657 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.02 sec. (24.32 ticks)
+Probing time = 0.01 sec. (4.23 ticks)
+Clique table members: 29157.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: none, using 1 thread.
+Root relaxation solution time = 0.21 sec. (381.87 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                          112.0000        0.0000           100.00%
+      0     0        0.4740   519      112.0000        0.4740     3174   99.58%
+*     0+    0                           34.0000        0.4740            98.61%
+      0     0        1.0000   519       34.0000     Cuts: 173     3578   97.06%
+*     0+    0                           15.0000        1.0000            93.33%
+      0     0        1.0000   519       15.0000    Cuts: 2422     3785   93.33%
+*     0+    0                            7.0000        1.0000            85.71%
+      0     0        1.0000   519        7.0000      Cuts: 69     4213   85.71%
+*     0+    0                            6.0000        1.0000            83.33%
+*     0+    0                            4.0000        1.0000            75.00%
+      0     0        1.0000   519        4.0000    Cuts: 1073     5560   75.00%
+*     0+    0                            3.0000        1.0000            66.67%
+*     0+    0                            2.0000        1.0000            50.00%
+      0     0  -1.00000e+75     0        2.0000        1.0000     5560   50.00%
+Stat(MathOptInterface.OPTIMAL, 2.0, 1.0000000000000004, 0.4999999999749998, 0.043968, 4.456206798553467, 0, Main.CFLG.LEFPI, "", #undef)
+
+Clique cuts applied:  14
+Implied bound cuts applied:  10
+Flow cuts applied:  25
+Mixed integer rounding cuts applied:  29
+Gomory fractional cuts applied:  1
+
+Root node processing (before b&c):
+  Real time             =    4.43 sec. (6531.11 ticks)
+Sequential b&c:
+  Real time             =    0.00 sec. (0.00 ticks)
+                          ------------
+Total (root+branch&cut) =    4.43 sec. (6531.11 ticks)

@@ -1,0 +1,22 @@
+Data path: /scratch/opt/lxu/CFLG/benchmarks/random_B
+Instance: r_40_0.1_84.txt
+Result path: /scratch/opt/lxu/CFLG/results/random_B
+Solver: CPLEX
+Time limit: 3600
+Formulation: None
+Cover: Small
+julia --project=. src/main.jl /scratch/opt/lxu/CFLG/benchmarks/random_B r_40_0.1_84.txt /scratch/opt/lxu/CFLG/results/random_B CPLEX 3600 None Small
+/scratch/opt/lxu/CFLG/benchmarks/random_B CPLEX 3600.0 /scratch/opt/lxu/CFLG/results/random_B r_40_0.1_84.txt None Small
+/scratch/opt/lxu/CFLG/benchmarks/random_B/r_40_0.1_84.txt
+
+ read graph
+data loaded
+
+
+after absorb:36 40
+
+max_piece:4
+
+after absorb:36 40
+
+max_piece:3

@@ -1,0 +1,113 @@
+Data path: /scratch/opt/lxu/CFLG/benchmarks/random_B
+Instance: r_25_0.3_98.txt
+Result path: /scratch/opt/lxu/CFLG/results/random_B
+Solver: CPLEX
+Time limit: 3600
+Formulation: EF
+Cover: Large
+julia --project=. src/main.jl /scratch/opt/lxu/CFLG/benchmarks/random_B r_25_0.3_98.txt /scratch/opt/lxu/CFLG/results/random_B CPLEX 3600 EF Large
+/scratch/opt/lxu/CFLG/benchmarks/random_B CPLEX 3600.0 /scratch/opt/lxu/CFLG/results/random_B r_25_0.3_98.txt EF Large
+/scratch/opt/lxu/CFLG/benchmarks/random_B/r_25_0.3_98.txt
+
+ read graph
+data loaded
+
+problem_graph/original graph: node: 25/25 edge: 98/98 dlt: 1.149474872932666 break_avg_len: 0.574737436466333 break_max_len: 0.9903705037781224elapsed CPU time: 0.025185 seconds
+
+ model loaded
+
+Version identifier: 12.10.0.0 | 2019-11-26 | 843d4de
+CPXPARAM_ClockType                               1
+CPXPARAM_Threads                                 1
+CPXPARAM_TimeLimit                               3599.974815
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1
+Tried aggregator 3 times.
+Aggregator has done 6637 substitutions...
+MIP Presolve eliminated 2057288 rows and 79126 columns.
+MIP Presolve modified 933820 coefficients.
+Aggregator did 6637 substitutions.
+Reduced MIP has 750537 rows, 860721 columns, and 4762240 nonzeros.
+Reduced MIP has 858762 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 29.04 sec. (44774.00 ticks)
+Elapsed time = 75.87 sec. (10000.60 ticks) for 1% of probing (23968 vars fixed)
+Elapsed time = 152.44 sec. (20002.45 ticks) for 2% of probing (26364 vars fixed)
+Elapsed time = 227.49 sec. (30005.40 ticks) for 2% of probing (28290 vars fixed)
+Elapsed time = 302.85 sec. (40006.27 ticks) for 3% of probing (30278 vars fixed)
+Elapsed time = 375.81 sec. (50007.56 ticks) for 3% of probing (32144 vars fixed)
+Elapsed time = 447.92 sec. (60008.57 ticks) for 4% of probing (33652 vars fixed)
+Elapsed time = 515.51 sec. (70009.66 ticks) for 4% of probing (34535 vars fixed)
+Elapsed time = 584.56 sec. (80011.77 ticks) for 5% of probing (35027 vars fixed)
+Elapsed time = 653.52 sec. (90012.66 ticks) for 5% of probing (35684 vars fixed)
+Elapsed time = 723.69 sec. (100012.74 ticks) for 6% of probing (36365 vars fixed)
+Elapsed time = 793.72 sec. (110015.00 ticks) for 6% of probing (37144 vars fixed)
+Elapsed time = 863.60 sec. (120016.69 ticks) for 7% of probing (38064 vars fixed)
+Elapsed time = 935.04 sec. (130017.81 ticks) for 7% of probing (39184 vars fixed)
+Elapsed time = 1006.81 sec. (140020.37 ticks) for 8% of probing (40252 vars fixed)
+Elapsed time = 1077.82 sec. (150020.53 ticks) for 8% of probing (40902 vars fixed)
+Elapsed time = 1151.26 sec. (160022.60 ticks) for 9% of probing (41566 vars fixed)
+Elapsed time = 1225.10 sec. (170023.89 ticks) for 9% of probing (42129 vars fixed)
+Elapsed time = 1298.47 sec. (180025.18 ticks) for 10% of probing (42632 vars fixed)
+Elapsed time = 1370.00 sec. (190025.69 ticks) for 10% of probing (43162 vars fixed)
+Elapsed time = 1442.30 sec. (200028.08 ticks) for 11% of probing (43638 vars fixed)
+Probing fixed 43651 vars, tightened 1437 bounds.
+Probing time = 1443.96 sec. (200272.07 ticks)
+Cover probing fixed 52877 vars, tightened 103786 bounds.
+Tried aggregator 1 time.
+MIP Presolve eliminated 160637 rows and 156638 columns.
+MIP Presolve modified 659334 coefficients.
+Reduced MIP has 589900 rows, 704083 columns, and 3829659 nonzeros.
+Reduced MIP has 702124 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 5.56 sec. (3217.07 ticks)
+Probing time = 1.16 sec. (201.07 ticks)
+Tried aggregator 1 time.
+Detecting symmetries...
+Reduced MIP has 589900 rows, 704083 columns, and 3829659 nonzeros.
+Reduced MIP has 702124 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 5.48 sec. (2431.97 ticks)
+Probing time = 1.97 sec. (280.07 ticks)
+Clique table members: 1763370.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: none, using 1 thread.
+Root relaxation solution time = 698.29 sec. (302981.57 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+      0     0        1.9798  7226                      1.9798   103456         
+Elapsed time = 16.51 sec. (10000.04 ticks) for 511106 of 589900 candidates for flow covers
+ERROR: LoadError: CPLEX Error  1217: No solution exists.
+
+Stacktrace:
+  [1] error(s::String)
+    @ Base ./error.jl:35
+  [2] _check_ret
+    @ /scratch/opt/lxu/CFLG/.julia_depot/packages/CPLEX/eQ4bU/src/MOI/MOI_wrapper.jl:119 [inlined]
+  [3] _check_ret
+    @ /scratch/opt/lxu/CFLG/.julia_depot/packages/CPLEX/eQ4bU/src/MOI/MOI_wrapper.jl:302 [inlined]
+  [4] get(model::CPLEX.Optimizer, attr::MathOptInterface.RelativeGap)
+    @ CPLEX /scratch/opt/lxu/CFLG/.julia_depot/packages/CPLEX/eQ4bU/src/MOI/MOI_wrapper.jl:3320
+  [5] _moi_get_result(model::CPLEX.Optimizer, args::MathOptInterface.RelativeGap)
+    @ JuMP /scratch/opt/lxu/CFLG/.julia_depot/packages/JuMP/xlp0s/src/optimizer_interface.jl:1129
+  [6] get(model::JuMP.Model, attr::MathOptInterface.RelativeGap)
+    @ JuMP /scratch/opt/lxu/CFLG/.julia_depot/packages/JuMP/xlp0s/src/optimizer_interface.jl:1158
+  [7] relative_gap(model::JuMP.Model)
+    @ JuMP /scratch/opt/lxu/CFLG/.julia_depot/packages/JuMP/xlp0s/src/objective.jl:41
+  [8] solveEF!(problem::Problem, formulation::FormulationSet, cflg::JuMP.Model)
+    @ Main.CFLG /scratch/opt/lxu/CFLG/src/Algorithm.jl:331
+  [9] solve!(problem::Problem, solver_name::String, option::Option, formulation::String)
+    @ Main.CFLG /scratch/opt/lxu/CFLG/src/Algorithm.jl:95
+ [10] main(args::Vector{String})
+    @ Main /scratch/opt/lxu/CFLG/src/main.jl:39
+ [11] top-level scope
+    @ /scratch/opt/lxu/CFLG/src/main.jl:57
+in expression starting at /scratch/opt/lxu/CFLG/src/main.jl:57
+
+Root node processing (before b&c):
+  Real time             = 3600.92 sec. (1225188.58 ticks)
+Sequential b&c:
+  Real time             =    0.00 sec. (0.00 ticks)
+                          ------------
+Total (root+branch&cut) = 3600.92 sec. (1225188.58 ticks)
+CPLEX Error  1217: No solution exists.
+srun: error: htc-cmp437: task 0: Exited with exit code 1

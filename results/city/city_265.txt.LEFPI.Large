@@ -1,8 +1,8 @@
 instance: city_265.txt
 obj: 40.0
-bound: 33.08507416080756
-gap: 0.17287314597937886
-time: 3604.05207490921
-preprocess_time: 0.075363
-node: 51318
+bound: 33.07693567473534
+gap: 0.17307660813118383
+time: 3603.7369599342346
+preprocess_time: 0.075424
+node: 50909
 formulation: LEFPI

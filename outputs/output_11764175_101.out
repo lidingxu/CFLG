@@ -1,0 +1,117 @@
+Data path: /scratch/opt/lxu/CFLG/benchmarks/random_B
+Instance: r_30_0.3_131.txt
+Result path: /scratch/opt/lxu/CFLG/results/random_B
+Solver: CPLEX
+Time limit: 3600
+Formulation: EF
+Cover: Large
+julia --project=. src/main.jl /scratch/opt/lxu/CFLG/benchmarks/random_B r_30_0.3_131.txt /scratch/opt/lxu/CFLG/results/random_B CPLEX 3600 EF Large
+/scratch/opt/lxu/CFLG/benchmarks/random_B CPLEX 3600.0 /scratch/opt/lxu/CFLG/results/random_B r_30_0.3_131.txt EF Large
+/scratch/opt/lxu/CFLG/benchmarks/random_B/r_30_0.3_131.txt
+
+ read graph
+data loaded
+
+problem_graph/original graph: node: 30/30 edge: 131/131 dlt: 1.2087766436331486 break_avg_len: 0.6043883218165743 break_max_len: 0.996803218117645elapsed CPU time: 0.025477 seconds
+
+ model loaded
+
+Version identifier: 12.10.0.0 | 2019-11-26 | 843d4de
+CPXPARAM_ClockType                               1
+CPXPARAM_Threads                                 1
+CPXPARAM_TimeLimit                               3599.9745229999999
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1
+Aggregator has done 9880 substitutions...
+Tried aggregator 3 times.
+Aggregator has done 10613 substitutions...
+MIP Presolve eliminated 4923385 rows and 155351 columns.
+MIP Presolve modified 2191646 coefficients.
+Aggregator did 10613 substitutions.
+Reduced MIP has 1790363 rows, 2088808 columns, and 11514722 nonzeros.
+Reduced MIP has 2085603 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 172.74 sec. (172489.29 ticks)
+Elapsed time = 69.97 sec. (10000.37 ticks) for 0% of probing (63533 vars fixed)
+Elapsed time = 155.85 sec. (20001.29 ticks) for 1% of probing (66284 vars fixed)
+Elapsed time = 233.11 sec. (30004.97 ticks) for 1% of probing (68090 vars fixed)
+Elapsed time = 309.17 sec. (40007.05 ticks) for 1% of probing (69604 vars fixed)
+Elapsed time = 383.66 sec. (50008.56 ticks) for 1% of probing (70958 vars fixed)
+Elapsed time = 458.35 sec. (60012.39 ticks) for 1% of probing (72239 vars fixed)
+Elapsed time = 531.71 sec. (70013.43 ticks) for 1% of probing (73405 vars fixed)
+Elapsed time = 604.83 sec. (80017.21 ticks) for 2% of probing (74511 vars fixed)
+Elapsed time = 677.95 sec. (90021.18 ticks) for 2% of probing (75560 vars fixed)
+Elapsed time = 750.15 sec. (100021.34 ticks) for 2% of probing (76630 vars fixed)
+Elapsed time = 821.03 sec. (110022.45 ticks) for 2% of probing (77570 vars fixed)
+Elapsed time = 891.19 sec. (120027.26 ticks) for 2% of probing (78493 vars fixed)
+Elapsed time = 959.25 sec. (130030.67 ticks) for 2% of probing (79429 vars fixed)
+Elapsed time = 1027.05 sec. (140036.62 ticks) for 2% of probing (80321 vars fixed)
+Elapsed time = 1095.15 sec. (150038.70 ticks) for 3% of probing (81190 vars fixed)
+Elapsed time = 1163.15 sec. (160040.35 ticks) for 3% of probing (82116 vars fixed)
+Elapsed time = 1229.27 sec. (170045.48 ticks) for 3% of probing (82899 vars fixed)
+Elapsed time = 1293.96 sec. (180047.07 ticks) for 3% of probing (83620 vars fixed)
+Elapsed time = 1358.49 sec. (190049.13 ticks) for 3% of probing (84342 vars fixed)
+Elapsed time = 1422.41 sec. (200051.47 ticks) for 3% of probing (85144 vars fixed)
+Elapsed time = 1485.71 sec. (210054.17 ticks) for 3% of probing (85948 vars fixed)
+Elapsed time = 1548.58 sec. (220055.21 ticks) for 4% of probing (86735 vars fixed)
+Elapsed time = 1611.96 sec. (230061.36 ticks) for 4% of probing (87526 vars fixed)
+Elapsed time = 1675.69 sec. (240067.12 ticks) for 4% of probing (88360 vars fixed)
+Elapsed time = 1738.09 sec. (250067.97 ticks) for 4% of probing (89182 vars fixed)
+Elapsed time = 1800.16 sec. (260068.12 ticks) for 4% of probing (90032 vars fixed)
+Elapsed time = 1862.88 sec. (270070.19 ticks) for 4% of probing (91091 vars fixed)
+Elapsed time = 1928.92 sec. (280073.53 ticks) for 4% of probing (92144 vars fixed)
+Elapsed time = 1994.39 sec. (290076.82 ticks) for 4% of probing (93124 vars fixed)
+Elapsed time = 2059.69 sec. (300079.91 ticks) for 5% of probing (94053 vars fixed)
+Elapsed time = 2124.23 sec. (310083.25 ticks) for 5% of probing (94963 vars fixed)
+Elapsed time = 2188.25 sec. (320084.81 ticks) for 5% of probing (95868 vars fixed)
+Elapsed time = 2252.40 sec. (330085.24 ticks) for 5% of probing (96759 vars fixed)
+Elapsed time = 2316.70 sec. (340087.76 ticks) for 5% of probing (97584 vars fixed)
+Elapsed time = 2380.81 sec. (350088.48 ticks) for 5% of probing (98320 vars fixed)
+Elapsed time = 2444.28 sec. (360089.91 ticks) for 5% of probing (99035 vars fixed)
+Elapsed time = 2509.12 sec. (370093.78 ticks) for 5% of probing (99797 vars fixed)
+Elapsed time = 2574.87 sec. (380098.08 ticks) for 6% of probing (100601 vars fixed)
+Elapsed time = 2640.87 sec. (390100.05 ticks) for 6% of probing (101353 vars fixed)
+Elapsed time = 2706.10 sec. (400101.66 ticks) for 6% of probing (101991 vars fixed)
+Elapsed time = 2771.44 sec. (410103.86 ticks) for 6% of probing (102676 vars fixed)
+Elapsed time = 2837.15 sec. (420104.57 ticks) for 6% of probing (103276 vars fixed)
+Elapsed time = 2902.67 sec. (430104.87 ticks) for 6% of probing (103851 vars fixed)
+Elapsed time = 2968.03 sec. (440107.24 ticks) for 6% of probing (104388 vars fixed)
+Elapsed time = 3032.88 sec. (450111.35 ticks) for 6% of probing (104951 vars fixed)
+Elapsed time = 3097.90 sec. (460112.48 ticks) for 6% of probing (105499 vars fixed)
+Elapsed time = 3165.57 sec. (470114.92 ticks) for 7% of probing (106047 vars fixed)
+Elapsed time = 3233.03 sec. (480117.91 ticks) for 7% of probing (106560 vars fixed)
+Elapsed time = 3300.72 sec. (490119.40 ticks) for 7% of probing (107067 vars fixed)
+ERROR: LoadError: CPLEX Error  1217: No solution exists.
+
+Stacktrace:
+  [1] error(s::String)
+    @ Base ./error.jl:35
+  [2] _check_ret
+    @ /scratch/opt/lxu/CFLG/.julia_depot/packages/CPLEX/eQ4bU/src/MOI/MOI_wrapper.jl:119 [inlined]
+  [3] _check_ret
+    @ /scratch/opt/lxu/CFLG/.julia_depot/packages/CPLEX/eQ4bU/src/MOI/MOI_wrapper.jl:302 [inlined]
+  [4] get(model::CPLEX.Optimizer, attr::MathOptInterface.RelativeGap)
+    @ CPLEX /scratch/opt/lxu/CFLG/.julia_depot/packages/CPLEX/eQ4bU/src/MOI/MOI_wrapper.jl:3320
+  [5] _moi_get_result(model::CPLEX.Optimizer, args::MathOptInterface.RelativeGap)
+    @ JuMP /scratch/opt/lxu/CFLG/.julia_depot/packages/JuMP/xlp0s/src/optimizer_interface.jl:1129
+  [6] get(model::JuMP.Model, attr::MathOptInterface.RelativeGap)
+    @ JuMP /scratch/opt/lxu/CFLG/.julia_depot/packages/JuMP/xlp0s/src/optimizer_interface.jl:1158
+  [7] relative_gap(model::JuMP.Model)
+    @ JuMP /scratch/opt/lxu/CFLG/.julia_depot/packages/JuMP/xlp0s/src/objective.jl:41
+  [8] solveEF!(problem::Problem, formulation::FormulationSet, cflg::JuMP.Model)
+    @ Main.CFLG /scratch/opt/lxu/CFLG/src/Algorithm.jl:331
+  [9] solve!(problem::Problem, solver_name::String, option::Option, formulation::String)
+    @ Main.CFLG /scratch/opt/lxu/CFLG/src/Algorithm.jl:95
+ [10] main(args::Vector{String})
+    @ Main /scratch/opt/lxu/CFLG/src/main.jl:39
+ [11] top-level scope
+    @ /scratch/opt/lxu/CFLG/src/main.jl:57
+in expression starting at /scratch/opt/lxu/CFLG/src/main.jl:57
+Elapsed time = 3364.92 sec. (500120.24 ticks) for 7% of probing (107537 vars fixed)
+
+Root node processing (before b&c):
+  Real time             = 3600.51 sec. (691634.10 ticks)
+Sequential b&c:
+  Real time             =    0.00 sec. (0.00 ticks)
+                          ------------
+Total (root+branch&cut) = 3600.51 sec. (691634.10 ticks)
+CPLEX Error  1217: No solution exists.
+srun: error: htc-cmp445: task 0: Exited with exit code 1

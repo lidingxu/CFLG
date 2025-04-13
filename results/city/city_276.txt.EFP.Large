@@ -1,8 +1,8 @@
 instance: city_276.txt
-obj: 42.0
-bound: 28.34084075522333
-gap: 0.32521807725581303
-time: 3602.6268451213837
-preprocess_time: 0.06382
-node: 47731
+obj: 43.0
+bound: 28.309028543582524
+gap: 0.34165049898565836
+time: 3602.357302904129
+preprocess_time: 0.078739
+node: 45359
 formulation: EFP

@@ -1,0 +1,68 @@
+Data path: /scratch/opt/lxu/CFLG/benchmarks/random_B
+Instance: r_25_0.4_112.txt
+Result path: /scratch/opt/lxu/CFLG/results/random_B
+Solver: CPLEX
+Time limit: 3600
+Formulation: LEVFP
+Cover: Large
+julia --project=. src/main.jl /scratch/opt/lxu/CFLG/benchmarks/random_B r_25_0.4_112.txt /scratch/opt/lxu/CFLG/results/random_B CPLEX 3600 LEVFP Large
+/scratch/opt/lxu/CFLG/benchmarks/random_B CPLEX 3600.0 /scratch/opt/lxu/CFLG/results/random_B r_25_0.4_112.txt LEVFP Large
+/scratch/opt/lxu/CFLG/benchmarks/random_B/r_25_0.4_112.txt
+
+ read graph
+data loaded
+
+problem_graph/original graph: node: 25/25 edge: 112/112 dlt: 1.2844245833368715 break_avg_len: 0.6422122916684357 break_max_len: 0.9982318395224349elapsed CPU time: 0.041264 seconds
+
+ model loaded
+
+Version identifier: 12.10.0.0 | 2019-11-26 | 843d4de
+CPXPARAM_ClockType                               1
+CPXPARAM_Threads                                 1
+CPXPARAM_TimeLimit                               3599.958736
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1
+Tried aggregator 1 time.
+MIP Presolve eliminated 3311 rows and 25 columns.
+MIP Presolve modified 15629 coefficients.
+Reduced MIP has 11173 rows, 6408 columns, and 39149 nonzeros.
+Reduced MIP has 6271 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.04 sec. (34.73 ticks)
+Found incumbent of value 22.000000 after 0.09 sec. (76.91 ticks)
+Probing time = 0.02 sec. (5.41 ticks)
+Tried aggregator 1 time.
+Detecting symmetries...
+Reduced MIP has 11173 rows, 6408 columns, and 39149 nonzeros.
+Reduced MIP has 6271 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.03 sec. (31.63 ticks)
+Probing time = 0.01 sec. (5.12 ticks)
+Clique table members: 21217.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: none, using 1 thread.
+Root relaxation solution time = 0.40 sec. (651.65 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                           22.0000        0.0000           100.00%
+      0     0        0.9444   745       22.0000        0.9444     4195   95.71%
+      0     0        0.9535   745       22.0000     Cuts: 190     4444   95.67%
+      0     0        0.9535   745       22.0000      Cuts: 37     4560   95.67%
+      0     0        0.9540   745       22.0000     Cuts: 134     4690   95.66%
+*     0+    0                            2.0000        0.9540            52.30%
+      0     0        cutoff              2.0000                   9679    0.00%
+Elapsed time = 4.11 sec. (4690.07 ticks, tree = 0.01 MB, solutions = 2)
+Stat(MathOptInterface.OPTIMAL, 2.0, 2.0, 0.0, 0.041264, 4.12919807434082, 0, Main.CFLG.LEVFP, "", #undef)
+
+Implied bound cuts applied:  12
+Flow cuts applied:  26
+Mixed integer rounding cuts applied:  21
+Zero-half cuts applied:  2
+Gomory fractional cuts applied:  1
+
+Root node processing (before b&c):
+  Real time             =    4.11 sec. (4690.53 ticks)
+Sequential b&c:
+  Real time             =    0.00 sec. (0.00 ticks)
+                          ------------
+Total (root+branch&cut) =    4.11 sec. (4690.53 ticks)

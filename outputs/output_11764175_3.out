@@ -1,0 +1,184 @@
+Data path: /scratch/opt/lxu/CFLG/benchmarks/random_B
+Instance: r_25_0.1_36.txt
+Result path: /scratch/opt/lxu/CFLG/results/random_B
+Solver: CPLEX
+Time limit: 3600
+Formulation: LEFPDB
+Cover: Large
+julia --project=. src/main.jl /scratch/opt/lxu/CFLG/benchmarks/random_B r_25_0.1_36.txt /scratch/opt/lxu/CFLG/results/random_B CPLEX 3600 LEFPDB Large
+/scratch/opt/lxu/CFLG/benchmarks/random_B CPLEX 3600.0 /scratch/opt/lxu/CFLG/results/random_B r_25_0.1_36.txt LEFPDB Large
+/scratch/opt/lxu/CFLG/benchmarks/random_B/r_25_0.1_36.txt
+
+ read graph
+data loaded
+
+problem_graph/original graph: node: 25/25 edge: 36/36 dlt: 1.4522257607055817 break_avg_len: 0.7261128803527909 break_max_len: 0.9874679371971357elapsed CPU time: 0.037872 seconds
+formulation:LEFPDB0 36 25
+
+ model loaded
+
+Version identifier: 12.10.0.0 | 2019-11-26 | 843d4de
+CPXPARAM_ClockType                               1
+CPXPARAM_Threads                                 1
+CPXPARAM_Benders_Strategy                        1
+CPXPARAM_TimeLimit                               3599.9621280000001
+CPXPARAM_MIP_Tolerances_AbsMIPGap                1
+Tried aggregator 2 times.
+MIP Presolve eliminated 654 rows and 36 columns.
+MIP Presolve modified 148 coefficients.
+Aggregator did 47 substitutions.
+Reduced MIP has 2074 rows, 1143 columns, and 6387 nonzeros.
+Reduced MIP has 584 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (4.70 ticks)
+Found incumbent of value 35.000000 after 0.00 sec. (6.11 ticks)
+Tried aggregator 1 time.
+Reduced MIP has 2074 rows, 1143 columns, and 6387 nonzeros.
+Reduced MIP has 584 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.01 sec. (2.43 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+      0     0        0.0000             35.0000    Benders: 1        0  100.00%
+      0     0        0.0000             35.0000    Benders: 1       17  100.00%
+      0     0        0.0000             35.0000    Benders: 1       25  100.00%
+      0     0        0.0000             35.0000    Benders: 1       26  100.00%
+      0     0        0.5000             35.0000    Benders: 1       56   98.57%
+      0     0        0.5000             35.0000    Benders: 1       60   98.57%
+      0     0        0.8002             35.0000    Benders: 1       80   97.71%
+      0     0        0.8457             35.0000    Benders: 1       97   97.58%
+      0     0        0.8457             35.0000    Benders: 1      108   97.58%
+      0     0        0.9068             35.0000    Benders: 1      144   97.41%
+      0     0        0.9381             35.0000    Benders: 1      168   97.32%
+      0     0        1.2496             35.0000    Benders: 1      188   96.43%
+      0     0        1.2496             35.0000    Benders: 1      194   96.43%
+      0     0        1.2496             35.0000    Benders: 1      202   96.43%
+      0     0        1.2894             35.0000    Benders: 1      225   96.32%
+      0     0        1.2894             35.0000    Benders: 1      236   96.32%
+      0     0        1.3255             35.0000    Benders: 1      265   96.21%
+      0     0        1.4706             35.0000    Benders: 1      317   95.80%
+      0     0        1.6079             35.0000    Benders: 1      351   95.41%
+      0     0        1.6175             35.0000    Benders: 1      379   95.38%
+      0     0        1.6192             35.0000    Benders: 1      412   95.37%
+      0     0        1.6883             35.0000    Benders: 1      458   95.18%
+      0     0        1.6883             35.0000    Benders: 1      466   95.18%
+      0     0        1.6943             35.0000    Benders: 1      479   95.16%
+      0     0        1.6943             35.0000    Benders: 1      483   95.16%
+      0     0        1.6946             35.0000    Benders: 1      504   95.16%
+      0     0        1.6946             35.0000    Benders: 1      505   95.16%
+      0     0        1.6946             35.0000    Benders: 1      506   95.16%
+      0     0        1.6946             35.0000    Benders: 1      507   95.16%
+      0     0        1.6946             35.0000    Benders: 1      508   95.16%
+      0     0        1.6946             35.0000    Benders: 1      509   95.16%
+      0     0        1.6946             35.0000    Benders: 1      510   95.16%
+      0     0        1.6946             35.0000    Benders: 1      511   95.16%
+      0     0        1.6946             35.0000    Benders: 1      512   95.16%
+      0     0        1.6946             35.0000    Benders: 1      513   95.16%
+      0     0        1.6946             35.0000    Benders: 1      514   95.16%
+      0     0        1.6946             35.0000    Benders: 1      516   95.16%
+      0     0        1.6946             35.0000    Benders: 1      517   95.16%
+      0     0        1.6946             35.0000    Benders: 1      518   95.16%
+      0     0        1.6946             35.0000    Benders: 1      523   95.16%
+      0     0        1.6946             35.0000    Benders: 1      524   95.16%
+      0     0        1.6946             35.0000    Benders: 1      525   95.16%
+      0     0        1.6946             35.0000    Benders: 1      526   95.16%
+      0     0        1.6946             35.0000    Benders: 1      528   95.16%
+      0     0        1.6946             35.0000    Benders: 1      529   95.16%
+      0     0        1.6946             35.0000    Benders: 1      530   95.16%
+      0     0        1.6946             35.0000    Benders: 1      531   95.16%
+      0     0        1.6946             35.0000    Benders: 1      532   95.16%
+      0     0        1.6946             35.0000        1.6946      533   95.16%
+Tried aggregator 1 time.
+MIP Presolve modified 48 coefficients.
+Reduced MIP has 599 rows, 645 columns, and 2877 nonzeros.
+Reduced MIP has 584 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (2.05 ticks)
+Probing time = 0.00 sec. (2.27 ticks)
+Tried aggregator 1 time.
+Reduced MIP has 599 rows, 645 columns, and 2877 nonzeros.
+Reduced MIP has 584 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (1.35 ticks)
+Probing time = 0.00 sec. (2.28 ticks)
+Clique table members: 1831.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: none, using 1 thread.
+Root relaxation solution time = 0.00 sec. (6.69 ticks)
+*     0+    0                           35.0000        1.6946            95.16%
+      0     0        1.6946   173       35.0000        1.6946     1003   95.16%
+      0     0        1.9181   173       35.0000     Cuts: 102     1112   94.52%
+      0     0        1.9834   173       35.0000      Cuts: 34     1235   94.33%
+      0     0        2.0106   173       35.0000      Cuts: 38     1324   94.26%
+      0     0        2.0254   173       35.0000      Cuts: 28     1375   94.21%
+      0     0        2.0354   173       35.0000      Cuts: 19     1439   94.18%
+      0     0        2.1276   173       35.0000      Cuts: 21     1567   93.92%
+      0     0        2.1390   173       35.0000      Cuts: 29     1612   93.89%
+      0     0        2.1445   173       35.0000      Cuts: 25     1653   93.87%
+      0     0        2.1532   173       35.0000      Cuts: 17     1713   93.85%
+      0     0        2.1693   173       35.0000      Cuts: 31     1765   93.80%
+      0     0        2.1779   173       35.0000      Cuts: 20     1825   93.78%
+      0     0        2.1838   173       35.0000      Cuts: 22     1883   93.76%
+      0     0        2.1886   173       35.0000      Cuts: 25     1934   93.75%
+      0     0        2.1931   173       35.0000      Cuts: 17     1971   93.73%
+      0     0        2.2040   173       35.0000      Cuts: 18     2017   93.70%
+      0     0        2.2071   173       35.0000       Cuts: 8     2030   93.69%
+      0     0        2.2071   173       35.0000       Cuts: 4     2041   93.69%
+      0     0        2.2093   173       35.0000       Cuts: 4     2067   93.69%
+      0     0        2.2093   173       35.0000      Cuts: 21     2110   93.69%
+*     0+    0                           28.0000        2.2093            92.11%
+
+Repeating presolve.
+Tried aggregator 1 time.
+Reduced MIP has 599 rows, 645 columns, and 2877 nonzeros.
+Reduced MIP has 584 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (1.35 ticks)
+Probing time = 0.01 sec. (2.25 ticks)
+Tried aggregator 1 time.
+Reduced MIP has 599 rows, 645 columns, and 2877 nonzeros.
+Reduced MIP has 584 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (1.35 ticks)
+Represolve time = 0.01 sec. (9.56 ticks)
+Probing time = 0.01 sec. (2.28 ticks)
+Clique table members: 1831.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: none, using 1 thread.
+Root relaxation solution time = 0.01 sec. (13.86 ticks)
+*     0+    0                           28.0000        2.2093            92.11%
+      0     0        2.2093   219       28.0000        2.2093     3234   92.11%
+      0     0        2.2095   219       28.0000      Cuts: 20     3301   92.11%
+      0     0        2.2133   219       28.0000      Cuts: 15     3381   92.10%
+      0     0        2.2193   219       28.0000      Cuts: 16     3427   92.07%
+      0     0        2.2203   219       28.0000      Cuts: 15     3447   92.07%
+      0     0        2.2278   219       28.0000       Cuts: 6     3516   92.04%
+      0     0        2.2290   219       28.0000      Cuts: 11     3566   92.04%
+      0     0        2.2290   219       28.0000      Cuts: 11     3578   92.04%
+      0     0        2.2290   219       28.0000       Cuts: 5     3587   92.04%
+      0     0        2.2292   219       28.0000      Cuts: 31     3667   92.04%
+*     0+    0                           16.0000        2.2292            86.07%
+      0     0  -1.00000e+75     0       16.0000        2.2292     3667   86.07%
+      0     2        2.2292   238       16.0000        2.2299     3667   86.06%
+Elapsed time = 0.91 sec. (718.64 ticks, tree = 0.01 MB, solutions = 2)
+*   141   126      integral     0        8.0000        2.3069     7428   71.16%
+*   244   127      integral     0        6.0000        2.5574    11359   57.38%
+*   334    97      integral     0        5.0000        2.5908    15059   48.18%
+    360   105        3.5051    61        5.0000        2.6484    16830   47.03%
+    453   141        2.9206   112        5.0000        2.7124    22080   45.75%
+    536   184        4.0000    31        5.0000        2.7686    26662   44.63%
+    621   219        3.5447    86        5.0000        2.8023    32010   43.95%
+*   698    19      integral     0        4.0000        2.8284    34775   29.29%
+Stat(MathOptInterface.OPTIMAL, 4.0, 3.0000000000000004, 0.2499999999937499, 0.037872, 2.258357048034668, 733, Main.CFLG.LEFPDB, "", #undef)
+
+Benders cuts applied:  226
+Clique cuts applied:  10
+Implied bound cuts applied:  9
+Flow cuts applied:  10
+Mixed integer rounding cuts applied:  38
+Zero-half cuts applied:  22
+
+Root node processing (before b&c):
+  Real time             =    0.91 sec. (718.75 ticks)
+Sequential b&c:
+  Real time             =    1.31 sec. (1558.21 ticks)
+                          ------------
+Total (root+branch&cut) =    2.22 sec. (2276.97 ticks)

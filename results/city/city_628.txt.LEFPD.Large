@@ -1,8 +1,8 @@
 instance: city_628.txt
-obj: 144.0
-bound: 137.8602214825918
-gap: 0.042637350815305036
-time: 3601.5417490005493
-preprocess_time: 0.148623
-node: 10607
+obj: 106.0
+bound: 85.19574273044164
+gap: 0.19626657801451639
+time: 3604.147876024246
+preprocess_time: 0.149666
+node: 24672
 formulation: LEFPD
