@@ -155,6 +155,7 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg)
             for i in ab
                 qLBs[(ef_id, i)] = 0.0
                 qUBs[(ef_id, i)] = graph.edges[ef_id].length
+            end
         else
             qLBs[(ef_id, :a)] = 0.0
             qLBs[(ef_id, :b)] = 2 * dlt
