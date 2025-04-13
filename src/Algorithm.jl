@@ -153,14 +153,13 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg)
     for ef_id in graph.edge_ids
         if ef_id in Es
             for i in ab
-                qLBs[(ef_id, i)] = 0.0 - problem.c_tol
-                qUBs[(ef_id, i)] = graph.edges[ef_id].length + problem.c_tol
-            end
+                qLBs[(ef_id, i)] = 0.0
+                qUBs[(ef_id, i)] = graph.edges[ef_id].length
         else
-            qLBs[(ef_id, :a)] = 0.0 - problem.c_tol
-            qLBs[(ef_id, :b)] = 2 * dlt + problem.c_tol
-            qUBs[(ef_id, :a)] = graph.edges[ef_id].length - 2 * dlt - problem.c_tol
-            qUBs[(ef_id, :b)] = graph.edges[ef_id].length + problem.c_tol
+            qLBs[(ef_id, :a)] = 0.0
+            qLBs[(ef_id, :b)] = 2 * dlt
+            qUBs[(ef_id, :a)] = graph.edges[ef_id].length
+            qUBs[(ef_id, :b)] = graph.edges[ef_id].length
         end
     end
     # basic constraints
@@ -292,7 +291,7 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg)
                 slack = sum( ( problem.dlte[(v_id, efi[1], efi[2])] - problem.d[lor(v_id, graph.edges[efi[1]].nodes[efi[2]])] - ifelse( efi[2] == :a , 0, (graph.edges[efi[1]].length) ) ) * ze_val[v_id, efi] + ifelse(efi[2] == :a , -qvei_val[efi], qvei_val[efi] ) for efi in EIp[v_id])
                 shouldadd = rv_val[v_id] > slack + 1e-8
                 if shouldadd
-                    cut = @build_constraint(rv[v_id]  <=  sum( ( problem.dlte[(v_id, efi[1], efi[2])] - problem.d[lor(v_id, graph.edges[efi[1]].nodes[efi[2]])] - ifelse( efi[2] == :a , 0, (graph.edges[efi[1]].length) ) ) * ze[v_id, efi] + ifelse(efi[2] == :a , -qvei_expr[efi], qvei_expr[efi] ) for efi in EIp[v_id]) )
+                    cut = @build_constraint(rv[v_id]  <= 1e-7 + sum( ( problem.dlte[(v_id, efi[1], efi[2])] - problem.d[lor(v_id, graph.edges[efi[1]].nodes[efi[2]])] - ifelse( efi[2] == :a , 0, (graph.edges[efi[1]].length) ) ) * ze[v_id, efi] + ifelse(efi[2] == :a , -qvei_expr[efi], qvei_expr[efi] ) for efi in EIp[v_id]) )
                     MOI.submit(cflg, MOI.UserCut(cb_data), cut)
                 end
             end
