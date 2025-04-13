@@ -248,7 +248,7 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg)
     if is_cuts
         alladded = false
         function user_cut_callback(cb_data, cb_where::Cint)
-            if alladded && cb_where != GRB_CB_MIPSOL && cb_where != GRB_CB_MIPNODE
+            if alladded || cb_where != GRB_CB_MIPSOL || cb_where != GRB_CB_MIPNODE
                 return
             end
             resultP = Ref{Cdouble}()
