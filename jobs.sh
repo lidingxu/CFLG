@@ -2,9 +2,9 @@
 # Set variables
 timelimit=3600
 timebound=4200
-formulations=("LEFPD" "LEFPDB" "EF" "EFP" "LEFP" "LEFPI" "LEVFP" "None")
+formulations=("LEFPD" "LEFPV" "EF" "EFP" "LEFP" "LEFPI" "LEVFP" "None")
 covers=("Small" "Large")
-solver="CPLEX" # "Gurobi", "CPLEX", "GLPK", "SCIP".
+solver="Gurobi" # "Gurobi", "CPLEX", "GLPK", "SCIP".
 datapath="$PWD/benchmarks"
 resultpath="$PWD/results"
 juliabin="julia" #"/home/lxu/software/julia-1.10.2/bin/julia"

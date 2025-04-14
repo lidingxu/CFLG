@@ -11,8 +11,8 @@ dtf_avg_len: 0.18654981224532755
 dtf_max_len: 1.0
 sdb_node: 600
 sdb_edge: 1179
-sdb_min_len: 9.840566126195771e-5
-sdb_avg_len: 0.1598094235519769
-sdb_max_len: 0.2358136695274985
+sdb_min_len: 0.009718755200532534
+sdb_avg_len: 0.1598094235519776
+sdb_max_len: 0.23472291562656017
 dlt: 0.23581390534140384
 formulation: None
