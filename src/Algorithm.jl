@@ -40,6 +40,8 @@ function solve!(problem::Problem, solver_name::String, option::Option, formulati
         formulation = LEFP
     elseif formulation == "LEFPV"
         formulation = LEFPV
+    elseif formulation == "LEFPV2"
+        formulation = LEFPV2
     elseif formulation == "LEFPB"
         formulation = LEFPB
     elseif formulation == "LEFPI"
@@ -98,6 +100,8 @@ function solve!(problem::Problem, solver_name::String, option::Option, formulati
         end
     elseif formulation == LEVFP
         stat, sol = solveLEVF!(problem, formulation, cflg)
+    else
+        stat, sol = solveFPVs!(problem, formulation, cflg, Pi, is_benders)
     end
 
     #if formulation == EF
@@ -125,6 +129,7 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg)
     is_lifted = mask(formulation, MSK_ISD)
     is_benders = mask(formulation, MSK_ISB)
     is_cuts = mask(formulation, MSK_ISV)
+    is_morecuts = mask(formulation, MSK_ISV2)
     graph = problem.prob_graph
     EIp = problem.EIp
     dlt = problem.dlt
@@ -246,7 +251,7 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg)
     end
 
     sepatime = 0
-    if is_cuts
+    if is_cuts || is_morecuts
         alladded = false
         function user_cut_callback(cb_data, cb_where::Cint)
             if alladded || cb_where != GRB_CB_MIPSOL || cb_where != GRB_CB_MIPNODE
@@ -254,7 +259,7 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg)
             end
             resultP = Ref{Cdouble}()
             GRBcbget(cb_data, cb_where, GRB_CB_MIPNODE_NODCNT, resultP)
-            if resultP[] >= 1.0
+            if resultP[] >= 1.0 && ! is_morecuts
                 GRBterminate(backend(model))
                 return
             end

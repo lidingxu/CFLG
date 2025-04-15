@@ -2,7 +2,7 @@
 # Set variables
 timelimit=3600
 timebound=4200
-formulations=("LEFPD" "LEFPV" "EF" "EFP" "LEFP" "LEFPI" "LEVFP" "None")
+formulations=("LEVFPV2") #("LEFPD" "LEFPV" "EF" "EFP" "LEFP" "LEFPI" "LEVFP" "None")
 covers=("Small" "Large")
 solver="Gurobi" # "Gurobi", "CPLEX", "GLPK", "SCIP".
 datapath="$PWD/benchmarks"
@@ -14,7 +14,7 @@ juliabin="julia" #"/home/lxu/software/julia-1.10.2/bin/julia"
 rm -f job_list.txt
 for benchmark in $(ls ${datapath})
 do
-  if [ $benchmark != "random_B" ]
+  if [ $benchmark == "test" ]
   then
     continue
   fi
