@@ -12,7 +12,7 @@ MSK_ISE =   UInt16(0b0100000000000000)   # edge or edge-vertex model
 MSK_ISP0 =  UInt16(0b0010000000000000)   # is processing by delimitation
 MSK_ISP1 =  UInt16(0b0001000000000000)   # is processing by bound tightenning
 MSK_ISV =   UInt16(0b0000100000000000)   # is using valid inequalities
-MSK_ISV2 =  UInt16(0b0000010000000000)   # if using valid inequalities, whether the rank is 2, otherwise the rank is 1 by default
+MSK_ISK2 =  UInt16(0b0000010000000000)   # if using valid inequalities, whether the rank is 2, otherwise the rank is 1 by default
 MSK_ISD =   UInt16(0b0000001000000000)   # is disjunctive programming formulation
 MSK_ISL =   UInt16(0b0000000100000000)   # is using long edge modeling
 MSK_ISI =   UInt16(0b0000000010000000)   # is using indicator constraint modelling
@@ -28,7 +28,7 @@ MSK_ISB  =  UInt16(0b0000000000100000)   # is Benders decomposition
     EFPB   =   MSK_ISMOD | MSK_ISE | MSK_ISP0 | MSK_ISP1 | MSK_ISB           # edge model big-M formulation with processing (bound tightenning and delimited cover) and Benders decomposition
     EFPC   =   MSK_ISMOD | MSK_ISE | MSK_ISP0 | MSK_ISP1 | MSK_ISC           # edge model big-M formulation with processing (bound tightenning and delimited cover) and cover preprocessing
     EFPV   =   MSK_ISMOD | MSK_ISE | MSK_ISP0 | MSK_ISP1 | MSK_ISV           # edge model big-M formulation with processing (bound tightenning and delimited cover) and rank-1 valid inequalities
-    EFPV2  =   MSK_ISMOD | MSK_ISE | MSK_ISP0 | MSK_ISP1 | MSK_ISV | MSK_ISV2# edge model big-M formulation with processing (bound tightenning and delimited cover) and rank-2 valid inequalities
+    EFPV2  =   MSK_ISMOD | MSK_ISE | MSK_ISP0 | MSK_ISP1 | MSK_ISV | MSK_ISK2# edge model big-M formulation with processing (bound tightenning and delimited cover) and rank-2 valid inequalities
     EFPD   =   MSK_ISMOD | MSK_ISE | MSK_ISP0 | MSK_ISP1 | MSK_ISD 	         # edge model disjunctive programming formulation with processing (delimited cover)
     EFPDB  =   MSK_ISMOD | MSK_ISE | MSK_ISP0 | MSK_ISP1 | MSK_ISD | MSK_ISB # edge model disjunctive programming formulation with processing (delimited cover) and Benders decomposition
     EFPDC  =   MSK_ISMOD | MSK_ISE | MSK_ISP0 | MSK_ISP1 | MSK_ISD | MSK_ISC # edge model disjunctive programming formulation with processing (delimited cover) and cover preprocessing
@@ -41,7 +41,7 @@ MSK_ISB  =  UInt16(0b0000000000100000)   # is Benders decomposition
     LEFPI  =   MSK_ISMOD | MSK_ISE  | MSK_ISP0 | MSK_ISP1 | MSK_ISL | MSK_ISI                      # edge model big-M formulation with processing (bound tightenning and delimited cover) and Benders decomposition
     LEFP   =   MSK_ISMOD | MSK_ISE  | MSK_ISP0 | MSK_ISP1 | MSK_ISL                       # edge model big-M formulation with processing (bound tightenning and delimited cover) and Benders decomposition
     LEFPV  =   MSK_ISMOD | MSK_ISE  | MSK_ISP0 | MSK_ISP1 | MSK_ISL | MSK_ISV
-    LEFPV2  =   MSK_ISMOD | MSK_ISE  | MSK_ISP0 | MSK_ISP1 | MSK_ISL | MSK_ISV2
+    LEFPV2 =   MSK_ISMOD | MSK_ISE  | MSK_ISP0 | MSK_ISP1 | MSK_ISL | MSK_ISV2
     LEFPB  =   MSK_ISMOD | MSK_ISE  | MSK_ISP0 | MSK_ISP1 | MSK_ISB | MSK_ISL             # edge model big-M formulation with processing (bound tightenning and delimited cover) and Benders decomposition
     LEFPD  =   MSK_ISMOD | MSK_ISE  | MSK_ISP0 | MSK_ISP1 | MSK_ISD | MSK_ISL             # edge model disjunctive programming formulation with processing (delimited cover)
     LEFPDB =   MSK_ISMOD | MSK_ISE  | MSK_ISP0 | MSK_ISP1 | MSK_ISD | MSK_ISB | MSK_ISL   # edge model disjunctive programming formulation with processing (delimited cover) and Benders decomposition
@@ -81,6 +81,7 @@ mutable struct Stat
     sol_val::Float64 # best solution found
     bound::Float64 # best bound found
     gap::Float64 # gap obtained
+    sepatime::Float64
     preprocess_time::Float64 # preprocess time
     time::Float64 # total time
     node::Int32 # nodes of search tree

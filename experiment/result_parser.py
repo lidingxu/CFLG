@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 
 min_primal_bound = 2**31
 max_dual_bound = -1
-time_limit =1800
+time_limit = 3600
 algorithms  = ["EF", "EFP", "EFPI", "EFPD", "EFPV", "EFPV2", "EVFP", "LEVFP", "None"]
 coverages = ["Small", "Large"]
 benchmarks = ["city", "Kgroup_A", "Kgroup_B", "random_A", "random_B"]
@@ -102,7 +102,7 @@ int_keys = [ "solved", "total"]
 
 
 def Stat(algo, coverage):
-    return {"algorithm": algo, "cover": coverage, "solved": 0, "total": 0, "solution": 0, "gap": 0.0, "time":0.0, "node":  0.0, "cdual": 0.0, "cprimal": 0.0, "obj": 0.0, "obj_": 0.0} 
+    return {"algorithm": algo, "cover": coverage, "solved": 0, "total": 0, "solution": 0, "gap": 0.0, "time":0.0, "node":  0.0, "cdual": 0.0, "cprimal": 0.0, "obj": 0.0, "obj_": 0.0}
 
 
 def add(stat, entry):
@@ -115,7 +115,7 @@ def add(stat, entry):
     for key in sgm_keys:
         if key in entry:
             stat[key] += np.log(float(entry[key])+ shift[key])
-    
+
 def parsed(name):
     return name.replace("_", "\_")
 
@@ -123,7 +123,7 @@ def parsed(name):
 def avgStat(stat):
     for key in sgm_keys:
         if stat["total"] > 0:
-            stat[key] = np.exp(stat[key] / stat["total"])- shift[key]  
+            stat[key] = np.exp(stat[key] / stat["total"])- shift[key]
         else:
             stat[key] = defualt_entry[key]
         val = stat[key]
@@ -132,7 +132,7 @@ def avgStat(stat):
         else:
             val = round(val,1)
         stat[key] = val
-    
+
 
     display = ""
 
@@ -142,7 +142,7 @@ def avgStat(stat):
             val = int(stat[key])
         else:
             val = round(val,1)
-        display += str(key) + ":" +  " & "      
+        display += str(key) + ":" +  " & "
 
 
     #print(avg_info , solver)
@@ -171,7 +171,7 @@ def printtable(algorithms_, benchmarks, has_obj_):
 
     detail = ""
 
-    benchdict = {}  
+    benchdict = {}
 
     bench_instances = {}
     bench_entries = {}
@@ -208,14 +208,14 @@ def printtable(algorithms_, benchmarks, has_obj_):
         for instance in instances:
             for cover in coverages:
                 if cover == "Small":
-                    detail +=  "\\multirow{2}{*}{\\texttt{"+ str(instance).replace(".txt", "").replace("_", "") +"}}" 
-                detail +=  "&" +  ("S" if cover == "Small" else "L") + " & " + str(int(instances_entries[(instance, cover)]["sdb_node"])) + " & " + str(instances_entries[(instance, cover)]["sdb_edge"]) 
+                    detail +=  "\\multirow{2}{*}{\\texttt{"+ str(instance).replace(".txt", "").replace("_", "") +"}}"
+                detail +=  "&" +  ("S" if cover == "Small" else "L") + " & " + str(int(instances_entries[(instance, cover)]["sdb_node"])) + " & " + str(instances_entries[(instance, cover)]["sdb_edge"])
                 for algo in algorithms_:
                     is_find = False
                     for entry in work_entries:
                         if entry["instance"] == instance and entry["coverage"] == cover and entry["formulation"] == algo:
                             is_find = True
-                            val = entry["obj"] 
+                            val = entry["obj"]
                             entry["obj"] = val / instances_entries[(instance, cover)]["sdb_node"] * 100
                             entry["isnotfind"] = False
                             bench_entries[benchmark].append(entry)
@@ -228,7 +228,7 @@ def printtable(algorithms_, benchmarks, has_obj_):
                         entry["obj"] = 100
                         entry["isnotfind"] = True
                         bench_entries[benchmark].append(entry)
-                        detail += "&" + str("-") + " & "  + str("-") + " & " +  str("-") 
+                        detail += "&" + str("-") + " & "  + str("-") + " & " +  str("-")
                 detail += "\\\\" + "\n"
 
     file = open("detail.txt", "w")
@@ -280,7 +280,7 @@ def printtable(algorithms_, benchmarks, has_obj_):
 
     test_benchs = ["Small", "Large"]
     for benchmark in test_benchs:
-        # benchmark_wise statistics 
+        # benchmark_wise statistics
         for cover in coverages:
             for algo in algorithms_:
                 bench_tab = ""
@@ -312,9 +312,9 @@ def printtable(algorithms_, benchmarks, has_obj_):
             for algo_ in comp_algos:
                 ys[algo_] = []
             for algo_ in comp_algos:
-                for entry in bench_entries[benchmark]: 
+                for entry in bench_entries[benchmark]:
                     if entry["formulation"] == algo_ and entry["coverage"] == cover_:
-                        ys[algo_].append( entry["gap"] )   
+                        ys[algo_].append( entry["gap"] )
             for algo_, style, color, marker in zip(comp_algos, styles, colors, markers):
                 #print(ys[algo_])
                 ys[algo_].sort()
@@ -332,7 +332,7 @@ def printtable(algorithms_, benchmarks, has_obj_):
             plt.xlabel('relative gap %')
             plt.ylabel('#instances')
             plt.savefig(benchmark + cover_ + ".pdf", format="pdf", bbox_inches="tight")
-            plt.show()         
+            plt.show()
 
 
 # display table 2
