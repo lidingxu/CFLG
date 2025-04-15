@@ -73,7 +73,7 @@ function solve!(problem::Problem, solver_name::String, option::Option, formulati
     # enumerate cover patterns
     Pi = nothing
     if formulation == EFPV || formulation == EFPV2
-        K = mask(formulation, MSK_ISK2) ? 2 : 1
+        K = mask(formulation, MSK_ISV2) ? 2 : 1
         print("\n enumerate cover pattern\n")
         if  K != 0
             Pi = enumCoverPatterns(problem, option, solver_name, K, option.time_limit)
