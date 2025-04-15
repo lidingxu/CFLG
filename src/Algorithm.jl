@@ -245,6 +245,7 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg)
 
     end
 
+    sepatime = 0
     if is_cuts
         alladded = false
         function user_cut_callback(cb_data, cb_where::Cint)
@@ -257,6 +258,7 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg)
                 GRBterminate(backend(model))
                 return
             end
+            CPUtic()
             Gurobi.load_callback_variable_primal(cb_data, cb_where)
             ze_val = callback_value.(Ref(cb_data), ze)
             q_val = callback_value.(Ref(cb_data), q)
@@ -296,11 +298,12 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg)
                     MOI.submit(cflg, MOI.UserCut(cb_data), cut)
                 end
             end
+            sepatime += CPUtoc()
         end
         set_optimizer_attribute(cflg, "PreCrush", 1)
         MOI.set(cflg, Gurobi.CallbackFunction(), user_cut_callback)
     end
-
+    print(sepatime, "\n")
     # objective
     @objective(cflg, Min,  sum(ye[ef_id] for ef_id in graph.edge_ids) + sum(yei[ef_id, :a] + yei[ef_id, :b] for ef_id in El))
 
@@ -312,6 +315,7 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg)
     stat.bound = objective_bound(cflg)
     stat.gap = relative_gap(cflg)
     stat.time = solve_time(cflg)
+    stat.sepatime = sepatime
     if solver_name(cflg) == "CPLEX"
         cpx = backend(cflg)
         stat.node = CPLEX.CPXgetnodecnt(cpx.env, cpx.lp)

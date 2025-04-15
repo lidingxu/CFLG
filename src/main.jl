@@ -46,7 +46,7 @@ function main(args)
         "dlt: ", string(dlt), "\n", "formulation: ", formulation)
     else
         stat_info = string("instance: ", instance_name, "\n", "obj: ", string(stat.sol_val), "\n", "bound: ", string(stat.bound), "\n", "gap: ", string(stat.gap), "\n", "time: ", string(stat.time), "\n",
-        "preprocess_time: ", string(stat.preprocess_time), "\n",  "node: ", string(stat.node), "\n", "formulation: ", formulation)
+        "preprocess_time: ", string(stat.preprocess_time), "\n", "sepa_time: ", string(stat.sepatime), "\n",  "node: ", string(stat.node), "\n", "formulation: ", formulation)
     end
     io = open(abs_output, "w")
     print(io, stat_info)
