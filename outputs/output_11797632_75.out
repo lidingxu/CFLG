@@ -1,0 +1,120 @@
+Data path: /scratch/opt/lxu/CFLG/benchmarks/random_B
+Instance: r_30_0.1_54.txt
+Result path: /scratch/opt/lxu/CFLG/results/random_B
+Solver: Gurobi
+Time limit: 3600
+Formulation: LEFPI
+Cover: Large
+julia --project=. src/main.jl /scratch/opt/lxu/CFLG/benchmarks/random_B r_30_0.1_54.txt /scratch/opt/lxu/CFLG/results/random_B Gurobi 3600 LEFPI Large
+/scratch/opt/lxu/CFLG/benchmarks/random_B Gurobi 3600.0 /scratch/opt/lxu/CFLG/results/random_B r_30_0.1_54.txt LEFPI Large
+/scratch/opt/lxu/CFLG/benchmarks/random_B/r_30_0.1_54.txt
+
+ read graph
+data loaded
+
+problem_graph/original graph: node: 30/30 edge: 54/54 dlt: 1.1988431583223897 break_avg_len: 0.5994215791611949 break_max_len: 0.9919704436735612elapsed CPU time: 0.038571 seconds
+Set parameter TokenServer to value "solice01.zib.de"
+Set parameter Threads to value 1
+Set parameter OutputFlag to value 1
+Set parameter MIPGap to value 0.0001
+Set parameter MIPGapAbs to value 1
+Set parameter TimeLimit to value 3599.961429
+formulation:LEFPI0 54 30
+
+ model loaded
+
+Gurobi Optimizer version 12.0.1 build v12.0.1rc0 (linux64 - "Debian GNU/Linux 12 (bookworm)")
+
+CPU model: Intel(R) Xeon(R) Gold 5122 CPU @ 3.60GHz, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 8 physical cores, 16 logical processors, using up to 1 threads
+
+Non-default parameters:
+TimeLimit  3599.961429
+MIPGapAbs  1
+Threads  1
+
+Optimize a model with 1612 rows, 1470 columns and 4662 nonzeros
+Model fingerprint: 0x9ced3383
+Model has 1170 simple general constraints
+  1170 INDICATOR
+Variable types: 192 continuous, 1278 integer (1278 binary)
+Coefficient statistics:
+  Matrix range     [3e-01, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [3e-01, 2e+00]
+  RHS range        [3e-01, 5e+00]
+  GenCon rhs range [9e-04, 1e+00]
+  GenCon coe range [1e+00, 1e+00]
+Presolve added 707 rows and 0 columns
+Presolve removed 0 rows and 149 columns
+Presolve time: 0.09s
+Presolved: 2319 rows, 1321 columns, 10592 nonzeros
+Variable types: 84 continuous, 1237 integer (1228 binary)
+Found heuristic solution: objective 46.0000000
+Found heuristic solution: objective 41.0000000
+Found heuristic solution: objective 22.0000000
+Found heuristic solution: objective 21.0000000
+
+Root relaxation: objective 1.272958e+00, 1246 iterations, 0.03 seconds (0.06 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    1.27296    0  153   21.00000    1.27296  93.9%     -    0s
+H    0     0                      15.0000000    1.27296  91.5%     -    0s
+H    0     0                       9.0000000    1.27296  85.9%     -    0s
+     0     0    1.77377    0  208    9.00000    1.77377  80.3%     -    0s
+H    0     0                       7.0000000    1.78505  74.5%     -    0s
+     0     0    1.82684    0  187    7.00000    1.82684  73.9%     -    0s
+     0     0    1.99352    0  205    7.00000    1.99352  71.5%     -    0s
+H    0     0                       6.0000000    1.99530  66.7%     -    0s
+     0     0    1.99846    0  205    6.00000    1.99846  66.7%     -    0s
+     0     0    2.00009    0  209    6.00000    2.00009  66.7%     -    0s
+     0     0    2.00025    0  208    6.00000    2.00025  66.7%     -    0s
+     0     0    2.00043    0  221    6.00000    2.00043  66.7%     -    0s
+     0     0    2.30293    0  204    6.00000    2.30293  61.6%     -    0s
+     0     0    2.30701    0  204    6.00000    2.30701  61.5%     -    0s
+     0     0    2.42667    0  207    6.00000    2.42667  59.6%     -    0s
+     0     0    2.42995    0  211    6.00000    2.42995  59.5%     -    0s
+     0     0    2.43657    0  215    6.00000    2.43657  59.4%     -    0s
+     0     0    2.43657    0  215    6.00000    2.43657  59.4%     -    0s
+     0     0    2.45317    0  213    6.00000    2.45317  59.1%     -    0s
+     0     0    2.45358    0  215    6.00000    2.45358  59.1%     -    0s
+     0     0    2.45358    0  216    6.00000    2.45358  59.1%     -    0s
+     0     0    2.48377    0  216    6.00000    2.48377  58.6%     -    0s
+     0     0    2.48377    0  166    6.00000    2.48377  58.6%     -    0s
+     0     0    2.48377    0  186    6.00000    2.48377  58.6%     -    0s
+     0     0    2.48377    0  193    6.00000    2.48377  58.6%     -    1s
+     0     0    2.48377    0  194    6.00000    2.48377  58.6%     -    1s
+     0     0    2.48377    0  180    6.00000    2.48377  58.6%     -    1s
+     0     0    2.48377    0  180    6.00000    2.48377  58.6%     -    1s
+     0     2    2.48718    0  177    6.00000    2.48718  58.5%     -    1s
+   648   453    5.00000   21  214    6.00000    3.00000  50.0%  46.7    5s
+*  717   428              46       5.0000000    3.00000  40.0%  71.6    6s
+  1014   403    3.79599   16  125    5.00000    3.04793  39.0%  95.7   10s
+  1605   312    3.45935   19  105    5.00000    3.36080  32.8%   107   15s
+
+Cutting planes:
+  Learned: 1
+  Gomory: 2
+  Cover: 30
+  Implied bound: 9
+  MIR: 19
+  StrongCG: 1
+  Flow cover: 15
+  GUB cover: 36
+  Zero half: 23
+  RLT: 13
+  Relax-and-lift: 1
+  PSD: 1
+
+Explored 2555 nodes (286412 simplex iterations) in 19.93 seconds (20.90 work units)
+Thread count was 1 (of 16 available processors)
+
+Solution count 10: 5 6 7 ... 46
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 5.000000000000e+00, best bound 4.000000000000e+00, gap 20.0000%
+
+User-callback calls 12307, time in user-callback 0.02 sec
+Stat(MathOptInterface.OPTIMAL, 5.0, 4.000000000000001, 0.19999999999999982, 0.038571, 19.92951798439026, 2555, Main.CFLG.LEFPI, "", #undef)

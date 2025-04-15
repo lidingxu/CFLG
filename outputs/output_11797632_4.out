@@ -1,0 +1,142 @@
+Data path: /scratch/opt/lxu/CFLG/benchmarks/random_B
+Instance: r_25_0.1_36.txt
+Result path: /scratch/opt/lxu/CFLG/results/random_B
+Solver: Gurobi
+Time limit: 3600
+Formulation: EF
+Cover: Small
+julia --project=. src/main.jl /scratch/opt/lxu/CFLG/benchmarks/random_B r_25_0.1_36.txt /scratch/opt/lxu/CFLG/results/random_B Gurobi 3600 EF Small
+/scratch/opt/lxu/CFLG/benchmarks/random_B Gurobi 3600.0 /scratch/opt/lxu/CFLG/results/random_B r_25_0.1_36.txt EF Small
+/scratch/opt/lxu/CFLG/benchmarks/random_B/r_25_0.1_36.txt
+
+ read graph
+data loaded
+
+
+after absorb:20 25
+
+max_piece:3
+problem_graph/original graph: node: 40/25 edge: 51/36 dlt: 0.7261128803527909 break_avg_len: 0.5125502684843226 break_max_len: 0.720851527041031elapsed CPU time: 0.034314 seconds
+Set parameter TokenServer to value "solice01.zib.de"
+Set parameter Threads to value 1
+Set parameter OutputFlag to value 1
+Set parameter MIPGap to value 0.0001
+Set parameter MIPGapAbs to value 1
+Set parameter TimeLimit to value 3599.965686
+
+ model loaded
+
+Gurobi Optimizer version 12.0.1 build v12.0.1rc0 (linux64 - "Debian GNU/Linux 12 (bookworm)")
+
+CPU model: Intel(R) Xeon(R) Gold 5222 CPU @ 3.80GHz, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 8 physical cores, 16 logical processors, using up to 1 threads
+
+Non-default parameters:
+TimeLimit  3599.965686
+MIPGapAbs  1
+Threads  1
+
+Optimize a model with 406521 rows, 142392 columns and 1079211 nonzeros
+Model fingerprint: 0x481ff4fe
+Variable types: 6171 continuous, 136221 integer (136221 binary)
+Coefficient statistics:
+  Matrix range     [3e-01, 1e+01]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [3e-01, 7e-01]
+  RHS range        [5e-03, 1e+01]
+Presolve removed 324619 rows and 114131 columns (presolve time = 5s)...
+Presolve removed 382262 rows and 130927 columns
+Presolve time: 7.21s
+Presolved: 24259 rows, 11465 columns, 69816 nonzeros
+Variable types: 355 continuous, 11110 integer (11110 binary)
+Found heuristic solution: objective 50.0000000
+Found heuristic solution: objective 49.0000000
+Found heuristic solution: objective 48.0000000
+Performing another presolve...
+Presolve removed 19349 rows and 363 columns
+Presolve time: 0.18s
+
+Root simplex log...
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    0.0000000e+00   1.062023e+02   0.000000e+00      8s
+    1530    9.1752043e+00   0.000000e+00   0.000000e+00      8s
+
+Root relaxation: objective 9.175204e+00, 1530 iterations, 0.05 seconds (0.07 work units)
+Total elapsed time = 7.74s (DegenMoves)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    9.17520    0  190   48.00000    9.17520  80.9%     -    7s
+H    0     0                      22.0000000    9.17520  58.3%     -    7s
+H    0     0                      18.0000000    9.17520  49.0%     -    7s
+H    0     0                      17.0000000    9.17520  46.0%     -    7s
+H    0     0                      16.0000000    9.17520  42.7%     -    7s
+     0     0    9.44444    0  211   16.00000    9.44444  41.0%     -    8s
+H    0     0                      15.0000000    9.66667  35.6%     -    8s
+     0     0   10.00000    0  210   15.00000   10.00000  33.3%     -    8s
+     0     0   10.00000    0  307   15.00000   10.00000  33.3%     -    8s
+     0     0   10.00000    0  261   15.00000   10.00000  33.3%     -    8s
+     0     0   10.00000    0  132   15.00000   10.00000  33.3%     -    8s
+     0     0   10.00000    0  205   15.00000   10.00000  33.3%     -    8s
+     0     0   10.03968    0  267   15.00000   10.03968  33.1%     -    9s
+     0     0   10.25000    0  264   15.00000   10.25000  31.7%     -    9s
+     0     0   10.25000    0  270   15.00000   10.25000  31.7%     -    9s
+     0     0   10.25000    0  253   15.00000   10.25000  31.7%     -    9s
+     0     0   10.25000    0  210   15.00000   10.25000  31.7%     -    9s
+     0     0   10.25000    0  219   15.00000   10.25000  31.7%     -    9s
+     0     0   10.25000    0  220   15.00000   10.25000  31.7%     -    9s
+     0     0   10.25000    0  267   15.00000   10.25000  31.7%     -    9s
+     0     0   10.25000    0  274   15.00000   10.25000  31.7%     -    9s
+     0     0   10.25000    0  274   15.00000   10.25000  31.7%     -    9s
+     0     0   10.25000    0  259   15.00000   10.25000  31.7%     -    9s
+     0     0   10.25000    0  258   15.00000   10.25000  31.7%     -    9s
+     0     0   10.25000    0  271   15.00000   10.25000  31.7%     -   10s
+H    0     0                      14.0000000   10.25000  26.8%     -   10s
+     0     0   10.25000    0  272   14.00000   10.25000  26.8%     -   10s
+     0     0   10.25000    0  277   14.00000   10.25000  26.8%     -   10s
+     0     0   10.25000    0  280   14.00000   10.25000  26.8%     -   11s
+     0     0   10.25000    0  276   14.00000   10.25000  26.8%     -   11s
+     0     0   10.25000    0  276   14.00000   10.25000  26.8%     -   11s
+     0     2   10.25000    0  251   14.00000   10.25000  26.8%     -   11s
+   414   294   11.50000   14  126   14.00000   11.00000  21.4%  78.6   15s
+   644   439   12.81380   25  238   14.00000   11.00000  21.4%  82.5   20s
+   665   453   13.00000   14  332   14.00000   11.10314  20.7%  79.9   25s
+H  668   431                      13.0000000   11.10331  14.6%   111   27s
+   749   451   11.18214   15  194   13.00000   11.11043  14.5%   117   30s
+   965   442   12.00000   26  125   13.00000   11.24381  13.5%   125   35s
+  1237   425   11.51502   16  143   13.00000   11.46787  11.8%   126   40s
+  1510   370   12.00000   23  176   13.00000   11.52629  11.3%   129   45s
+  1786   327   12.00000   27  152   13.00000   11.68430  10.1%   126   50s
+  2146   268   12.00000   35   99   13.00000   12.00000  7.69%   124   55s
+  2460   282     cutoff   54        13.00000   12.00000  7.69%   128   60s
+  2769   258   12.00000   33  115   13.00000   12.00000  7.69%   129   65s
+  3078   233   12.00000   20   56   13.00000   12.00000  7.69%   130   70s
+
+Cutting planes:
+  Learned: 30
+  Gomory: 25
+  Cover: 313
+  Implied bound: 90
+  Clique: 32
+  MIR: 36
+  StrongCG: 1
+  Flow cover: 64
+  GUB cover: 47
+  Inf proof: 1
+  Zero half: 14
+  RLT: 126
+  Relax-and-lift: 35
+  BQP: 4
+
+Explored 3086 nodes (417301 simplex iterations) in 70.16 seconds (75.67 work units)
+Thread count was 1 (of 16 available processors)
+
+Solution count 10: 13 14 14 ... 49
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 1.300000000000e+01, best bound 1.200000000000e+01, gap 7.6923%
+
+User-callback calls 24389, time in user-callback 0.03 sec
+Stat(MathOptInterface.OPTIMAL, 13.0, 12.000000000000002, 0.07692307692307679, 0.034314, 70.1681489944458, 3086, Main.CFLG.EF, "", #undef)

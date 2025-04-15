@@ -1,0 +1,23 @@
+Data path: /scratch/opt/lxu/CFLG/benchmarks/random_B
+Instance: r_40_0.4_297.txt
+Result path: /scratch/opt/lxu/CFLG/results/random_B
+Solver: Gurobi
+Time limit: 3600
+Formulation: EF
+Cover: Large
+julia --project=. src/main.jl /scratch/opt/lxu/CFLG/benchmarks/random_B r_40_0.4_297.txt /scratch/opt/lxu/CFLG/results/random_B Gurobi 3600 EF Large
+/scratch/opt/lxu/CFLG/benchmarks/random_B Gurobi 3600.0 /scratch/opt/lxu/CFLG/results/random_B r_40_0.4_297.txt EF Large
+/scratch/opt/lxu/CFLG/benchmarks/random_B/r_40_0.4_297.txt
+
+ read graph
+data loaded
+
+problem_graph/original graph: node: 40/40 edge: 297/297 dlt: 1.2585651957027357 break_avg_len: 0.6292825978513679 break_max_len: 0.9985183215968443elapsed CPU time: 0.021914 seconds
+Set parameter TokenServer to value "solice01.zib.de"
+Set parameter Threads to value 1
+Set parameter OutputFlag to value 1
+Set parameter MIPGap to value 0.0001
+Set parameter MIPGapAbs to value 1
+Set parameter TimeLimit to value 3599.978086
+slurmstepd-htc-cmp450: error: Detected 1 oom_kill event in StepId=11797814.0. Some of the step tasks have been OOM Killed.
+srun: error: htc-cmp450: task 0: Out Of Memory

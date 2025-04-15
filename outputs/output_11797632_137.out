@@ -1,0 +1,129 @@
+Data path: /scratch/opt/lxu/CFLG/benchmarks/random_B
+Instance: r_40_0.1_84.txt
+Result path: /scratch/opt/lxu/CFLG/results/random_B
+Solver: Gurobi
+Time limit: 3600
+Formulation: LEFP
+Cover: Large
+julia --project=. src/main.jl /scratch/opt/lxu/CFLG/benchmarks/random_B r_40_0.1_84.txt /scratch/opt/lxu/CFLG/results/random_B Gurobi 3600 LEFP Large
+/scratch/opt/lxu/CFLG/benchmarks/random_B Gurobi 3600.0 /scratch/opt/lxu/CFLG/results/random_B r_40_0.1_84.txt LEFP Large
+/scratch/opt/lxu/CFLG/benchmarks/random_B/r_40_0.1_84.txt
+
+ read graph
+data loaded
+
+problem_graph/original graph: node: 40/40 edge: 84/84 dlt: 1.2137849027573164 break_avg_len: 0.6068924513786582 break_max_len: 0.9739273588152333elapsed CPU time: 0.044891 seconds
+Set parameter TokenServer to value "solice01.zib.de"
+Set parameter Threads to value 1
+Set parameter OutputFlag to value 1
+Set parameter MIPGap to value 0.0001
+Set parameter MIPGapAbs to value 1
+Set parameter TimeLimit to value 3599.955109
+formulation:LEFP0 84 40
+
+ model loaded
+
+Gurobi Optimizer version 12.0.1 build v12.0.1rc0 (linux64 - "Debian GNU/Linux 12 (bookworm)")
+
+CPU model: Intel(R) Xeon(R) Gold 5122 CPU @ 3.60GHz, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 8 physical cores, 16 logical processors, using up to 1 threads
+
+Non-default parameters:
+TimeLimit  3599.955109
+MIPGapAbs  1
+Threads  1
+
+Optimize a model with 6262 rows, 3191 columns and 18502 nonzeros
+Model fingerprint: 0xdd889a9d
+Variable types: 292 continuous, 2899 integer (2899 binary)
+Coefficient statistics:
+  Matrix range     [1e-06, 2e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [3e-01, 2e+00]
+  RHS range        [3e-01, 8e+00]
+Found heuristic solution: objective 27.0000000
+Presolve removed 1002 rows and 210 columns
+Presolve time: 0.06s
+Presolved: 5260 rows, 2981 columns, 17224 nonzeros
+Variable types: 124 continuous, 2857 integer (2857 binary)
+
+Root relaxation: objective 1.084088e+00, 1933 iterations, 0.06 seconds (0.10 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    1.08409    0  205   27.00000    1.08409  96.0%     -    0s
+H    0     0                      18.0000000    1.08409  94.0%     -    0s
+H    0     0                      12.0000000    1.08409  91.0%     -    0s
+H    0     0                      11.0000000    1.08409  90.1%     -    0s
+H    0     0                      10.0000000    1.08409  89.2%     -    0s
+     0     0    1.69689    0  207   10.00000    1.69689  83.0%     -    0s
+H    0     0                       9.0000000    1.69735  81.1%     -    0s
+H    0     0                       8.0000000    1.69735  78.8%     -    0s
+     0     0    1.92330    0  253    8.00000    1.92330  76.0%     -    0s
+     0     0    1.92338    0  254    8.00000    1.92338  76.0%     -    0s
+     0     0    2.29669    0  313    8.00000    2.29669  71.3%     -    0s
+     0     0    2.31178    0  344    8.00000    2.31178  71.1%     -    0s
+     0     0    2.31480    0  338    8.00000    2.31480  71.1%     -    0s
+     0     0    2.79405    0  309    8.00000    2.79405  65.1%     -    1s
+     0     0    2.86659    0  258    8.00000    2.86659  64.2%     -    1s
+     0     0    2.91251    0  255    8.00000    2.91251  63.6%     -    1s
+     0     0    2.91604    0  292    8.00000    2.91604  63.5%     -    1s
+     0     0    2.91635    0  303    8.00000    2.91635  63.5%     -    1s
+     0     0    3.08677    0  325    8.00000    3.08677  61.4%     -    1s
+     0     0    3.12668    0  313    8.00000    3.12668  60.9%     -    1s
+     0     0    3.12804    0  331    8.00000    3.12804  60.9%     -    1s
+     0     0    3.12804    0  331    8.00000    3.12804  60.9%     -    1s
+     0     0    3.13655    0  293    8.00000    3.13655  60.8%     -    1s
+H    0     0                       7.0000000    3.15504  54.9%     -    1s
+     0     0    3.15504    0  293    7.00000    3.15504  54.9%     -    1s
+     0     0    3.15504    0  293    7.00000    3.15504  54.9%     -    1s
+     0     0    3.15504    0  293    7.00000    3.15504  54.9%     -    1s
+     0     0    3.15504    0  242    7.00000    3.15504  54.9%     -    2s
+     0     0    3.15504    0  291    7.00000    3.15504  54.9%     -    2s
+     0     0    3.15504    0  254    7.00000    3.15504  54.9%     -    2s
+     0     0    3.15504    0  241    7.00000    3.15504  54.9%     -    2s
+     0     2    3.15663    0  238    7.00000    3.15663  54.9%     -    2s
+   385   312    3.72718    8  213    7.00000    3.37107  51.8%  92.3    5s
+   595   466    6.00000   60  251    7.00000    3.41558  51.2%  80.2   10s
+H  611   452                       6.0000000    3.65299  39.1%  78.1   15s
+   627   462    5.59474   46  285    6.00000    3.78354  36.9%  76.1   20s
+   730   483    3.88155   18  283    6.00000    3.88155  35.3%   178   25s
+   893   465    3.98146   14  267    6.00000    3.97778  33.7%   183   30s
+  1020   476    4.39286   27  180    6.00000    4.05000  32.5%   188   35s
+  1157   491    5.00000   27  111    6.00000    4.13333  31.1%   189   40s
+  1349   471    5.00000   28  164    6.00000    4.25000  29.2%   193   45s
+  1521   456    5.00000   35  118    6.00000    4.30000  28.3%   199   50s
+  1686   414    4.45080   22  188    6.00000    4.38911  26.8%   201   55s
+  1873   389    4.76579   24  189    6.00000    4.45080  25.8%   200   60s
+  2118   351    5.00000   30  101    6.00000    4.50000  25.0%   202   65s
+  2375   376    5.00000   22  125    6.00000    4.50000  25.0%   207   70s
+  2623   421     cutoff   26         6.00000    4.56818  23.9%   204   75s
+  3019   374    5.00000   29   51    6.00000    4.75000  20.8%   199   80s
+  3360   336     cutoff   28         6.00000    5.00000  16.7%   196   85s
+
+Cutting planes:
+  Gomory: 4
+  Cover: 34
+  Implied bound: 26
+  Clique: 2
+  MIR: 51
+  Mixing: 1
+  StrongCG: 4
+  Flow cover: 112
+  GUB cover: 57
+  Inf proof: 1
+  Zero half: 31
+  RLT: 14
+  Relax-and-lift: 8
+
+Explored 3616 nodes (700693 simplex iterations) in 87.34 seconds (104.89 work units)
+Thread count was 1 (of 16 available processors)
+
+Solution count 10: 6 7 7 ... 27
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 6.000000000000e+00, best bound 5.000000000000e+00, gap 16.6667%
+
+User-callback calls 29813, time in user-callback 0.04 sec
+Stat(MathOptInterface.OPTIMAL, 6.0, 5.000000000000001, 0.16666666666666652, 0.044891, 87.34476399421692, 3616, Main.CFLG.LEFP, "", #undef)

@@ -1,0 +1,48 @@
+Data path: /scratch/opt/lxu/CFLG/benchmarks/random_B
+Instance: r_40_0.2_148.txt
+Result path: /scratch/opt/lxu/CFLG/results/random_B
+Solver: Gurobi
+Time limit: 3600
+Formulation: EF
+Cover: Small
+julia --project=. src/main.jl /scratch/opt/lxu/CFLG/benchmarks/random_B r_40_0.2_148.txt /scratch/opt/lxu/CFLG/results/random_B Gurobi 3600 EF Small
+/scratch/opt/lxu/CFLG/benchmarks/random_B Gurobi 3600.0 /scratch/opt/lxu/CFLG/results/random_B r_40_0.2_148.txt EF Small
+/scratch/opt/lxu/CFLG/benchmarks/random_B/r_40_0.2_148.txt
+
+ read graph
+data loaded
+
+
+after absorb:40 40
+
+max_piece:2
+problem_graph/original graph: node: 112/40 edge: 220/148 dlt: 0.6135317218527531 break_avg_len: 0.41273952197367014 break_max_len: 0.6104192254146235elapsed CPU time: 0.060979 seconds
+Set parameter TokenServer to value "solice01.zib.de"
+Set parameter Threads to value 1
+Set parameter OutputFlag to value 1
+Set parameter MIPGap to value 0.0001
+Set parameter MIPGapAbs to value 1
+Set parameter TimeLimit to value 3599.939021
+
+ model loaded
+
+Gurobi Optimizer version 12.0.1 build v12.0.1rc0 (linux64 - "Debian GNU/Linux 12 (bookworm)")
+
+CPU model: Intel(R) Xeon(R) Gold 5122 CPU @ 3.60GHz, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 8 physical cores, 16 logical processors, using up to 1 threads
+
+Non-default parameters:
+TimeLimit  3599.939021
+MIPGapAbs  1
+Threads  1
+
+Optimize a model with 31996140 rows, 10747880 columns and 85265180 nonzeros
+Model fingerprint: 0x3a0656e7
+Variable types: 74140 continuous, 10673740 integer (10673740 binary)
+Coefficient statistics:
+  Matrix range     [3e-01, 8e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [3e-01, 6e-01]
+  RHS range        [2e-03, 8e+00]
+slurmstepd-htc-cmp443: error: Detected 1 oom_kill event in StepId=11797781.0. Some of the step tasks have been OOM Killed.
+srun: error: htc-cmp443: task 0: Out Of Memory

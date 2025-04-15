@@ -1,0 +1,103 @@
+Data path: /scratch/opt/lxu/CFLG/benchmarks/random_B
+Instance: r_25_0.1_36.txt
+Result path: /scratch/opt/lxu/CFLG/results/random_B
+Solver: Gurobi
+Time limit: 3600
+Formulation: LEFP
+Cover: Large
+julia --project=. src/main.jl /scratch/opt/lxu/CFLG/benchmarks/random_B r_25_0.1_36.txt /scratch/opt/lxu/CFLG/results/random_B Gurobi 3600 LEFP Large
+/scratch/opt/lxu/CFLG/benchmarks/random_B Gurobi 3600.0 /scratch/opt/lxu/CFLG/results/random_B r_25_0.1_36.txt LEFP Large
+/scratch/opt/lxu/CFLG/benchmarks/random_B/r_25_0.1_36.txt
+
+ read graph
+data loaded
+
+problem_graph/original graph: node: 25/25 edge: 36/36 dlt: 1.4522257607055817 break_avg_len: 0.7261128803527909 break_max_len: 0.9874679371971357elapsed CPU time: 0.028301 seconds
+Set parameter TokenServer to value "solice01.zib.de"
+Set parameter Threads to value 1
+Set parameter OutputFlag to value 1
+Set parameter MIPGap to value 0.0001
+Set parameter MIPGapAbs to value 1
+Set parameter TimeLimit to value 3599.971699
+formulation:LEFP0 36 25
+
+ model loaded
+
+Gurobi Optimizer version 12.0.1 build v12.0.1rc0 (linux64 - "Debian GNU/Linux 12 (bookworm)")
+
+CPU model: Intel(R) Xeon(R) Gold 5222 CPU @ 3.80GHz, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 8 physical cores, 16 logical processors, using up to 1 threads
+
+Non-default parameters:
+TimeLimit  3599.971699
+MIPGapAbs  1
+Threads  1
+
+Optimize a model with 1281 rows, 728 columns and 3682 nonzeros
+Model fingerprint: 0x8eb0931f
+Variable types: 133 continuous, 595 integer (595 binary)
+Coefficient statistics:
+  Matrix range     [1e-06, 2e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [3e-01, 3e+00]
+  RHS range        [3e-01, 5e+00]
+Found heuristic solution: objective 12.0000000
+Presolve removed 259 rows and 119 columns
+Presolve time: 0.04s
+Presolved: 1022 rows, 609 columns, 5399 nonzeros
+Variable types: 61 continuous, 548 integer (548 binary)
+
+Root relaxation: objective 1.747531e+00, 538 iterations, 0.01 seconds (0.01 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    1.74753    0  142   12.00000    1.74753  85.4%     -    0s
+H    0     0                      11.0000000    1.74753  84.1%     -    0s
+H    0     0                       8.0000000    1.74753  78.2%     -    0s
+     0     0    2.34996    0  173    8.00000    2.34996  70.6%     -    0s
+H    0     0                       6.0000000    2.35264  60.8%     -    0s
+     0     0    2.35264    0  165    6.00000    2.35264  60.8%     -    0s
+     0     0    2.35264    0  175    6.00000    2.35264  60.8%     -    0s
+     0     0    2.57449    0  193    6.00000    2.57449  57.1%     -    0s
+H    0     0                       5.0000000    2.58432  48.3%     -    0s
+     0     0    2.58432    0  193    5.00000    2.58432  48.3%     -    0s
+     0     0    2.69068    0  186    5.00000    2.69068  46.2%     -    0s
+     0     0    2.71418    0  192    5.00000    2.71418  45.7%     -    0s
+     0     0    2.71418    0  193    5.00000    2.71418  45.7%     -    0s
+     0     0    3.00000    0  140    5.00000    3.00000  40.0%     -    0s
+     0     0    3.00000    0  129    5.00000    3.00000  40.0%     -    0s
+     0     0    3.00000    0  115    5.00000    3.00000  40.0%     -    0s
+     0     0    3.00000    0  131    5.00000    3.00000  40.0%     -    0s
+     0     0    3.00000    0   85    5.00000    3.00000  40.0%     -    0s
+     0     0    3.00000    0   97    5.00000    3.00000  40.0%     -    0s
+     0     0    3.00000    0   72    5.00000    3.00000  40.0%     -    0s
+     0     0    3.00000    0  116    5.00000    3.00000  40.0%     -    0s
+     0     0    3.00000    0  112    5.00000    3.00000  40.0%     -    0s
+     0     0    3.00000    0  112    5.00000    3.00000  40.0%     -    0s
+     0     0    3.00000    0   78    5.00000    3.00000  40.0%     -    0s
+     0     0    3.00000    0  137    5.00000    3.00000  40.0%     -    0s
+     0     0    3.00000    0   92    5.00000    3.00000  40.0%     -    0s
+     0     0    3.00000    0   89    5.00000    3.00000  40.0%     -    0s
+     0     2    3.00000    0   63    5.00000    3.00000  40.0%     -    0s
+H  276     0                       4.0000000    3.50000  12.5%  34.2    0s
+
+Cutting planes:
+  Cover: 4
+  Implied bound: 5
+  MIR: 4
+  GUB cover: 8
+  Zero half: 1
+  RLT: 9
+  Relax-and-lift: 1
+
+Explored 277 nodes (17410 simplex iterations) in 0.95 seconds (0.81 work units)
+Thread count was 1 (of 16 available processors)
+
+Solution count 6: 4 5 6 ... 12
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 4.000000000000e+00, best bound 4.000000000000e+00, gap 0.0000%
+
+User-callback calls 1543, time in user-callback 0.00 sec
+Stat(MathOptInterface.OPTIMAL, 4.0, 4.0, 0.0, 0.028301, 0.951059103012085, 277, Main.CFLG.LEFP, "", #undef)
