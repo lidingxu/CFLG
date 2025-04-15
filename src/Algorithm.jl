@@ -303,13 +303,14 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg)
         set_optimizer_attribute(cflg, "PreCrush", 1)
         MOI.set(cflg, Gurobi.CallbackFunction(), user_cut_callback)
     end
-    print(sepatime, "\n")
+
     # objective
     @objective(cflg, Min,  sum(ye[ef_id] for ef_id in graph.edge_ids) + sum(yei[ef_id, :a] + yei[ef_id, :b] for ef_id in El))
 
     println("\n model loaded\n")
     optimize!(cflg)
     stat = Stat();
+    print("\n sepatime", sepatime, "\n")
     sol = Vector{Tuple{Symbol,Int, Float64}}();
     stat.termintaion_status = termination_status(cflg)
     stat.bound = objective_bound(cflg)
