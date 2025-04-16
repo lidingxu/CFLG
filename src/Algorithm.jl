@@ -130,6 +130,7 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg)
     is_benders = mask(formulation, MSK_ISB)
     is_cuts = mask(formulation, MSK_ISV)
     is_morecuts = mask(formulation, MSK_ISV2)
+    print("\n more cuts:", is_morecuts, "\n")
     graph = problem.prob_graph
     EIp = problem.EIp
     dlt = problem.dlt
