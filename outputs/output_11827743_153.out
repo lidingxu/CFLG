@@ -1,0 +1,103 @@
+Data path: /scratch/opt/lxu/CFLG/benchmarks/random_A
+Instance: r_15_0.3_25.txt
+Result path: /scratch/opt/lxu/CFLG/results/random_A
+Solver: Gurobi
+Time limit: 3600
+Formulation: LEFPV2
+Cover: Large
+julia --project=. src/main.jl /scratch/opt/lxu/CFLG/benchmarks/random_A r_15_0.3_25.txt /scratch/opt/lxu/CFLG/results/random_A Gurobi 3600 LEFPV2 Large
+The latest version of Julia in the `release` channel is 1.11.5+0.x64.linux.gnu. You currently have `1.11.4+0.x64.linux.gnu` installed. Run:
+
+  juliaup update
+
+in your terminal shell to install Julia 1.11.5+0.x64.linux.gnu and update the `release` channel to that version.
+/scratch/opt/lxu/CFLG/benchmarks/random_A Gurobi 3600.0 /scratch/opt/lxu/CFLG/results/random_A r_15_0.3_25.txt LEFPV2 Large
+/scratch/opt/lxu/CFLG/benchmarks/random_A/r_15_0.3_25.txt
+
+ read graph
+data loaded
+
+problem_graph/original graph: node: 15/15 edge: 25/25 dlt: 1.2163645456572976 break_avg_len: 0.6081822728286488 break_max_len: 0.9678305124544612elapsed CPU time: 0.037455 seconds
+Set parameter TokenServer to value "solice01.zib.de"
+Set parameter Threads to value 1
+Set parameter OutputFlag to value 1
+Set parameter MIPGap to value 0.0001
+Set parameter MIPGapAbs to value 1
+Set parameter TimeLimit to value 3599.962545
+formulation:LEFPV20 25 15
+Set parameter PreCrush to value 1
+
+ model loaded
+
+Gurobi Optimizer version 12.0.1 build v12.0.1rc0 (linux64 - "Debian GNU/Linux 12 (bookworm)")
+
+CPU model: Intel(R) Xeon(R) Gold 5122 CPU @ 3.60GHz, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 8 physical cores, 16 logical processors, using up to 1 threads
+
+Non-default parameters:
+TimeLimit  3599.962545
+MIPGapAbs  1
+PreCrush  1
+Threads  1
+
+Optimize a model with 1099 rows, 594 columns and 3197 nonzeros
+Model fingerprint: 0x6a84b09c
+Variable types: 90 continuous, 504 integer (504 binary)
+Coefficient statistics:
+  Matrix range     [1e-06, 2e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [3e-01, 2e+00]
+  RHS range        [3e-01, 5e+00]
+Found heuristic solution: objective 8.0000000
+Presolve removed 240 rows and 78 columns
+Presolve time: 0.05s
+Presolved: 859 rows, 516 columns, 4792 nonzeros
+Variable types: 40 continuous, 476 integer (476 binary)
+
+Root relaxation: objective 9.971514e-01, 410 iterations, 0.01 seconds (0.01 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    0.99715    0   82    8.00000    0.99715  87.5%     -    0s
+H    0     0                       6.0000000    0.99715  83.4%     -    0s
+H    0     0                       3.0000000    0.99715  66.8%     -    0s
+     0     0    1.24756    0   92    3.00000    1.24756  58.4%     -    0s
+     0     0    1.28793    0   93    3.00000    1.28793  57.1%     -    0s
+     0     0    1.31286    0  116    3.00000    1.31286  56.2%     -    0s
+     0     0    1.34425    0  103    3.00000    1.34425  55.2%     -    0s
+     0     0    1.60290    0   89    3.00000    1.60290  46.6%     -    0s
+     0     0    1.62755    0   67    3.00000    1.62755  45.7%     -    0s
+     0     0    1.72862    0   70    3.00000    1.72862  42.4%     -    0s
+     0     0    1.72862    0   94    3.00000    1.72862  42.4%     -    0s
+     0     0    1.72862    0   61    3.00000    1.72862  42.4%     -    0s
+     0     0    2.00000    0   38    3.00000    2.00000  33.3%     -    0s
+     0     0    2.00000    0   38    3.00000    2.00000  33.3%     -    0s
+     0     0    2.00000    0   39    3.00000    2.00000  33.3%     -    0s
+     0     0    2.00000    0   39    3.00000    2.00000  33.3%     -    0s
+     0     0    2.00000    0   39    3.00000    2.00000  33.3%     -    0s
+     0     2    2.00000    0   39    3.00000    2.00000  33.3%     -    0s
+
+Cutting planes:
+  Gomory: 1
+  Cover: 7
+  Implied bound: 1
+  Clique: 2
+  MIR: 2
+  StrongCG: 1
+  GUB cover: 10
+  Zero half: 2
+  BQP: 1
+
+Explored 1 nodes (2331 simplex iterations) in 0.46 seconds (0.26 work units)
+Thread count was 1 (of 16 available processors)
+
+Solution count 3: 3 6 8 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 3.000000000000e+00, best bound 3.000000000000e+00, gap 0.0000%
+
+User-callback calls 694, time in user-callback 0.87 sec
+
+ sepatime0
+Stat(MathOptInterface.OPTIMAL, 3.0, 3.0, 0.0, 0.0, 0.037455, 0.4595048427581787, 1, Main.CFLG.LEFPV2, "", #undef)

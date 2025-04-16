@@ -1,0 +1,93 @@
+Data path: /scratch/opt/lxu/CFLG/benchmarks/random_A
+Instance: r_10_0.3_12.txt
+Result path: /scratch/opt/lxu/CFLG/results/random_A
+Solver: Gurobi
+Time limit: 3600
+Formulation: LEFPV2
+Cover: Large
+julia --project=. src/main.jl /scratch/opt/lxu/CFLG/benchmarks/random_A r_10_0.3_12.txt /scratch/opt/lxu/CFLG/results/random_A Gurobi 3600 LEFPV2 Large
+The latest version of Julia in the `release` channel is 1.11.5+0.x64.linux.gnu. You currently have `1.11.4+0.x64.linux.gnu` installed. Run:
+
+  juliaup update
+
+in your terminal shell to install Julia 1.11.5+0.x64.linux.gnu and update the `release` channel to that version.
+/scratch/opt/lxu/CFLG/benchmarks/random_A Gurobi 3600.0 /scratch/opt/lxu/CFLG/results/random_A r_10_0.3_12.txt LEFPV2 Large
+/scratch/opt/lxu/CFLG/benchmarks/random_A/r_10_0.3_12.txt
+
+ read graph
+data loaded
+
+problem_graph/original graph: node: 10/10 edge: 12/12 dlt: 1.221004914463064 break_avg_len: 0.610502457231532 break_max_len: 0.9875583338039858elapsed CPU time: 0.036959 seconds
+Set parameter TokenServer to value "solice01.zib.de"
+Set parameter Threads to value 1
+Set parameter OutputFlag to value 1
+Set parameter MIPGap to value 0.0001
+Set parameter MIPGapAbs to value 1
+Set parameter TimeLimit to value 3599.963041
+formulation:LEFPV20 12 10
+Set parameter PreCrush to value 1
+
+ model loaded
+
+Gurobi Optimizer version 12.0.1 build v12.0.1rc0 (linux64 - "Debian GNU/Linux 12 (bookworm)")
+
+CPU model: Intel(R) Xeon(R) Gold 5122 CPU @ 3.60GHz, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 8 physical cores, 16 logical processors, using up to 1 threads
+
+Non-default parameters:
+TimeLimit  3599.963041
+MIPGapAbs  1
+PreCrush  1
+Threads  1
+
+Optimize a model with 344 rows, 207 columns and 970 nonzeros
+Model fingerprint: 0x0a107048
+Variable types: 46 continuous, 161 integer (161 binary)
+Coefficient statistics:
+  Matrix range     [1e-06, 2e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [3e-01, 2e+00]
+  RHS range        [3e-01, 3e+00]
+Found heuristic solution: objective 5.0000000
+Presolve removed 120 rows and 57 columns
+Presolve time: 0.03s
+Presolved: 224 rows, 150 columns, 1094 nonzeros
+Variable types: 21 continuous, 129 integer (129 binary)
+
+Root relaxation: objective 1.178490e+00, 118 iterations, 0.00 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    1.17849    0   29    5.00000    1.17849  76.4%     -    0s
+H    0     0                       4.0000000    1.17849  70.5%     -    0s
+     0     0    1.50000    0   27    4.00000    1.50000  62.5%     -    0s
+H    0     0                       3.0000000    1.50000  50.0%     -    0s
+     0     0    2.00000    0   17    3.00000    2.00000  33.3%     -    0s
+     0     0    2.00000    0   21    3.00000    2.00000  33.3%     -    0s
+     0     0    2.00000    0   15    3.00000    2.00000  33.3%     -    0s
+     0     0    2.00000    0   31    3.00000    2.00000  33.3%     -    0s
+     0     0    2.00000    0   16    3.00000    2.00000  33.3%     -    0s
+H    0     0                       2.0000000    2.00000  0.00%     -    0s
+     0     0    2.00000    0   16    2.00000    2.00000  0.00%     -    0s
+
+Cutting planes:
+  Gomory: 3
+  Cover: 5
+  MIR: 5
+  GUB cover: 1
+  RLT: 1
+  Relax-and-lift: 1
+
+Explored 1 nodes (296 simplex iterations) in 0.08 seconds (0.02 work units)
+Thread count was 1 (of 16 available processors)
+
+Solution count 4: 2 3 4 5 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 2.000000000000e+00, best bound 2.000000000000e+00, gap 0.0000%
+
+User-callback calls 688, time in user-callback 0.86 sec
+
+ sepatime0
+Stat(MathOptInterface.OPTIMAL, 2.0, 2.0, 0.0, 0.0, 0.036959, 0.08284401893615723, 1, Main.CFLG.LEFPV2, "", #undef)
