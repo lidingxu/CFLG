@@ -1,8 +1,9 @@
 instance: city_138.txt
-obj: 52.0
-bound: 46.0
-gap: 0.11538461538461539
-time: 3599.9514451026917
-preprocess_time: 0.050309
-node: 444299
+obj: 263.0
+bound: 230.0
+gap: 0.12547528517110265
+time: 3599.635700941086
+preprocess_time: 0.370903
+sepa_time: 0.0
+node: 516104
 formulation: EFP

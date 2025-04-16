@@ -1,8 +1,9 @@
 instance: r_30_0.2_75.txt
-obj: 17.0
-bound: 14.0
-gap: 0.17647058823529413
-time: 3599.9545438289642
-preprocess_time: 0.047837
-node: 75743
+obj: 129.0
+bound: 126.0
+gap: 0.023255813953488372
+time: 3599.962749004364
+preprocess_time: 0.038098
+sepa_time: 0.0
+node: 561102
 formulation: LEFPD

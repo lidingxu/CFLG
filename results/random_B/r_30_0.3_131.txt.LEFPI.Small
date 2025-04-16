@@ -1,8 +1,9 @@
 instance: r_30_0.3_131.txt
-obj: 18.0
-bound: 12.0
-gap: 0.3333333333333333
-time: 3599.934695959091
-preprocess_time: 0.068104
-node: 46540
+obj: 208.0
+bound: 203.0
+gap: 0.02403846153846154
+time: 3599.953826904297
+preprocess_time: 0.046952
+sepa_time: 0.0
+node: 679357
 formulation: LEFPI

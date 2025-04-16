@@ -1,8 +1,9 @@
 instance: city_213.txt
-obj: 77.0
-bound: 66.0
-gap: 0.14285714285714285
-time: 3599.9521827697754
-preprocess_time: 0.061211
-node: 252205
+obj: 405.0
+bound: 352.0
+gap: 0.1308641975308642
+time: 3599.479896068573
+preprocess_time: 0.546724
+sepa_time: 0.0
+node: 343687
 formulation: EFP

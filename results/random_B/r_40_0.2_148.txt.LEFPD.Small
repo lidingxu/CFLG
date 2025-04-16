@@ -1,8 +1,9 @@
 instance: r_40_0.2_148.txt
-obj: 23.0
-bound: 17.0
-gap: 0.2608695652173913
-time: 3599.9352850914
-preprocess_time: 0.067739
-node: 11922
+obj: 250.0
+bound: 244.0
+gap: 0.024
+time: 3599.9523310661316
+preprocess_time: 0.049616
+sepa_time: 0.0
+node: 150100
 formulation: LEFPD

@@ -1,8 +1,9 @@
 instance: r_30_0.4_188.txt
-obj: 18.0
-bound: 14.0
-gap: 0.2222222222222222
-time: 3599.9386880397797
-preprocess_time: 0.06997
-node: 40077
+obj: 302.0
+bound: 282.0
+gap: 0.06622516556291391
+time: 3599.575541973114
+preprocess_time: 0.437472
+sepa_time: 0.0
+node: 415052
 formulation: EFP
