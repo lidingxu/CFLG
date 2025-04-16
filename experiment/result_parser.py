@@ -10,18 +10,18 @@ import matplotlib.pyplot as plt
 min_primal_bound = 2**31
 max_dual_bound = -1
 time_limit = 3600
-algorithms  = ["EF", "EFP", "EFPI", "EFPD", "EFPV", "EFPV2", "EVFP", "LEVFP", "None"]
+algorithms  = ["LEFPI", "LEFP", "LEFPD", "LEFPV", "LEFPV2", "None"] #["EF", "EFP", "LEFP", "EVFP", "LEVFP", "None"] # ["LEFPI", "LEFP", "LEFPD", "LEFPV", "None"]
 coverages = ["Small", "Large"]
 benchmarks = ["city", "Kgroup_A", "Kgroup_B", "random_A", "random_B"]
 
 
-comp_algos = [ "EFP", "EFPD", "EFPV", "LEVFP"]
+comp_algos = ["LEFPD", "LEFPI", "LEFP", "LEFPV"]
 
 styles = ['solid', 'dashed', 'dotted', 'dashdot']
 markers = ['o', "d", "*", "X" ]
 colors = ['magenta', 'blue', 'red', 'green']
 
-algonm_map = {"EF": "EF", "EFPI" : "EF-PI",   "EVFP" : "EVF-P", "LEVFP" : "LEVF-P", "EFP":"EF-P", "EFPD": "EF-PD", "EFPV": "EF-PV1", "EFPV2": "EF-PV2"}
+algonm_map = {"EF": "EF", "LEFPI" : "EF-PLI", "LEFP" : "EF-PLB", "LEFPD": "EF-PLD", "LEFPV": "EF-PLBC", "LEFPV2": "EF-PLBC2",  "EVFP" : "EVF-PB", "LEVFP" : "EVF-PLB", "EFP":"EF-PB", "EFPD": "EF-PD", "EFPV": "EF-PV1", "EFPV2": "EF-PV2"}
 
 def parse_name(name):
     s = ""
@@ -53,6 +53,11 @@ def extractInstanceResult(file_path):
     entries["instance"] = stat_dict["instance"].split()[1]
     entries["formulation"] = stat_dict["formulation"].split()[1]
     entries["missing"] = False
+    if entries["absgap"] > 1e20 or entries["bound"] > 1e20:
+        entries["missing"] = True
+        entries["gap"] = 100
+    #print(entries, file_path)
+
     return entries
     #writer.writerow([name, algo, primal_bound, gap, total_time, pricing_time, pricing_calls, columns_gen, nodes])
 
@@ -107,11 +112,11 @@ def Stat(algo, coverage):
 
 def add(stat, entry):
     stat["solved"] += 1 if  float(entry["absgap"]) < 1.000001 else 0
-    stat["solution"] += entry["type"]
+    stat["solution"] += not entry["missing"]
     stat["total"] += 1
-    if not (entry["gap"] >= 0  and entry["gap"] <= 100):
-        pass#print(entry["gap"])
-    assert( entry["gap"] >=0  and entry["gap"] <= 100)
+    if not (entry["gap"] >= 0 and entry["gap"] <= 100):
+        print(entry["gap"])
+    assert( entry["gap"] >=0 and entry["gap"] <= 100)
     for key in sgm_keys:
         if key in entry:
             stat[key] += np.log(float(entry[key])+ shift[key])
@@ -216,7 +221,10 @@ def printtable(algorithms_, benchmarks, has_obj_):
                         if entry["instance"] == instance and entry["coverage"] == cover and entry["formulation"] == algo:
                             is_find = True
                             val = entry["obj"]
-                            entry["obj"] = val / instances_entries[(instance, cover)]["sdb_node"] * 100
+                            if entry["missing"]:
+                                entry["obj"] = 100
+                            else:
+                                entry["obj"] = val / instances_entries[(instance, cover)]["sdb_node"] * 100
                             entry["isnotfind"] = False
                             bench_entries[benchmark].append(entry)
                             detail += "&" + str(round(entry["time"]/1800,1)) + " & "  + str(round(entry["gap"],1)) + "\% & " +  str(round(entry["obj"],1)) + "\%"
@@ -226,6 +234,8 @@ def printtable(algorithms_, benchmarks, has_obj_):
                         entry["instance"] = instance
                         entry["coverage"] = cover
                         entry["obj"] = 100
+                        entry["gap"] = 100
+                        entry["missing"] = True
                         entry["isnotfind"] = True
                         bench_entries[benchmark].append(entry)
                         detail += "&" + str("-") + " & "  + str("-") + " & " +  str("-")
@@ -288,6 +298,7 @@ def printtable(algorithms_, benchmarks, has_obj_):
                 #print(algo, cover)
                 for entry in bench_entries[benchmark]:
                     if entry["formulation"] == algo and entry["coverage"] == cover:
+                        #print(entry)
                         add(stat, entry)
                         #print(entry)
                 #print(stat)
