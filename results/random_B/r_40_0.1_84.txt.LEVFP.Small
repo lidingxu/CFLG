@@ -1,9 +1,9 @@
 instance: r_40_0.1_84.txt
-obj: 146.0
-bound: 145.00000000000003
-gap: 0.006849315068492956
-time: 58.96241593360901
-preprocess_time: 0.049812
+obj: 107.0
+bound: 104.0
+gap: 0.028037383177570093
+time: 3599.9436359405518
+preprocess_time: 0.057793
 sepa_time: 0.0
-node: 18063
+node: 856534
 formulation: LEVFP

@@ -1,9 +1,9 @@
 instance: r_25_0.4_112.txt
-obj: 189.0
-bound: 185.0
-gap: 0.021164021164021163
-time: 3599.951329946518
-preprocess_time: 0.050186
+obj: 132.0
+bound: 127.0
+gap: 0.03787878787878788
+time: 3599.9366171360016
+preprocess_time: 0.065818
 sepa_time: 0.0
-node: 259047
+node: 145652
 formulation: LEFPD

@@ -1,9 +1,9 @@
 instance: city_132.txt
-obj: 255.0
-bound: 247.0
-gap: 0.03137254901960784
-time: 3599.9527790546417
-preprocess_time: 0.048635
+obj: 189.0
+bound: 185.0
+gap: 0.021164021164021163
+time: 3599.9406819343567
+preprocess_time: 0.060909
 sepa_time: 0.0
-node: 1758402
+node: 1373797
 formulation: LEFP

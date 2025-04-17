@@ -1,9 +1,9 @@
 instance: r_20_0.4_69.txt
-obj: 116.0
-bound: 109.0
-gap: 0.0603448275862069
-time: 3599.93892121315
-preprocess_time: 0.066127
-sepa_time: 0.0
-node: 102121
+obj: 81.0
+bound: 77.0
+gap: 0.04938271604938271
+time: 3599.946783065796
+preprocess_time: 0.057404
+sepa_time: 6.3659873744e-314
+node: 104344
 formulation: EVFP

@@ -1,9 +1,9 @@
 instance: r_30_0.2_75.txt
-obj: 129.0
-bound: 110.0
-gap: 0.14728682170542637
-time: 3599.931699991226
-preprocess_time: 0.072808
+obj: 95.0
+bound: 84.0
+gap: 0.11578947368421053
+time: 3599.9416761398315
+preprocess_time: 0.062578
 sepa_time: 0.0
-node: 989850
+node: 1376308
 formulation: EFP

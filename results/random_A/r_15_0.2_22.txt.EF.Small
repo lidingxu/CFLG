@@ -1,9 +1,9 @@
 instance: r_15_0.2_22.txt
-obj: 42.0
-bound: 39.0
-gap: 0.07142857142857142
-time: 3601.567032814026
-preprocess_time: 0.054403
-sepa_time: 4.0e-323
-node: 106235
+obj: 30.0
+bound: 29.000000000000004
+gap: 0.033333333333333215
+time: 921.6446998119354
+preprocess_time: 0.049833
+sepa_time: 0.0
+node: 25229
 formulation: EF

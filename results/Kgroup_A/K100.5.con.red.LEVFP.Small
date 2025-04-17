@@ -1,9 +1,9 @@
 instance: K100.5.con.red
-obj: 196.0
-bound: 194.0
-gap: 0.01020408163265306
-time: 3599.965758085251
-preprocess_time: 0.03539
+obj: 138.0
+bound: 136.00000000000006
+gap: 0.014492753623187993
+time: 3599.956773996353
+preprocess_time: 0.044748
 sepa_time: 0.0
-node: 962073
+node: 450898
 formulation: LEVFP

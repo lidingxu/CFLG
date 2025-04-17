@@ -1,9 +1,9 @@
 instance: r_15_0.4_45.txt
-obj: 74.0
-bound: 73.0
-gap: 0.013513513513513514
-time: 3599.9488220214844
-preprocess_time: 0.056099
-sepa_time: 2.1219957914e-313
-node: 147925
+obj: 53.0
+bound: 51.0
+gap: 0.03773584905660377
+time: 3599.952267885208
+preprocess_time: 0.051495
+sepa_time: 1.425981173916e-311
+node: 137425
 formulation: EVFP

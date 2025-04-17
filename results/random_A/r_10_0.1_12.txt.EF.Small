@@ -1,9 +1,9 @@
 instance: r_10_0.1_12.txt
-obj: 23.9999990291334
-bound: 23.0
-gap: 0.04166662789942234
-time: 188.01738691329956
-preprocess_time: 0.047134
-sepa_time: 6.9266466638053e-310
-node: 17172
+obj: 18.0
+bound: 17.000000000000004
+gap: 0.05555555555555536
+time: 11.9322509765625
+preprocess_time: 0.0457
+sepa_time: 0.0
+node: 1514
 formulation: EF

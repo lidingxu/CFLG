@@ -1,9 +1,9 @@
 instance: K100.10.red
-obj: 133.0
-bound: 131.0
-gap: 0.015037593984962405
-time: 3599.956577062607
-preprocess_time: 0.044252
+obj: 92.0
+bound: 89.0
+gap: 0.03260869565217391
+time: 3599.956822872162
+preprocess_time: 0.044169
 sepa_time: 0.0
-node: 1218847
+node: 1094872
 formulation: LEFPI

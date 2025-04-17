@@ -1,9 +1,9 @@
 instance: r_15_0.2_22.txt
-obj: 41.0
-bound: 38.00000000000001
-gap: 0.0731707317073169
-time: 3599.953672170639
-preprocess_time: 0.047808
+obj: 30.0
+bound: 29.000000000000004
+gap: 0.033333333333333215
+time: 68.40442419052124
+preprocess_time: 0.047165
 sepa_time: 0.0
-node: 1780410
+node: 33298
 formulation: EFP

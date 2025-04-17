@@ -1,0 +1,66 @@
+Data path: /scratch/opt/lxu/CFLG/benchmarks/Kgroup_B
+Instance: K400.2.red
+Result path: /scratch/opt/lxu/CFLG/results/Kgroup_B
+Solver: Gurobi
+Time limit: 3600
+Formulation: EF
+Cover: Small
+julia --project=. src/main.jl /scratch/opt/lxu/CFLG/benchmarks/Kgroup_B K400.2.red /scratch/opt/lxu/CFLG/results/Kgroup_B Gurobi 3600 EF Small
+The latest version of Julia in the `release` channel is 1.11.5+0.x64.linux.gnu. You currently have `1.11.4+0.x64.linux.gnu` installed. Run:
+
+  juliaup update
+
+in your terminal shell to install Julia 1.11.5+0.x64.linux.gnu and update the `release` channel to that version.
+/scratch/opt/lxu/CFLG/benchmarks/Kgroup_B Gurobi 3600.0 /scratch/opt/lxu/CFLG/results/Kgroup_B K400.2.red EF Small
+/scratch/opt/lxu/CFLG/benchmarks/Kgroup_B/K400.2.red
+
+ read graph
+data loaded
+
+
+after absorb:226 228
+
+max_piece:13
+problem_graph/original graph: node: 2628/228 edge: 3348/948 dlt: 0.07736437804667008 break_avg_len: 0.06638194705861768 break_max_len: 0.07733069558766383elapsed CPU time: 10.187182 seconds
+Set parameter TokenServer to value "solice01.zib.de"
+Set parameter Threads to value 1
+Set parameter OutputFlag to value 1
+Set parameter MIPGap to value 0.0001
+Set parameter MIPGapAbs to value 1
+Set parameter TimeLimit to value 3589.812818
+ERROR: LoadError: OutOfMemoryError()
+Stacktrace:
+  [1] GenericMemory
+    @ ./boot.jl:516 [inlined]
+  [2] new_as_memoryref
+    @ ./boot.jl:535 [inlined]
+  [3] Array
+    @ ./boot.jl:582 [inlined]
+  [4] Array
+    @ ./boot.jl:592 [inlined]
+  [5] similar
+    @ ./abstractarray.jl:868 [inlined]
+  [6] similar
+    @ ./abstractarray.jl:867 [inlined]
+  [7] _array_for
+    @ ./array.jl:676 [inlined]
+  [8] collect(itr::Base.Generator{JuMP.Containers.VectorizedProductIterator{Tuple{Vector{Int64}, Vector{Tuple{Int64, Int64}}}}, JuMP.Containers.var"#87#89"{Main.CFLG.var"#160#175"{JuMP.Model}}})
+    @ Base ./array.jl:796
+  [9] map(f::Function, A::JuMP.Containers.VectorizedProductIterator{Tuple{Vector{Int64}, Vector{Tuple{Int64, Int64}}}})
+    @ Base ./abstractarray.jl:3399
+ [10] container(f::Function, indices::JuMP.Containers.VectorizedProductIterator{Tuple{Vector{Int64}, Vector{Tuple{Int64, Int64}}}}, ::Type{JuMP.Containers.DenseAxisArray}, names::Vector{Any})
+    @ JuMP.Containers /scratch/opt/lxu/CFLG/.julia_depot/packages/JuMP/xlp0s/src/Containers/container.jl:123
+ [11] container
+    @ /scratch/opt/lxu/CFLG/.julia_depot/packages/JuMP/xlp0s/src/Containers/container.jl:75 [inlined]
+ [12] macro expansion
+    @ /scratch/opt/lxu/CFLG/.julia_depot/packages/JuMP/xlp0s/src/macros.jl:400 [inlined]
+ [13] solveEF!(problem::Problem, formulation::FormulationSet, cflg::JuMP.Model)
+    @ Main.CFLG /scratch/opt/lxu/CFLG/src/Algorithm.jl:372
+ [14] solve!(problem::Problem, solver_name::String, option::Option, formulation::String)
+    @ Main.CFLG /scratch/opt/lxu/CFLG/src/Algorithm.jl:99
+ [15] main(args::Vector{String})
+    @ Main /scratch/opt/lxu/CFLG/src/main.jl:39
+ [16] top-level scope
+    @ /scratch/opt/lxu/CFLG/src/main.jl:57
+in expression starting at /scratch/opt/lxu/CFLG/src/main.jl:57
+srun: error: htc-cmp442: task 0: Exited with exit code 1
