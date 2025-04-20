@@ -18,6 +18,7 @@ MSK_ISL =   UInt16(0b0000000100000000)   # is using long edge modeling
 MSK_ISI =   UInt16(0b0000000010000000)   # is using indicator constraint modelling
 MSK_ISC  =  UInt16(0b0000000001000000)   # is cover preprocessing
 MSK_ISB  =  UInt16(0b0000000000100000)   # is Benders decomposition
+MSK_ISL2=   UInt16(0b0000000000010000)   # is using long edge modeling
 
 @inline mask(formulation, MSK::UInt16)= ( UInt16(formulation) & MSK != MSK_ZERO )
 
@@ -40,6 +41,7 @@ MSK_ISB  =  UInt16(0b0000000000100000)   # is Benders decomposition
     LEVFP  =   MSK_ISMOD | MSK_ISP0 | MSK_ISP1 | MSK_ISL                     # long edge-vertex model big-M with processing (bound tightenning and delimited cover)
     LEFPI  =   MSK_ISMOD | MSK_ISE  | MSK_ISP0 | MSK_ISP1 | MSK_ISL | MSK_ISI                      # edge model big-M formulation with processing (bound tightenning and delimited cover) and Benders decomposition
     LEFP   =   MSK_ISMOD | MSK_ISE  | MSK_ISP0 | MSK_ISP1 | MSK_ISL                       # edge model big-M formulation with processing (bound tightenning and delimited cover) and Benders decomposition
+    LEFP2   =  MSK_ISMOD | MSK_ISE  | MSK_ISP0 | MSK_ISP1 | MSK_ISL | MSK_ISL2
     LEFPV  =   MSK_ISMOD | MSK_ISE  | MSK_ISP0 | MSK_ISP1 | MSK_ISL | MSK_ISV
     LEFPV2 =   MSK_ISMOD | MSK_ISE  | MSK_ISP0 | MSK_ISP1 | MSK_ISL | MSK_ISV2
     LEFPB  =   MSK_ISMOD | MSK_ISE  | MSK_ISP0 | MSK_ISP1 | MSK_ISB | MSK_ISL             # edge model big-M formulation with processing (bound tightenning and delimited cover) and Benders decomposition

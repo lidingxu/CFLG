@@ -29,11 +29,11 @@ function main(args)
     graph = readGraph(abs_instance)
     option = Option(time_limit)
     if cover == "Small"
-        dlt = float(0.33 * graph.avg_len)
+        dlt = float(0.25 * graph.avg_len)
     else    cover == "Large"
-        dlt = float( 3 * graph.avg_len)
+        dlt = float( 2 * graph.avg_len)
     end
-
+    #dlt = 0.12
     println("data loaded\n")
     problem = Problem(graph, dlt)
     stat = solve!(problem, solver_name, option, formulation)

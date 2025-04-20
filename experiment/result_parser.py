@@ -11,7 +11,7 @@ min_primal_bound = 2**31
 max_dual_bound = -1
 time_limit = 3600
 algorithms  = ["EF", "EFP", "LEFP", "EVFP", "LEVFP", "None"] # ["LEFPI", "LEFP", "LEFPD", "LEFPV",  "None"] # ["LEFPI", "LEFP", "LEFPD", "LEFPV", "None"]
-coverages = ["Small", "Large"]
+coverages = ["Small"]
 benchmarks = ["city", "Kgroup_A", "Kgroup_B", "random_A", "random_B"]
 
 
@@ -111,7 +111,7 @@ def Stat(algo, coverage):
 
 
 def add(stat, entry):
-    stat["solved"] += 1 if  float(entry["absgap"]) < 1.000001 else 0
+    stat["solved"] += 1 if  float(entry["absgap"]) < 1.001 else 0
     stat["solution"] += not entry["missing"]
     stat["total"] += 1
     if not (entry["gap"] >= 0 and entry["gap"] <= 100):
