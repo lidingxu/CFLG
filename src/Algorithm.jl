@@ -197,11 +197,10 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg)
         end)
     else
         # x_1 x_2 = 1 => y_12 = 1, x_1 = 0, x_2 = 0 => -1 <= y_12 <= 0, otherwise y_12 = 0
-        expres_install = Dict()
-        for ef_id_ in graph.edge_ids
-            expres_install[(ef_id_,:a)] = sum( graph.edges[ef_id].etype == :e_long && ef_id != ef_id_ ? (graph.edges[ef_id].nodes[:a] == graph.edges[ef_id_].nodes[:a] ? yei[ef_id, :a] : yei[ef_id, :b]) :  0 for ef_id in graph.adjacent_edges[graph.edges[ef_id_].nodes[:a]])
-            expres_install[(ef_id_,:b)] = sum( graph.edges[ef_id].etype == :e_long && ef_id != ef_id_ ? (graph.edges[ef_id].nodes[:a] == graph.edges[ef_id_].nodes[:b] ? yei[ef_id, :a] : yei[ef_id, :b]) :  0 for ef_id in graph.adjacent_edges[graph.edges[ef_id_].nodes[:b]])
-        end
+        @variables(cflg, begin
+            expres_install[ef_id_ in graph.edge_ids, i in ab], Bin
+        end)
+
         @constraints(cflg, begin
             [ef_id in El], yei[ef_id, :c] <= yei[ef_id, :a]
             [ef_id in El], yei[ef_id, :c] <= yei[ef_id, :b]
@@ -212,11 +211,15 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg)
             [ef_id in El], q[ef_id, :a] <= 2 * dlt * (1 - yei[ef_id, :a])  # long edge facility
             [ef_id in El], q[ef_id, :b] >= graph.edges[ef_id].length * yei[ef_id, :b] # long edge coordinate lower bound
             [v_id in Vl], sum( graph.edges[ef_id].etype == :e_long ? (graph.edges[ef_id].nodes[:a] == v_id ? yei[ef_id, :a] : yei[ef_id, :b]) :  0 for ef_id in graph.adjacent_edges[v_id]) <= 1
-            [ef_id_ in El], q[ef_id_, :a] >= (2 * dlt - problem.c_tol) * expres_install[(ef_id_,:a)]
-            [ef_id_ in El], graph.edges[ef_id_].length - q[ef_id_, :b] >= (2 * dlt - problem.c_tol) * expres_install[(ef_id_,:b)]
-            [ef_id_ in Es], ye[ef_id_] <= 2 - expres_install[(ef_id_,:a)] - expres_install[(ef_id_,:b)]
-            [ef_id_ in Es], q[ef_id_, :a] >= (graph.edges[ef_id_].length - problem.c_tol) * ( ye[ef_id_] + expres_install[(ef_id_,:a)] - 1)
-            [ef_id_ in Es], graph.edges[ef_id_].length - q[ef_id_, :b] >= (graph.edges[ef_id_].length - problem.c_tol) * ( ye[ef_id_] + expres_install[(ef_id_,:b)] - 1)
+        end)
+
+        @constraints(cflg, begin
+            [ef_id_ in graph.edge_ids, i in ab], expres_install[ef_id_, i] == sum( graph.edges[ef_id].etype == :e_long && ef_id != ef_id_ ? (graph.edges[ef_id].nodes[:a] == graph.edges[ef_id_].nodes[i] ? yei[ef_id, :a] : yei[ef_id, :b]) :  0 for ef_id in graph.adjacent_edges[graph.edges[ef_id_].nodes[i]])
+            [ef_id_ in El], q[ef_id_, :a] >= (2 * dlt - problem.c_tol) * expres_install[ef_id_,:a]
+            [ef_id_ in El], graph.edges[ef_id_].length - q[ef_id_, :b] >= (2 * dlt - problem.c_tol) * expres_install[ef_id_,:b]
+            [ef_id_ in Es], ye[ef_id_] <= 2 - expres_install[ef_id_,:a] - expres_install[ef_id_,:b]
+            [ef_id_ in Es], q[ef_id_, :a] >= (graph.edges[ef_id_].length - problem.c_tol) * ( ye[ef_id_] + expres_install[ef_id_,:a] - 1)
+            [ef_id_ in Es], graph.edges[ef_id_].length - q[ef_id_, :b] >= (graph.edges[ef_id_].length - problem.c_tol) * ( ye[ef_id_] + expres_install[ef_id_,:b] - 1)
         end)
     end
 
