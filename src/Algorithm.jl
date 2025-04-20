@@ -218,8 +218,8 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg)
             [ef_id_ in El], q[ef_id_, :a] >= (2 * dlt - problem.c_tol) * expres_install[ef_id_,:a]
             [ef_id_ in El], graph.edges[ef_id_].length - q[ef_id_, :b] >= (2 * dlt - problem.c_tol) * expres_install[ef_id_,:b]
             [ef_id_ in Es], ye[ef_id_] <= 2 - expres_install[ef_id_,:a] - expres_install[ef_id_,:b]
-            [ef_id_ in Es], q[ef_id_, :a] >= (graph.edges[ef_id_].length - problem.c_tol) * ( ye[ef_id_] + expres_install[ef_id_,:a] - 1)
-            [ef_id_ in Es], graph.edges[ef_id_].length - q[ef_id_, :b] >= (graph.edges[ef_id_].length - problem.c_tol) * ( ye[ef_id_] + expres_install[ef_id_,:b] - 1)
+            #[ef_id_ in Es], q[ef_id_, :a] >= (graph.edges[ef_id_].length - problem.c_tol) * ( ye[ef_id_] + expres_install[ef_id_,:a] - 1)
+            #[ef_id_ in Es], graph.edges[ef_id_].length - q[ef_id_, :b] >= (graph.edges[ef_id_].length - problem.c_tol) * ( ye[ef_id_] + expres_install[ef_id_,:b] - 1)
         end)
     end
 
