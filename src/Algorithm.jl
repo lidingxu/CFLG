@@ -132,7 +132,7 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg)
     is_benders = mask(formulation, MSK_ISB)
     is_cuts = mask(formulation, MSK_ISV)
     is_morecuts = mask(formulation, MSK_ISV2)
-    longedge1 = ! mask(formulation, MSK_ISL2)
+    longedge1 = false #! mask(formulation, MSK_ISL2)
     print("\n more cuts:", is_morecuts, "\n")
     graph = problem.prob_graph
     EIp = problem.EIp
@@ -218,8 +218,8 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg)
             [ef_id_ in El], q[ef_id_, :a] >= (2 * dlt - problem.c_tol) * expres_install[ef_id_,:a]
             [ef_id_ in El], graph.edges[ef_id_].length - q[ef_id_, :b] >= (2 * dlt - problem.c_tol) * expres_install[ef_id_,:b]
             [ef_id_ in Es], ye[ef_id_] <= 2 - expres_install[ef_id_,:a] - expres_install[ef_id_,:b]
-            #[ef_id_ in Es], q[ef_id_, :a] >= (graph.edges[ef_id_].length - problem.c_tol) * ( ye[ef_id_] + expres_install[ef_id_,:a] - 1)
-            #[ef_id_ in Es], graph.edges[ef_id_].length - q[ef_id_, :b] >= (graph.edges[ef_id_].length - problem.c_tol) * ( ye[ef_id_] + expres_install[ef_id_,:b] - 1)
+            [ef_id_ in Es], q[ef_id_, :a] >= (graph.edges[ef_id_].length - problem.c_tol) * ( ye[ef_id_] + expres_install[ef_id_,:a] - 1)
+            [ef_id_ in Es], graph.edges[ef_id_].length - q[ef_id_, :b] >= (graph.edges[ef_id_].length - problem.c_tol) * ( ye[ef_id_] + expres_install[ef_id_,:b] - 1)
         end)
     end
 
@@ -382,13 +382,13 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg)
     end
     if has_values(cflg)
         stat.sol_val = objective_value(cflg)
-        for ef_id in graph.edge_ids
-            print((ef_id,value(ye[ef_id])))
-        end
+        #for ef_id in graph.edge_ids
+        #    print((ef_id,value(ye[ef_id])))
+        #end
         print(stat.sol_val)
-        for ef_id in El
-            print((floor(graph.edges[ef_id].length / (2 * dlt) ), value(yei[ef_id,:a]), " ",value(yei[ef_id,:b]), value(yei[ef_id,:b]), value(q[ef_id, :a]), value(q[ef_id, :b]), value(qq[ef_id]), value(yei[ef_id, :c]) )  )
-        end
+        #for ef_id in El
+        #    print((floor(graph.edges[ef_id].length / (2 * dlt) ), value(yei[ef_id,:a]), " ",value(yei[ef_id,:b]), value(yei[ef_id,:b]), value(q[ef_id, :a]), value(q[ef_id, :b]), value(qq[ef_id]), value(yei[ef_id, :c]) )  )
+        #end
     end
     stat.formulation = formulation
 
