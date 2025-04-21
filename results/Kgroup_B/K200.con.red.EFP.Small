@@ -1,9 +1,9 @@
 instance: K200.con.red
-obj: 333.0
-bound: 294.0
-gap: 0.11711711711711711
-time: 3599.5074129104614
-preprocess_time: 0.505984
+obj: 443.0
+bound: 390.0
+gap: 0.11963882618510158
+time: 3599.553447008133
+preprocess_time: 0.466008
 sepa_time: 0.0
-node: 218962
+node: 141059
 formulation: EFP

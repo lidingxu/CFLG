@@ -1,9 +1,9 @@
 instance: city_138.txt
-obj: 192.0
-bound: 186.0
-gap: 0.03125
-time: 3599.939656019211
-preprocess_time: 0.061937
+obj: 260.0
+bound: 254.0
+gap: 0.023076923076923078
+time: 3599.941491127014
+preprocess_time: 0.060507
 sepa_time: 0.0
-node: 948155
+node: 2028616
 formulation: LEFPV

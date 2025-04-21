@@ -1,9 +1,9 @@
 instance: r_30_0.3_131.txt
-obj: 145.0
-bound: 142.0
-gap: 0.020689655172413793
-time: 3599.9405088424683
-preprocess_time: 0.061952
+obj: 208.0
+bound: 205.0
+gap: 0.014423076923076924
+time: 3599.95539188385
+preprocess_time: 0.047008
 sepa_time: 0.0
-node: 490424
+node: 616829
 formulation: LEFPV

@@ -1,9 +1,9 @@
 instance: K400.6.con.red
-obj: 1180.9999997737982
-bound: 1052.0
-gap: 0.10922946638315505
-time: 3596.607954978943
-preprocess_time: 3.413299
+obj: 1747.0
+bound: 1575.0
+gap: 0.09845449341728678
+time: 3594.2284018993378
+preprocess_time: 5.791932
 sepa_time: 0.0
-node: 2748
+node: 2815
 formulation: EVFP

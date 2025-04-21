@@ -1,9 +1,9 @@
 instance: r_25_0.4_112.txt
-obj: 126.0
-bound: 124.0
-gap: 0.015873015873015872
-time: 3599.9331998825073
-preprocess_time: 0.069281
-sepa_time: 0.0
-node: 364143
+obj: 182.0
+bound: 181.00000000000003
+gap: 0.005494505494505338
+time: 1892.4580779075623
+preprocess_time: 0.048984
+sepa_time: 5.0e-324
+node: 515256
 formulation: LEVFP

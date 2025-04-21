@@ -1,9 +1,9 @@
 instance: city_628.txt
-obj: 876.0
-bound: 841.0
-gap: 0.03995433789954338
-time: 3599.622617006302
-preprocess_time: 0.397949
+obj: 1182.0
+bound: 1145.0
+gap: 0.031302876480541454
+time: 3599.8612689971924
+preprocess_time: 0.149433
 sepa_time: 0.0
-node: 371224
+node: 506625
 formulation: LEFPV2

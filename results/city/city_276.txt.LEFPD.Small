@@ -1,9 +1,9 @@
 instance: city_276.txt
-obj: 392.0
-bound: 376.0
-gap: 0.04081632653061224
-time: 3599.9281890392303
-preprocess_time: 0.075636
+obj: 523.0
+bound: 507.0
+gap: 0.030592734225621414
+time: 3599.9326729774475
+preprocess_time: 0.072186
 sepa_time: 0.0
-node: 166715
+node: 169602
 formulation: LEFPD

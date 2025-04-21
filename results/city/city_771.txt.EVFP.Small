@@ -1,9 +1,9 @@
 instance: city_771.txt
-obj: 1108.0
-bound: 1016.0
-gap: 0.08303249097472924
-time: 3597.506092071533
-preprocess_time: 2.506299
-sepa_time: 0.0
-node: 3515
+obj: 1484.0
+bound: 1332.0
+gap: 0.10242587601078167
+time: 3596.3465201854706
+preprocess_time: 3.664492
+sepa_time: 8.4e-323
+node: 3178
 formulation: EVFP

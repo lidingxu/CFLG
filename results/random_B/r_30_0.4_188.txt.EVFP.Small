@@ -1,9 +1,9 @@
 instance: r_30_0.4_188.txt
-obj: 208.0
-bound: 200.0
-gap: 0.038461538461538464
-time: 3599.6476719379425
-preprocess_time: 0.358866
-sepa_time: 6.93695764059484e-310
-node: 20935
+obj: 299.0
+bound: 287.0
+gap: 0.04013377926421405
+time: 3599.7473380565643
+preprocess_time: 0.268079
+sepa_time: 0.0
+node: 51309
 formulation: EVFP

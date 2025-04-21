@@ -1,9 +1,9 @@
 instance: r_20_0.2_34.txt
-obj: 44.0
-bound: 43.000000000000014
-gap: 0.022727272727272405
-time: 2.667371988296509
-preprocess_time: 0.04514
+obj: 61.0
+bound: 60.00000000000001
+gap: 0.016393442622950703
+time: 1.2469890117645264
+preprocess_time: 0.045434
 sepa_time: 0.0
-node: 2532
+node: 1373
 formulation: LEFP

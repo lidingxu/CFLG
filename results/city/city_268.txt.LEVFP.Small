@@ -1,9 +1,9 @@
 instance: city_268.txt
-obj: 373.0
-bound: 362.0
-gap: 0.029490616621983913
-time: 3599.9257669448853
-preprocess_time: 0.078253
-sepa_time: 3.0e-323
-node: 630727
+obj: 505.0
+bound: 493.0
+gap: 0.023762376237623763
+time: 3599.9308240413666
+preprocess_time: 0.072684
+sepa_time: 0.0
+node: 881683
 formulation: LEVFP

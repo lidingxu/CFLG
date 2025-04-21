@@ -1,9 +1,9 @@
 instance: city_265.txt
-obj: 371.0
-bound: 343.0
-gap: 0.07547169811320754
-time: 3599.486638069153
-preprocess_time: 0.516375
-sepa_time: 0.0
-node: 4075
+obj: 499.0
+bound: 470.0
+gap: 0.05811623246492986
+time: 3599.4694368839264
+preprocess_time: 0.535693
+sepa_time: 6.907112457269e-310
+node: 3446
 formulation: EVFP

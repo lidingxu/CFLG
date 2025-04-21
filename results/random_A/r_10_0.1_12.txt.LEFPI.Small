@@ -1,9 +1,9 @@
 instance: r_10_0.1_12.txt
-obj: 18.0
-bound: 18.0
+obj: 23.0
+bound: 23.0
 gap: 0.0
-time: 0.1700291633605957
-preprocess_time: 0.044691
+time: 0.014622926712036133
+preprocess_time: 0.045197
 sepa_time: 0.0
-node: 294
+node: 1
 formulation: LEFPI

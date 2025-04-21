@@ -1,9 +1,9 @@
 instance: r_25_0.4_112.txt
-obj: 126.0
-bound: 123.0
-gap: 0.023809523809523808
-time: 3599.931797981262
-preprocess_time: 0.06912
+obj: 182.0
+bound: 181.00000000000003
+gap: 0.005494505494505338
+time: 1776.813570022583
+preprocess_time: 0.048556
 sepa_time: 0.0
-node: 582157
+node: 460367
 formulation: LEFPI

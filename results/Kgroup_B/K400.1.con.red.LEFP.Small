@@ -1,9 +1,9 @@
 instance: K400.1.con.red
-obj: 1024.0
-bound: 958.0
-gap: 0.064453125
-time: 3599.850594997406
-preprocess_time: 0.172301
+obj: 1392.0
+bound: 1338.0
+gap: 0.03879310344827586
+time: 3599.8745880126953
+preprocess_time: 0.139732
 sepa_time: 0.0
-node: 276324
+node: 275273
 formulation: LEFP
