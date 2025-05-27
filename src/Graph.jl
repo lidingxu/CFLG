@@ -92,11 +92,7 @@ mutable struct Graph
 
         # compute adjacent edges
         for node_id in 1: node_num
-            #println(typeof(adjacentEdges(graph, node_id)), typeof(graph.adjacent_edges))
             push!(graph.adjacent_edges, adjacentEdges(graph, node_id))
-            #if  length(graph.adjacent_edges[node_id]) == 1
-            #    push!(graph.leaves, node_id)
-            #end
         end
 
         # compute incident edges

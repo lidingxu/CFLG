@@ -59,6 +59,13 @@ function solve!(problem::Problem, solver_name::String, option::Option, formulati
         @assert(false)
     end
 
+
+    # solve the formulation
+    is_edge = mask(formulation, MSK_ISE)
+    is_preprocess = mask(formulation, MSK_ISP0) || mask(formulation, MSK_ISP1)
+    is_benders = mask(formulation, MSK_ISB)
+    is_long = mask(formulation, MSK_ISL)
+
     # preprocess the problem
     CPUtic()
     graph_stats = preprocess!(problem, formulation)
@@ -83,20 +90,20 @@ function solve!(problem::Problem, solver_name::String, option::Option, formulati
         end
     end
 
+    eassign = nothing
+    vassign = nothing
+    if is_edge && is_long
+        eassign, vassign = vAssign(problem, solver_name, option)
+    end
+
     preprocess_time = CPUtoc()
 
     # initialize a JuMP with the option
     cflg = initModel(solver_name, option, option.time_limit - preprocess_time)
 
-    # solve the formulation
-    is_edge = mask(formulation, MSK_ISE)
-    is_preprocess = mask(formulation, MSK_ISP0) || mask(formulation, MSK_ISP1)
-    is_benders = mask(formulation, MSK_ISB)
-    is_long = mask(formulation, MSK_ISL)
-
     if is_edge
         if is_preprocess
-            stat, sol = solveEFP!(problem, formulation, cflg)
+            stat, sol = solveEFP!(problem, formulation, cflg, eassign, vassign)
         else
             stat, sol = solveEF!(problem, formulation, cflg)
         end
@@ -117,23 +124,88 @@ function solve!(problem::Problem, solver_name::String, option::Option, formulati
     #else
     #    stat, sol = solveFPVs!(problem, formulation, cflg, Pi, is_benders)
     #end
-
     stat.preprocess_time = preprocess_time
     println(stat)
 
     return stat
+end
 
+function vAssign(problem::Problem, solver_name::String, option::Option)
+    # max assignment model
+    graph = problem.prob_graph
+    V = graph.node_ids
+    Vsingle = [v_id for v_id in graph.node_ids if length(graph.adjacent_edges[v_id]) == 1]
+    V2 = setdiff(V, Vsingle)
+    Es = [ef_id for ef_id in graph.edge_ids if graph.edges[ef_id].etype == :e_normal]
+    El = [ef_id for ef_id in graph.edge_ids if graph.edges[ef_id].etype == :e_long]
+    model = initiLPModel(solver_name, option)
+    @variables(model, begin
+        0 <= α[e in graph.edge_ids] <= 1
+        0 <= β[v in V, e in graph.adjacent_edges[v]] <= 1
+    end)
+
+    @constraints(model, begin
+        [v in Vsingle], sum(β[v,e] for e in graph.adjacent_edges[v]) == 1
+        [v in V2], sum(β[v,e] for e in graph.adjacent_edges[v]) == 0
+        [e in El], β[graph.edges[e].nodes[:a],e] + β[graph.edges[e].nodes[:b],e] - α[e] >= 0
+        [e in Es], β[graph.edges[e].nodes[:a],e] + β[graph.edges[e].nodes[:b],e] - α[e] == 0
+    end)
+
+    @objective(model, Max, sum(α[e] for e in graph.edge_ids))
+
+    optimize!(model)
+
+    if termination_status(model) == OPTIMAL
+        va = value.(α)
+        vb = value.(β)
+        # Check va is (almost) binary
+        for e in graph.edge_ids
+            val = va[e]
+            @assert isapprox(val, 0; atol=1e-6) || isapprox(val, 1; atol=1e-6)
+        end
+        # Check vb is (almost) binary
+        for v in V
+            for e in graph.adjacent_edges[v]
+                val = vb[v, e]
+                @assert isapprox(val, 0; atol=1e-6) || isapprox(val, 1; atol=1e-6)
+            end
+        end
+
+        vassign = [-1 for _ in V]
+        eassign = [[] for _ in graph.edge_ids]
+        for v in V
+            for e in graph.adjacent_edges[v]
+                val = vb[v, e]
+                if isapprox(val, 1; atol=1e-6)
+                    vassign[v] = e
+                    push!(eassign[e], v)
+                    @assert length(eassign[e]) <= 2 "edge assignment must be at most 2 nodes"
+                    @assert e in graph.edge_ids "edge must exist in graph edge ids"
+                end
+            end
+        end
+        return eassign, vassign
+    else
+        return nothing, nothing
+    end
 end
 
 # edge model disjunctive formulation (preprocessed)
-function solveEFP!(problem::Problem, formulation::FormulationSet, cflg)
+function solveEFP!(problem::Problem, formulation::FormulationSet, cflg, eassign, vassign)
     is_indicator = mask(formulation, MSK_ISI)
     is_lifted = mask(formulation, MSK_ISD)
     is_benders = mask(formulation, MSK_ISB)
     is_cuts = mask(formulation, MSK_ISV)
     is_morecuts = mask(formulation, MSK_ISV2)
-    longedge1 = false #! mask(formulation, MSK_ISL2)
-    print("\n more cuts:", is_morecuts, "\n")
+    longedge1 = mask(formulation, MSK_ISL1)
+
+    if !longedge1
+        @assert eassign !== nothing "eassign must not be nothing when longedge1 is false"
+        @assert vassign !== nothing "vassign must not be nothing when longedge1 is false"
+    end
+
+    # check if the problem is a long edge
+    print("\n more cuts:", is_morecuts, longedge1, "\n")
     graph = problem.prob_graph
     EIp = problem.EIp
     dlt = problem.dlt
@@ -141,11 +213,16 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg)
     Es = [ef_id for ef_id in graph.edge_ids if graph.edges[ef_id].etype == :e_normal]
     El = [ef_id for ef_id in graph.edge_ids if graph.edges[ef_id].etype == :e_long]
     Vs = [v_id for v_id in graph.node_ids if all(graph.edges[ef_id].etype == :e_normal for ef_id in graph.adjacent_edges[v_id])]
+    Vsingle = [v_id for v_id in graph.node_ids if length(graph.adjacent_edges[v_id]) == 1]
+    Esleaf = unique([first(graph.adjacent_edges[v_id]) for v_id in Vsingle if graph.edges[first(graph.adjacent_edges[v_id])].etype == :e_normal])
+    Elleaf = unique([first(graph.adjacent_edges[v_id]) for v_id in Vsingle if graph.edges[first(graph.adjacent_edges[v_id])].etype == :e_long])
+    print(length(Esleaf), " ", length(Elleaf), "\n")
     Vl = [v_id for v_id in graph.node_ids if any(graph.edges[ef_id].etype == :e_long for ef_id in graph.adjacent_edges[v_id])]
     #Vscomp = setdiff(graph.node_ids, Vs)
     ab = (:a, :b)
     abc = (:a, :b, :c)
     abcd = (:a, :b, :c, :d)
+    cd = (:c, :d)
     print("formulation:", formulation, length(El), " ", length(Es), " ", length(Vs), "\n")
     # variables
     @variables(cflg, begin
@@ -164,8 +241,8 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg)
         end)
     else
         @variables(cflg, begin
-            yei[ef_id in El, i in abcd], Bin # other edge facility of long edge
-            0 <= qq[ef_id in graph.edge_ids] <= 2 * dlt
+            yv[v_id in Vl], Bin # edge facility
+            yei[ef_id in El, i in cd], Bin
         end)
     end
 
@@ -187,6 +264,7 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg)
 
     if longedge1
         @constraints(cflg, begin
+            [ef_id in El], ye[ef_id] == 1 # at least one point long edge must be used
             [ef_id in El], 0 <= yei[ef_id, :b] # long edge facility
             [ef_id in El], yei[ef_id, :b] <= 1 # long edge facility
             [ef_id in El], -1 + floor(graph.edges[ef_id].length / (2 * dlt) )  <= yei[ef_id, :a]  # long edge facility
@@ -196,54 +274,74 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg)
             [ef_id in El], qq[ef_id] <= 2 * dlt * yei[ef_id, :b] # long edge coordinate upper bound
         end)
     else
+        El2 = [ef_id for ef_id in El if length(eassign[ef_id]) == 2]
+        Elfixloca = [ef_id for ef_id in El if graph.edges[ef_id].nodes[:a] in eassign[ef_id]]
+        Elfixlocb = [ef_id for ef_id in El if graph.edges[ef_id].nodes[:b] in eassign[ef_id]]
+        Elfixd = [ef_id for ef_id in El if length(eassign[ef_id]) < 2]
         # x_1 x_2 = 1 => y_12 = 1, x_1 = 0, x_2 = 0 => -1 <= y_12 <= 0, otherwise y_12 = 0
-        @variables(cflg, begin
-            expres_install[ef_id_ in graph.edge_ids, i in ab], Bin
+        @constraints(cflg, begin
+            [ef_id in El], ye[ef_id] == 1 # at least one point long edge must be used
+            [ef_id in El], yei[ef_id, :c] <= 1 - yv[graph.edges[ef_id].nodes[:a]]
+            [ef_id in El], yei[ef_id, :c] <= 1 - yv[graph.edges[ef_id].nodes[:b]]
+            #[ef_id in El], yei[ef_id, :c] >= yv[graph.edges[ef_id].nodes[:a]] +  yv[graph.edges[ef_id].nodes[:b]] - 1
+            [ef_id in El2], yei[ef_id, :d] <= yei[ef_id, :a]
+            [ef_id in El2], yei[ef_id, :d] <= yei[ef_id, :b]
+            [ef_id in El2], yei[ef_id, :d] >= yei[ef_id, :a] + yei[ef_id, :b] - 1
+            [ef_id in El], q[ef_id, :b] == q[ef_id, :a] + 2 * dlt * (floor(graph.edges[ef_id].length / (2 * dlt) ) - yei[ef_id, :c] ) + (graph.edges[ef_id].length -  2 * dlt * floor(graph.edges[ef_id].length / (2 * dlt)) ) * yei[ef_id, :d] # long edge coordinate relation
+            [ef_id in Elfixd], yei[ef_id, :d] == 0
+            [ef_id in Elfixloca], q[ef_id, :a] <= (2 * dlt + problem.c_tol) * (1 - yv[graph.edges[ef_id].nodes[:a]])  # long edge facility
+            [ef_id in Elfixlocb], graph.edges[ef_id].length - q[ef_id, :b] <=  (2 * dlt + problem.c_tol) * (1 - yv[graph.edges[ef_id].nodes[:b]])# long edge coordinate lower bound
         end)
 
+        Esfixloca = [ef_id for ef_id in Es if graph.edges[ef_id].nodes[:a] in eassign[ef_id] && graph.edges[ef_id].nodes[:a] in Vl]
+        Esfixlocb = [ef_id for ef_id in Es if graph.edges[ef_id].nodes[:b] in eassign[ef_id] && graph.edges[ef_id].nodes[:b] in Vl]
         @constraints(cflg, begin
-            [ef_id in El], yei[ef_id, :c] <= yei[ef_id, :a]
-            [ef_id in El], yei[ef_id, :c] <= yei[ef_id, :b]
-            [ef_id in El], yei[ef_id, :c] >= yei[ef_id, :a] + yei[ef_id, :b] - 1
-            [ef_id in El], yei[ef_id, :d] <= 1 - yei[ef_id, :c]
-            [ef_id in El], q[ef_id, :b] == q[ef_id, :a] + 2 * dlt * (floor(graph.edges[ef_id].length / (2 * dlt) ) - yei[ef_id, :d] ) + qq[ef_id] # long edge coordinate relation
-            [ef_id in El], qq[ef_id] <= 2 * dlt * yei[ef_id, :c]
-            [ef_id in El], q[ef_id, :a] <= 2 * dlt * (1 - yei[ef_id, :a])  # long edge facility
-            [ef_id in El], q[ef_id, :b] >= graph.edges[ef_id].length * yei[ef_id, :b] # long edge coordinate lower bound
-            [v_id in Vl], sum( graph.edges[ef_id].etype == :e_long ? (graph.edges[ef_id].nodes[:a] == v_id ? yei[ef_id, :a] : yei[ef_id, :b]) :  0 for ef_id in graph.adjacent_edges[v_id]) <= 1
+            [ef_id in Esfixloca], q[ef_id, :a] <= (graph.edges[ef_id].length + problem.c_tol) * (1 - yv[graph.edges[ef_id].nodes[:a]])  # long edge facility
+            [ef_id in Esfixlocb], graph.edges[ef_id].length - q[ef_id, :b] <=  (graph.edges[ef_id].length + problem.c_tol) * (1 - yv[graph.edges[ef_id].nodes[:b]])# long edge coordinate lower bound
         end)
 
-        @constraints(cflg, begin
-            [ef_id_ in graph.edge_ids, i in ab], expres_install[ef_id_, i] == sum( graph.edges[ef_id].etype == :e_long && ef_id != ef_id_ ? (graph.edges[ef_id].nodes[:a] == graph.edges[ef_id_].nodes[i] ? yei[ef_id, :a] : yei[ef_id, :b]) :  0 for ef_id in graph.adjacent_edges[graph.edges[ef_id_].nodes[i]])
-            [ef_id_ in El], q[ef_id_, :a] >= (2 * dlt - problem.c_tol) * expres_install[ef_id_,:a]
-            [ef_id_ in El], graph.edges[ef_id_].length - q[ef_id_, :b] >= (2 * dlt - problem.c_tol) * expres_install[ef_id_,:b]
-            [ef_id_ in Es], ye[ef_id_] <= 2 - expres_install[ef_id_,:a] - expres_install[ef_id_,:b]
-            [ef_id_ in Es], q[ef_id_, :a] >= (graph.edges[ef_id_].length - problem.c_tol) * ( ye[ef_id_] + expres_install[ef_id_,:a] - 1)
-            [ef_id_ in Es], graph.edges[ef_id_].length - q[ef_id_, :b] >= (graph.edges[ef_id_].length - problem.c_tol) * ( ye[ef_id_] + expres_install[ef_id_,:b] - 1)
-        end)
+        #valid inequalities
+        #=
+        for ef_id in []
+            na = graph.edges[ef_id].nodes[:a]
+            nb = graph.edges[ef_id].nodes[:b]
+            if length(graph.adjacent_edges[na]) == 1
+                @constraints(cflg, begin
+                    q[ef_id, :a] >= 2 * dlt - problem.c_tol
+                end)
+            elseif length(graph.adjacent_edges[nb]) == 1
+                @constraints(cflg, begin
+                    q[ef_id, :b] <= graph.edges[ef_id].length - 2 * dlt + problem.c_tol
+                end)
+            else
+                error("leaf edge must be a leaf node")
+            end
+        end
+        =#
+
     end
 
     # basic constraints
     @constraints(cflg, begin
         # bounds on variables
-        [ef_id in El],  ye[ef_id] == 1 # at least one point long edge must be used
         [ef_id in Es], q[ef_id, :a] == q[ef_id, :b]  # same coordinate in short edges
-        [ef_id in El], 0 <= q[ef_id, :a]  # leftmost coordinate in long edges
+        #[ef_id in El], 0 <= q[ef_id, :a]  # leftmost coordinate in long edges
         [ef_id in El], q[ef_id, :a] <= 2 * dlt  # leftmost coordinate in long edges
         [ef_id in El], graph.edges[ef_id].length - 2 * dlt <= q[ef_id, :b] # right coordinate in long edges
-        [ef_id in El], q[ef_id, :b] <= graph.edges[ef_id].length # right coordinate in long edges
+        #[ef_id in El], q[ef_id, :b] <= graph.edges[ef_id].length # right coordinate in long edges
         # shared constraints on complete covers
         [e_id in Es, ef_id in problem.Ec[e_id]], w[e_id] >= ye[ef_id] # complete cover by edges: open
         [e_id in Es], w[e_id] <=  sum(ye[ef_id] for ef_id in problem.Ec[e_id]) # complete cover: close
         [v_id in Vs], x[v_id] >= 1 - sum( (1 - w[e_id]) for e_id in graph.adjacent_edges[v_id])  # ajdacent non covered 2
+        [v_id in Vsingle], x[v_id] == 1
         # shared constraints on short edge covering
         [e_id in Es], (graph.edges[e_id].length *  (1+problem.cr_tol) + problem.c_tol) * (1 - w[e_id]) <= rv[graph.edges[e_id].nodes[:a]] + rv[graph.edges[e_id].nodes[:b]] # jointly complete cover condition
         # shared constraints on long edge modelling
-        [ef_id in El], q[ef_id, :a] <= rv[graph.edges[ef_id].nodes[:a]] + dlt # long edge left cover
+        [ef_id in El], q[ef_id, :a]  <= rv[graph.edges[ef_id].nodes[:a]] + dlt # long edge left cover
         [ef_id in El], graph.edges[ef_id].length - q[ef_id, :b] <= rv[graph.edges[ef_id].nodes[:b]] + dlt # long edge right cover
         # disjunctive activation constraints
         [v_id in graph.node_ids], x[v_id] + sum(ze[v_id, efi] for efi in EIp[v_id]) == 1 # big-M SOS-1 constraint
-        [v_id in graph.node_ids, efi in EIp[v_id]], ze[v_id, efi] <= ye[efi[1]] # edge activated constraint
+        [v_id in graph.node_ids, efi in EIp[v_id]], ze[v_id, efi] <= ifelse(graph.edges[efi[1]].etype == :e_long, 1, ye[efi[1]]) # edge activated constraint
     end)
 
     if is_indicator
@@ -361,7 +459,8 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg)
     if longedge1
         @objective(cflg, Min,  sum(ye[ef_id] for ef_id in graph.edge_ids) + sum(yei[ef_id, :a] + yei[ef_id, :b] for ef_id in El))
     else
-        @objective(cflg, Min,  sum(ye[ef_id] for ef_id in graph.edge_ids) + sum( floor(graph.edges[ef_id].length / (2 * dlt) ) + yei[ef_id, :c] - yei[ef_id, :d] for ef_id in El))
+        @objective(cflg, Min,  sum(ye[ef_id] for ef_id in graph.edge_ids) + sum(yv[v_id] for v_id in Vl) + sum( floor(graph.edges[ef_id].length / (2 * dlt) )
+        - yei[ef_id, :c] +  yei[ef_id, :d]  for ef_id in El))
     end
 
     println("\n model loaded\n")
@@ -386,9 +485,12 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg)
         #    print((ef_id,value(ye[ef_id])))
         #end
         print(stat.sol_val)
-        #for ef_id in El
-        #    print((floor(graph.edges[ef_id].length / (2 * dlt) ), value(yei[ef_id,:a]), " ",value(yei[ef_id,:b]), value(yei[ef_id,:b]), value(q[ef_id, :a]), value(q[ef_id, :b]), value(qq[ef_id]), value(yei[ef_id, :c]) )  )
-        #end
+        for ef_id in El
+            #print((2 * dlt, graph.edges[ef_id].length - 2 * dlt, graph.edges[ef_id].length, floor(graph.edges[ef_id].length / (2 * dlt) ) * 2 * dlt, floor(graph.edges[ef_id].length / (2 * dlt) ), " ", value(q[ef_id, :a]), value(q[ef_id, :b]), value(qq[ef_id]) )  )
+            #print((value(2 * dlt * (floor(graph.edges[ef_id].length / (2 * dlt) ) - yec[ef_id] )), value(2 * dlt * (floor(graph.edges[ef_id].length / (2 * dlt) ) - yec[ef_id] ) + qq[ef_id]), value( floor(graph.edges[ef_id].length / (2 * dlt) ) - yec[ef_id] + 1 - yv[graph.edges[ef_id].nodes[:a]] - yv[graph.edges[ef_id].nodes[:b]] ), value(yec[ef_id]), value(yv[graph.edges[ef_id].nodes[:a]]), value(yv[graph.edges[ef_id].nodes[:b]] )))
+            #print((value(yv[graph.edges[ef_id].nodes[:a]] ), value(yv[graph.edges[ef_id].nodes[:b]]) ,value(yei[ef_id, :c])))
+            #print("\n")
+        end
     end
     stat.formulation = formulation
 
@@ -703,7 +805,6 @@ function solveLEVF!(problem::Problem, formulation::FormulationSet, cflg)
         [v_id in graph.node_ids, vf_id in Vp[v_id]], rv[v_id] <=  problem.Mv[(v_id, vf_id)]  * (1 - zv[v_id, vf_id]) + problem.dltv[(v_id, vf_id)] - problem.d[lor(v_id,vf_id)] # big M on nodes
         [ef_id in Elong], yv[edges[ef_id].nodes[:a]] == 0  #valid inequalities fixing
     end)
-
 
     # long edge constraints
     @constraints(cflg,begin

@@ -18,7 +18,7 @@ MSK_ISL =   UInt16(0b0000000100000000)   # is using long edge modeling
 MSK_ISI =   UInt16(0b0000000010000000)   # is using indicator constraint modelling
 MSK_ISC  =  UInt16(0b0000000001000000)   # is cover preprocessing
 MSK_ISB  =  UInt16(0b0000000000100000)   # is Benders decomposition
-MSK_ISL2=   UInt16(0b0000000000010000)   # is using long edge modeling
+MSK_ISL1=   UInt16(0b0000000000010000)   # is using long edge modeling
 
 @inline mask(formulation, MSK::UInt16)= ( UInt16(formulation) & MSK != MSK_ZERO )
 
@@ -41,7 +41,7 @@ MSK_ISL2=   UInt16(0b0000000000010000)   # is using long edge modeling
     LEVFP  =   MSK_ISMOD | MSK_ISP0 | MSK_ISP1 | MSK_ISL                     # long edge-vertex model big-M with processing (bound tightenning and delimited cover)
     LEFPI  =   MSK_ISMOD | MSK_ISE  | MSK_ISP0 | MSK_ISP1 | MSK_ISL | MSK_ISI                      # edge model big-M formulation with processing (bound tightenning and delimited cover) and Benders decomposition
     LEFP   =   MSK_ISMOD | MSK_ISE  | MSK_ISP0 | MSK_ISP1 | MSK_ISL                       # edge model big-M formulation with processing (bound tightenning and delimited cover) and Benders decomposition
-    LEFP2   =  MSK_ISMOD | MSK_ISE  | MSK_ISP0 | MSK_ISP1 | MSK_ISL | MSK_ISL2
+    LEFP1   =  MSK_ISMOD | MSK_ISE  | MSK_ISP0 | MSK_ISP1 | MSK_ISL | MSK_ISL1
     LEFPV  =   MSK_ISMOD | MSK_ISE  | MSK_ISP0 | MSK_ISP1 | MSK_ISL | MSK_ISV
     LEFPV2 =   MSK_ISMOD | MSK_ISE  | MSK_ISP0 | MSK_ISP1 | MSK_ISL | MSK_ISV2
     LEFPB  =   MSK_ISMOD | MSK_ISE  | MSK_ISP0 | MSK_ISP1 | MSK_ISB | MSK_ISL             # edge model big-M formulation with processing (bound tightenning and delimited cover) and Benders decomposition
@@ -106,6 +106,25 @@ function try_import(name::Symbol)
     end
 end
 
+function initiLPModel(solver_name::String, option::Option)
+    # set solver
+    if solver_name == "Gurobi"
+        model = direct_model(Gurobi.Optimizer())
+        set_optimizer_attribute(model, "Threads", option.thread)
+        set_optimizer_attribute(model, "OutputFlag", option.log_level)
+    elseif solver_name == "CPLEX"
+        model = direct_model(CPLEX.Optimizer())
+        set_optimizer_attribute(model, "CPXPARAM_Threads", option.thread)
+    elseif solver_name == "GLPK"
+        model = Model(GLPK.Optimizer)
+    elseif solver_name == "SCIP"
+        model = Model(SCIP.Optimizer)
+    else
+        println("unkown solver name\n")
+        @assert(false)
+    end
+    return model
+end
 
 function initModel(solver_name::String,  option::Option, time_limit_sec)
     # set solver
