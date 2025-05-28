@@ -2,8 +2,8 @@ instance: r_30_0.2_75.txt
 obj: 4.0
 bound: 3.0000000000000004
 gap: 0.2499999999999999
-time: 42.3117151260376
-preprocess_time: 0.030716
+time: 46.76920700073242
+preprocess_time: 1.293253
 sepa_time: 0.0
 node: 1843
 formulation: LEFPI

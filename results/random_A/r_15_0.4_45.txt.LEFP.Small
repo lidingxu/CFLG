@@ -2,8 +2,8 @@ instance: r_15_0.4_45.txt
 obj: 74.0
 bound: 73.00000000000001
 gap: 0.013513513513513322
-time: 4.753565073013306
-preprocess_time: 1.341918
+time: 4.791240930557251
+preprocess_time: 1.246756
 sepa_time: 0.0
 node: 3996
 formulation: LEFP

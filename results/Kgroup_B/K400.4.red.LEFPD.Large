@@ -1,9 +1,9 @@
 instance: K400.4.red
-obj: 39.0
+obj: 38.0
 bound: 27.0
-gap: 0.3076923076923077
-time: 3599.861801147461
-preprocess_time: 0.14846
+gap: 0.2894736842105263
+time: 3598.6067821979523
+preprocess_time: 1.403435
 sepa_time: 0.0
-node: 1192
+node: 2085
 formulation: LEFPD

@@ -1,9 +1,9 @@
 instance: K200.con.red
 obj: 447.0
-bound: 436.0
-gap: 0.024608501118568233
-time: 3599.937572956085
-preprocess_time: 0.06819
+bound: 435.0
+gap: 0.026845637583892617
+time: 3599.0340480804443
+preprocess_time: 0.969117
 sepa_time: 0.0
-node: 100751
+node: 114590
 formulation: LEFPD

@@ -1,9 +1,9 @@
 instance: city_479.txt
-obj: 909.0
-bound: 889.0
-gap: 0.022002200220022004
-time: 3599.9236030578613
-preprocess_time: 0.08153
+obj: 908.0
+bound: 891.0
+gap: 0.018722466960352423
+time: 3598.6491689682007
+preprocess_time: 1.355953
 sepa_time: 0.0
-node: 849160
+node: 600195
 formulation: LEFPV

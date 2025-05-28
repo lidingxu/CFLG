@@ -1,9 +1,9 @@
 instance: r_30_0.3_131.txt
-obj: 208.9999996613521
+obj: 209.0
 bound: 200.0
-gap: 0.043062199406387634
-time: 3599.886654138565
-preprocess_time: 0.11661
+gap: 0.0430622009569378
+time: 3599.906089067459
+preprocess_time: 0.103998
 sepa_time: 0.0
-node: 30182
+node: 31086
 formulation: EVFP

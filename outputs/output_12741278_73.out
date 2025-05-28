@@ -1,0 +1,42 @@
+Data path: /scratch/opt/lxu/CFLG/benchmarks/Kgroup_A
+Instance: K100.7.red
+Result path: /scratch/opt/lxu/CFLG/results/Kgroup_A
+Solver: Gurobi
+Time limit: 3600
+Formulation: EFP
+Cover: Large
+julia --project=. src/main.jl /scratch/opt/lxu/CFLG/benchmarks/Kgroup_A K100.7.red /scratch/opt/lxu/CFLG/results/Kgroup_A Gurobi 3600 EFP Large
+The latest version of Julia in the `release` channel is 1.11.5+0.x64.linux.gnu. You currently have `1.11.4+0.x64.linux.gnu` installed. Run:
+
+  juliaup update
+
+in your terminal shell to install Julia 1.11.5+0.x64.linux.gnu and update the `release` channel to that version.
+/scratch/opt/lxu/CFLG/benchmarks/Kgroup_A Gurobi 3600.0 /scratch/opt/lxu/CFLG/results/Kgroup_A K100.7.red EFP Large
+/scratch/opt/lxu/CFLG/benchmarks/Kgroup_A/K100.7.red
+
+ read graph
+data loaded
+
+
+after absorb:25 25
+
+max_piece:2
+problem_graph/original graph: node: 37/25 edge: 105/93 dlt: 0.563171465577237 break_avg_len: 0.2494045061842049 break_max_len: 0.5533976267721434elapsed CPU time: 0.051398 seconds
+Set parameter TokenServer to value "solice01.zib.de"
+Set parameter Threads to value 1
+Set parameter OutputFlag to value 1
+Set parameter MIPGap to value 0.0001
+Set parameter MIPGapAbs to value 1
+Set parameter TimeLimit to value 3599.948602
+ERROR: LoadError: AssertionError: eassign must not be nothing when longedge1 is false
+Stacktrace:
+ [1] solveEFP!(problem::Problem, formulation::FormulationSet, cflg::JuMP.Model, eassign::Nothing, vassign::Nothing)
+   @ Main.CFLG /scratch/opt/lxu/CFLG/src/Algorithm.jl:203
+ [2] solve!(problem::Problem, solver_name::String, option::Option, formulation::String)
+   @ Main.CFLG /scratch/opt/lxu/CFLG/src/Algorithm.jl:106
+ [3] main(args::Vector{String})
+   @ Main /scratch/opt/lxu/CFLG/src/main.jl:39
+ [4] top-level scope
+   @ /scratch/opt/lxu/CFLG/src/main.jl:57
+in expression starting at /scratch/opt/lxu/CFLG/src/main.jl:57
+srun: error: htc-cmp440: task 0: Exited with exit code 1

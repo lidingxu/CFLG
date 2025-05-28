@@ -1,9 +1,9 @@
 instance: city_628.txt
-obj: 1197.0
-bound: 1086.0
-gap: 0.09273182957393483
-time: 3597.3304731845856
-preprocess_time: 2.681371
-sepa_time: 6.9488082471339e-310
-node: 3667
+obj: 1196.0
+bound: 1087.0
+gap: 0.09113712374581939
+time: 3597.247658967972
+preprocess_time: 2.762409
+sepa_time: 0.0
+node: 3710
 formulation: EVFP

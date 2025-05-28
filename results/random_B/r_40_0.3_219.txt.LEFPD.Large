@@ -2,8 +2,8 @@ instance: r_40_0.3_219.txt
 obj: 2.0
 bound: 2.0
 gap: 0.0
-time: 128.68692803382874
-preprocess_time: 0.041674
+time: 164.4909439086914
+preprocess_time: 1.35803
 sepa_time: 0.0
 node: 161
 formulation: LEFPD

@@ -1,0 +1,108 @@
+Data path: /scratch/opt/lxu/CFLG/benchmarks/random_B
+Instance: r_30_0.1_54.txt
+Result path: /scratch/opt/lxu/CFLG/results/random_B
+Solver: Gurobi
+Time limit: 3600
+Formulation: EVFP
+Cover: Large
+julia --project=. src/main.jl /scratch/opt/lxu/CFLG/benchmarks/random_B r_30_0.1_54.txt /scratch/opt/lxu/CFLG/results/random_B Gurobi 3600 EVFP Large
+The latest version of Julia in the `release` channel is 1.11.5+0.x64.linux.gnu. You currently have `1.11.4+0.x64.linux.gnu` installed. Run:
+
+  juliaup update
+
+in your terminal shell to install Julia 1.11.5+0.x64.linux.gnu and update the `release` channel to that version.
+/scratch/opt/lxu/CFLG/benchmarks/random_B Gurobi 3600.0 /scratch/opt/lxu/CFLG/results/random_B r_30_0.1_54.txt EVFP Large
+/scratch/opt/lxu/CFLG/benchmarks/random_B/r_30_0.1_54.txt
+
+ read graph
+data loaded
+
+problem_graph/original graph: node: 30/30 edge: 54/54 dlt: 1.1988431583223897 break_avg_len: 0.5994215791611949 break_max_len: 0.9919704436735612elapsed CPU time: 0.028044 seconds
+Set parameter TokenServer to value "solice01.zib.de"
+Set parameter Threads to value 1
+Set parameter OutputFlag to value 1
+Set parameter MIPGap to value 0.0001
+Set parameter MIPGapAbs to value 1
+Set parameter TimeLimit to value 3599.971956
+vertex var
+
+ model loaded
+
+Gurobi Optimizer version 12.0.1 build v12.0.1rc0 (linux64 - "Debian GNU/Linux 12 (bookworm)")
+
+CPU model: Intel(R) Xeon(R) Gold 5122 CPU @ 3.60GHz, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 8 physical cores, 16 logical processors, using up to 1 threads
+
+Non-default parameters:
+TimeLimit  3599.971956
+MIPGapAbs  1
+Threads  1
+
+Optimize a model with 3643 rows, 1626 columns and 10383 nonzeros
+Model fingerprint: 0x5c58e751
+Variable types: 84 continuous, 1542 integer (1542 binary)
+Coefficient statistics:
+  Matrix range     [1e-06, 2e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [3e-01, 1e+00]
+  RHS range        [3e-01, 5e+00]
+Found heuristic solution: objective 16.0000000
+Presolve removed 632 rows and 23 columns
+Presolve time: 0.11s
+Presolved: 3011 rows, 1603 columns, 13950 nonzeros
+Variable types: 84 continuous, 1519 integer (1511 binary)
+
+Root relaxation: objective 2.600058e+00, 1632 iterations, 0.05 seconds (0.07 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    2.60006    0  251   16.00000    2.60006  83.7%     -    0s
+H    0     0                      13.0000000    2.60006  80.0%     -    0s
+H    0     0                       9.0000000    2.60006  71.1%     -    0s
+H    0     0                       6.0000000    2.60006  56.7%     -    0s
+     0     0    2.74677    0  245    6.00000    2.74677  54.2%     -    0s
+     0     0    2.75125    0  278    6.00000    2.75125  54.1%     -    0s
+     0     0    3.00000    0  308    6.00000    3.00000  50.0%     -    0s
+     0     0    3.00000    0  262    6.00000    3.00000  50.0%     -    0s
+     0     0    3.00000    0  232    6.00000    3.00000  50.0%     -    0s
+     0     0    3.00000    0  237    6.00000    3.00000  50.0%     -    0s
+     0     0    3.00000    0  155    6.00000    3.00000  50.0%     -    1s
+     0     0    3.00000    0  160    6.00000    3.00000  50.0%     -    1s
+     0     0    3.00000    0  181    6.00000    3.00000  50.0%     -    1s
+H    0     0                       5.0000000    3.00000  40.0%     -    1s
+     0     0    3.00000    0  185    5.00000    3.00000  40.0%     -    1s
+     0     0    3.00000    0  179    5.00000    3.00000  40.0%     -    1s
+     0     0    3.00000    0  213    5.00000    3.00000  40.0%     -    1s
+     0     0    3.00000    0  147    5.00000    3.00000  40.0%     -    1s
+     0     0    3.00000    0  147    5.00000    3.00000  40.0%     -    1s
+     0     2    3.00000    0  147    5.00000    3.00000  40.0%     -    2s
+   316   143    3.47316    8  125    5.00000    3.23823  35.2%   120    5s
+  1308   260    4.00000   22  161    5.00000    4.00000  20.0%   122   10s
+
+Cutting planes:
+  Learned: 14
+  Gomory: 1
+  Cover: 95
+  Implied bound: 77
+  Clique: 35
+  MIR: 61
+  StrongCG: 4
+  Flow cover: 35
+  GUB cover: 7
+  Zero half: 10
+  RLT: 37
+  Relax-and-lift: 27
+  BQP: 16
+  PSD: 11
+
+Explored 1513 nodes (205856 simplex iterations) in 11.28 seconds (11.72 work units)
+Thread count was 1 (of 16 available processors)
+
+Solution count 5: 5 6 9 ... 16
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 5.000000000000e+00, best bound 4.000000000000e+00, gap 20.0000%
+
+User-callback calls 7200, time in user-callback 0.01 sec
+Stat(MathOptInterface.OPTIMAL, 5.0, 4.000000000000001, 0.19999999999999982, 2.54e-321, 0.028044, 11.282395124435425, 1513, Main.CFLG.EVFP, "", #undef)

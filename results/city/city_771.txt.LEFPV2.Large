@@ -1,9 +1,9 @@
 instance: city_771.txt
 obj: 117.0
-bound: 98.0
-gap: 0.1623931623931624
-time: 3599.824404001236
-preprocess_time: 0.19145
+bound: 101.0
+gap: 0.13675213675213677
+time: 3599.0064940452576
+preprocess_time: 1.004852
 sepa_time: 0.0
-node: 33590
+node: 45934
 formulation: LEFPV2

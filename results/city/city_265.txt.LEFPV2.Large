@@ -2,8 +2,8 @@ instance: city_265.txt
 obj: 38.0
 bound: 33.0
 gap: 0.13157894736842105
-time: 3599.9300780296326
-preprocess_time: 0.076089
+time: 3598.630606174469
+preprocess_time: 1.375805
 sepa_time: 0.0
-node: 71459
+node: 82308
 formulation: LEFPV2
