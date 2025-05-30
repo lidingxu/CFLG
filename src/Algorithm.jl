@@ -198,8 +198,9 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg, eassign,
     is_cuts = mask(formulation, MSK_ISV)
     is_morecuts = mask(formulation, MSK_ISV2)
     longedge1 = mask(formulation, MSK_ISL1)
+    is_long = mask(formulation, MSK_ISL)
 
-    if !longedge1
+    if !longedge1 && is_long
         @assert eassign !== nothing "eassign must not be nothing when longedge1 is false"
         @assert vassign !== nothing "vassign must not be nothing when longedge1 is false"
     end
