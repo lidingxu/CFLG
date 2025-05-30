@@ -9,9 +9,9 @@ import matplotlib.pyplot as plt
 
 min_primal_bound = 2**31
 max_dual_bound = -1
-time_limit = 3600
+time_limit = 7200
 algorithms  = ["EF", "EFP", "LEFP", "EVFP", "LEVFP", "None"] # ["LEFPI", "LEFP", "LEFPD", "LEFPV",  "None"] # ["LEFPI", "LEFP", "LEFPD", "LEFPV", "None"]
-coverages = ["Small"]
+coverages = ["Small", "Large"]
 benchmarks = ["city", "Kgroup_A", "Kgroup_B", "random_A", "random_B"]
 
 
@@ -97,7 +97,7 @@ def extractInstance(file_path):
     return entries
 
 
-defualt_entry = {"gap": 100.0, "absgap": 100.0, "time":1800, "node": 0,  "cdual": 100.0, "cprimal": 100.0, "obj": 0,  "obj_": 0, "type": 0}
+defualt_entry = {"gap": 100.0, "absgap": 100.0, "time":time_limit, "node": 0,  "cdual": 100.0, "cprimal": 100.0, "obj": 0,  "obj_": 0, "type": 0}
 
 shift = { "gap": 1.0, "time": 1.0, "solved": 0, "node": 1.0, "cdual": 1.0, "cprimal": 1.0, "obj": 1, "obj_": 1}
 sgm_keys = ["gap", "time", "node", "cdual", "cprimal", "obj", "obj_"]
@@ -227,7 +227,7 @@ def printtable(algorithms_, benchmarks, has_obj_):
                                 entry["obj"] = val / instances_entries[(instance, cover)]["sdb_node"] * 100
                             entry["isnotfind"] = False
                             bench_entries[benchmark].append(entry)
-                            detail += "&" + str(round(entry["time"]/1800,1)) + " & "  + str(round(entry["gap"],1)) + "\% & " +  str(round(entry["obj"],1)) + "\%"
+                            detail += "&" + str(round(entry["time"]/time_limit,1)) + " & "  + str(round(entry["gap"],1)) + "\% & " +  str(round(entry["obj"],1)) + "\%"
                     if not is_find:
                         entry = copy.copy(defualt_entry)
                         entry["formulation"]  = algo

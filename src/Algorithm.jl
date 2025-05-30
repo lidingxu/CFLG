@@ -198,9 +198,9 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg, eassign,
     is_cuts = mask(formulation, MSK_ISV)
     is_morecuts = mask(formulation, MSK_ISV2)
     longedge1 = mask(formulation, MSK_ISL1)
-    is_long = mask(formulation, MSK_ISL)
+    longedge = mask(formulation, MSK_ISL)
 
-    if !longedge1 && is_long
+    if !longedge1 && longedge
         @assert eassign !== nothing "eassign must not be nothing when longedge1 is false"
         @assert vassign !== nothing "vassign must not be nothing when longedge1 is false"
     end
@@ -235,16 +235,18 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg, eassign,
         ze[v_id in graph.node_ids, efi in EIp[v_id]], Bin # disjunctive indicator variable on edges
     end)
 
-    if longedge1
-        @variables(cflg, begin
-            yei[ef_id in El, i in ab], Int # other edge facility of long edge
-            0 <= qq[ef_id in graph.edge_ids] <= 2 * dlt # edge coordinate variable
-        end)
-    else
-        @variables(cflg, begin
-            yv[v_id in Vl], Bin # edge facility
-            yei[ef_id in El, i in cd], Bin
-        end)
+    if longedge
+        if longedge1
+            @variables(cflg, begin
+                yei[ef_id in El, i in ab], Int # other edge facility of long edge
+                0 <= qq[ef_id in graph.edge_ids] <= 2 * dlt # edge coordinate variable
+            end)
+        else
+            @variables(cflg, begin
+                yv[v_id in Vl], Bin # edge facility
+                yei[ef_id in El, i in cd], Bin
+            end)
+        end
     end
 
     qLBs = Dict{Tuple{Int, Symbol}, Float64}()
@@ -263,63 +265,46 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg, eassign,
         end
     end
 
-    if longedge1
-        @constraints(cflg, begin
-            [ef_id in El], ye[ef_id] == 1 # at least one point long edge must be used
-            [ef_id in El], 0 <= yei[ef_id, :b] # long edge facility
-            [ef_id in El], yei[ef_id, :b] <= 1 # long edge facility
-            [ef_id in El], -1 + floor(graph.edges[ef_id].length / (2 * dlt) )  <= yei[ef_id, :a]  # long edge facility
-            [ef_id in El], yei[ef_id, :a] <= floor(graph.edges[ef_id].length / (2 * dlt) )  # long edge facility
-            [ef_id in El], q[ef_id, :b] == q[ef_id, :a] + 2 * dlt * yei[ef_id, :a] + qq[ef_id] # long edge coordinate relation
-            [ef_id in El], q[ef_id, :b] >= graph.edges[ef_id].length * yei[ef_id, :b] # long edge coordinate lower bound
-            [ef_id in El], qq[ef_id] <= 2 * dlt * yei[ef_id, :b] # long edge coordinate upper bound
-        end)
-    else
-        El2 = [ef_id for ef_id in El if length(eassign[ef_id]) == 2]
-        Elfixloca = [ef_id for ef_id in El if graph.edges[ef_id].nodes[:a] in eassign[ef_id]]
-        Elfixlocb = [ef_id for ef_id in El if graph.edges[ef_id].nodes[:b] in eassign[ef_id]]
-        Elfixd = [ef_id for ef_id in El if length(eassign[ef_id]) < 2]
-        # x_1 x_2 = 1 => y_12 = 1, x_1 = 0, x_2 = 0 => -1 <= y_12 <= 0, otherwise y_12 = 0
-        @constraints(cflg, begin
-            [ef_id in El], ye[ef_id] == 1 # at least one point long edge must be used
-            [ef_id in El], yei[ef_id, :c] <= 1 - yv[graph.edges[ef_id].nodes[:a]]
-            [ef_id in El], yei[ef_id, :c] <= 1 - yv[graph.edges[ef_id].nodes[:b]]
-            #[ef_id in El], yei[ef_id, :c] >= yv[graph.edges[ef_id].nodes[:a]] +  yv[graph.edges[ef_id].nodes[:b]] - 1
-            [ef_id in El2], yei[ef_id, :d] <= yei[ef_id, :a]
-            [ef_id in El2], yei[ef_id, :d] <= yei[ef_id, :b]
-            [ef_id in El2], yei[ef_id, :d] >= yei[ef_id, :a] + yei[ef_id, :b] - 1
-            [ef_id in El], q[ef_id, :b] == q[ef_id, :a] + 2 * dlt * (floor(graph.edges[ef_id].length / (2 * dlt) ) - yei[ef_id, :c] ) + (graph.edges[ef_id].length -  2 * dlt * floor(graph.edges[ef_id].length / (2 * dlt)) ) * yei[ef_id, :d] # long edge coordinate relation
-            [ef_id in Elfixd], yei[ef_id, :d] == 0
-            [ef_id in Elfixloca], q[ef_id, :a] <= (2 * dlt + problem.c_tol) * (1 - yv[graph.edges[ef_id].nodes[:a]])  # long edge facility
-            [ef_id in Elfixlocb], graph.edges[ef_id].length - q[ef_id, :b] <=  (2 * dlt + problem.c_tol) * (1 - yv[graph.edges[ef_id].nodes[:b]])# long edge coordinate lower bound
-        end)
+    if longedge
+        if longedge1
+            @constraints(cflg, begin
+                [ef_id in El], ye[ef_id] == 1 # at least one point long edge must be used
+                [ef_id in El], 0 <= yei[ef_id, :b] # long edge facility
+                [ef_id in El], yei[ef_id, :b] <= 1 # long edge facility
+                [ef_id in El], -1 + floor(graph.edges[ef_id].length / (2 * dlt) )  <= yei[ef_id, :a]  # long edge facility
+                [ef_id in El], yei[ef_id, :a] <= floor(graph.edges[ef_id].length / (2 * dlt) )  # long edge facility
+                [ef_id in El], q[ef_id, :b] == q[ef_id, :a] + 2 * dlt * yei[ef_id, :a] + qq[ef_id] # long edge coordinate relation
+                [ef_id in El], q[ef_id, :b] >= graph.edges[ef_id].length * yei[ef_id, :b] # long edge coordinate lower bound
+                [ef_id in El], qq[ef_id] <= 2 * dlt * yei[ef_id, :b] # long edge coordinate upper bound
+            end)
+        else
+            El2 = [ef_id for ef_id in El if length(eassign[ef_id]) == 2]
+            Elfixloca = [ef_id for ef_id in El if graph.edges[ef_id].nodes[:a] in eassign[ef_id]]
+            Elfixlocb = [ef_id for ef_id in El if graph.edges[ef_id].nodes[:b] in eassign[ef_id]]
+            Elfixd = [ef_id for ef_id in El if length(eassign[ef_id]) < 2]
+            # x_1 x_2 = 1 => y_12 = 1, x_1 = 0, x_2 = 0 => -1 <= y_12 <= 0, otherwise y_12 = 0
+            @constraints(cflg, begin
+                [ef_id in El], ye[ef_id] == 1 # at least one point long edge must be used
+                [ef_id in El], yei[ef_id, :c] <= 1 - yv[graph.edges[ef_id].nodes[:a]]
+                [ef_id in El], yei[ef_id, :c] <= 1 - yv[graph.edges[ef_id].nodes[:b]]
+                #[ef_id in El], yei[ef_id, :c] >= yv[graph.edges[ef_id].nodes[:a]] +  yv[graph.edges[ef_id].nodes[:b]] - 1
+                [ef_id in El2], yei[ef_id, :d] <= yei[ef_id, :a]
+                [ef_id in El2], yei[ef_id, :d] <= yei[ef_id, :b]
+                [ef_id in El2], yei[ef_id, :d] >= yei[ef_id, :a] + yei[ef_id, :b] - 1
+                [ef_id in El], q[ef_id, :b] == q[ef_id, :a] + 2 * dlt * (floor(graph.edges[ef_id].length / (2 * dlt) ) - yei[ef_id, :c] ) + (graph.edges[ef_id].length -  2 * dlt * floor(graph.edges[ef_id].length / (2 * dlt)) ) * yei[ef_id, :d] # long edge coordinate relation
+                [ef_id in Elfixd], yei[ef_id, :d] == 0
+                [ef_id in Elfixloca], q[ef_id, :a] <= (2 * dlt + problem.c_tol) * (1 - yv[graph.edges[ef_id].nodes[:a]])  # long edge facility
+                [ef_id in Elfixlocb], graph.edges[ef_id].length - q[ef_id, :b] <=  (2 * dlt + problem.c_tol) * (1 - yv[graph.edges[ef_id].nodes[:b]])# long edge coordinate lower bound
+            end)
 
-        Esfixloca = [ef_id for ef_id in Es if graph.edges[ef_id].nodes[:a] in eassign[ef_id] && graph.edges[ef_id].nodes[:a] in Vl]
-        Esfixlocb = [ef_id for ef_id in Es if graph.edges[ef_id].nodes[:b] in eassign[ef_id] && graph.edges[ef_id].nodes[:b] in Vl]
-        @constraints(cflg, begin
-            [ef_id in Esfixloca], q[ef_id, :a] <= (graph.edges[ef_id].length + problem.c_tol) * (1 - yv[graph.edges[ef_id].nodes[:a]])  # long edge facility
-            [ef_id in Esfixlocb], graph.edges[ef_id].length - q[ef_id, :b] <=  (graph.edges[ef_id].length + problem.c_tol) * (1 - yv[graph.edges[ef_id].nodes[:b]])# long edge coordinate lower bound
-        end)
+            Esfixloca = [ef_id for ef_id in Es if graph.edges[ef_id].nodes[:a] in eassign[ef_id] && graph.edges[ef_id].nodes[:a] in Vl]
+            Esfixlocb = [ef_id for ef_id in Es if graph.edges[ef_id].nodes[:b] in eassign[ef_id] && graph.edges[ef_id].nodes[:b] in Vl]
+            @constraints(cflg, begin
+                [ef_id in Esfixloca], q[ef_id, :a] <= (graph.edges[ef_id].length + problem.c_tol) * (1 - yv[graph.edges[ef_id].nodes[:a]])  # long edge facility
+                [ef_id in Esfixlocb], graph.edges[ef_id].length - q[ef_id, :b] <=  (graph.edges[ef_id].length + problem.c_tol) * (1 - yv[graph.edges[ef_id].nodes[:b]])# long edge coordinate lower bound
+            end)
 
-        #valid inequalities
-        #=
-        for ef_id in []
-            na = graph.edges[ef_id].nodes[:a]
-            nb = graph.edges[ef_id].nodes[:b]
-            if length(graph.adjacent_edges[na]) == 1
-                @constraints(cflg, begin
-                    q[ef_id, :a] >= 2 * dlt - problem.c_tol
-                end)
-            elseif length(graph.adjacent_edges[nb]) == 1
-                @constraints(cflg, begin
-                    q[ef_id, :b] <= graph.edges[ef_id].length - 2 * dlt + problem.c_tol
-                end)
-            else
-                error("leaf edge must be a leaf node")
-            end
         end
-        =#
-
     end
 
     # basic constraints
@@ -457,11 +442,15 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg, eassign,
     end
 
     # objective
-    if longedge1
-        @objective(cflg, Min,  sum(ye[ef_id] for ef_id in graph.edge_ids) + sum(yei[ef_id, :a] + yei[ef_id, :b] for ef_id in El))
+    if longedge
+        if longedge1
+            @objective(cflg, Min,  sum(ye[ef_id] for ef_id in graph.edge_ids) + sum(yei[ef_id, :a] + yei[ef_id, :b] for ef_id in El))
+        else
+            @objective(cflg, Min,  sum(ye[ef_id] for ef_id in graph.edge_ids) + sum(yv[v_id] for v_id in Vl) + sum( floor(graph.edges[ef_id].length / (2 * dlt) )
+            - yei[ef_id, :c] +  yei[ef_id, :d]  for ef_id in El))
+        end
     else
-        @objective(cflg, Min,  sum(ye[ef_id] for ef_id in graph.edge_ids) + sum(yv[v_id] for v_id in Vl) + sum( floor(graph.edges[ef_id].length / (2 * dlt) )
-        - yei[ef_id, :c] +  yei[ef_id, :d]  for ef_id in El))
+        @objective(cflg, Min,  sum(ye[ef_id] for ef_id in graph.edge_ids) )
     end
 
     println("\n model loaded\n")
