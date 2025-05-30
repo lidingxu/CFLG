@@ -2,8 +2,8 @@ instance: r_40_0.4_297.txt
 obj: 467.0
 bound: 461.0
 gap: 0.01284796573875803
-time: 3599.1163449287415
-preprocess_time: 0.885395
+time: 7198.675503015518
+preprocess_time: 1.327693
 sepa_time: 0.0
-node: 1854083
+node: 3351466
 formulation: LEFPV2

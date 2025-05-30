@@ -2,8 +2,8 @@ instance: city_628.txt
 obj: 1180.999999903955
 bound: 1147.0
 gap: 0.02878916164836591
-time: 3598.6097869873047
-preprocess_time: 1.39245
+time: 7198.956521987915
+preprocess_time: 1.047875
 sepa_time: 0.0
-node: 450201
+node: 908756
 formulation: LEFPI

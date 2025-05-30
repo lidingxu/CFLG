@@ -2,8 +2,8 @@ instance: r_40_0.1_84.txt
 obj: 6.0
 bound: 5.000000000000001
 gap: 0.16666666666666652
-time: 3.0660979747772217
-preprocess_time: 0.03264
-sepa_time: 0.0
+time: 3.1222400665283203
+preprocess_time: 0.032777
+sepa_time: 5.0e-324
 node: 1
 formulation: EVFP

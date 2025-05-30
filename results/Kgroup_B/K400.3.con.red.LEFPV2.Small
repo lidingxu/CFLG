@@ -1,9 +1,9 @@
 instance: K400.3.con.red
-obj: 1338.0
+obj: 1337.0
 bound: 1302.0
-gap: 0.026905829596412557
-time: 3598.6247828006744
-preprocess_time: 1.385146
+gap: 0.02617801047120419
+time: 7198.959863185883
+preprocess_time: 1.045155
 sepa_time: 0.0
-node: 186142
+node: 424460
 formulation: LEFPV2

@@ -2,8 +2,8 @@ instance: r_25_0.3_98.txt
 obj: 165.0
 bound: 158.0
 gap: 0.04242424242424243
-time: 3599.8717200756073
-preprocess_time: 0.132743
-sepa_time: 0.0
-node: 106728
+time: 7199.928027868271
+preprocess_time: 0.079692
+sepa_time: 6.92894926539983e-310
+node: 231032
 formulation: EVFP

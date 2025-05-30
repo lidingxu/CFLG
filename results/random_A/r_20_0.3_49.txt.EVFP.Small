@@ -2,8 +2,8 @@ instance: r_20_0.3_49.txt
 obj: 84.0
 bound: 81.0
 gap: 0.03571428571428571
-time: 3599.951506137848
-preprocess_time: 0.052561
-sepa_time: 6.9050507186491e-310
-node: 130511
+time: 7199.965193033218
+preprocess_time: 0.036924
+sepa_time: 0.0
+node: 302760
 formulation: EVFP

@@ -2,8 +2,8 @@ instance: r_40_0.3_219.txt
 obj: 349.0
 bound: 344.0
 gap: 0.014326647564469915
-time: 3598.536125898361
-preprocess_time: 1.464668
+time: 7198.693865060806
+preprocess_time: 1.306862
 sepa_time: 0.0
-node: 358262
+node: 713324
 formulation: LEFPI

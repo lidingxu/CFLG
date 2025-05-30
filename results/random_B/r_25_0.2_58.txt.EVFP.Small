@@ -2,8 +2,8 @@ instance: r_25_0.2_58.txt
 obj: 99.0
 bound: 95.0
 gap: 0.04040404040404041
-time: 3599.951901912689
-preprocess_time: 0.052416
-sepa_time: 5.0e-324
-node: 99470
+time: 7199.950343847275
+preprocess_time: 0.053446
+sepa_time: 0.0
+node: 196853
 formulation: EVFP

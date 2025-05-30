@@ -2,8 +2,8 @@ instance: r_40_0.3_219.txt
 obj: 349.0
 bound: 344.0
 gap: 0.014326647564469915
-time: 3598.9800431728363
-preprocess_time: 1.021722
+time: 7198.659381866455
+preprocess_time: 1.343229
 sepa_time: 0.0
-node: 352878
+node: 692328
 formulation: LEFP

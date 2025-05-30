@@ -1,9 +1,9 @@
 instance: K400.7.con.red
-obj: 1420.0
-bound: 1386.0
-gap: 0.023943661971830985
-time: 3599.8828859329224
-preprocess_time: 0.128368
-sepa_time: 6.0e-323
-node: 52839
+obj: 1419.0
+bound: 1387.0
+gap: 0.02255109231853418
+time: 7199.819876909256
+preprocess_time: 0.191179
+sepa_time: 0.0
+node: 157766
 formulation: LEVFP

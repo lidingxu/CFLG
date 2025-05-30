@@ -1,9 +1,9 @@
 instance: city_479.txt
-obj: 919.0
-bound: 845.0
-gap: 0.08052230685527748
-time: 3598.38125705719
-preprocess_time: 1.626295
-sepa_time: 0.0
-node: 3993
+obj: 916.0
+bound: 853.0
+gap: 0.06877729257641921
+time: 7198.446131944656
+preprocess_time: 1.619004
+sepa_time: 6.9034130448757e-310
+node: 11713
 formulation: EVFP

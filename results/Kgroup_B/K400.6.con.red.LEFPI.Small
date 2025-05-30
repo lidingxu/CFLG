@@ -2,8 +2,8 @@ instance: K400.6.con.red
 obj: 1720.0
 bound: 1678.0
 gap: 0.02441860465116279
-time: 3598.5925810337067
-preprocess_time: 1.413032
+time: 7198.58837389946
+preprocess_time: 1.416684
 sepa_time: 0.0
-node: 129358
+node: 283055
 formulation: LEFPI

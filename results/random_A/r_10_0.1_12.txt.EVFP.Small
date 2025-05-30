@@ -2,8 +2,8 @@ instance: r_10_0.1_12.txt
 obj: 23.0
 bound: 22.000000000000004
 gap: 0.043478260869565064
-time: 31.3923978805542
-preprocess_time: 0.027244
+time: 36.04576516151428
+preprocess_time: 0.037456
 sepa_time: 0.0
 node: 10281
 formulation: EVFP
