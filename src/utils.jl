@@ -133,13 +133,13 @@ function initModel(solver_name::String,  option::Option, time_limit_sec)
         set_optimizer_attribute(model, "Threads", option.thread)
         set_optimizer_attribute(model, "OutputFlag", option.log_level)
         set_optimizer_attribute(model, "MIPGap", option.rel_gap)
-        set_optimizer_attribute(model, "MIPGapAbs", 1)
+        set_optimizer_attribute(model, "MIPGapAbs", 1 - 2e-6) # Gurobi does not support absolute gap, so set it to a large value
         set_optimizer_attribute(model, "TimeLimit", time_limit_sec) # note Gurobi only supports wall-clock time
     elseif solver_name == "CPLEX"
         model = direct_model(CPLEX.Optimizer())
         set_optimizer_attribute(model, "CPXPARAM_Threads", option.thread)
         set_optimizer_attribute(model, "CPXPARAM_MIP_Tolerances_MIPGap", option.rel_gap)
-        set_optimizer_attribute(model, "CPXPARAM_MIP_Tolerances_AbsMIPGap", 1)
+        set_optimizer_attribute(model, "CPXPARAM_MIP_Tolerances_AbsMIPGap",  1 - 2e-6))
         set_optimizer_attribute(model, "CPXPARAM_ClockType", 1) # CPU clock time
         set_optimizer_attribute(model, "CPXPARAM_TimeLimit", time_limit_sec)
     elseif solver_name == "GLPK"

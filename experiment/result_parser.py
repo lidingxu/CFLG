@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 min_primal_bound = 2**31
 max_dual_bound = -1
 time_limit = 7200
-algorithms  = ["EF", "EFP", "LEFP", "EVFP", "LEVFP", "None"] # ["LEFPI", "LEFP", "LEFPD", "LEFPV",  "None"] # ["LEFPI", "LEFP", "LEFPD", "LEFPV", "None"]
+algorithms  = ["LEFP", "LEFPI", "LEFPD", "LEFPV", "LEFPV2", "None"] # ["LEFPI", "LEFP", "LEFPD", "LEFPV",  "None"] # ["LEFPI", "LEFP", "LEFPD", "LEFPV", "None"]
 coverages = ["Small", "Large"]
 benchmarks = ["city", "Kgroup_A", "Kgroup_B", "random_A", "random_B"]
 
@@ -111,7 +111,7 @@ def Stat(algo, coverage):
 
 
 def add(stat, entry):
-    stat["solved"] += 1 if  float(entry["absgap"]) < 1.001 else 0
+    stat["solved"] += 1 if  float(entry["absgap"]) < 0.9999999 else 0
     stat["solution"] += not entry["missing"]
     stat["total"] += 1
     if not (entry["gap"] >= 0 and entry["gap"] <= 100):
@@ -298,10 +298,10 @@ def printtable(algorithms_, benchmarks, has_obj_):
                 #print(algo, cover)
                 for entry in bench_entries[benchmark]:
                     if entry["formulation"] == algo and entry["coverage"] == cover:
-                        #print(entry)
+                        #print(entry["time"], entry["absgap"], entry["obj"], entry["bound"])
                         add(stat, entry)
                         #print(entry)
-                #print(stat)
+                #print(algo, stat)
                 display = avgStat(stat)
                 #print(display)
                 benchdict[(benchmark, cover, algo)] = gettab(stat, False if cover == "Small" else True)
