@@ -1,9 +1,9 @@
 instance: r_20_0.2_34.txt
 obj: 3.0
-bound: 2.0000000000000004
-gap: 0.3333333333333332
-time: 1.2807130813598633
-preprocess_time: 1.345
+bound: 3.0
+gap: 0.0
+time: 1.059000015258789
+preprocess_time: 0.992168
 sepa_time: 0.0
-node: 86
+node: 89
 formulation: LEFPI

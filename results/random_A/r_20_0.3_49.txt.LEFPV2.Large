@@ -1,9 +1,9 @@
 instance: r_20_0.3_49.txt
 obj: 2.0
-bound: 1.0000000000000002
-gap: 0.4999999999999999
-time: 1.3757438659667969
-preprocess_time: 1.196259
+bound: 2.0
+gap: 0.0
+time: 2.2723140716552734
+preprocess_time: 0.967741
 sepa_time: 0.0
-node: 1
+node: 3
 formulation: LEFPV2

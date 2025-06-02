@@ -1,9 +1,9 @@
 instance: r_15_0.4_45.txt
 obj: 76.0
-bound: 75.00000000000001
-gap: 0.013157894736841919
-time: 41.58236289024353
-preprocess_time: 1.245662
+bound: 75.0000024632011
+gap: 0.013157862326301327
+time: 39.44857907295227
+preprocess_time: 0.968492
 sepa_time: 0.0
-node: 20908
+node: 21057
 formulation: LEFPD

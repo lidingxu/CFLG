@@ -2,8 +2,8 @@ instance: r_40_0.4_297.txt
 obj: 481.0
 bound: 475.0
 gap: 0.012474012474012475
-time: 7198.757204055786
-preprocess_time: 1.246549
+time: 7199.00029706955
+preprocess_time: 1.002325
 sepa_time: 0.0
-node: 150047
+node: 150769
 formulation: LEFPD

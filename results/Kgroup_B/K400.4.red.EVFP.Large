@@ -2,8 +2,8 @@ instance: K400.4.red
 obj: 36.0
 bound: 27.0
 gap: 0.25
-time: 7199.904148101807
-preprocess_time: 0.137772
+time: 7199.903901100159
+preprocess_time: 0.102193
 sepa_time: 0.0
-node: 1566
+node: 1885
 formulation: EVFP

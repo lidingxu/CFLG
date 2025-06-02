@@ -2,8 +2,8 @@ instance: city_268.txt
 obj: 39.0
 bound: 33.0
 gap: 0.15384615384615385
-time: 7199.953956127167
-preprocess_time: 0.049489
+time: 7199.949985027313
+preprocess_time: 0.053385
 sepa_time: 0.0
-node: 188869
+node: 191072
 formulation: EFP

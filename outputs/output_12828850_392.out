@@ -1,0 +1,109 @@
+Data path: /scratch/opt/lxu/CFLG/benchmarks/random_A
+Instance: r_15_0.4_45.txt
+Result path: /scratch/opt/lxu/CFLG/results/random_A
+Solver: Gurobi
+Time limit: 7200
+Formulation: EF
+Cover: Large
+julia --project=. src/main.jl /scratch/opt/lxu/CFLG/benchmarks/random_A r_15_0.4_45.txt /scratch/opt/lxu/CFLG/results/random_A Gurobi 7200 EF Large
+The latest version of Julia in the `release` channel is 1.11.5+0.x64.linux.gnu. You currently have `1.11.4+0.x64.linux.gnu` installed. Run:
+
+  juliaup update
+
+in your terminal shell to install Julia 1.11.5+0.x64.linux.gnu and update the `release` channel to that version.
+/scratch/opt/lxu/CFLG/benchmarks/random_A Gurobi 7200.0 /scratch/opt/lxu/CFLG/results/random_A r_15_0.4_45.txt EF Large
+/scratch/opt/lxu/CFLG/benchmarks/random_A/r_15_0.4_45.txt
+
+ read graph
+data loaded
+
+problem_graph/original graph: node: 15/15 edge: 45/45 dlt: 1.3498912760798591 break_avg_len: 0.6749456380399296 break_max_len: 0.9953368121261363elapsed CPU time: 0.011798 seconds
+Set parameter TokenServer to value "solice01.zib.de"
+Set parameter Threads to value 1
+Set parameter OutputFlag to value 1
+Set parameter MIPGap to value 0.0001
+Set parameter MIPGapAbs to value 0.999998
+Set parameter TimeLimit to value 7199.988202
+
+ model loaded
+
+Gurobi Optimizer version 12.0.1 build v12.0.1rc0 (linux64 - "Debian GNU/Linux 12 (bookworm)")
+
+CPU model: Intel(R) Xeon(R) Gold 5222 CPU @ 3.80GHz, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 8 physical cores, 16 logical processors, using up to 1 threads
+
+Non-default parameters:
+TimeLimit  7199.988202
+MIPGapAbs  0.999998
+Threads  1
+
+Optimize a model with 272745 rows, 93240 columns and 725670 nonzeros
+Model fingerprint: 0x890d740f
+Variable types: 2070 continuous, 91170 integer (91170 binary)
+Coefficient statistics:
+  Matrix range     [3e-01, 9e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [3e-01, 1e+00]
+  RHS range        [1e-03, 9e+00]
+Presolve removed 24773 rows and 3066 columns (presolve time = 5s)...
+Presolve removed 24773 rows and 3066 columns (presolve time = 10s)...
+Presolve removed 24773 rows and 3066 columns (presolve time = 15s)...
+Presolve removed 24773 rows and 3066 columns (presolve time = 20s)...
+Presolve removed 24773 rows and 3066 columns (presolve time = 25s)...
+Presolve removed 24773 rows and 3066 columns (presolve time = 30s)...
+Presolve removed 24773 rows and 3066 columns (presolve time = 35s)...
+Presolve removed 24773 rows and 3066 columns (presolve time = 40s)...
+Presolve removed 24773 rows and 6686 columns (presolve time = 48s)...
+Presolve removed 39070 rows and 7192 columns
+Presolve time: 49.79s
+Presolved: 233675 rows, 86048 columns, 615362 nonzeros
+Variable types: 520 continuous, 85528 integer (85528 binary)
+Found heuristic solution: objective 44.0000000
+Found heuristic solution: objective 43.0000000
+Root relaxation presolved: 233607 rows, 85980 columns, 615158 nonzeros
+
+
+Root simplex log...
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    0.0000000e+00   3.173573e+02   0.000000e+00     52s
+   22898    9.9934749e-05   9.317154e+01   0.000000e+00     55s
+   41348    1.5652681e-04   9.378764e+01   0.000000e+00     61s
+   53613    1.9386076e-04   9.355467e+01   0.000000e+00     65s
+   62541    2.8165323e-02   4.824477e+01   0.000000e+00     70s
+   64001    3.1706688e-02   3.064792e+01   0.000000e+00     76s
+   65091    3.1961417e-02   4.845685e+01   0.000000e+00     80s
+   66311    3.2167038e-02   9.639748e+00   0.000000e+00     85s
+   70519    3.2267276e-02   2.591153e+00   0.000000e+00     90s
+   75964    3.2300107e-02   2.763639e+00   0.000000e+00     95s
+   82489    3.2335565e-02   1.835218e-01   0.000000e+00    100s
+   86455    3.2214119e-02   0.000000e+00   0.000000e+00    104s
+   86455    3.2214119e-02   0.000000e+00   0.000000e+00    104s
+
+Root relaxation: objective 3.221412e-02, 86455 iterations, 53.42 seconds (57.83 work units)
+Total elapsed time = 183.38s (DegenMoves)
+Total elapsed time = 195.16s (DegenMoves)
+Total elapsed time = 206.98s (DegenMoves)
+Total elapsed time = 219.18s (DegenMoves)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    0.03221    0 61006   43.00000    0.03221   100%     -  312s
+     0     0    0.03227    0 61158   43.00000    0.03227   100%     -  323s
+H    0     0                       7.0000000    0.03227   100%     -  323s
+H    0     0                       4.0000000    0.03227  99.2%     -  325s
+H    0     0                       3.0000000    0.03227  98.9%     -  325s
+H    0     0                       2.0000000    0.03227  98.4%     -  327s
+     0     0    0.03227    0 61158    2.00000    0.03227  98.4%     -  327s
+
+Explored 1 nodes (447178 simplex iterations) in 327.33 seconds (275.05 work units)
+Thread count was 1 (of 16 available processors)
+
+Solution count 6: 2 3 4 ... 44
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 2.000000000000e+00, best bound 2.000000000000e+00, gap 0.0000%
+
+User-callback calls 18591, time in user-callback 0.08 sec
+Stat(MathOptInterface.OPTIMAL, 2.0, 2.0, 0.0, -0.8881391621473558, 0.011798, 327.3309030532837, 1, Main.CFLG.EF, "", #undef)

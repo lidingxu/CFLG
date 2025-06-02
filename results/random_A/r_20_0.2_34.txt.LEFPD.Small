@@ -1,9 +1,9 @@
 instance: r_20_0.2_34.txt
 obj: 63.0
-bound: 62.00000000000001
-gap: 0.01587301587301576
-time: 2.131783962249756
-preprocess_time: 1.278528
+bound: 63.0
+gap: 0.0
+time: 2.171286106109619
+preprocess_time: 1.228034
 sepa_time: 0.0
-node: 1705
+node: 1730
 formulation: LEFPD

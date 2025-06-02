@@ -139,7 +139,7 @@ function initModel(solver_name::String,  option::Option, time_limit_sec)
         model = direct_model(CPLEX.Optimizer())
         set_optimizer_attribute(model, "CPXPARAM_Threads", option.thread)
         set_optimizer_attribute(model, "CPXPARAM_MIP_Tolerances_MIPGap", option.rel_gap)
-        set_optimizer_attribute(model, "CPXPARAM_MIP_Tolerances_AbsMIPGap",  1 - 2e-6))
+        set_optimizer_attribute(model, "CPXPARAM_MIP_Tolerances_AbsMIPGap",  1 - 2e-6)
         set_optimizer_attribute(model, "CPXPARAM_ClockType", 1) # CPU clock time
         set_optimizer_attribute(model, "CPXPARAM_TimeLimit", time_limit_sec)
     elseif solver_name == "GLPK"

@@ -2,8 +2,8 @@ instance: K200.con.red
 obj: 438.0
 bound: 426.0
 gap: 0.0273972602739726
-time: 7199.092456817627
-preprocess_time: 0.909801
+time: 7198.663069009781
+preprocess_time: 1.340711
 sepa_time: 0.0
-node: 725198
+node: 669926
 formulation: LEFPV2

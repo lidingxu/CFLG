@@ -1,9 +1,9 @@
 instance: K100.6.red
 obj: 4.0
-bound: 3.0000000000000004
-gap: 0.2499999999999999
-time: 3.9574670791625977
-preprocess_time: 1.28449
+bound: 4.0
+gap: 0.0
+time: 3.5340280532836914
+preprocess_time: 0.866362
 sepa_time: 0.0
-node: 646
+node: 675
 formulation: LEFP

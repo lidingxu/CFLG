@@ -1,9 +1,9 @@
 instance: r_15_0.3_25.txt
 obj: 46.0
-bound: 45.00000000000001
-gap: 0.021739130434782455
-time: 0.5569930076599121
-preprocess_time: 0.9772
+bound: 46.0
+gap: 0.0
+time: 0.5564758777618408
+preprocess_time: 1.21645
 sepa_time: 0.0
-node: 1522
+node: 1545
 formulation: LEFPV

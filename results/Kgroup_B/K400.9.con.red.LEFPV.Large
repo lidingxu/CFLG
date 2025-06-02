@@ -2,8 +2,8 @@ instance: K400.9.con.red
 obj: 44.0
 bound: 32.0
 gap: 0.2727272727272727
-time: 7198.688824892044
-preprocess_time: 1.417041
+time: 7198.961952924728
+preprocess_time: 1.044503
 sepa_time: 0.0
-node: 10290
+node: 10355
 formulation: LEFPV

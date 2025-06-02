@@ -2,8 +2,8 @@ instance: r_30_0.3_131.txt
 obj: 216.0
 bound: 212.0
 gap: 0.018518518518518517
-time: 7198.759694814682
-preprocess_time: 1.242105
+time: 7198.99570608139
+preprocess_time: 1.005412
 sepa_time: 0.0
-node: 625685
+node: 635811
 formulation: LEFPD

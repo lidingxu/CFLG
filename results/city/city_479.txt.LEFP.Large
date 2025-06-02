@@ -2,8 +2,8 @@ instance: city_479.txt
 obj: 77.0
 bound: 72.0
 gap: 0.06493506493506493
-time: 7198.645977020264
-preprocess_time: 1.366307
+time: 7199.059747934341
+preprocess_time: 0.958699
 sepa_time: 0.0
-node: 136096
+node: 142285
 formulation: LEFP

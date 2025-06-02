@@ -1,9 +1,9 @@
 instance: K100.con.red
 obj: 8.0
-bound: 7.000000000000001
-gap: 0.12499999999999989
-time: 1049.517795085907
-preprocess_time: 1.354977
+bound: 8.0
+gap: 0.0
+time: 1772.4421799182892
+preprocess_time: 0.90359
 sepa_time: 0.0
-node: 24838
+node: 55427
 formulation: LEFPV2

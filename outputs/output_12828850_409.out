@@ -1,0 +1,94 @@
+Data path: /scratch/opt/lxu/CFLG/benchmarks/random_A
+Instance: r_20_0.1_23.txt
+Result path: /scratch/opt/lxu/CFLG/results/random_A
+Solver: Gurobi
+Time limit: 7200
+Formulation: EVFP
+Cover: Large
+julia --project=. src/main.jl /scratch/opt/lxu/CFLG/benchmarks/random_A r_20_0.1_23.txt /scratch/opt/lxu/CFLG/results/random_A Gurobi 7200 EVFP Large
+The latest version of Julia in the `release` channel is 1.11.5+0.x64.linux.gnu. You currently have `1.11.4+0.x64.linux.gnu` installed. Run:
+
+  juliaup update
+
+in your terminal shell to install Julia 1.11.5+0.x64.linux.gnu and update the `release` channel to that version.
+/scratch/opt/lxu/CFLG/benchmarks/random_A Gurobi 7200.0 /scratch/opt/lxu/CFLG/results/random_A r_20_0.1_23.txt EVFP Large
+/scratch/opt/lxu/CFLG/benchmarks/random_A/r_20_0.1_23.txt
+
+ read graph
+data loaded
+
+problem_graph/original graph: node: 20/20 edge: 23/23 dlt: 1.2027549052001565 break_avg_len: 0.6013774526000782 break_max_len: 0.9478387600141464elapsed CPU time: 0.023151 seconds
+Set parameter TokenServer to value "solice01.zib.de"
+Set parameter Threads to value 1
+Set parameter OutputFlag to value 1
+Set parameter MIPGap to value 0.0001
+Set parameter MIPGapAbs to value 0.999998
+Set parameter TimeLimit to value 7199.976849
+vertex var
+
+ model loaded
+
+Gurobi Optimizer version 12.0.1 build v12.0.1rc0 (linux64 - "Debian GNU/Linux 12 (bookworm)")
+
+CPU model: Intel(R) Xeon(R) Gold 5222 CPU @ 3.80GHz, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 8 physical cores, 16 logical processors, using up to 1 threads
+
+Non-default parameters:
+TimeLimit  7199.976849
+MIPGapAbs  0.999998
+Threads  1
+
+Optimize a model with 842 rows, 397 columns and 2301 nonzeros
+Model fingerprint: 0x45bf256d
+Variable types: 43 continuous, 354 integer (354 binary)
+Coefficient statistics:
+  Matrix range     [1e-06, 2e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [3e-01, 9e-01]
+  RHS range        [3e-01, 3e+00]
+Found heuristic solution: objective 13.0000000
+Presolve removed 183 rows and 39 columns
+Presolve time: 0.03s
+Presolved: 659 rows, 358 columns, 3373 nonzeros
+Variable types: 43 continuous, 315 integer (315 binary)
+
+Root relaxation: objective 3.000000e+00, 273 iterations, 0.00 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    3.00000    0   53   13.00000    3.00000  76.9%     -    0s
+H    0     0                       5.0000000    3.00000  40.0%     -    0s
+     0     0    3.00000    0   54    5.00000    3.00000  40.0%     -    0s
+     0     0    3.00000    0   54    5.00000    3.00000  40.0%     -    0s
+     0     0    3.50000    0   13    5.00000    3.50000  30.0%     -    0s
+     0     0    3.50000    0   28    5.00000    3.50000  30.0%     -    0s
+     0     0    3.50000    0   63    5.00000    3.50000  30.0%     -    0s
+     0     0    3.50000    0   63    5.00000    3.50000  30.0%     -    0s
+     0     0    3.50000    0   54    5.00000    3.50000  30.0%     -    0s
+     0     0    3.50000    0   54    5.00000    3.50000  30.0%     -    0s
+     0     0    3.50000    0   52    5.00000    3.50000  30.0%     -    0s
+     0     0    3.50000    0   51    5.00000    3.50000  30.0%     -    0s
+     0     2    3.66667    0   51    5.00000    3.66667  26.7%     -    0s
+H   28     0                       4.0000000    4.00000  0.00%  30.5    0s
+
+Cutting planes:
+  Gomory: 2
+  Cover: 2
+  Implied bound: 1
+  Clique: 1
+  MIR: 4
+  Flow cover: 1
+  RLT: 2
+  Relax-and-lift: 5
+
+Explored 29 nodes (2819 simplex iterations) in 0.18 seconds (0.13 work units)
+Thread count was 1 (of 16 available processors)
+
+Solution count 3: 4 5 13 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 4.000000000000e+00, best bound 4.000000000000e+00, gap 0.0000%
+
+User-callback calls 1014, time in user-callback 0.00 sec
+Stat(MathOptInterface.OPTIMAL, 4.0, 4.0, 0.0, 0.0, 0.023151, 0.1796720027923584, 29, Main.CFLG.EVFP, "", #undef)

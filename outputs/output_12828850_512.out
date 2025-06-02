@@ -1,0 +1,68 @@
+Data path: /scratch/opt/lxu/CFLG/benchmarks/random_B
+Instance: r_30_0.4_188.txt
+Result path: /scratch/opt/lxu/CFLG/results/random_B
+Solver: Gurobi
+Time limit: 7200
+Formulation: EF
+Cover: Large
+julia --project=. src/main.jl /scratch/opt/lxu/CFLG/benchmarks/random_B r_30_0.4_188.txt /scratch/opt/lxu/CFLG/results/random_B Gurobi 7200 EF Large
+The latest version of Julia in the `release` channel is 1.11.5+0.x64.linux.gnu. You currently have `1.11.4+0.x64.linux.gnu` installed. Run:
+
+  juliaup update
+
+in your terminal shell to install Julia 1.11.5+0.x64.linux.gnu and update the `release` channel to that version.
+/scratch/opt/lxu/CFLG/benchmarks/random_B Gurobi 7200.0 /scratch/opt/lxu/CFLG/results/random_B r_30_0.4_188.txt EF Large
+/scratch/opt/lxu/CFLG/benchmarks/random_B/r_30_0.4_188.txt
+
+ read graph
+data loaded
+
+problem_graph/original graph: node: 30/30 edge: 188/188 dlt: 1.2131512127745345 break_avg_len: 0.6065756063872673 break_max_len: 0.9917999550727499elapsed CPU time: 0.01706 seconds
+Set parameter TokenServer to value "solice01.zib.de"
+Set parameter Threads to value 1
+Set parameter OutputFlag to value 1
+Set parameter MIPGap to value 0.0001
+Set parameter MIPGapAbs to value 0.999998
+Set parameter TimeLimit to value 7199.98294
+
+ model loaded
+
+Gurobi Optimizer version 12.0.1 build v12.0.1rc0 (linux64 - "Debian GNU/Linux 12 (bookworm)")
+
+CPU model: Intel(R) Xeon(R) Gold 5122 CPU @ 3.60GHz, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 8 physical cores, 16 logical processors, using up to 1 threads
+
+Non-default parameters:
+TimeLimit  7199.98294
+MIPGapAbs  0.999998
+Threads  1
+
+Optimize a model with 19873292 rows, 6643544 columns and 52981972 nonzeros
+Model fingerprint: 0xcea58ab9
+Variable types: 17108 continuous, 6626436 integer (6626436 binary)
+Coefficient statistics:
+  Matrix range     [3e-01, 8e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [3e-01, 1e+00]
+  RHS range        [3e-04, 8e+00]
+Presolve removed 0 rows and 0 columns (presolve time = 11s)...
+Presolve removed 0 rows and 0 columns (presolve time = 27s)...
+Presolve removed 0 rows and 0 columns (presolve time = 30s)...
+Presolve removed 0 rows and 0 columns (presolve time = 36s)...
+Presolve removed 1310225 rows and 17556 columns (presolve time = 40s)...
+Presolve removed 1310225 rows and 17562 columns (presolve time = 45s)...
+Presolve removed 1310243 rows and 17562 columns (presolve time = 50s)...
+Presolve removed 1310243 rows and 17562 columns (presolve time = 55s)...
+Presolve removed 1310243 rows and 17562 columns (presolve time = 62s)...
+Presolve removed 1310243 rows and 17562 columns (presolve time = 66s)...
+Presolve removed 1310243 rows and 17562 columns (presolve time = 72s)...
+Presolve removed 1310243 rows and 17562 columns (presolve time = 75s)...
+Presolve removed 1310269 rows and 17588 columns (presolve time = 83s)...
+Presolve removed 1310269 rows and 17588 columns (presolve time = 86s)...
+Presolve removed 1310269 rows and 17614 columns (presolve time = 90s)...
+Presolve removed 1310269 rows and 17614 columns (presolve time = 95s)...
+Presolve removed 1310269 rows and 17614 columns (presolve time = 100s)...
+Presolve removed 1310269 rows and 17614 columns (presolve time = 105s)...
+Presolve removed 1310269 rows and 17614 columns (presolve time = 112s)...
+slurmstepd-htc-cmp433: error: Detected 1 oom_kill event in StepId=12829408.0. Some of the step tasks have been OOM Killed.
+srun: error: htc-cmp433: task 0: Out Of Memory
