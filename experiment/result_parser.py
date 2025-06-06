@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 min_primal_bound = 2**31
 max_dual_bound = -1
 time_limit = 7200
-algorithms  = ["LEFP", "LEFPI", "LEFPD", "LEFPV", "LEFPV2", "None"] # ["LEFPI", "LEFP", "LEFPD", "LEFPV",  "None"] # ["LEFPI", "LEFP", "LEFPD", "LEFPV", "None"]
+algorithms  = ["LEFP", "LEFPI", "LEFPD", "LEFPV", "LEFPV2", "None"] #  ["EF", "EFP", "LEFP", "LEVFP", "None"] # ["LEFPI", "LEFP", "LEFPD", "LEFPV",  "None"] # ["LEFPI", "LEFP", "LEFPD", "LEFPV", "None"]
 coverages = ["Small", "Large"]
 benchmarks = ["city", "Kgroup_A", "Kgroup_B", "random_A", "random_B"]
 

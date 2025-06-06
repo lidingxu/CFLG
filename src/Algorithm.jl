@@ -259,8 +259,8 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg, eassign,
             end
         else
             qLBs[(ef_id, :a)] = 0.0
-            qLBs[(ef_id, :b)] = 2 * dlt
-            qUBs[(ef_id, :a)] = graph.edges[ef_id].length
+            qLBs[(ef_id, :b)] = graph.edges[ef_id].length -  2 * dlt
+            qUBs[(ef_id, :a)] = 2 * dlt
             qUBs[(ef_id, :b)] = graph.edges[ef_id].length
         end
     end
@@ -391,7 +391,7 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg, eassign,
             end
             resultP = Ref{Cdouble}()
             GRBcbget(cb_data, cb_where, GRB_CB_MIPNODE_NODCNT, resultP)
-            if resultP[] >= 1.0 && ! is_morecuts
+            if resultP[] >= 1.0
                 GRBterminate(backend(model))
                 return
             end
@@ -431,14 +431,122 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg, eassign,
                 slack = sum( ( problem.dlte[(v_id, efi[1], efi[2])] - problem.d[lor(v_id, graph.edges[efi[1]].nodes[efi[2]])] - ifelse( efi[2] == :a , 0, (graph.edges[efi[1]].length) ) ) * ze_val[v_id, efi] + ifelse(efi[2] == :a , -qvei_val[efi], qvei_val[efi] ) for efi in EIp[v_id])
                 shouldadd = rv_val[v_id] > slack + 1e-8
                 if shouldadd
-                    cut = @build_constraint(rv[v_id]  <= 1e-7 + sum( ( problem.dlte[(v_id, efi[1], efi[2])] - problem.d[lor(v_id, graph.edges[efi[1]].nodes[efi[2]])] - ifelse( efi[2] == :a , 0, (graph.edges[efi[1]].length) ) ) * ze[v_id, efi] + ifelse(efi[2] == :a , -qvei_expr[efi], qvei_expr[efi] ) for efi in EIp[v_id]) )
+                    cut = @build_constraint(rv[v_id]  <= 1e-7 + sum( ( problem.dlte[(v_id, efi[1], efi[2])] - problem.d[lor(v_id, graph.edges[efi[1]].nodes[efi[2]])] - ifelse( efi[2] == :a , 0, (graph.edges[efi[1]].length) ) ) * ze[v_id, efi] + ifelse(efi[2] == :a , -qvei_expr[efi], qvei_expr[efi] )
+                     for efi in EIp[v_id]) )
                     MOI.submit(cflg, MOI.UserCut(cb_data), cut)
                 end
             end
             sepatime += CPUtoc()
         end
+        function user_cut_callback2(cb_data, cb_where::Cint)
+           if alladded || cb_where != GRB_CB_MIPSOL || cb_where != GRB_CB_MIPNODE
+                return
+            end
+            resultP = Ref{Cdouble}()
+            GRBcbget(cb_data, cb_where, GRB_CB_MIPNODE_NODCNT, resultP)
+            if resultP[] >= 1.0
+                GRBterminate(backend(model))
+                return
+            end
+            CPUtic()
+            Gurobi.load_callback_variable_primal(cb_data, cb_where)
+            ze_val = callback_value.(Ref(cb_data), ze)
+            q_val = callback_value.(Ref(cb_data), q)
+            rv_val = callback_value.(Ref(cb_data), rv)
+            rv_exprs = [ [] for _ in graph.node_ids ] # tuples (coef, var_expr, var_type)
+            rv_constants = [0.0 for _ in graph.node_ids] # constant terms
+            for v_id in graph.node_ids
+                qvei_expr = Dict()
+                qvei_val = Dict()
+                constant = 0.0
+                for efi in EIp[v_id]
+                    var_coef = ( problem.dlte[(v_id, efi[1], efi[2])] - problem.d[lor(v_id, graph.edges[efi[1]].nodes[efi[2]])] - ifelse( efi[2] == :a , 0, (graph.edges[efi[1]].length) ) )
+                    var_expr = ze[v_id, efi]
+                    var_val = ze_val[v_id, efi]
+                    var_type = :int
+                    push!(rv_exprs[v_id], (var_coef, var_expr, var_val, var_type))
+                    if efi[2] == :a
+                        # need lower bound
+                        lb1 = qLBs[efi[1], efi[2]]  * ze_val[v_id, efi]
+                        lb2 = q_val[efi[1], efi[2]] - qUBs[efi[1], efi[2]]  * (1 - ze_val[v_id, efi])
+                        multi = -1
+                        if lb1 >= lb2
+                            qvei_val[efi] = lb1
+                            qvei_expr[efi] = qLBs[efi[1], efi[2]]  * ze[v_id, efi]
+
+                            push!(rv_exprs[v_id], ( multi * qLBs[efi[1], efi[2]], ze[v_id, efi], ze_val[v_id, efi], :int))
+                        else
+                            qvei_val[efi] = lb2
+                            qvei_expr[efi] = q[efi[1], efi[2]] - qUBs[efi[1], efi[2]]  * (1 - ze[v_id, efi]) # q[efi[1], efi[2]] + qUBs[efi[1], efi[2]] * ze[v_id, efi]  - qUBs[efi[1], efi[2]]
+
+                            push!(rv_exprs[v_id], ( multi, q[efi[1], efi[2]], q_val[efi[1], efi[2]], :cont))
+                            push!(rv_exprs[v_id], ( multi * qUBs[efi[1], efi[2]], ze[v_id, efi], ze_val[v_id, efi], :int))
+                            constant += multi * ( - qUBs[efi[1], efi[2]] )
+                        end
+                    else
+                        # need upper bound
+                        ub1 = qUBs[efi[1], efi[2]]  * ze_val[v_id, efi]
+                        ub2 = q_val[efi[1], efi[2]] - qLBs[efi[1], efi[2]]  * (1 - ze_val[v_id, efi])
+                        multi = 1
+                        if ub1 <= ub2
+                            qvei_val[efi] = ub1
+                            qvei_expr[efi] = qUBs[efi[1], efi[2]]  * ze[v_id, efi]
+
+                            push!(rv_exprs[v_id], ( multi * qUBs[efi[1], efi[2]], ze[v_id, efi], ze_val[v_id, efi], :int))
+                        else
+                            qvei_val[efi] = ub2
+                            qvei_expr[efi] = q[efi[1], efi[2]] - qLBs[efi[1], efi[2]]  * (1 - ze[v_id, efi])
+
+                            push!(rv_exprs[v_id], ( multi, q[efi[1], efi[2]], q_val[efi[1], efi[2]], :cont))
+                            push!(rv_exprs[v_id], ( multi * qLBs[efi[1], efi[2]], ze[v_id, efi], ze_val[v_id, efi], :int))
+                            constant += multi * ( - qLBs[efi[1], efi[2]] )
+                        end
+                    end
+                end
+                rv_constants[v_id] = constant
+                slack = sum( ( problem.dlte[(v_id, efi[1], efi[2])] - problem.d[lor(v_id, graph.edges[efi[1]].nodes[efi[2]])] - ifelse( efi[2] == :a , 0, (graph.edges[efi[1]].length) ) ) * ze_val[v_id, efi] + ifelse(efi[2] == :a , -qvei_val[efi], qvei_val[efi] ) for efi in EIp[v_id])
+                shouldadd = rv_val[v_id] > slack + 1e-8
+                if shouldadd
+                    cut = @build_constraint(rv[v_id]  <= 1e-7 + sum( ( problem.dlte[(v_id, efi[1], efi[2])] - problem.d[lor(v_id, graph.edges[efi[1]].nodes[efi[2]])] - ifelse( efi[2] == :a , 0, (graph.edges[efi[1]].length) ) ) * ze[v_id, efi] + ifelse(efi[2] == :a , -qvei_expr[efi], qvei_expr[efi] )
+                     for efi in EIp[v_id]) )
+                    MOI.submit(cflg, MOI.UserCut(cb_data), cut)
+                end
+            end
+            for e_id in graph.edge_ids
+                e = graph.edges[e_id]
+                va = e.nodes[:a]
+                vb = e.nodes[:b]
+                le = e.length
+                if e.etype == :e_normal
+                    # r_va + r_vb >= le
+                    cutexpr, cutviolate = singleRowCut(rv_exprs[va], rv_exprs[vb], le - rv_constants[va] - rv_constants[vb])
+                    if cutviolate >= 1e-6
+                        cut = @build_constraint(cut <= 0.0)
+                        MOI.submit(cflg, MOI.UserCut(cb_data), cut)
+                    end
+                else
+                    # r_va + delta >= qa
+                    cutexpr, cutviolate = singleRowCut(rv_exprs[va], [(-1, q[e_id, :a], q_val[e_id, :a], :cont)], - rv_constants[va] - dlt)
+                    if cutviolate >= 1e-6
+                        cut = @build_constraint(cut <= 0.0)
+                        MOI.submit(cflg, MOI.UserCut(cb_data), cut)
+                    end
+                    # r_vb + delta >= le - qb
+                    cutexpr, cutviolate = singleRowCut(rv_exprs[vb], [(1, q[e_id, :b], q_val[e_id, :b], :cont)],  le - rv_constants[vb] - dlt)
+                    if cutviolate >= 1e-6
+                        cut = @build_constraint(cut <= 0.0)
+                        MOI.submit(cflg, MOI.UserCut(cb_data), cutexpr)
+                    end
+                end
+            end
+            sepatime += CPUtoc()
+        end
         set_optimizer_attribute(cflg, "PreCrush", 1)
-        MOI.set(cflg, Gurobi.CallbackFunction(), user_cut_callback)
+        if is_cuts
+            MOI.set(cflg, Gurobi.CallbackFunction(), user_cut_callback)
+        elseif is_morecuts
+            MOI.set(cflg, Gurobi.CallbackFunction(), user_cut_callback2)
+        end
     end
 
     # objective

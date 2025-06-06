@@ -209,3 +209,46 @@ function setModelAnottion(model::JuMP.Model, master_variables, sub_variables)
     variable_classification = Dict(0 => master_variables, 1 => sub_variables)
     add_annotation(model, variable_classification)
 end
+
+# single row cut for array1 + array1 >= lb
+function singleRowCut(array1, array2, lb)
+    # conver to sum_{j} a_j y_j + xl <= ub + xu
+    # x, y is poistive, and y is binary
+    ub = -lb
+    ys = []
+    xu = []
+    for array in [array1, array2]
+        for (var_coef, var_expr, var_val, var_type) in array
+            if abs(var_coef) < 1e-6
+                continue
+            end
+            if var_type == :cont
+                if var_coef > 0
+                    push!( xu, (var_coef, var_expr, var_val) )
+                end
+            elseif var_type == :int
+                push!( ys, (-var_coef, var_expr, var_val) )
+            else
+                error("unkown variable type: $var_type")
+            end
+        end
+    end
+    # f = ub - floor(ub)
+    # fj = aj - floor(aj)
+    # cut sum_{j} (floor(a_j) + max(fj - f) / (1-f) ) y_j  <= floor(ub) + xu/(1-f)
+    fub = floor(ub)
+    f = ub - fub
+    cut = -fub
+    cutviolate = -fub
+    for (var_coef, var_expr, var_val) in ys
+        faj = floor(var_coef)
+        fj = var_coef - faj
+        cutviolate += (faj + max(fj - f, 0.0) / (1 - f)) * var_expr
+        cut += (faj + max(fj - f, 0.0) / (1 - f)) * var_val
+    end
+    for (var_coef, var_expr, var_val) in xu
+        cut -= var_coef * var_expr/ (1 - f)
+        cutviolate -= var_coef * var_val/ (1 - f)
+    end
+    return cut, cutviolate
+end
