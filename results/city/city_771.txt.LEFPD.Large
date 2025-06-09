@@ -1,9 +1,9 @@
 instance: city_771.txt
-obj: 119.0
-bound: 102.0
-gap: 0.14285714285714285
-time: 7198.955716133118
-preprocess_time: 1.048744
+obj: 117.0
+bound: 98.0
+gap: 0.1623931623931624
+time: 7198.5516810417175
+preprocess_time: 1.455332
 sepa_time: 0.0
-node: 10610
+node: 17834
 formulation: LEFPD

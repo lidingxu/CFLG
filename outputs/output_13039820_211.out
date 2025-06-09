@@ -1,0 +1,106 @@
+Data path: /scratch/opt/lxu/CFLG/benchmarks/random_A
+Instance: r_10_0.4_13.txt
+Result path: /scratch/opt/lxu/CFLG/results/random_A
+Solver: Gurobi
+Time limit: 7200
+Formulation: LEFPD
+Cover: Large
+julia --project=. src/main.jl /scratch/opt/lxu/CFLG/benchmarks/random_A r_10_0.4_13.txt /scratch/opt/lxu/CFLG/results/random_A Gurobi 7200 LEFPD Large
+The latest version of Julia in the `release` channel is 1.11.5+0.x64.linux.gnu. You currently have `1.11.4+0.x64.linux.gnu` installed. Run:
+
+  juliaup update
+
+in your terminal shell to install Julia 1.11.5+0.x64.linux.gnu and update the `release` channel to that version.
+/scratch/opt/lxu/CFLG/benchmarks/random_A Gurobi 7200.0 /scratch/opt/lxu/CFLG/results/random_A r_10_0.4_13.txt LEFPD Large
+/scratch/opt/lxu/CFLG/benchmarks/random_A/r_10_0.4_13.txt
+
+ read graph
+data loaded
+
+problem_graph/original graph: node: 10/10 edge: 13/13 dlt: 0.9831178345028664 break_avg_len: 0.4915589172514332 break_max_len: 0.7393469405702465Set parameter TokenServer to value "solice01.zib.de"
+Set parameter Threads to value 1
+Set parameter OutputFlag to value 1
+Gurobi Optimizer version 12.0.1 build v12.0.1rc0 (linux64 - "Debian GNU/Linux 12 (bookworm)")
+
+CPU model: Intel(R) Xeon(R) Gold 5122 CPU @ 3.60GHz, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 8 physical cores, 16 logical processors, using up to 1 threads
+
+Non-default parameters:
+Threads  1
+
+Optimize a model with 23 rows, 39 columns and 65 nonzeros
+Model fingerprint: 0x3528e24c
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+00]
+Presolve removed 23 rows and 39 columns
+Presolve time: 0.02s
+Presolve: All rows and columns removed
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    1.0000000e+00   0.000000e+00   0.000000e+00      0s
+
+Solved in 0 iterations and 0.02 seconds (0.00 work units)
+Optimal objective  1.000000000e+00
+
+User-callback calls 35, time in user-callback 0.01 sec
+elapsed CPU time: 1.220061 seconds
+Set parameter TokenServer to value "solice01.zib.de"
+Set parameter Threads to value 1
+Set parameter OutputFlag to value 1
+Set parameter MIPGap to value 0.0001
+Set parameter MIPGapAbs to value 0.999998
+Set parameter TimeLimit to value 7198.779939
+
+ more cuts:falsefalse
+1 0
+formulation:LEFPD0 13 10
+
+ model loaded
+
+Gurobi Optimizer version 12.0.1 build v12.0.1rc0 (linux64 - "Debian GNU/Linux 12 (bookworm)")
+
+CPU model: Intel(R) Xeon(R) Gold 5122 CPU @ 3.60GHz, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 8 physical cores, 16 logical processors, using up to 1 threads
+
+Non-default parameters:
+TimeLimit  7198.779939
+MIPGapAbs  0.999998
+Threads  1
+
+Optimize a model with 600 rows, 398 columns and 1725 nonzeros
+Model fingerprint: 0x3364e812
+Variable types: 199 continuous, 199 integer (199 binary)
+Coefficient statistics:
+  Matrix range     [9e-03, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [3e-01, 7e-01]
+  RHS range        [3e-01, 4e+00]
+Found heuristic solution: objective 3.0000000
+Presolve removed 209 rows and 59 columns
+Presolve time: 0.02s
+Presolved: 391 rows, 339 columns, 1503 nonzeros
+Variable types: 165 continuous, 174 integer (174 binary)
+
+Root relaxation: objective 1.000000e+00, 200 iterations, 0.00 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    1.00000    0   22    3.00000    1.00000  66.7%     -    0s
+H    0     0                       2.0000000    1.00000  50.0%     -    0s
+     0     0    1.00000    0   22    2.00000    1.00000  50.0%     -    0s
+
+Explored 1 nodes (410 simplex iterations) in 0.02 seconds (0.02 work units)
+Thread count was 1 (of 16 available processors)
+
+Solution count 2: 2 3 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 2.000000000000e+00, best bound 2.000000000000e+00, gap 0.0000%
+
+User-callback calls 586, time in user-callback 0.00 sec
+
+ sepatime0 0 0
+2.0Stat(MathOptInterface.OPTIMAL, 2.0, 2.0, 0.0, 0.0, 1.220061, 0.023350000381469727, 1, Main.CFLG.LEFPD, "", #undef)

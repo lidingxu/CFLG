@@ -211,13 +211,14 @@ function setModelAnottion(model::JuMP.Model, master_variables, sub_variables)
 end
 
 # single row cut for array1 + array1 >= lb
-function singleRowCut(array1, array2, lb)
+function singleRowCut(array1, array2, array3, lb)
     # conver to sum_{j} a_j y_j + xl <= ub + xu
     # x, y is poistive, and y is binary
     ub = -lb
     ys = []
     xu = []
-    for array in [array1, array2]
+    cut_type = :mir # trivial mir cover
+    for array in [array1, array2, array3]
         for (var_coef, var_expr, var_val, var_type) in array
             if abs(var_coef) < 1e-6
                 continue
@@ -233,22 +234,97 @@ function singleRowCut(array1, array2, lb)
             end
         end
     end
+    if length(ys) == 0
+        return nothing, -1
+    end
     # f = ub - floor(ub)
     # fj = aj - floor(aj)
     # cut sum_{j} (floor(a_j) + max(fj - f) / (1-f) ) y_j  <= floor(ub) + xu/(1-f)
-    fub = floor(ub)
-    f = ub - fub
-    cut = -fub
-    cutviolate = -fub
-    for (var_coef, var_expr, var_val) in ys
-        faj = floor(var_coef)
-        fj = var_coef - faj
-        cutviolate += (faj + max(fj - f, 0.0) / (1 - f)) * var_expr
-        cut += (faj + max(fj - f, 0.0) / (1 - f)) * var_val
+    if cut_type == :trivial
+        cut = -ub
+        cutviolate = -ub
+        for (var_coef, var_expr, var_val) in ys
+            cut +=  var_coef * var_expr
+            cutviolate += var_coef  * var_val
+        end
+        for (var_coef, var_expr, var_val) in xu
+            cut -= var_coef * var_expr
+            cutviolate -= var_coef * var_val
+        end
+    elseif cut_type == :mir
+        fub = floor(ub)
+        f = ub - fub
+        cut = -fub
+        cutviolate = -fub
+        for (var_coef, var_expr, var_val) in ys
+            faj = floor(var_coef)
+            fj = var_coef - faj
+            cut += (faj + max(fj - f, 0.0) / (1 - f)) * var_expr
+            cutviolate += (faj + max(fj - f, 0.0) / (1 - f)) * var_val
+        end
+        for (var_coef, var_expr, var_val) in xu
+            cut -= var_coef * var_expr/ (1 - f)
+            cutviolate -= var_coef * var_val/ (1 - f)
+        end
+    elseif cut_type == :cover
+        # sum_{j} a_j y_j <= ub + xu
+        # sum_{j: a_j > 0 } a_j y_j + sum_{j: a_j < 0 } -a_j (1 - y_j) <= ub + sum_{j: a_j < 0 } -a_j  + xu
+        ys_ = []
+        ub_ = ub
+        i = 1
+        for (var_coef, var_expr, var_val) in ys
+            if var_coef > 0
+                push!(ys_, (var_coef, var_expr, var_val, true) )
+            else
+                push!(ys_, (-var_coef, var_expr, 1 - var_val, false) )
+                ub_ += -var_coef
+            end
+            i += 1
+        end
+        # scores (1-yval_j) / a_j
+        scores = [ (1 - ys_[j][3]) / (ys_[j][1] + 1e-7) for j in 1 : length(ys_) ]
+        # sort increasing
+        orders = sortperm(scores)
+        i = 1
+        # find a violated cover
+        capused = 0
+        exceed = 0
+        while i <= length(ys_)
+            capused += ys_[orders[i]][1]
+            if capused > ub_
+                exceed = capused - ub_
+                break
+            end
+            i += 1
+        end
+        if exceed == 0
+            return nothing, -1  # or similar
+        end
+        cover = [orders[j] for j in 1:i]
+        cut = - (length(cover) - 1)
+        cutviolate = - (length(cover) - 1)
+        for j in cover
+            y = ys_[j]
+            if y[4]
+                cut += y[2]
+                cutviolate += y[3]
+            else
+                cut += 1 - y[2]
+                cutviolate += 1 - y[3]
+            end
+        end
     end
-    for (var_coef, var_expr, var_val) in xu
-        cut -= var_coef * var_expr/ (1 - f)
-        cutviolate -= var_coef * var_val/ (1 - f)
+    debug = false
+    if cutviolate >= 1e-6 && debug
+        println("lb: $lb, Elements of array1:")
+        for elem in array1
+            print(elem)
+        end
+        println("\n Elements of array2:")
+        for elem in array2
+            print(elem)
+        end
+        print("\n cut: $cut, cutviolate: $cutviolate\n")
     end
     return cut, cutviolate
 end

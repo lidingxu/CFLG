@@ -2,8 +2,8 @@ instance: r_10_0.3_12.txt
 obj: 2.0
 bound: 2.0
 gap: 0.0
-time: 0.06528186798095703
-preprocess_time: 0.992306
-sepa_time: 0.0
+time: 1.0036299228668213
+preprocess_time: 1.226743
+sepa_time: 3.2553077219800273e13
 node: 1
 formulation: LEFPV2

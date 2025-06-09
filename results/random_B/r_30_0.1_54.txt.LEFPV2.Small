@@ -1,9 +1,9 @@
 instance: r_30_0.1_54.txt
 obj: 97.0
-bound: 96.00002815870353
-gap: 0.010308988054602794
-time: 97.76566982269287
-preprocess_time: 1.268486
-sepa_time: 0.0
-node: 100482
+bound: 96.00000480820702
+gap: 0.01030922878137089
+time: 197.2754099369049
+preprocess_time: 0.995308
+sepa_time: 2.3062932927261027e13
+node: 251579
 formulation: LEFPV2

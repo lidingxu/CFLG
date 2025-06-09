@@ -1,9 +1,9 @@
 instance: r_25_0.2_58.txt
 obj: 98.0
-bound: 97.00000231348183
-gap: 0.01020405802569562
-time: 486.072940826416
-preprocess_time: 1.220738
-sepa_time: 0.0
-node: 273262
+bound: 97.0000240674564
+gap: 0.010203836046363325
+time: 301.806923866272
+preprocess_time: 1.237224
+sepa_time: 1.384976031245307e13
+node: 159731
 formulation: LEFPV2

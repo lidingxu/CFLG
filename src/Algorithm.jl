@@ -249,19 +249,20 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg, eassign,
         end
     end
 
-    qLBs = Dict{Tuple{Int, Symbol}, Float64}()
-    qUBs = Dict{Tuple{Int, Symbol}, Float64}()
+    qBs = Dict()
+    qBs[:L] = Dict{Tuple{Int, Symbol}, Float64}()
+    qBs[:U] = Dict{Tuple{Int, Symbol}, Float64}()
     for ef_id in graph.edge_ids
         if ef_id in Es
             for i in ab
-                qLBs[(ef_id, i)] = 0.0
-                qUBs[(ef_id, i)] = graph.edges[ef_id].length
+                qBs[:L][(ef_id, i)] = 0.0
+                qBs[:U][(ef_id, i)] = graph.edges[ef_id].length
             end
         else
-            qLBs[(ef_id, :a)] = 0.0
-            qLBs[(ef_id, :b)] = graph.edges[ef_id].length -  2 * dlt
-            qUBs[(ef_id, :a)] = 2 * dlt
-            qUBs[(ef_id, :b)] = graph.edges[ef_id].length
+            qBs[:L][(ef_id, :a)] = 0.0
+            qBs[:L][(ef_id, :b)] = graph.edges[ef_id].length -  2 * dlt
+            qBs[:U][(ef_id, :a)] = 2 * dlt
+            qBs[:U][(ef_id, :b)] = graph.edges[ef_id].length
         end
     end
 
@@ -345,10 +346,10 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg, eassign,
             videfib = [(v_id, efi) for v_id in graph.node_ids for efi in EIp[v_id] if efi[2] == :b]
             @constraints(cflg, begin
                 [v_id in graph.node_ids], rv[v_id]  <=  sum( ( problem.dlte[(v_id, efi[1], efi[2])] - problem.d[lor(v_id, graph.edges[efi[1]].nodes[efi[2]])] - ifelse( efi[2] == :a , 0, (graph.edges[efi[1]].length) ) ) * ze[v_id, efi] + ifelse(efi[2] == :a , -qvei[v_id, efi], qvei[v_id, efi] ) for efi in EIp[v_id]) # disjunctive residual cover aggreagation constraint
-                [(v_id, efi) in videfia], qLBs[efi[1], efi[2]] * ze[v_id, efi] <= qvei[v_id, efi]  # disjunctive upper bound for q on edge
-                [(v_id, efi) in videfib], qvei[v_id, efi] <=  qUBs[efi[1], efi[2]]  * ze[v_id, efi] # disjunctive upper bound for q on edge
-                [(v_id, efi) in videfib], qLBs[efi[1], efi[2]]  * (1 - ze[v_id, efi]) <= q[efi[1], efi[2]] - qvei[v_id, efi]  # disjunctive upper bound for q on edge
-                [(v_id, efi) in videfia], q[efi[1], efi[2]] - qvei[v_id, efi] <=  qUBs[efi[1], efi[2]]  * (1 - ze[v_id, efi]) # disjunctive upper bound for q on edge
+                [(v_id, efi) in videfia], qBs[:L][efi[1], efi[2]] * ze[v_id, efi] <= qvei[v_id, efi]  # disjunctive upper bound for q on edge
+                [(v_id, efi) in videfib], qvei[v_id, efi] <=  qBs[:U][efi[1], efi[2]]  * ze[v_id, efi] # disjunctive upper bound for q on edge
+                [(v_id, efi) in videfib], qBs[:L][efi[1], efi[2]]  * (1 - ze[v_id, efi]) <= q[efi[1], efi[2]] - qvei[v_id, efi]  # disjunctive upper bound for q on edge
+                [(v_id, efi) in videfia], q[efi[1], efi[2]] - qvei[v_id, efi] <=  qBs[:U][efi[1], efi[2]]  * (1 - ze[v_id, efi]) # disjunctive upper bound for q on edge
                 #[v_id in graph.node_ids], rv[v_id] <=  problem.Uv[v_id] * (1 - x[v_id]) # big M on x
                 #[v_id in graph.node_ids, efi in EIp[v_id]], rv[v_id] <= problem.Me[(v_id, efi[1], efi[2])]  * (1 - ze[v_id, efi]) + problem.dlte[(v_id, efi[1], efi[2])]  -
                 #( problem.d[lor(v_id, graph.edges[efi[1]].nodes[efi[2]])] +  ifelse(efi[2] == :a , q[efi[1],:a], (graph.edges[efi[1]].length - q[efi[1],:b]) ))  # big M on edges
@@ -363,7 +364,7 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg, eassign,
         end
 
         if is_benders
-            # Benders decomposition
+            # Benders decomposition*  (1+problem.cr_tol) + problem.c_tol) * (1 - w[e_id])
             if is_lifted
                 master_variables = [ye..., yei..., x..., w..., ze..., q..., qq..., rv...]
                 sub_variables = [qvei...]
@@ -383,132 +384,116 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg, eassign,
     end
 
     sepatime = 0
+    called = 0
+    realcalled = 0
+    added = 0
     if is_cuts || is_morecuts
-        alladded = false
         function user_cut_callback(cb_data, cb_where::Cint)
-            if alladded || cb_where != GRB_CB_MIPSOL || cb_where != GRB_CB_MIPNODE
+            called += 1
+            if cb_where != GRB_CB_MIPNODE
                 return
             end
             resultP = Ref{Cdouble}()
             GRBcbget(cb_data, cb_where, GRB_CB_MIPNODE_NODCNT, resultP)
             if resultP[] >= 1.0
-                GRBterminate(backend(model))
+                #GRBterminate(backend(cflg))
+                return
+            end
+            resultS = Ref{Cint}()
+            GRBcbget(cb_data, cb_where, GRB_CB_MIPNODE_STATUS, resultS)
+            if resultS[] != GRB_OPTIMAL && resultS[] != GRB_SUBOPTIMAL
                 return
             end
             CPUtic()
+            realcalled += 1
             Gurobi.load_callback_variable_primal(cb_data, cb_where)
             ze_val = callback_value.(Ref(cb_data), ze)
             q_val = callback_value.(Ref(cb_data), q)
             rv_val = callback_value.(Ref(cb_data), rv)
             for v_id in graph.node_ids
-                qvei_expr = Dict()
-                qvei_val = Dict()
+                expr = 0.0
+                val = 0.0
+                constant = 0.0
                 for efi in EIp[v_id]
-                    if efi[2] == :a
-                        # need lower bound
-                        lb1 = qLBs[efi[1], efi[2]]  * ze_val[v_id, efi]
-                        lb2 = q_val[efi[1], efi[2]] - qUBs[efi[1], efi[2]]  * (1 - ze_val[v_id, efi])
-                        if lb1 >= lb2
-                            qvei_val[efi] = lb1
-                            qvei_expr[efi] = qLBs[efi[1], efi[2]]  * ze[v_id, efi]
-                        else
-                            qvei_val[efi] = lb2
-                            qvei_expr[efi] = q[efi[1], efi[2]] - qUBs[efi[1], efi[2]]  * (1 - ze[v_id, efi])
-                        end
+                    var_coef = ( problem.dlte[(v_id, efi[1], efi[2])] - problem.d[lor(v_id, graph.edges[efi[1]].nodes[efi[2]])] - ifelse( efi[2] == :a , 0, (graph.edges[efi[1]].length) ) )
+                    var_expr = ze[v_id, efi]
+                    var_val = ze_val[v_id, efi]
+                    val += var_coef * var_val
+                    expr += var_coef * var_expr
+                    side1, side2, multi = ifelse(efi[2] == :a, (:L, :U, -1), (:U, :L, 1))
+                    # get two bounds
+                    b1 = qBs[side1][efi[1], efi[2]]  * ze_val[v_id, efi]
+                    b2 = q_val[efi[1], efi[2]] - qBs[side2][efi[1], efi[2]]  * (1 - ze_val[v_id, efi])
+                    if  0 >= multi * (b1 - b2)
+                        val += multi * b1
+                        expr += multi * qBs[side1][efi[1], efi[2]] * ze[v_id, efi]
                     else
-                        # need upper bound
-                        ub1 = qUBs[efi[1], efi[2]]  * ze_val[v_id, efi]
-                        ub2 = q_val[efi[1], efi[2]] - qLBs[efi[1], efi[2]]  * (1 - ze_val[v_id, efi])
-                        if ub1 <= ub2
-                            qvei_val[efi] = ub1
-                            qvei_expr[efi] = qUBs[efi[1], efi[2]]  * ze[v_id, efi]
-                        else
-                            qvei_val[efi] = ub2
-                            qvei_expr[efi] = q[efi[1], efi[2]] - qLBs[efi[1], efi[2]]  * (1 - ze[v_id, efi])
-                        end
+                        val += multi * b2
+                        expr += multi * ( q[efi[1], efi[2]] - qBs[side2][efi[1], efi[2]]  * (1 - ze[v_id, efi]) )
                     end
                 end
-                slack = sum( ( problem.dlte[(v_id, efi[1], efi[2])] - problem.d[lor(v_id, graph.edges[efi[1]].nodes[efi[2]])] - ifelse( efi[2] == :a , 0, (graph.edges[efi[1]].length) ) ) * ze_val[v_id, efi] + ifelse(efi[2] == :a , -qvei_val[efi], qvei_val[efi] ) for efi in EIp[v_id])
-                shouldadd = rv_val[v_id] > slack + 1e-8
-                if shouldadd
-                    cut = @build_constraint(rv[v_id]  <= 1e-7 + sum( ( problem.dlte[(v_id, efi[1], efi[2])] - problem.d[lor(v_id, graph.edges[efi[1]].nodes[efi[2]])] - ifelse( efi[2] == :a , 0, (graph.edges[efi[1]].length) ) ) * ze[v_id, efi] + ifelse(efi[2] == :a , -qvei_expr[efi], qvei_expr[efi] )
-                     for efi in EIp[v_id]) )
+                if rv_val[v_id] > val + 1e-6
+                    cut = @build_constraint( rv[v_id]  <= 1e-7 + expr )
                     MOI.submit(cflg, MOI.UserCut(cb_data), cut)
                 end
             end
             sepatime += CPUtoc()
         end
         function user_cut_callback2(cb_data, cb_where::Cint)
-           if alladded || cb_where != GRB_CB_MIPSOL || cb_where != GRB_CB_MIPNODE
+            if cb_where != GRB_CB_MIPNODE
                 return
             end
             resultP = Ref{Cdouble}()
             GRBcbget(cb_data, cb_where, GRB_CB_MIPNODE_NODCNT, resultP)
             if resultP[] >= 1.0
-                GRBterminate(backend(model))
+                #GRBterminate(backend(cflg))
+                return
+            end
+            resultS = Ref{Cint}()
+            GRBcbget(cb_data, cb_where, GRB_CB_MIPNODE_STATUS, resultS)
+            if resultS[] != GRB_OPTIMAL && resultS[] != GRB_SUBOPTIMAL
                 return
             end
             CPUtic()
             Gurobi.load_callback_variable_primal(cb_data, cb_where)
-            ze_val = callback_value.(Ref(cb_data), ze)
-            q_val = callback_value.(Ref(cb_data), q)
-            rv_val = callback_value.(Ref(cb_data), rv)
+            ze_vals = callback_value.(Ref(cb_data), ze)
+            q_vals = callback_value.(Ref(cb_data), q)
+            rv_vals = callback_value.(Ref(cb_data), rv)
+            w_vals = callback_value.(Ref(cb_data), w)
             rv_exprs = [ [] for _ in graph.node_ids ] # tuples (coef, var_expr, var_type)
             rv_constants = [0.0 for _ in graph.node_ids] # constant terms
+            is_project = false
+            rexprs = Dict()
             for v_id in graph.node_ids
-                qvei_expr = Dict()
-                qvei_val = Dict()
+                expr = 0.0
+                val = 0.0
                 constant = 0.0
                 for efi in EIp[v_id]
-                    var_coef = ( problem.dlte[(v_id, efi[1], efi[2])] - problem.d[lor(v_id, graph.edges[efi[1]].nodes[efi[2]])] - ifelse( efi[2] == :a , 0, (graph.edges[efi[1]].length) ) )
-                    var_expr = ze[v_id, efi]
-                    var_val = ze_val[v_id, efi]
-                    var_type = :int
-                    push!(rv_exprs[v_id], (var_coef, var_expr, var_val, var_type))
-                    if efi[2] == :a
-                        # need lower bound
-                        lb1 = qLBs[efi[1], efi[2]]  * ze_val[v_id, efi]
-                        lb2 = q_val[efi[1], efi[2]] - qUBs[efi[1], efi[2]]  * (1 - ze_val[v_id, efi])
-                        multi = -1
-                        if lb1 >= lb2
-                            qvei_val[efi] = lb1
-                            qvei_expr[efi] = qLBs[efi[1], efi[2]]  * ze[v_id, efi]
-
-                            push!(rv_exprs[v_id], ( multi * qLBs[efi[1], efi[2]], ze[v_id, efi], ze_val[v_id, efi], :int))
-                        else
-                            qvei_val[efi] = lb2
-                            qvei_expr[efi] = q[efi[1], efi[2]] - qUBs[efi[1], efi[2]]  * (1 - ze[v_id, efi]) # q[efi[1], efi[2]] + qUBs[efi[1], efi[2]] * ze[v_id, efi]  - qUBs[efi[1], efi[2]]
-
-                            push!(rv_exprs[v_id], ( multi, q[efi[1], efi[2]], q_val[efi[1], efi[2]], :cont))
-                            push!(rv_exprs[v_id], ( multi * qUBs[efi[1], efi[2]], ze[v_id, efi], ze_val[v_id, efi], :int))
-                            constant += multi * ( - qUBs[efi[1], efi[2]] )
-                        end
+                    ze_coef = ( problem.dlte[(v_id, efi[1], efi[2])] - problem.d[lor(v_id, graph.edges[efi[1]].nodes[efi[2]])] - ifelse( efi[2] == :a , 0, (graph.edges[efi[1]].length) ) )
+                    ze_expr = ze[v_id, efi]
+                    ze_val = ze_vals[v_id, efi]
+                    val += ze_coef * ze_val
+                    expr += ze_coef * ze_expr
+                    side1, side2, multi = ifelse(efi[2] == :a, (:L, :U, -1), (:U, :L, 1))
+                    # get two bounds
+                    b1 = qBs[side1][efi[1], efi[2]]  * ze_vals[v_id, efi]
+                    b2 = q_vals[efi[1], efi[2]] - qBs[side2][efi[1], efi[2]]  * (1 - ze_vals[v_id, efi])
+                    if  0 >= multi * (b1 - b2)
+                        val += multi * b1
+                        expr += multi * qBs[side1][efi[1], efi[2]] * ze[v_id, efi]
+                        push!(rv_exprs[v_id],  ( ze_coef + multi * qBs[side1][efi[1], efi[2]], ze_expr, ze_val, :int))
                     else
-                        # need upper bound
-                        ub1 = qUBs[efi[1], efi[2]]  * ze_val[v_id, efi]
-                        ub2 = q_val[efi[1], efi[2]] - qLBs[efi[1], efi[2]]  * (1 - ze_val[v_id, efi])
-                        multi = 1
-                        if ub1 <= ub2
-                            qvei_val[efi] = ub1
-                            qvei_expr[efi] = qUBs[efi[1], efi[2]]  * ze[v_id, efi]
-
-                            push!(rv_exprs[v_id], ( multi * qUBs[efi[1], efi[2]], ze[v_id, efi], ze_val[v_id, efi], :int))
-                        else
-                            qvei_val[efi] = ub2
-                            qvei_expr[efi] = q[efi[1], efi[2]] - qLBs[efi[1], efi[2]]  * (1 - ze[v_id, efi])
-
-                            push!(rv_exprs[v_id], ( multi, q[efi[1], efi[2]], q_val[efi[1], efi[2]], :cont))
-                            push!(rv_exprs[v_id], ( multi * qLBs[efi[1], efi[2]], ze[v_id, efi], ze_val[v_id, efi], :int))
-                            constant += multi * ( - qLBs[efi[1], efi[2]] )
-                        end
+                        val += multi * b2
+                        expr += multi * ( q[efi[1], efi[2]] - qBs[side2][efi[1], efi[2]]  * (1 - ze[v_id, efi]) )
+                        push!(rv_exprs[v_id],  ( multi,  q[efi[1], efi[2]],  q_vals[efi[1], efi[2]], :cont))
+                        push!(rv_exprs[v_id],  ( ze_coef + multi * qBs[side2][efi[1], efi[2]], ze_expr, ze_val, :int))
+                        constant += multi * ( - qBs[side2][efi[1], efi[2]] )
                     end
                 end
                 rv_constants[v_id] = constant
-                slack = sum( ( problem.dlte[(v_id, efi[1], efi[2])] - problem.d[lor(v_id, graph.edges[efi[1]].nodes[efi[2]])] - ifelse( efi[2] == :a , 0, (graph.edges[efi[1]].length) ) ) * ze_val[v_id, efi] + ifelse(efi[2] == :a , -qvei_val[efi], qvei_val[efi] ) for efi in EIp[v_id])
-                shouldadd = rv_val[v_id] > slack + 1e-8
-                if shouldadd
-                    cut = @build_constraint(rv[v_id]  <= 1e-7 + sum( ( problem.dlte[(v_id, efi[1], efi[2])] - problem.d[lor(v_id, graph.edges[efi[1]].nodes[efi[2]])] - ifelse( efi[2] == :a , 0, (graph.edges[efi[1]].length) ) ) * ze[v_id, efi] + ifelse(efi[2] == :a , -qvei_expr[efi], qvei_expr[efi] )
-                     for efi in EIp[v_id]) )
+                rexprs[v_id] = expr
+                if rv_vals[v_id] > val + 1e-6 && is_project
+                    cut = @build_constraint( rv[v_id]  <= 1e-7 + expr )
                     MOI.submit(cflg, MOI.UserCut(cb_data), cut)
                 end
             end
@@ -517,25 +502,29 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg, eassign,
                 va = e.nodes[:a]
                 vb = e.nodes[:b]
                 le = e.length
+                letol = (graph.edges[e_id].length *  (1+problem.cr_tol) + problem.c_tol)
                 if e.etype == :e_normal
                     # r_va + r_vb >= le
-                    cutexpr, cutviolate = singleRowCut(rv_exprs[va], rv_exprs[vb], le - rv_constants[va] - rv_constants[vb])
+                    cutexpr, cutviolate = singleRowCut(rv_exprs[va], rv_exprs[vb], [(letol, w[e_id], w_vals[e_id], :int)], letol - rv_constants[va] - rv_constants[vb])
                     if cutviolate >= 1e-6
-                        cut = @build_constraint(cut <= 0.0)
+                        cut = @build_constraint(cutexpr <= 1e-7)
+                        #cut = @build_constraint(rexprs[va] + rexprs[vb] >= letol * (1 - w[e_id]) )
                         MOI.submit(cflg, MOI.UserCut(cb_data), cut)
                     end
                 else
                     # r_va + delta >= qa
-                    cutexpr, cutviolate = singleRowCut(rv_exprs[va], [(-1, q[e_id, :a], q_val[e_id, :a], :cont)], - rv_constants[va] - dlt)
+                    cutexpr, cutviolate = singleRowCut(rv_exprs[va], [(-1, q[e_id, :a], q_vals[e_id, :a], :cont)], [], - rv_constants[va] - dlt)
                     if cutviolate >= 1e-6
-                        cut = @build_constraint(cut <= 0.0)
+                        cut = @build_constraint(cutexpr <= 1e-7)
+                        #cut = @build_constraint(rexprs[va] + dlt >=  q[e_id, :a])
                         MOI.submit(cflg, MOI.UserCut(cb_data), cut)
                     end
                     # r_vb + delta >= le - qb
-                    cutexpr, cutviolate = singleRowCut(rv_exprs[vb], [(1, q[e_id, :b], q_val[e_id, :b], :cont)],  le - rv_constants[vb] - dlt)
+                    cutexpr, cutviolate = singleRowCut(rv_exprs[vb], [(1, q[e_id, :b], q_vals[e_id, :b], :cont)],  [], le - rv_constants[vb] - dlt)
                     if cutviolate >= 1e-6
-                        cut = @build_constraint(cut <= 0.0)
-                        MOI.submit(cflg, MOI.UserCut(cb_data), cutexpr)
+                        cut = @build_constraint(cutexpr <= 1e-7)
+                        #cut = @build_constraint(rexprs[vb] + dlt >=  le - q[e_id, :b])
+                        MOI.submit(cflg, MOI.UserCut(cb_data), cut)
                     end
                 end
             end
@@ -564,7 +553,7 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg, eassign,
     println("\n model loaded\n")
     optimize!(cflg)
     stat = Stat();
-    print("\n sepatime", sepatime, "\n")
+    print("\n sepatime", sepatime, " ", called, " ", realcalled, "\n")
     sol = Vector{Tuple{Symbol,Int, Float64}}();
     stat.termintaion_status = termination_status(cflg)
     stat.bound = objective_bound(cflg)

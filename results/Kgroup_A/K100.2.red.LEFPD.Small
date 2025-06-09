@@ -1,9 +1,9 @@
 instance: K100.2.red
-obj: 142.0
-bound: 141.00005380821662
-gap: 0.007041874590023802
-time: 504.74522590637207
-preprocess_time: 1.36662
+obj: 137.0
+bound: 136.0000359972853
+gap: 0.007299007319085439
+time: 2046.642060995102
+preprocess_time: 0.909515
 sepa_time: 0.0
-node: 90362
+node: 485526
 formulation: LEFPD

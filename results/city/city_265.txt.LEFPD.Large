@@ -1,9 +1,9 @@
 instance: city_265.txt
-obj: 40.0
-bound: 34.0
-gap: 0.15
-time: 7199.042871952057
-preprocess_time: 0.961345
+obj: 39.0
+bound: 32.0
+gap: 0.1794871794871795
+time: 7198.7415199279785
+preprocess_time: 1.265036
 sepa_time: 0.0
-node: 49503
+node: 46768
 formulation: LEFPD
