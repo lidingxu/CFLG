@@ -1,0 +1,9 @@
+instance: K400.10.con.red
+obj: 40.0
+bound: 26.0
+gap: 0.35
+time: 7199.885573863983
+preprocess_time: 0.121033
+sepa_time: 0.0
+node: 3098
+formulation: EVFP
