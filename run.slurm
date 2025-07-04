@@ -21,5 +21,6 @@ echo "Time limit: $timelimit"
 echo "Formulation: $formulation"
 echo "Cover: $cover"
 
+# julia --project=. src/main.jl benchmarks/test testg.txt none CPLEX 20 LEFPA Small
 echo "julia" "--project=."  "src/main.jl" "$datapath" "$instance" "$resultpath" "$solver" "$timelimit" "$formulation" "$cover"
 srun julia --project=. src/main.jl "$datapath" "$instance" "$resultpath" "$solver" "$timelimit" "$formulation" "$cover"

@@ -6,14 +6,16 @@ import numpy as np
 from pathlib import Path
 import os
 import matplotlib.pyplot as plt
+from scipy import stats
 
 min_primal_bound = 2**31
 max_dual_bound = -1
 time_limit = 7200
-algorithms  = ["LEFP", "LEFPI", "LEFPD", "LEFPV", "LEFPV2", "None"] #  ["EF", "EFP", "LEFP", "LEVFP", "None"] # ["LEFPI", "LEFP", "LEFPD", "LEFPV",  "None"] # ["LEFPI", "LEFP", "LEFPD", "LEFPV", "None"]
+algorithms  = ["EF", "EFP", "LEVFP", "LEFP", "LEFPI", "LEFPD", "LEFPV", "None"] #  ["EF", "EFP", "LEFP", "LEVFP", "None"] # ["LEFPI", "LEFP", "LEFPD", "LEFPV",  "None"] # ["LEFPI", "LEFP", "LEFPD", "LEFPV", "None"]
 coverages = ["Small", "Large"]
 benchmarks = ["city", "Kgroup_A", "Kgroup_B", "random_A", "random_B"]
 
+pcomp = ["LEFPV", "LEVFP"]
 
 comp_algos = ["LEFPD", "LEFPI", "LEFP", "LEFPV"]
 
@@ -309,6 +311,19 @@ def printtable(algorithms_, benchmarks, has_obj_):
             #print("\n")
             #bench_tab += "\n"
 
+    # p-test
+    ys = {}
+    for algo_ in pcomp:
+        ys[algo_] = []
+        for benchmark, subbench_name in zip(test_benchs, ["Small", "Large"]):
+            for cover_ in coverages:
+                for entry in bench_entries[benchmark]:
+                    if entry["formulation"] == algo_ and entry["coverage"] == cover_:
+                        ys[algo_].append( entry["gap"] )
+    w_stat, p_val = stats.wilcoxon(ys[pcomp[0]], ys[pcomp[1]])
+    print("Wilcoxon signed-rank test p-value:", p_val)
+
+
     for benchmark, subbench_name in zip(test_benchs, ["Small", "Large"]):
         tab = ""
         for algo_ in algorithms_:
@@ -344,6 +359,7 @@ def printtable(algorithms_, benchmarks, has_obj_):
             plt.ylabel('#instances')
             plt.savefig(benchmark + cover_ + ".pdf", format="pdf", bbox_inches="tight")
             plt.show()
+
 
 
 # display table 2

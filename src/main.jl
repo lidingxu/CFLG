@@ -33,7 +33,7 @@ function main(args)
     else    cover == "Large"
         dlt = float( 2 * graph.avg_len)
     end
-    #dlt = 0.7
+    #dlt = 1.5
     println("data loaded\n")
     problem = Problem(graph, dlt)
     stat = solve!(problem, solver_name, option, formulation)

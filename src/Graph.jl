@@ -337,6 +337,87 @@ function absorbGraph(graph::Graph)
     return absorbgraph
 end
 
+# prune a graph to a smaller graph
+function projectGraph(graph::Graph, VR, R, rho)
+
+    # Construct the set of nodes for the induced graph
+    induced_nodes = Set{Int}()
+    for node in graph.nodes
+        if !(node.node_id in VR)
+            push!(induced_nodes, node.node_id)
+        end
+    end
+    induced_nodes = union(induced_nodes, R)
+
+    # Map old node ids to new node ids (1-based)
+    node_map = Dict{Int, Int}()
+    for (i, v_id) in enumerate(induced_nodes)
+        node_map[v_id] = i
+    end
+
+    # Collect edges where both endpoints are in induced_nodes
+    edge_fields = Vector{Tuple{Int, Int, Float64}}()
+    for edge in graph.edges
+        a = edge.nodes[:a]
+        b = edge.nodes[:b]
+        if a in induced_nodes && b in induced_nodes
+            push!(edge_fields, (node_map[a], node_map[b], edge.length))
+        end
+    end
+
+    # Add edges from each v in R to a new node with length rho[v]
+    for v in R
+        new_node_id = length(node_map) + 1
+        node_map[-v] = new_node_id  # Use -v as a unique key for the new node
+        push!(edge_fields, (node_map[v], new_node_id, rho[v]))
+    end
+
+    node_num = length(node_map)
+    edge_num = length(edge_fields)
+
+    projectgraph = Graph(node_num, edge_num, edge_fields)
+
+    # Construct R_, RE_, R_toR
+    R_ = Vector{Int}()
+    RE_ = Vector{Int}()
+    R_toR = Dict{Int, Int}()
+
+    for v in R
+        newv = node_map[v]
+        push!(R_, newv)
+        projectgraph.adjacent_edges[newv]
+        # Find the edge index in projectgraph that connects v to new_node_id
+        for eidx in projectgraph.adjacent_edges[newv]
+            edge = projectgraph.edges[eidx]
+            if (edge.nodes[:a] == newv && edge.nodes[:b] == node_map[-v]) ||
+               (edge.nodes[:b] == newv && edge.nodes[:a] == node_map[-v])
+                push!(RE_, eidx)
+                break
+            end
+        end
+        R_toR[newv] = v
+    end
+    @assert( length(RE_) == length(R_) )
+    # checking
+    num_e = 0
+    num_v = 0
+    for edge in projectgraph.edges
+        num_e = max(num_e, edge.edge_id)
+        num_v = max(max(num_v, edge.nodes[:a]), edge.nodes[:b])
+    end
+
+    num_v_ = 0
+
+    for node in projectgraph.nodes
+        num_v_  =max(num_v_, node.node_id)
+    end
+
+    @assert(num_v == num_v_ && num_v_ == projectgraph.node_num && length(projectgraph.nodes) == num_v && num_e == projectgraph.edge_num)
+    return projectgraph, R_, RE_, R_toR
+end
+
+
+
 # break a graph to a smaller graph
 function breakGraph(graph::Graph, dlt::Float64, isabsorb::Bool = true, long::Bool = false)
     if dlt >= graph.max_len
@@ -438,6 +519,7 @@ function processGraph(graph::Graph, dlt::Float64, mode::Symbol, cr_tol::Float64,
     Ep = Dict{Int, Set{Int}}() # edges can partially cover incident edges of nodes
     Vp = Dict{Int, Set{Int}}() # nodes can partially cover incident edges of nodes
     EIp = Dict{Int, Set{Tuple{Int, Symbol}}}() # edges, nodes can partially cover incident edges of nodes
+    EIc = Dict{Int, Set{Tuple{Int, Symbol}}}() # edges, nodes can partially cover incident edges of nodes
     d = Dict{Tuple{Int, Int}, Float64}() # distance record
 
     # initilization
@@ -450,6 +532,7 @@ function processGraph(graph::Graph, dlt::Float64, mode::Symbol, cr_tol::Float64,
         Ep[v_id] = Set{Int}()
         Vp[v_id] = Set{Int}()
         EIp[v_id] = Set{Tuple{Int,Symbol}}()
+        EIc[v_id] = Set{Tuple{Int,Symbol}}()
     end
 
     for e_id in graph.edge_ids
@@ -523,7 +606,7 @@ function processGraph(graph::Graph, dlt::Float64, mode::Symbol, cr_tol::Float64,
                     #    println("\n", v_id," ",vfa_id," ",vfb_id," ",d[lor(v_id, vfa_id)], " ", d[lor(v_id, vfb_id)], " ",dlt)
                     #    println(vfa_id in VV[v_id], vfb_id in VV[v_id], ef_id in EV[v_id])
                     #@end
-                    @assert(v_id in  VV[vfa_id] || v_id in VV[vfb_id])
+                    @assert(v_id in VV[vfa_id] || v_id in VV[vfb_id])
                     @assert(d[lor(v_id, vfa_id)] <= dlt*(1+cr_tol) +c_tol || d[lor(v_id, vfb_id)] <= dlt*(1+cr_tol) +c_tol)
                     if d[lor(v_id, vfa_id)] <= dlt*(1+cr_tol) +c_tol && d[lor(v_id, vfa_id)] <= (d[lor(v_id, vfb_id)] + len)*(1+cr_tol) +c_tol
                         push!(EIp[v_id], (ef_id, :a))
@@ -536,10 +619,16 @@ function processGraph(graph::Graph, dlt::Float64, mode::Symbol, cr_tol::Float64,
                     break
                 end
             end
+            if d[lor(v_id, vfa_id)] <= dlt*(1+cr_tol) +c_tol && d[lor(v_id, vfa_id)] <= (d[lor(v_id, vfb_id)] + len)*(1+cr_tol) +c_tol
+                push!(EIc[v_id], (ef_id, :a))
+            end
+            if d[lor(v_id, vfb_id)] <= dlt*(1+cr_tol) +c_tol && d[lor(v_id, vfb_id)]  <= (d[lor(v_id, vfa_id)] + len)*(1+cr_tol) +c_tol
+                push!(EIc[v_id], (ef_id, :b))
+            end
         end
     end
 
-    return Ec, Vc, Ep, Vp, EIp, d
+    return Ec, Vc, Ep, Vp, EIp, EIc, d
 end
 
 
@@ -585,4 +674,90 @@ function processGraphSimple(graph::Graph, dlt::Float64)
     return bigM_EF, d
 end
 
+# Traverse a tree rooted at a given node, applying a function to each node
+function traverseTree(graph, ch::Dict{Int, Set{Int}}, pr::Dict{Int, Int}, root::Int, f)
+    stack = [root]
+    visited = Set{Int}()
+    while !isempty(stack)
+        node = pop!(stack)
+        if node in visited
+            continue
+        end
+        f(graph, ch, pr, node)
+        push!(visited, node)
+        for child in ch[node]
+            push!(stack, child)
+        end
+    end
+end
+
+function findAttachedTrees(graph::Graph)
+    # Find all maximal attached trees in the graph
+    # Output:
+    #   ch: Dict{Int, Set{Int}} - children of each node
+    #   pr: Dict{Int, Int}      - parent of each node
+    #   R: Set{Int}             - roots of maximal attached trees
+
+    ch = Dict{Int, Set{Int}}()
+    pr = Dict{Int, Int}()
+    R = Set{Int}()
+    L = Set{Int}()
+
+    # Initialize: ch empty, pr empty, R = all degree-one vertices
+    for node in graph.nodes
+        ch[node.node_id] = Set{Int}()
+        # degree-one node
+        if length(graph.adjacent_edges[node.node_id]) == 1
+            push!(R, node.node_id)
+            push!(L, node.node_id)
+        end
+    end
+
+    changed = true
+    while changed
+        changed = false
+        # Collect vertices to process in this round
+        to_add = Set{Int}()
+        for v in R
+            # Find neighbors of v not already in ch[v] or pr[v]
+            neighbors = graph.incident_nodes[v]
+            # Exclude children (already in ch[v]) and parent (already in pr)
+            unprocessed_neighbors = setdiff(neighbors, ch[v])
+            if length(unprocessed_neighbors) == 1
+                w = first(unprocessed_neighbors)
+                pr[v] = w
+                push!(ch[w], v)
+                push!(to_add, w)
+                changed = true
+            end
+        end
+        # Remove processed v from R, add new roots w to R
+        for v in R
+            if haskey(pr, v)
+                delete!(R, v)
+            end
+        end
+        for w in to_add
+            push!(R, w)
+        end
+    end
+
+    function verify(graph, ch, pr, v)
+        for w in ch[v]
+            @assert pr[w] == v
+        end
+        if haskey(pr, v)
+            prv = Set([pr[v]])
+            @assert graph.incident_nodes[v] == union(ch[v], prv)
+            @assert isempty(intersect(ch[v], prv))
+        end
+    end
+
+    for root in R
+        traverseTree(graph, ch, pr, root, verify)
+    end
+
+    return ch, pr, R, L
+
+end
 
