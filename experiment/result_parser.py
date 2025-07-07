@@ -11,11 +11,11 @@ from scipy import stats
 min_primal_bound = 2**31
 max_dual_bound = -1
 time_limit = 7200
-algorithms  = ["EF", "EFP", "LEVFP", "LEFP", "LEFPI", "LEFPD", "LEFPV", "None"] #  ["EF", "EFP", "LEFP", "LEVFP", "None"] # ["LEFPI", "LEFP", "LEFPD", "LEFPV",  "None"] # ["LEFPI", "LEFP", "LEFPD", "LEFPV", "None"]
+algorithms  = ["EF", "EFP", "LEFP", "LEFPA", "LEVFP", "None"] #  ["EF", "EFP", "LEVFP", "LEFP", "LEFPI", "LEFPD", "LEFPV", "None"] # ["LEFPI", "LEFP", "LEFPD", "LEFPV",  "None"] # ["LEFPI", "LEFP", "LEFPD", "LEFPV", "None"]
 coverages = ["Small", "Large"]
 benchmarks = ["city", "Kgroup_A", "Kgroup_B", "random_A", "random_B"]
 
-pcomp = ["LEFPV", "LEVFP"]
+pcomp = ["LEFP", "LEVFP"]
 
 comp_algos = ["LEFPD", "LEFPI", "LEFP", "LEFPV"]
 
@@ -23,7 +23,7 @@ styles = ['solid', 'dashed', 'dotted', 'dashdot']
 markers = ['o', "d", "*", "X" ]
 colors = ['magenta', 'blue', 'red', 'green']
 
-algonm_map = {"EF": "EF", "LEFPI" : "EF-PLI", "LEFP" : "EF-PLB", "LEFPD": "EF-PLD", "LEFPV": "EF-PLBC", "LEFPV2": "EF-PLBC2",  "EVFP" : "EVF-PB", "LEVFP" : "EVF-PLB", "EFP":"EF-PB", "EFPD": "EF-PD", "EFPV": "EF-PV1", "EFPV2": "EF-PV2"}
+algonm_map = {"EF": "EF", "LEFPI" : "EF-PLI", "LEFP" : "EF-PLB", "LEFPA" : "EF-PLTB", "LEFPD": "EF-PLD", "LEFPV": "EF-PLBC", "LEFPV2": "EF-PLBC2",  "EVFP" : "EVF-PB", "LEVFP" : "EVF-PLB", "EFP":"EF-PB", "EFPD": "EF-PD", "EFPV": "EF-PV1", "EFPV2": "EF-PV2"}
 
 def parse_name(name):
     s = ""
