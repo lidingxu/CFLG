@@ -1,0 +1,135 @@
+Data path: /scratch/opt/lxu/CFLG/benchmarks/Kgroup_A
+Instance: K100.2.red
+Result path: /scratch/opt/lxu/CFLG/results/Kgroup_A
+Solver: Gurobi
+Time limit: 7200
+Formulation: LEFP
+Cover: Large
+julia --project=. src/main.jl /scratch/opt/lxu/CFLG/benchmarks/Kgroup_A K100.2.red /scratch/opt/lxu/CFLG/results/Kgroup_A Gurobi 7200 LEFP Large
+The latest version of Julia in the `release` channel is 1.11.5+0.x64.linux.gnu. You currently have `1.11.4+0.x64.linux.gnu` installed. Run:
+
+  juliaup update
+
+in your terminal shell to install Julia 1.11.5+0.x64.linux.gnu and update the `release` channel to that version.
+/scratch/opt/lxu/CFLG/benchmarks/Kgroup_A Gurobi 7200.0 /scratch/opt/lxu/CFLG/results/Kgroup_A K100.2.red LEFP Large
+/scratch/opt/lxu/CFLG/benchmarks/Kgroup_A/K100.2.red
+
+ read graph
+data loaded
+
+
+after absorb:24 24
+
+max_piece:4
+problem_graph/original graph: node: 32/24 edge: 91/83 dlt: 0.5638548684145918 break_avg_len: 0.25714260482643475 break_max_len: 0.5638543045597233Set parameter TokenServer to value "solice01.zib.de"
+Set parameter Threads to value 1
+Set parameter OutputFlag to value 1
+Gurobi Optimizer version 12.0.1 build v12.0.1rc0 (linux64 - "Debian GNU/Linux 12 (bookworm)")
+
+CPU model: Intel(R) Xeon(R) Gold 5222 CPU @ 3.80GHz, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 8 physical cores, 16 logical processors, using up to 1 threads
+
+Non-default parameters:
+Threads  1
+
+Optimize a model with 123 rows, 273 columns and 455 nonzeros
+Model fingerprint: 0x24162800
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+00]
+Presolve removed 123 rows and 273 columns
+Presolve time: 0.02s
+Presolve: All rows and columns removed
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    1.0000000e+00   0.000000e+00   0.000000e+00      0s
+
+Solved in 0 iterations and 0.03 seconds (0.00 work units)
+Optimal objective  1.000000000e+00
+
+User-callback calls 35, time in user-callback 0.00 sec
+elapsed CPU time: 0.95059 seconds
+Set parameter TokenServer to value "solice01.zib.de"
+Set parameter Threads to value 1
+Set parameter OutputFlag to value 1
+Set parameter MIPGap to value 0.0001
+Set parameter MIPGapAbs to value 0.999998
+Set parameter TimeLimit to value 7199.04941
+
+ more cuts: false 0.5638548684145918 false
+is_attach:falseformulation:LEFP0 91 0
+
+ model loaded
+
+Gurobi Optimizer version 12.0.1 build v12.0.1rc0 (linux64 - "Debian GNU/Linux 12 (bookworm)")
+
+CPU model: Intel(R) Xeon(R) Gold 5222 CPU @ 3.80GHz, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 8 physical cores, 16 logical processors, using up to 1 threads
+
+Non-default parameters:
+TimeLimit  7199.04941
+MIPGapAbs  0.999998
+Threads  1
+
+Optimize a model with 5911 rows, 3052 columns and 17363 nonzeros
+Model fingerprint: 0xf4c92dfa
+Variable types: 214 continuous, 2838 integer (2838 binary)
+Coefficient statistics:
+  Matrix range     [1e-06, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e-02, 6e-01]
+  RHS range        [1e-06, 1e+00]
+Found heuristic solution: objective 30.0000000
+Presolve removed 1532 rows and 312 columns
+Presolve time: 0.04s
+Presolved: 4379 rows, 2740 columns, 14673 nonzeros
+Variable types: 123 continuous, 2617 integer (2617 binary)
+
+Root relaxation: objective 9.225883e-01, 2013 iterations, 0.04 seconds (0.08 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    0.92259    0  157   30.00000    0.92259  96.9%     -    0s
+H    0     0                      14.0000000    0.92259  93.4%     -    0s
+H    0     0                      12.0000000    0.92259  92.3%     -    0s
+H    0     0                      11.0000000    0.92259  91.6%     -    0s
+     0     0    1.57569    0  238   11.00000    1.57569  85.7%     -    0s
+H    0     0                       5.0000000    1.68804  66.2%     -    0s
+     0     0    1.76139    0  221    5.00000    1.76139  64.8%     -    0s
+     0     0    1.76139    0  222    5.00000    1.76139  64.8%     -    0s
+     0     0    2.16904    0  190    5.00000    2.16904  56.6%     -    0s
+     0     0    2.18271    0  199    5.00000    2.18271  56.3%     -    0s
+     0     0    2.20226    0  193    5.00000    2.20226  56.0%     -    0s
+     0     0    2.20368    0  194    5.00000    2.20368  55.9%     -    0s
+     0     0    2.46606    0  192    5.00000    2.46606  50.7%     -    0s
+     0     0    2.57143    0  135    5.00000    2.57143  48.6%     -    0s
+     0     0    2.59920    0  195    5.00000    2.59920  48.0%     -    0s
+     0     0    2.60258    0  216    5.00000    2.60258  47.9%     -    0s
+     0     0    2.61855    0  221    5.00000    2.61855  47.6%     -    0s
+     0     0    2.61855    0  223    5.00000    2.61855  47.6%     -    0s
+     0     0    2.74419    0  203    5.00000    2.74419  45.1%     -    0s
+     0     0    2.74706    0  250    5.00000    2.74706  45.1%     -    0s
+     0     0    2.74734    0  273    5.00000    2.74734  45.1%     -    0s
+     0     0    2.75306    0  280    5.00000    2.75306  44.9%     -    0s
+     0     0    2.75871    0  278    5.00000    2.75871  44.8%     -    0s
+     0     0    2.75871    0  258    5.00000    2.75871  44.8%     -    0s
+H    0     0                       4.0000000    2.76036  31.0%     -    0s
+     0     0    2.76036    0  258    4.00000    2.76036  31.0%     -    1s
+     0     0    2.76036    0  258    4.00000    2.76036  31.0%     -    1s
+     0     0    3.00000    0   37    4.00000    3.00000  25.0%     -    1s
+     0     0 infeasible    0         4.00000    4.00000  0.00%     -    1s
+
+Explored 1 nodes (8339 simplex iterations) in 1.26 seconds (1.25 work units)
+Thread count was 1 (of 16 available processors)
+
+Solution count 6: 4 5 11 ... 30
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 4.000000000000e+00, best bound 4.000000000000e+00, gap 0.0000%
+
+User-callback calls 1001, time in user-callback 0.00 sec
+
+ sepatime0 0 0
+4.0Stat(MathOptInterface.OPTIMAL, 4.0, 4.0, 0.0, 0.0, 0.95059, 1.2627990245819092, 1, Main.CFLG.LEFP, "", #undef)

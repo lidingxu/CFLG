@@ -1,0 +1,9 @@
+instance: K400.1.con.red
+obj: 32.0
+bound: 23.0
+gap: 0.28125
+time: 7198.804162979126
+preprocess_time: 1.214474
+sepa_time: 0.0
+node: 11272
+formulation: LEFPAI

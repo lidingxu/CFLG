@@ -2,8 +2,8 @@ instance: r_10_0.1_12.txt
 obj: 2.0
 bound: 2.0
 gap: 0.0
-time: 0.42624902725219727
-preprocess_time: 0.012553
-sepa_time: 0.0
+time: 0.5531542301177979
+preprocess_time: 0.015039
+sepa_time: 6.92726546574784e-310
 node: 1
 formulation: EF

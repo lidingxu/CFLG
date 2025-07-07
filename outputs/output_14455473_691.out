@@ -1,0 +1,163 @@
+Data path: /scratch/opt/lxu/CFLG/benchmarks/tree_B
+Instance: treeB.200.30
+Result path: /scratch/opt/lxu/CFLG/results/tree_B
+Solver: Gurobi
+Time limit: 7200
+Formulation: LEVFP
+Cover: Large
+julia --project=. src/main.jl /scratch/opt/lxu/CFLG/benchmarks/tree_B treeB.200.30 /scratch/opt/lxu/CFLG/results/tree_B Gurobi 7200 LEVFP Large
+The latest version of Julia in the `release` channel is 1.11.5+0.x64.linux.gnu. You currently have `1.11.4+0.x64.linux.gnu` installed. Run:
+
+  juliaup update
+
+in your terminal shell to install Julia 1.11.5+0.x64.linux.gnu and update the `release` channel to that version.
+/scratch/opt/lxu/CFLG/benchmarks/tree_B Gurobi 7200.0 /scratch/opt/lxu/CFLG/results/tree_B treeB.200.30 LEVFP Large
+/scratch/opt/lxu/CFLG/benchmarks/tree_B/treeB.200.30
+
+ read graph
+data loaded
+
+problem_graph/original graph: node: 200/200 edge: 229/229 dlt: 3.030254887285852 break_avg_len: 1.515127443642926 break_max_len: 1.98423584931659elapsed CPU time: 0.043551 seconds
+Set parameter TokenServer to value "solice01.zib.de"
+Set parameter Threads to value 1
+Set parameter OutputFlag to value 1
+Set parameter MIPGap to value 0.0001
+Set parameter MIPGapAbs to value 0.999998
+Set parameter TimeLimit to value 7199.956449
+
+ model loaded
+
+Gurobi Optimizer version 12.0.1 build v12.0.1rc0 (linux64 - "Debian GNU/Linux 12 (bookworm)")
+
+CPU model: Intel(R) Xeon(R) Gold 5122 CPU @ 3.60GHz, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 8 physical cores, 16 logical processors, using up to 1 threads
+
+Non-default parameters:
+TimeLimit  7199.956449
+MIPGapAbs  0.999998
+Threads  1
+
+Optimize a model with 10276 rows, 4575 columns and 28062 nonzeros
+Model fingerprint: 0x4fac028f
+Variable types: 429 continuous, 4146 integer (4146 binary)
+Coefficient statistics:
+  Matrix range     [1e-06, 4e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 2e+00]
+  RHS range        [1e+00, 5e+00]
+Found heuristic solution: objective 131.0000000
+Presolve removed 2717 rows and 386 columns
+Presolve time: 0.34s
+Presolved: 7559 rows, 4189 columns, 42120 nonzeros
+Variable types: 426 continuous, 3763 integer (3759 binary)
+
+Root relaxation: objective 3.780490e+01, 4143 iterations, 0.16 seconds (0.14 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0   37.80490    0  277  131.00000   37.80490  71.1%     -    0s
+H    0     0                      64.0000000   37.80490  40.9%     -    0s
+H    0     0                      52.0000000   37.80490  27.3%     -    0s
+H    0     0                      51.0000000   37.80490  25.9%     -    0s
+H    0     0                      50.0000000   37.80490  24.4%     -    0s
+H    0     0                      45.0000000   37.80490  16.0%     -    0s
+H    0     0                      44.0000000   37.80490  14.1%     -    0s
+     0     0   38.60933    0  238   44.00000   38.60933  12.3%     -    0s
+H    0     0                      43.0000000   38.60933  10.2%     -    0s
+     0     0   38.61097    0  237   43.00000   38.61097  10.2%     -    0s
+     0     0   38.79978    0  337   43.00000   38.79978  9.77%     -    1s
+     0     0   38.79978    0  339   43.00000   38.79978  9.77%     -    1s
+H    0     0                      42.0000000   38.80063  7.62%     -    1s
+     0     0   38.80805    0  323   42.00000   38.80805  7.60%     -    1s
+     0     0   38.80805    0  331   42.00000   38.80805  7.60%     -    1s
+     0     0   38.87795    0  369   42.00000   38.87795  7.43%     -    1s
+H    0     0                      41.0000000   38.92720  5.06%     -    1s
+     0     0   38.92720    0  366   41.00000   38.92720  5.06%     -    1s
+     0     0   38.92720    0  366   41.00000   38.92720  5.06%     -    1s
+     0     0   38.92720    0  311   41.00000   38.92720  5.06%     -    1s
+     0     0   38.92720    0  333   41.00000   38.92720  5.06%     -    1s
+     0     0   38.92720    0  352   41.00000   38.92720  5.06%     -    1s
+     0     0   38.92720    0  353   41.00000   38.92720  5.06%     -    1s
+     0     0   38.92720    0  365   41.00000   38.92720  5.06%     -    1s
+     0     0   38.92720    0  364   41.00000   38.92720  5.06%     -    1s
+     0     0   38.92720    0  343   41.00000   38.92720  5.06%     -    1s
+     0     0   38.92720    0  373   41.00000   38.92720  5.06%     -    1s
+     0     0   38.92720    0  369   41.00000   38.92720  5.06%     -    1s
+     0     0   38.92720    0  369   41.00000   38.92720  5.06%     -    1s
+     0     0   38.92720    0  227   41.00000   38.92720  5.06%     -    2s
+     0     0   38.92720    0  227   41.00000   38.92720  5.06%     -    2s
+     0     0   38.93620    0  258   41.00000   38.93620  5.03%     -    2s
+     0     0   38.93620    0  288   41.00000   38.93620  5.03%     -    2s
+     0     0   38.93620    0  315   41.00000   38.93620  5.03%     -    2s
+     0     0   38.93620    0  227   41.00000   38.93620  5.03%     -    2s
+     0     0   38.94441    0  262   41.00000   38.94441  5.01%     -    2s
+     0     0   38.94441    0  261   41.00000   38.94441  5.01%     -    2s
+     0     0   38.94441    0  313   41.00000   38.94441  5.01%     -    2s
+     0     0   38.94441    0  309   41.00000   38.94441  5.01%     -    2s
+     0     0   38.94441    0  304   41.00000   38.94441  5.01%     -    2s
+     0     0   38.94441    0  273   41.00000   38.94441  5.01%     -    2s
+     0     0   38.94441    0  270   41.00000   38.94441  5.01%     -    2s
+     0     0   38.94441    0  270   41.00000   38.94441  5.01%     -    2s
+     0     0   38.94441    0  277   41.00000   38.94441  5.01%     -    2s
+     0     0   38.94441    0  323   41.00000   38.94441  5.01%     -    2s
+     0     0   38.94441    0  326   41.00000   38.94441  5.01%     -    2s
+     0     0   38.94441    0  326   41.00000   38.94441  5.01%     -    2s
+     0     0   38.94441    0  310   41.00000   38.94441  5.01%     -    3s
+     0     0   38.94441    0  358   41.00000   38.94441  5.01%     -    3s
+     0     0   38.94441    0  341   41.00000   38.94441  5.01%     -    3s
+     0     0   38.94441    0  341   41.00000   38.94441  5.01%     -    3s
+     0     0   38.94441    0  341   41.00000   38.94441  5.01%     -    3s
+     0     0   38.94441    0  262   41.00000   38.94441  5.01%     -    3s
+     0     2   39.02658    0  262   41.00000   39.02658  4.81%     -    3s
+   148    77   39.71661    4  288   41.00000   39.62777  3.35%   102    5s
+*  581     3              40      40.0000000   40.00000  0.00%  71.1    7s
+
+Cutting planes:
+  Learned: 2
+  Gomory: 4
+  Cover: 69
+  Implied bound: 172
+  Clique: 49
+  MIR: 186
+  StrongCG: 4
+  Flow cover: 94
+  GUB cover: 18
+  Zero half: 12
+  Mod-K: 1
+  RLT: 58
+  Relax-and-lift: 86
+  BQP: 17
+  PSD: 3
+
+Explored 582 nodes (62295 simplex iterations) in 7.42 seconds (5.38 work units)
+Thread count was 1 (of 16 available processors)
+
+Solution count 10: 40 41 42 ... 64
+
+Optimal solution found (tolerance 1.00e-04)
+Warning: max constraint violation (1.4799e-06) exceeds tolerance
+Best objective 4.000000000000e+01, best bound 4.000000000000e+01, gap 0.0000%
+
+User-callback calls 4672, time in user-callback 0.01 sec
+Stat(MathOptInterface.OPTIMAL, 40.0, 40.0, 0.0, 5.0e-324, 0.043551, 7.4180731773376465, 582, Main.CFLG.LEVFP, "", #undef)
+ERROR: LoadError: SystemError: opening file "/scratch/opt/lxu/CFLG/results/tree_B/treeB.200.30.LEVFP.Large": No such file or directory
+Stacktrace:
+ [1] systemerror(p::String, errno::Int32; extrainfo::Nothing)
+   @ Base ./error.jl:176
+ [2] systemerror
+   @ ./error.jl:175 [inlined]
+ [3] open(fname::String; lock::Bool, read::Nothing, write::Nothing, create::Nothing, truncate::Bool, append::Nothing)
+   @ Base ./iostream.jl:295
+ [4] open
+   @ ./iostream.jl:277 [inlined]
+ [5] open(fname::String, mode::String; lock::Bool)
+   @ Base ./iostream.jl:358
+ [6] open
+   @ ./iostream.jl:357 [inlined]
+ [7] main(args::Vector{String})
+   @ Main /scratch/opt/lxu/CFLG/src/main.jl:51
+ [8] top-level scope
+   @ /scratch/opt/lxu/CFLG/src/main.jl:57
+in expression starting at /scratch/opt/lxu/CFLG/src/main.jl:57
+srun: error: htc-cmp433: task 0: Exited with exit code 1

@@ -1,0 +1,120 @@
+Data path: /scratch/opt/lxu/CFLG/benchmarks/Kgroup_A
+Instance: K100.3.con.red
+Result path: /scratch/opt/lxu/CFLG/results/Kgroup_A
+Solver: Gurobi
+Time limit: 7200
+Formulation: EFP
+Cover: Large
+julia --project=. src/main.jl /scratch/opt/lxu/CFLG/benchmarks/Kgroup_A K100.3.con.red /scratch/opt/lxu/CFLG/results/Kgroup_A Gurobi 7200 EFP Large
+The latest version of Julia in the `release` channel is 1.11.5+0.x64.linux.gnu. You currently have `1.11.4+0.x64.linux.gnu` installed. Run:
+
+  juliaup update
+
+in your terminal shell to install Julia 1.11.5+0.x64.linux.gnu and update the `release` channel to that version.
+/scratch/opt/lxu/CFLG/benchmarks/Kgroup_A Gurobi 7200.0 /scratch/opt/lxu/CFLG/results/Kgroup_A K100.3.con.red EFP Large
+/scratch/opt/lxu/CFLG/benchmarks/Kgroup_A/K100.3.con.red
+
+ read graph
+data loaded
+
+
+after absorb:26 26
+
+max_piece:4
+problem_graph/original graph: node: 40/26 edge: 137/123 dlt: 0.30222018115641147 break_avg_len: 0.13566818351181983 break_max_len: 0.2983776186495099elapsed CPU time: 0.09784 seconds
+Set parameter TokenServer to value "solice01.zib.de"
+Set parameter Threads to value 1
+Set parameter OutputFlag to value 1
+Set parameter MIPGap to value 0.0001
+Set parameter MIPGapAbs to value 0.999998
+Set parameter TimeLimit to value 7199.90216
+
+ more cuts: false 0.30222018115641147 false
+is_attach:falseformulation:EFP0 137 0
+
+ model loaded
+
+Gurobi Optimizer version 12.0.1 build v12.0.1rc0 (linux64 - "Debian GNU/Linux 12 (bookworm)")
+
+CPU model: Intel(R) Xeon(R) Gold 5222 CPU @ 3.80GHz, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 8 physical cores, 16 logical processors, using up to 1 threads
+
+Non-default parameters:
+TimeLimit  7199.90216
+MIPGapAbs  0.999998
+Threads  1
+
+Optimize a model with 10030 rows, 5171 columns and 29559 nonzeros
+Model fingerprint: 0x4c7df9d3
+Variable types: 314 continuous, 4857 integer (4857 binary)
+Coefficient statistics:
+  Matrix range     [1e-06, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [2e-02, 3e-01]
+  RHS range        [2e-02, 1e+00]
+Found heuristic solution: objective 25.0000000
+Presolve removed 2566 rows and 405 columns
+Presolve time: 0.08s
+Presolved: 7464 rows, 4766 columns, 25380 nonzeros
+Variable types: 177 continuous, 4589 integer (4589 binary)
+Found heuristic solution: objective 24.0000000
+
+Root relaxation: objective 1.921275e+00, 3410 iterations, 0.13 seconds (0.26 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    1.92127    0  220   24.00000    1.92127  92.0%     -    0s
+H    0     0                      21.0000000    1.92127  90.9%     -    0s
+H    0     0                      20.0000000    1.92127  90.4%     -    0s
+H    0     0                      19.0000000    1.92127  89.9%     -    0s
+H    0     0                      18.0000000    1.92127  89.3%     -    0s
+H    0     0                      17.0000000    1.92127  88.7%     -    0s
+H    0     0                      16.0000000    1.92127  88.0%     -    0s
+H    0     0                      15.0000000    1.92127  87.2%     -    0s
+H    0     0                      14.0000000    1.92127  86.3%     -    0s
+H    0     0                      13.0000000    1.92127  85.2%     -    0s
+H    0     0                      12.0000000    1.92127  84.0%     -    0s
+     0     0    2.79723    0  284   12.00000    2.79723  76.7%     -    0s
+H    0     0                       9.0000000    2.81496  68.7%     -    0s
+     0     0    2.83724    0  298    9.00000    2.83724  68.5%     -    0s
+     0     0    2.83724    0  298    9.00000    2.83724  68.5%     -    0s
+     0     0    3.80805    0  327    9.00000    3.80805  57.7%     -    1s
+     0     0    3.82682    0  323    9.00000    3.82682  57.5%     -    1s
+     0     0    4.65132    0  281    9.00000    4.65132  48.3%     -    1s
+     0     0    4.82353    0  290    9.00000    4.82353  46.4%     -    1s
+     0     0    4.88246    0  292    9.00000    4.88246  45.8%     -    1s
+     0     0    4.88448    0  292    9.00000    4.88448  45.7%     -    1s
+     0     0    4.88448    0  292    9.00000    4.88448  45.7%     -    1s
+     0     0    5.03333    0  261    9.00000    5.03333  44.1%     -    1s
+     0     0    5.05556    0  165    9.00000    5.05556  43.8%     -    1s
+     0     0    5.05556    0  182    9.00000    5.05556  43.8%     -    1s
+     0     0    5.06667    0  182    9.00000    5.06667  43.7%     -    1s
+     0     0    5.07143    0  188    9.00000    5.07143  43.7%     -    1s
+     0     0    5.07143    0  186    9.00000    5.07143  43.7%     -    1s
+     0     0    5.07143    0  187    9.00000    5.07143  43.7%     -    1s
+     0     0    5.07143    0  156    9.00000    5.07143  43.7%     -    2s
+     0     0    5.07143    0  194    9.00000    5.07143  43.7%     -    2s
+     0     0    5.07143    0  154    9.00000    5.07143  43.7%     -    2s
+     0     0    5.07143    0  191    9.00000    5.07143  43.7%     -    2s
+     0     0    5.07273    0  214    9.00000    5.07273  43.6%     -    2s
+     0     0    5.08511    0  190    9.00000    5.08511  43.5%     -    3s
+     0     2    5.11111    0  156    9.00000    5.11111  43.2%     -    3s
+H   78    71                       8.0000000    5.25000  34.4%   128    4s
+   161   118    6.02889    7  129    8.00000    5.33333  33.3%  97.9    5s
+   697   419    7.00000   61  190    8.00000    5.50000  31.2%  93.0   13s
+H  698   399                       7.0000000    5.50000  21.4%  92.9   14s
+   703   402    6.00000   13  292    7.00000    5.50000  21.4%  92.3   15s
+
+Explored 720 nodes (167210 simplex iterations) in 19.02 seconds (23.87 work units)
+Thread count was 1 (of 16 available processors)
+
+Solution count 10: 7 8 8 ... 15
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 7.000000000000e+00, best bound 7.000000000000e+00, gap 0.0000%
+
+User-callback calls 6089, time in user-callback 0.01 sec
+
+ sepatime0 0 0
+7.0Stat(MathOptInterface.OPTIMAL, 7.0, 7.0, 0.0, 0.0, 0.09784, 19.024657011032104, 720, Main.CFLG.EFP, "", #undef)

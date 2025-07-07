@@ -1,0 +1,9 @@
+instance: K400.8.con.red
+obj: 42.0
+bound: 27.0
+gap: 0.35714285714285715
+time: 7198.439656019211
+preprocess_time: 1.581425
+sepa_time: 3.503671004933456e14
+node: 6648
+formulation: LEFPAV

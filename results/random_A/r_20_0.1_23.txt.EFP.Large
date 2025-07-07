@@ -2,8 +2,8 @@ instance: r_20_0.1_23.txt
 obj: 4.0
 bound: 4.0
 gap: 0.0
-time: 0.15952014923095703
-preprocess_time: 0.023083
+time: 0.22868108749389648
+preprocess_time: 0.026967
 sepa_time: 0.0
-node: 55
+node: 18
 formulation: EFP

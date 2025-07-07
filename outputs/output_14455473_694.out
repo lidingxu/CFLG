@@ -1,0 +1,191 @@
+Data path: /scratch/opt/lxu/CFLG/benchmarks/tree_B
+Instance: treeB.300.15
+Result path: /scratch/opt/lxu/CFLG/results/tree_B
+Solver: Gurobi
+Time limit: 7200
+Formulation: LEFPAV
+Cover: Large
+julia --project=. src/main.jl /scratch/opt/lxu/CFLG/benchmarks/tree_B treeB.300.15 /scratch/opt/lxu/CFLG/results/tree_B Gurobi 7200 LEFPAV Large
+The latest version of Julia in the `release` channel is 1.11.5+0.x64.linux.gnu. You currently have `1.11.4+0.x64.linux.gnu` installed. Run:
+
+  juliaup update
+
+in your terminal shell to install Julia 1.11.5+0.x64.linux.gnu and update the `release` channel to that version.
+/scratch/opt/lxu/CFLG/benchmarks/tree_B Gurobi 7200.0 /scratch/opt/lxu/CFLG/results/tree_B treeB.300.15 LEFPAV Large
+/scratch/opt/lxu/CFLG/benchmarks/tree_B/treeB.300.15
+
+ read graph
+data loaded
+
+problem_graph/original graph: node: 300/300 edge: 314/314 dlt: 3.04644848069629 break_avg_len: 1.523224240348145 break_max_len: 1.996631463959332Vbar/V, Ebar/E(86, 300, 100, 314)
+Set parameter TokenServer to value "solice01.zib.de"
+Set parameter Threads to value 1
+Set parameter OutputFlag to value 1
+Gurobi Optimizer version 12.0.1 build v12.0.1rc0 (linux64 - "Debian GNU/Linux 12 (bookworm)")
+
+CPU model: Intel(R) Xeon(R) Gold 5122 CPU @ 3.60GHz, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 8 physical cores, 16 logical processors, using up to 1 threads
+
+Non-default parameters:
+Threads  1
+
+Optimize a model with 270 rows, 426 columns and 710 nonzeros
+Model fingerprint: 0x454b109e
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+00]
+Presolve removed 270 rows and 426 columns
+Presolve time: 0.00s
+Presolve: All rows and columns removed
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    4.2000000e+01   0.000000e+00   0.000000e+00      0s
+
+Solved in 0 iterations and 0.00 seconds (0.00 work units)
+Optimal objective  4.200000000e+01
+
+User-callback calls 35, time in user-callback 0.01 sec
+elapsed CPU time: 1.443892 seconds
+Set parameter TokenServer to value "solice01.zib.de"
+Set parameter Threads to value 1
+Set parameter OutputFlag to value 1
+Set parameter MIPGap to value 0.0001
+Set parameter MIPGapAbs to value 0.999998
+Set parameter TimeLimit to value 7198.556108
+
+ more cuts: false 3.04644848069629 false
+is_attach:trueformulation:LEFPAV0 142 0
+Set parameter PreCrush to value 1
+
+ model loaded
+
+Gurobi Optimizer version 12.0.1 build v12.0.1rc0 (linux64 - "Debian GNU/Linux 12 (bookworm)")
+
+CPU model: Intel(R) Xeon(R) Gold 5122 CPU @ 3.60GHz, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 8 physical cores, 16 logical processors, using up to 1 threads
+
+Non-default parameters:
+TimeLimit  7198.556108
+MIPGapAbs  0.999998
+PreCrush  1
+Threads  1
+
+Optimize a model with 3918 rows, 2329 columns and 10734 nonzeros
+Model fingerprint: 0x30883236
+Variable types: 412 continuous, 1917 integer (1917 binary)
+Coefficient statistics:
+  Matrix range     [1e-06, 6e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [2e-02, 3e+00]
+  RHS range        [1e-06, 6e+00]
+Presolve removed 2358 rows and 1300 columns
+Presolve time: 0.06s
+Presolved: 1560 rows, 1029 columns, 6588 nonzeros
+Variable types: 184 continuous, 845 integer (845 binary)
+Found heuristic solution: objective 157.0000000
+Found heuristic solution: objective 155.0000000
+Found heuristic solution: objective 120.0000000
+
+Root relaxation: objective 7.166248e+01, 1031 iterations, 0.01 seconds (0.01 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0   71.66248    0  248  120.00000   71.66248  40.3%     -    0s
+H    0     0                     114.0000000   71.66248  37.1%     -    0s
+H    0     0                      96.0000000   71.66248  25.4%     -    0s
+H    0     0                      90.0000000   71.66248  20.4%     -    0s
+H    0     0                      89.0000000   71.66248  19.5%     -    0s
+elapsed CPU time: 4.619996509562853e12 seconds
+     0     0   75.79861    0  258   89.00000   75.79861  14.8%     -    0s
+H    0     0                      87.0000000   75.80586  12.9%     -    0s
+H    0     0                      86.0000000   75.80586  11.9%     -    0s
+elapsed CPU time: 0.007654 seconds
+     0     0   75.80586    0  246   86.00000   75.80586  11.9%     -    0s
+elapsed CPU time: 0.007587 seconds
+     0     0   76.84115    0  202   86.00000   76.84115  10.6%     -    0s
+elapsed CPU time: 1.3839564459523188e13 seconds
+     0     0   77.18387    0  190   86.00000   77.18387  10.3%     -    0s
+elapsed CPU time: 0.00764 seconds
+     0     0   77.21495    0  197   86.00000   77.21495  10.2%     -    0s
+elapsed CPU time: 0.007508 seconds
+     0     0   77.21495    0  214   86.00000   77.21495  10.2%     -    0s
+elapsed CPU time: 0.007415 seconds
+     0     0   77.87500    0  133   86.00000   77.87500  9.45%     -    0s
+elapsed CPU time: 0.007506 seconds
+     0     0   77.87500    0  139   86.00000   77.87500  9.45%     -    0s
+elapsed CPU time: 0.041269 seconds
+     0     0   78.10000    0  137   86.00000   78.10000  9.19%     -    1s
+H    0     0                      85.0000000   78.10000  8.12%     -    1s
+H    0     0                      84.0000000   78.10000  7.02%     -    1s
+elapsed CPU time: 0.007483 seconds
+     0     0   78.10000    0  139   84.00000   78.10000  7.02%     -    1s
+elapsed CPU time: 0.007394 seconds
+     0     0   78.10000    0  160   84.00000   78.10000  7.02%     -    1s
+elapsed CPU time: 0.007479 seconds
+     0     0   78.10000    0  162   84.00000   78.10000  7.02%     -    1s
+elapsed CPU time: 0.007432 seconds
+     0     0   78.10000    0   77   84.00000   78.10000  7.02%     -    1s
+H    0     0                      83.0000000   78.10000  5.90%     -    1s
+H    0     0                      82.0000000   78.10000  4.76%     -    1s
+elapsed CPU time: 4.604169533601619e12 seconds
+     0     0   78.10000    0  116   82.00000   78.10000  4.76%     -    1s
+elapsed CPU time: 0.007395 seconds
+     0     0   78.11905    0   99   82.00000   78.11905  4.73%     -    1s
+elapsed CPU time: 9.227404461389914e12 seconds
+     0     0   78.11905    0  108   82.00000   78.11905  4.73%     -    1s
+elapsed CPU time: 0.00752 seconds
+H    0     0                      81.0000000   78.12500  3.55%     -    1s
+elapsed CPU time: 0.007665 seconds
+     0     2   78.18421    0   94   81.00000   78.18421  3.48%     -    1s
+H  106     7                      80.0000000   79.00000  1.25%  24.4    1s
+
+Cutting planes:
+  User: 28
+  Learned: 3
+  Gomory: 12
+  Cover: 63
+  Implied bound: 15
+  Clique: 7
+  MIR: 79
+  StrongCG: 7
+  GUB cover: 28
+  Zero half: 24
+  RLT: 30
+  Relax-and-lift: 14
+  BQP: 11
+  PSD: 1
+
+Explored 204 nodes (10981 simplex iterations) in 1.60 seconds (0.48 work units)
+Thread count was 1 (of 16 available processors)
+
+Solution count 10: 80 81 82 ... 90
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 8.000000000000e+01, best bound 8.000000000000e+01, gap 0.0000%
+
+User-callback calls 1825, time in user-callback 1.68 sec
+
+ sepatime3.229113496407772e13 2211 18
+80.0Stat(MathOptInterface.OPTIMAL, 80.0, 80.0, 0.0, 3.229113496407772e13, 1.443892, 1.6031920909881592, 204, Main.CFLG.LEFPAV, "", #undef)
+ERROR: LoadError: SystemError: opening file "/scratch/opt/lxu/CFLG/results/tree_B/treeB.300.15.LEFPAV.Large": No such file or directory
+Stacktrace:
+ [1] systemerror(p::String, errno::Int32; extrainfo::Nothing)
+   @ Base ./error.jl:176
+ [2] systemerror
+   @ ./error.jl:175 [inlined]
+ [3] open(fname::String; lock::Bool, read::Nothing, write::Nothing, create::Nothing, truncate::Bool, append::Nothing)
+   @ Base ./iostream.jl:295
+ [4] open
+   @ ./iostream.jl:277 [inlined]
+ [5] open(fname::String, mode::String; lock::Bool)
+   @ Base ./iostream.jl:358
+ [6] open
+   @ ./iostream.jl:357 [inlined]
+ [7] main(args::Vector{String})
+   @ Main /scratch/opt/lxu/CFLG/src/main.jl:51
+ [8] top-level scope
+   @ /scratch/opt/lxu/CFLG/src/main.jl:57
+in expression starting at /scratch/opt/lxu/CFLG/src/main.jl:57
+srun: error: htc-cmp475: task 0: Exited with exit code 1

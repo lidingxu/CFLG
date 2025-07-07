@@ -1,0 +1,64 @@
+Data path: /scratch/opt/lxu/CFLG/benchmarks/random_A
+Instance: r_10_0.2_9.txt
+Result path: /scratch/opt/lxu/CFLG/results/random_A
+Solver: Gurobi
+Time limit: 7200
+Formulation: LEFPA
+Cover: Large
+julia --project=. src/main.jl /scratch/opt/lxu/CFLG/benchmarks/random_A r_10_0.2_9.txt /scratch/opt/lxu/CFLG/results/random_A Gurobi 7200 LEFPA Large
+The latest version of Julia in the `release` channel is 1.11.5+0.x64.linux.gnu. You currently have `1.11.4+0.x64.linux.gnu` installed. Run:
+
+  juliaup update
+
+in your terminal shell to install Julia 1.11.5+0.x64.linux.gnu and update the `release` channel to that version.
+/scratch/opt/lxu/CFLG/benchmarks/random_A Gurobi 7200.0 /scratch/opt/lxu/CFLG/results/random_A r_10_0.2_9.txt LEFPA Large
+/scratch/opt/lxu/CFLG/benchmarks/random_A/r_10_0.2_9.txt
+
+ read graph
+data loaded
+
+problem_graph/original graph: node: 10/10 edge: 9/9 dlt: 0.9411961376803664 break_avg_len: 0.4705980688401832 break_max_len: 0.8466035273230632Vbar/V, Ebar/E(1, 10, 0, 9)
+Set parameter TokenServer to value "solice01.zib.de"
+Set parameter Threads to value 1
+Set parameter OutputFlag to value 1
+Gurobi Optimizer version 12.0.1 build v12.0.1rc0 (linux64 - "Debian GNU/Linux 12 (bookworm)")
+
+CPU model: Intel(R) Xeon(R) Gold 5122 CPU @ 3.60GHz, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 8 physical cores, 16 logical processors, using up to 1 threads
+
+Non-default parameters:
+Threads  1
+
+Optimize a model with 3 rows, 3 columns and 5 nonzeros
+Model fingerprint: 0x2d05b684
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+00]
+Presolve removed 2 rows and 2 columns
+Presolve time: 0.00s
+
+Solved in 0 iterations and 0.00 seconds (0.00 work units)
+Infeasible model
+
+User-callback calls 24, time in user-callback 0.00 sec
+elapsed CPU time: 1.067627 seconds
+Set parameter TokenServer to value "solice01.zib.de"
+Set parameter Threads to value 1
+Set parameter OutputFlag to value 1
+Set parameter MIPGap to value 0.0001
+Set parameter MIPGapAbs to value 0.999998
+Set parameter TimeLimit to value 7198.932373
+ERROR: LoadError: AssertionError: eassign must not be nothing when longedge1 is false
+Stacktrace:
+ [1] solveEFP!(problem::Problem, formulation::FormulationSet, cflg::JuMP.Model, eassign::Nothing, vassign::Nothing, required::Dict{Int64, Bool}, Ups::Dict{Int64, Float64}, R::Vector{Int64}, RE::Vector{Int64})
+   @ Main.CFLG /scratch/opt/lxu/CFLG/src/Algorithm.jl:207
+ [2] solve!(problem::Problem, solver_name::String, option::Option, formulation::String)
+   @ Main.CFLG /scratch/opt/lxu/CFLG/src/Algorithm.jl:119
+ [3] main(args::Vector{String})
+   @ Main /scratch/opt/lxu/CFLG/src/main.jl:39
+ [4] top-level scope
+   @ /scratch/opt/lxu/CFLG/src/main.jl:57
+in expression starting at /scratch/opt/lxu/CFLG/src/main.jl:57
+srun: error: htc-cmp474: task 0: Exited with exit code 1
