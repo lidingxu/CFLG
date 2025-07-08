@@ -2,8 +2,8 @@ instance: city_628.txt
 obj: 96.0
 bound: 86.0
 gap: 0.10416666666666667
-time: 7199.857586860657
-preprocess_time: 0.146442
-sepa_time: 0.0
-node: 16045
+time: 7199.863245010376
+preprocess_time: 0.140812
+sepa_time: 1.0e-323
+node: 15238
 formulation: LEVFP

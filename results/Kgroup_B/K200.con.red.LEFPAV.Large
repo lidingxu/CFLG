@@ -1,9 +1,9 @@
 instance: K200.con.red
 obj: 12.0
-bound: 11.0
-gap: 0.08333333333333333
-time: 7198.863581895828
-preprocess_time: 1.145078
-sepa_time: 5.856353959262868e13
-node: 51011
+bound: 10.000000000000004
+gap: 0.16666666666666638
+time: 7198.917474031448
+preprocess_time: 1.091886
+sepa_time: 6.92827345355001e13
+node: 47745
 formulation: LEFPAV

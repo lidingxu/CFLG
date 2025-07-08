@@ -2,8 +2,8 @@ instance: K100.10.red
 obj: 84.0
 bound: 0.0
 gap: 1.0
-time: 7200.212783813477
-preprocess_time: 0.026513
-sepa_time: 6.94166681608565e-310
+time: 7200.281758069992
+preprocess_time: 0.035735
+sepa_time: 0.0
 node: 1
 formulation: EF

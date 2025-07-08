@@ -1,0 +1,9 @@
+instance: K100.3.con.red
+obj: 95.0
+bound: 95.0
+gap: 0.0
+time: 0.014117956161499023
+preprocess_time: 0.998823
+sepa_time: 0.0
+node: 1
+formulation: LEFPA

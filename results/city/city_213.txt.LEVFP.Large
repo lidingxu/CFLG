@@ -2,8 +2,8 @@ instance: city_213.txt
 obj: 29.0
 bound: 22.0
 gap: 0.2413793103448276
-time: 7199.9466869831085
-preprocess_time: 0.058988
-sepa_time: 1.0e-323
-node: 52175
+time: 7199.946130990982
+preprocess_time: 0.059365
+sepa_time: 6.92661652509025e-310
+node: 52144
 formulation: LEVFP

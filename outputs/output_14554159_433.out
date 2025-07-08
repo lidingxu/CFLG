@@ -1,0 +1,102 @@
+Data path: /scratch/opt/lxu/CFLG/benchmarks/random_B
+Instance: r_30_0.1_54.txt
+Result path: /scratch/opt/lxu/CFLG/results/random_B
+Solver: Gurobi
+Time limit: 7200
+Formulation: LEFPAV
+Cover: Small
+julia --project=. src/main.jl /scratch/opt/lxu/CFLG/benchmarks/random_B r_30_0.1_54.txt /scratch/opt/lxu/CFLG/results/random_B Gurobi 7200 LEFPAV Small
+The latest version of Julia in the `release` channel is 1.11.5+0.x64.linux.gnu. You currently have `1.11.4+0.x64.linux.gnu` installed. Run:
+
+  juliaup update
+
+in your terminal shell to install Julia 1.11.5+0.x64.linux.gnu and update the `release` channel to that version.
+/scratch/opt/lxu/CFLG/benchmarks/random_B Gurobi 7200.0 /scratch/opt/lxu/CFLG/results/random_B r_30_0.1_54.txt LEFPAV Small
+/scratch/opt/lxu/CFLG/benchmarks/random_B/r_30_0.1_54.txt
+
+ read graph
+data loaded
+
+
+after absorb:25 30
+
+max_piece:12
+problem_graph/original graph: node: 27/30 edge: 51/54 dlt: 0.14985539479029872 break_avg_len: 0.6346816720530298 break_max_len: 1.5720943579988345Vbar/V, Ebar/E(24, 27, 48, 51)
+Set parameter TokenServer to value "solice01.zib.de"
+Set parameter Threads to value 1
+Set parameter OutputFlag to value 1
+Gurobi Optimizer version 12.0.1 build v12.0.1rc0 (linux64 - "Debian GNU/Linux 12 (bookworm)")
+
+CPU model: Intel(R) Xeon(R) Gold 5122 CPU @ 3.60GHz, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 8 physical cores, 16 logical processors, using up to 1 threads
+
+Non-default parameters:
+Threads  1
+
+Optimize a model with 78 rows, 153 columns and 255 nonzeros
+Model fingerprint: 0x5dd12e09
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+00]
+Presolve removed 78 rows and 153 columns
+Presolve time: 0.00s
+Presolve: All rows and columns removed
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    3.0000000e+00   0.000000e+00   0.000000e+00      0s
+
+Solved in 0 iterations and 0.00 seconds (0.00 work units)
+Optimal objective  3.000000000e+00
+
+User-callback calls 35, time in user-callback 0.01 sec
+elapsed CPU time: 1.297526 seconds
+Set parameter TokenServer to value "solice01.zib.de"
+Set parameter Threads to value 1
+Set parameter OutputFlag to value 1
+Set parameter MIPGap to value 0.0001
+Set parameter MIPGapAbs to value 0.999998
+Set parameter TimeLimit to value 7198.702474
+
+ more cuts: false 0.14985539479029872 false
+is_attach:trueformulation:LEFPAV0 51 0
+Set parameter PreCrush to value 1
+
+ model loaded
+
+Gurobi Optimizer version 12.0.1 build v12.0.1rc0 (linux64 - "Debian GNU/Linux 12 (bookworm)")
+
+CPU model: Intel(R) Xeon(R) Gold 5122 CPU @ 3.60GHz, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 8 physical cores, 16 logical processors, using up to 1 threads
+
+Non-default parameters:
+TimeLimit  7198.702474
+MIPGapAbs  0.999998
+PreCrush  1
+Threads  1
+
+Optimize a model with 545 rows, 424 columns and 1386 nonzeros
+Model fingerprint: 0x633b1568
+Variable types: 129 continuous, 295 integer (295 binary)
+Coefficient statistics:
+  Matrix range     [1e-02, 2e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e-02, 2e+00]
+  RHS range        [1e-06, 2e+00]
+Presolve removed 545 rows and 424 columns
+Presolve time: 0.00s
+Presolve: All rows and columns removed
+
+Explored 0 nodes (0 simplex iterations) in 0.00 seconds (0.00 work units)
+Thread count was 1 (of 16 available processors)
+
+Solution count 1: 50 
+
+Optimal solution found (tolerance 1.00e-04)
+Warning: max constraint violation (1.0000e-06) exceeds tolerance
+Best objective 5.000000000000e+01, best bound 5.000000000000e+01, gap 0.0000%
+
+User-callback calls 444, time in user-callback 0.84 sec
+
+ sepatime0 445 0
+50.0Stat(MathOptInterface.OPTIMAL, 50.0, 50.0, 0.0, 0.0, 1.297526, 0.0021359920501708984, 0, Main.CFLG.LEFPAV, "", #undef)

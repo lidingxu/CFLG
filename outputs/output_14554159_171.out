@@ -1,0 +1,120 @@
+Data path: /scratch/opt/lxu/CFLG/benchmarks/Kgroup_B
+Instance: K400.7.con.red
+Result path: /scratch/opt/lxu/CFLG/results/Kgroup_B
+Solver: Gurobi
+Time limit: 7200
+Formulation: LEFPAD
+Cover: Small
+julia --project=. src/main.jl /scratch/opt/lxu/CFLG/benchmarks/Kgroup_B K400.7.con.red /scratch/opt/lxu/CFLG/results/Kgroup_B Gurobi 7200 LEFPAD Small
+The latest version of Julia in the `release` channel is 1.11.5+0.x64.linux.gnu. You currently have `1.11.4+0.x64.linux.gnu` installed. Run:
+
+  juliaup update
+
+in your terminal shell to install Julia 1.11.5+0.x64.linux.gnu and update the `release` channel to that version.
+/scratch/opt/lxu/CFLG/benchmarks/Kgroup_B Gurobi 7200.0 /scratch/opt/lxu/CFLG/results/Kgroup_B K400.7.con.red LEFPAD Small
+/scratch/opt/lxu/CFLG/benchmarks/Kgroup_B/K400.7.con.red
+
+ read graph
+data loaded
+
+
+after absorb:225 225
+
+max_piece:24
+problem_graph/original graph: node: 346/225 edge: 988/867 dlt: 0.044704290438595314 break_avg_len: 0.15691748911037287 break_max_len: 1.0Vbar/V, Ebar/E(344, 346, 986, 988)
+Set parameter TokenServer to value "solice01.zib.de"
+Set parameter Threads to value 1
+Set parameter OutputFlag to value 1
+Gurobi Optimizer version 12.0.1 build v12.0.1rc0 (linux64 - "Debian GNU/Linux 12 (bookworm)")
+
+CPU model: Intel(R) Xeon(R) Gold 5122 CPU @ 3.60GHz, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 8 physical cores, 16 logical processors, using up to 1 threads
+
+Non-default parameters:
+Threads  1
+
+Optimize a model with 1334 rows, 2964 columns and 4940 nonzeros
+Model fingerprint: 0xe40d4577
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+00]
+Presolve removed 1334 rows and 2964 columns
+Presolve time: 0.00s
+Presolve: All rows and columns removed
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    2.0000000e+00   0.000000e+00   0.000000e+00      0s
+
+Solved in 0 iterations and 0.00 seconds (0.00 work units)
+Optimal objective  2.000000000e+00
+
+User-callback calls 35, time in user-callback 0.01 sec
+elapsed CPU time: 1.209435 seconds
+Set parameter TokenServer to value "solice01.zib.de"
+Set parameter Threads to value 1
+Set parameter OutputFlag to value 1
+Set parameter MIPGap to value 0.0001
+Set parameter MIPGapAbs to value 0.999998
+Set parameter TimeLimit to value 7198.790565
+
+ more cuts: false 0.044704290438595314 false
+is_attach:trueformulation:LEFPAD0 988 0
+
+ model loaded
+
+Gurobi Optimizer version 12.0.1 build v12.0.1rc0 (linux64 - "Debian GNU/Linux 12 (bookworm)")
+
+CPU model: Intel(R) Xeon(R) Gold 5122 CPU @ 3.60GHz, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 8 physical cores, 16 logical processors, using up to 1 threads
+
+Non-default parameters:
+TimeLimit  7198.790565
+MIPGapAbs  0.999998
+Threads  1
+
+Optimize a model with 20982 rows, 15826 columns and 58588 nonzeros
+Model fingerprint: 0xe94579bf
+Variable types: 7740 continuous, 8086 integer (8086 binary)
+Coefficient statistics:
+  Matrix range     [4e-08, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [2e-04, 1e+00]
+  RHS range        [1e-06, 1e+00]
+Found heuristic solution: objective 962.0000000
+Presolve removed 10854 rows and 4292 columns
+Presolve time: 0.13s
+Presolved: 10128 rows, 11534 columns, 37170 nonzeros
+Variable types: 6121 continuous, 5413 integer (5413 binary)
+
+Root relaxation: objective 7.220000e+02, 4651 iterations, 0.05 seconds (0.05 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0  722.00000    0   16  962.00000  722.00000  24.9%     -    0s
+H    0     0                     953.0000000  722.00000  24.2%     -    0s
+H    0     0                     936.0000000  722.00000  22.9%     -    0s
+H    0     0                     882.0000000  722.00000  18.1%     -    0s
+     0     0  722.00000    0   14  882.00000  722.00000  18.1%     -    0s
+H    0     0                     722.0000000  722.00000  0.00%     -    0s
+     0     0  722.00000    0   18  722.00000  722.00000  0.00%     -    0s
+
+Cutting planes:
+  Gomory: 2
+  Cover: 5
+  MIR: 3
+  Flow cover: 10
+
+Explored 1 nodes (5566 simplex iterations) in 0.46 seconds (0.32 work units)
+Thread count was 1 (of 16 available processors)
+
+Solution count 6: 722 722 882 ... 962
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 7.220000000000e+02, best bound 7.220000000000e+02, gap 0.0000%
+
+User-callback calls 510, time in user-callback 0.00 sec
+
+ sepatime0 0 0
+722.0Stat(MathOptInterface.OPTIMAL, 722.0, 722.0, 0.0, 0.0, 1.209435, 0.46117711067199707, 1, Main.CFLG.LEFPAD, "", #undef)

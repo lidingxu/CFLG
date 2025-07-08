@@ -2,8 +2,8 @@ instance: r_15_0.4_45.txt
 obj: 2.0
 bound: 2.0
 gap: 0.0
-time: 0.5362749099731445
-preprocess_time: 0.028032
-sepa_time: 9.0e-323
+time: 0.5406157970428467
+preprocess_time: 0.02928
+sepa_time: 0.0
 node: 1
 formulation: LEVFP

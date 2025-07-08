@@ -2,8 +2,8 @@ instance: K400.3.con.red
 obj: 37.0
 bound: 30.0
 gap: 0.1891891891891892
-time: 7198.886270999908
-preprocess_time: 1.204492
+time: 7198.285650014877
+preprocess_time: 1.724264
 sepa_time: 0.0
-node: 10202
+node: 9851
 formulation: LEFPAD

@@ -1,5 +1,5 @@
 bash jobs.sh
-rm -r results/**/*
+#rm -r results/**/*
 if [ -d "outputs" ]; then
   rm -r outputs/*
 fi

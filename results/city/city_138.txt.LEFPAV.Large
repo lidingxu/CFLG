@@ -2,8 +2,8 @@ instance: city_138.txt
 obj: 20.0
 bound: 18.000000000000014
 gap: 0.09999999999999928
-time: 7198.536033153534
-preprocess_time: 1.466297
-sepa_time: 1.9357754782056644e14
-node: 711559
+time: 7198.7025411129
+preprocess_time: 1.302128
+sepa_time: 1.7975198788359588e14
+node: 721262
 formulation: LEFPAV

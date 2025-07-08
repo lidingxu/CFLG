@@ -2,8 +2,8 @@ instance: r_20_0.1_23.txt
 obj: 4.0
 bound: 4.0
 gap: 0.0
-time: 0.25598812103271484
-preprocess_time: 1.340604
+time: 0.2555050849914551
+preprocess_time: 1.347081
 sepa_time: 0.0
 node: 129
 formulation: LEFPAD
