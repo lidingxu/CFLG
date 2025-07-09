@@ -14,11 +14,11 @@ juliabin="julia" #"/home/lxu/software/julia-1.10.2/bin/julia"
 rm -f job_list.txt
 for benchmark in $(ls ${datapath})
 do
-  if [[ $benchmark != "tree_A" ||  $benchmark != "tree_B" ]]
+  if [[ $benchmark != "tree_A" &&  $benchmark != "tree_B" ]]
   then
     continue
   fi
-
+  echo $benchmark
   for instance in $(ls $datapath/$benchmark)
   do
     for formulation in "${formulations[@]}"

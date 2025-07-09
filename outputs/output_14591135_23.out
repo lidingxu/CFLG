@@ -1,0 +1,50 @@
+Data path: /scratch/opt/lxu/CFLG/benchmarks/tree_A
+Instance: treeA.200.20
+Result path: /scratch/opt/lxu/CFLG/results/tree_A
+Solver: Gurobi
+Time limit: 7200
+Formulation: EF
+Cover: Large
+julia --project=. src/main.jl /scratch/opt/lxu/CFLG/benchmarks/tree_A treeA.200.20 /scratch/opt/lxu/CFLG/results/tree_A Gurobi 7200 EF Large
+The latest version of Julia in the `release` channel is 1.11.5+0.x64.linux.gnu. You currently have `1.11.4+0.x64.linux.gnu` installed. Run:
+
+  juliaup update
+
+in your terminal shell to install Julia 1.11.5+0.x64.linux.gnu and update the `release` channel to that version.
+/scratch/opt/lxu/CFLG/benchmarks/tree_A Gurobi 7200.0 /scratch/opt/lxu/CFLG/results/tree_A treeA.200.20 EF Large
+/scratch/opt/lxu/CFLG/benchmarks/tree_A/treeA.200.20
+
+ read graph
+data loaded
+
+problem_graph/original graph: node: 200/200 edge: 219/219 dlt: 2.9777873923028 break_avg_len: 1.4888936961514 break_max_len: 1.9992277058975603elapsed CPU time: 0.03852 seconds
+Set parameter TokenServer to value "solice01.zib.de"
+Set parameter Threads to value 1
+Set parameter OutputFlag to value 1
+Set parameter MIPGap to value 0.0001
+Set parameter MIPGapAbs to value 0.999998
+Set parameter TimeLimit to value 7199.96148
+
+ model loaded
+
+Gurobi Optimizer version 12.0.1 build v12.0.1rc0 (linux64 - "Debian GNU/Linux 12 (bookworm)")
+
+CPU model: Intel(R) Xeon(R) Gold 5222 CPU @ 3.80GHz, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 8 physical cores, 16 logical processors, using up to 1 threads
+
+Non-default parameters:
+TimeLimit  7199.96148
+MIPGapAbs  0.999998
+Threads  1
+
+Optimize a model with 31717113 rows, 10718736 columns and 84476403 nonzeros
+Model fingerprint: 0xf6e34d10
+Variable types: 131619 continuous, 10587117 integer (10587117 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 7e+01]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 2e+00]
+  RHS range        [3e-04, 7e+01]
+Found heuristic solution: objective 219.0000000
+slurmstepd-htc-cmp483: error: Detected 1 oom_kill event in StepId=14591159.0. Some of the step tasks have been OOM Killed.
+srun: error: htc-cmp483: task 0: Out Of Memory

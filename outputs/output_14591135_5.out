@@ -1,0 +1,31 @@
+Data path: /scratch/opt/lxu/CFLG/benchmarks/tree_A
+Instance: treeA.200.10
+Result path: /scratch/opt/lxu/CFLG/results/tree_A
+Solver: Gurobi
+Time limit: 7200
+Formulation: EF
+Cover: Large
+julia --project=. src/main.jl /scratch/opt/lxu/CFLG/benchmarks/tree_A treeA.200.10 /scratch/opt/lxu/CFLG/results/tree_A Gurobi 7200 EF Large
+The latest version of Julia in the `release` channel is 1.11.5+0.x64.linux.gnu. You currently have `1.11.4+0.x64.linux.gnu` installed. Run:
+
+  juliaup update
+
+in your terminal shell to install Julia 1.11.5+0.x64.linux.gnu and update the `release` channel to that version.
+/scratch/opt/lxu/CFLG/benchmarks/tree_A Gurobi 7200.0 /scratch/opt/lxu/CFLG/results/tree_A treeA.200.10 EF Large
+/scratch/opt/lxu/CFLG/benchmarks/tree_A/treeA.200.10
+
+ read graph
+data loaded
+
+problem_graph/original graph: node: 200/200 edge: 209/209 dlt: 3.007579533011168 break_avg_len: 1.503789766505584 break_max_len: 1.984402562727856elapsed CPU time: 0.091301 seconds
+Set parameter TokenServer to value "solice01.zib.de"
+Set parameter Threads to value 1
+Set parameter OutputFlag to value 1
+Set parameter MIPGap to value 0.0001
+Set parameter MIPGapAbs to value 0.999998
+Set parameter TimeLimit to value 7199.908699
+
+ model loaded
+
+slurmstepd-htc-cmp481: error: Detected 1 oom_kill event in StepId=14591141.0. Some of the step tasks have been OOM Killed.
+srun: error: htc-cmp481: task 0: Out Of Memory
