@@ -85,6 +85,27 @@ function solve!(problem::Problem, solver_name::String, option::Option, formulati
     RE = Set()
     if is_edge && is_attach
         required, Ups, R, RE = pruning(problem)
+        print((Ups, R, problem.prob_graph.node_num, problem.prob_graph.edge_num))
+        if problem.prob_graph.edge_num == 1
+            @assert( length(R) == 1 )
+            r = first(R)
+            ups = Ups[r] + required[r]
+            @assert( ups >= 0)
+            sol_val = ups
+            preprocess_time = CPUtoc()
+            stat = Stat()
+            stat.preprocess_time = preprocess_time
+            stat.termintaion_status = OPTIMAL
+            stat.node = 0
+            stat.sol_val = sol_val
+            stat.bound = sol_val
+            stat.gap = 0
+            stat.time = 0
+            stat.formulation = formulation
+            stat.instance = problem.instance
+            println(stat)
+            return stat
+        end
     end
 
     # bound tightenning
@@ -156,6 +177,7 @@ function vAssign(problem::Problem, solver_name::String, option::Option)
 
     @objective(model, Max, sum(α[e] for e in graph.edge_ids))
 
+    #print(model)
     optimize!(model)
 
     if termination_status(model) == OPTIMAL

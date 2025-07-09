@@ -347,6 +347,7 @@ function projectGraph(graph::Graph, VR, R, rho)
             push!(induced_nodes, node.node_id)
         end
     end
+
     induced_nodes = union(induced_nodes, R)
 
     # Map old node ids to new node ids (1-based)
@@ -361,6 +362,7 @@ function projectGraph(graph::Graph, VR, R, rho)
         a = edge.nodes[:a]
         b = edge.nodes[:b]
         if a in induced_nodes && b in induced_nodes
+            print((a, b))
             push!(edge_fields, (node_map[a], node_map[b], edge.length))
         end
     end
@@ -750,6 +752,12 @@ function findAttachedTrees(graph::Graph)
             prv = Set([pr[v]])
             @assert graph.incident_nodes[v] == union(ch[v], prv)
             @assert isempty(intersect(ch[v], prv))
+        else
+            for v_ in graph.incident_nodes[v]
+                if ! (v_ in ch[v])
+                    @assert( length(graph.adjacent_edges[v_]) != 1 )
+                end
+            end
         end
     end
 

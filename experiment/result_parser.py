@@ -231,6 +231,8 @@ def printtable(algorithms_, benchmarks, has_obj_):
                             bench_entries[benchmark].append(entry)
                             detail += "&" + str(round(entry["time"]/time_limit,1)) + " & "  + str(round(entry["gap"],1)) + "\% & " +  str(round(entry["obj"],1)) + "\%"
                     if not is_find:
+                        if algo == "LEFPA":
+                            print((instance, cover))
                         entry = copy.copy(defualt_entry)
                         entry["formulation"]  = algo
                         entry["instance"] = instance
@@ -246,8 +248,6 @@ def printtable(algorithms_, benchmarks, has_obj_):
     file = open("detail.txt", "w")
     file.write(detail)
     file.close()
-
-
 
     bench_instances = {}
     bench_instances["Small"] = []
@@ -280,7 +280,6 @@ def printtable(algorithms_, benchmarks, has_obj_):
     bench_instances["Small"] = set(bench_instances["Small"])
     bench_instances["Large"] = set(bench_instances["Large"])
 
-
     bench_entries["Small"] = []
     bench_entries["Large"] = []
     for benchmark in benchmarks:
@@ -303,13 +302,9 @@ def printtable(algorithms_, benchmarks, has_obj_):
                         #print(entry["time"], entry["absgap"], entry["obj"], entry["bound"])
                         add(stat, entry)
                         #print(entry)
-                #print(algo, stat)
                 display = avgStat(stat)
                 #print(display)
                 benchdict[(benchmark, cover, algo)] = gettab(stat, False if cover == "Small" else True)
-                #bench_tab = gettab(bench_tab, stat, has_obj_ , 0)
-            #print("\n")
-            #bench_tab += "\n"
 
     # p-test
     ys = {}
@@ -322,7 +317,6 @@ def printtable(algorithms_, benchmarks, has_obj_):
                         ys[algo_].append( entry["gap"] )
     w_stat, p_val = stats.wilcoxon(ys[pcomp[0]], ys[pcomp[1]])
     print("Wilcoxon signed-rank test p-value:", p_val)
-
 
     for benchmark, subbench_name in zip(test_benchs, ["Small", "Large"]):
         tab = ""
@@ -359,8 +353,6 @@ def printtable(algorithms_, benchmarks, has_obj_):
             plt.ylabel('#instances')
             plt.savefig(benchmark + cover_ + ".pdf", format="pdf", bbox_inches="tight")
             plt.show()
-
-
 
 # display table 2
 print("table \n")

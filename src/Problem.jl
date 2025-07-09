@@ -126,7 +126,6 @@ function bounds!(prob::Problem)
 end
 
 
-
 function pruning(problem::Problem)
     # Find all maximal attached trees in the graph
     # Output:
@@ -136,7 +135,7 @@ function pruning(problem::Problem)
     graph = problem.prob_graph
     delta = problem.dlt
 
-    ch, pr, R, L =  findAttachedTrees(graph)
+    ch, pr, R, L = findAttachedTrees(graph)
 
     VR = Set{Int}()
     function getVR(graph, ch, pr, v)
