@@ -2,8 +2,8 @@ instance: treeA.600.60
 obj: 859.0
 bound: 859.0
 gap: 0.0
-time: 0.00704193115234375
-preprocess_time: 1.822137
+time: 0.00500798225402832
+preprocess_time: 1.367208
 sepa_time: 0.0
 node: 0
 formulation: LEFPAV

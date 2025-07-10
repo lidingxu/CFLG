@@ -2,8 +2,8 @@ instance: city_479.txt
 obj: 444.0
 bound: 444.0
 gap: 0.0
-time: 0.13301897048950195
-preprocess_time: 1.481443
+time: 0.13276004791259766
+preprocess_time: 1.898576
 sepa_time: 0.0
 node: 1
 formulation: LEFPA

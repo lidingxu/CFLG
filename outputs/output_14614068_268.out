@@ -1,0 +1,26 @@
+Data path: /scratch/opt/lxu/CFLG/benchmarks/random_A
+Instance: r_10_0.2_9.txt
+Result path: /scratch/opt/lxu/CFLG/results/random_A
+Solver: Gurobi
+Time limit: 7200
+Formulation: LEFPA
+Cover: Small
+julia --project=. src/main.jl /scratch/opt/lxu/CFLG/benchmarks/random_A r_10_0.2_9.txt /scratch/opt/lxu/CFLG/results/random_A Gurobi 7200 LEFPA Small
+The latest version of Julia in the `release` channel is 1.11.5+0.x64.linux.gnu. You currently have `1.11.4+0.x64.linux.gnu` installed. Run:
+
+  juliaup update
+
+in your terminal shell to install Julia 1.11.5+0.x64.linux.gnu and update the `release` channel to that version.
+/scratch/opt/lxu/CFLG/benchmarks/random_A Gurobi 7200.0 /scratch/opt/lxu/CFLG/results/random_A r_10_0.2_9.txt LEFPA Small
+/scratch/opt/lxu/CFLG/benchmarks/random_A/r_10_0.2_9.txt
+
+ read graph
+data loaded
+
+
+after absorb:4 10
+
+max_piece:22
+problem_graph/original graph: node: 4/10 edge: 3/9 dlt: 0.1176495172100458 break_avg_len: 1.4117942065205495 break_max_len: 2.5139404857115077Vbar/V, Ebar/E(1, 4, 0, 3)
+(Dict(1 => 19.0), [1], 2, 1)elapsed CPU time: 0.54583 seconds
+Stat(MathOptInterface.OPTIMAL, 19.0, 19.0, 0.0, 5.0e-324, 0.54583, 0.0, 0, Main.CFLG.LEFPA, "", #undef)

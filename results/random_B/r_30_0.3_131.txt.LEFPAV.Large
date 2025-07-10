@@ -2,8 +2,8 @@ instance: r_30_0.3_131.txt
 obj: 3.0
 bound: 3.0
 gap: 0.0
-time: 336.02875089645386
-preprocess_time: 0.967501
-sepa_time: 1.38686336872425e13
+time: 352.70772194862366
+preprocess_time: 1.723166
+sepa_time: 1.3868633687242893e13
 node: 6495
 formulation: LEFPAV

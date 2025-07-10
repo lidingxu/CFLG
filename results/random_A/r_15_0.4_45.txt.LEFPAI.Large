@@ -2,8 +2,8 @@ instance: r_15_0.4_45.txt
 obj: 2.0
 bound: 2.0
 gap: 0.0
-time: 0.7947239875793457
-preprocess_time: 1.338802
+time: 0.802069902420044
+preprocess_time: 1.718741
 sepa_time: 0.0
 node: 1
 formulation: LEFPAI

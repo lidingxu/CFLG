@@ -2,8 +2,8 @@ instance: K400.2.red
 obj: 789.0
 bound: 789.0
 gap: 0.0
-time: 0.08425307273864746
-preprocess_time: 1.516801
+time: 0.08585500717163086
+preprocess_time: 1.939741
 sepa_time: 0.0
 node: 1
 formulation: LEFPAV

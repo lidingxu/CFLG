@@ -2,8 +2,8 @@ instance: K400.5.con.red
 obj: 39.0
 bound: 27.0
 gap: 0.3076923076923077
-time: 7198.487221002579
-preprocess_time: 1.523153
+time: 7198.075924158096
+preprocess_time: 1.934598
 sepa_time: 0.0
-node: 10305
+node: 10351
 formulation: LEFPA

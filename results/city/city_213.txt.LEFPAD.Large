@@ -2,8 +2,8 @@ instance: city_213.txt
 obj: 29.0
 bound: 21.0
 gap: 0.27586206896551724
-time: 7198.62936091423
-preprocess_time: 1.376872
+time: 7198.675599098206
+preprocess_time: 1.328854
 sepa_time: 0.0
-node: 55603
+node: 56081
 formulation: LEFPAD

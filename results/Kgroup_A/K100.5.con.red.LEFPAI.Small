@@ -2,8 +2,8 @@ instance: K100.5.con.red
 obj: 103.0
 bound: 103.0
 gap: 0.0
-time: 0.00890207290649414
-preprocess_time: 1.007831
+time: 0.008812904357910156
+preprocess_time: 1.337452
 sepa_time: 0.0
 node: 0
 formulation: LEFPAI

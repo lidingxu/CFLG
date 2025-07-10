@@ -1,0 +1,100 @@
+Data path: /scratch/opt/lxu/CFLG/benchmarks/tree_A
+Instance: treeA.700.70
+Result path: /scratch/opt/lxu/CFLG/results/tree_A
+Solver: Gurobi
+Time limit: 7200
+Formulation: LEFPA
+Cover: Small
+julia --project=. src/main.jl /scratch/opt/lxu/CFLG/benchmarks/tree_A treeA.700.70 /scratch/opt/lxu/CFLG/results/tree_A Gurobi 7200 LEFPA Small
+The latest version of Julia in the `release` channel is 1.11.5+0.x64.linux.gnu. You currently have `1.11.4+0.x64.linux.gnu` installed. Run:
+
+  juliaup update
+
+in your terminal shell to install Julia 1.11.5+0.x64.linux.gnu and update the `release` channel to that version.
+/scratch/opt/lxu/CFLG/benchmarks/tree_A Gurobi 7200.0 /scratch/opt/lxu/CFLG/results/tree_A treeA.700.70 LEFPA Small
+/scratch/opt/lxu/CFLG/benchmarks/tree_A/treeA.700.70
+
+ read graph
+data loaded
+
+
+after absorb:441 700
+
+max_piece:30
+problem_graph/original graph: node: 441/700 edge: 510/769 dlt: 0.3733625734724527 break_avg_len: 2.2518887764730704 break_max_len: 11.129534603443886Vbar/V, Ebar/E(200, 441, 269, 510)
+(5, 255)(5, 328)(6, 67)(6, 333)(7, 273)(7, 155)(8, 69)(14, 58)(19, 420)(19, 162)(19, 133)(19, 164)(22, 80)(22, 285)(23, 187)(23, 221)(25, 323)(25, 223)(26, 33)(26, 313)(29, 308)(29, 162)(29, 58)(33, 67)(33, 327)(36, 416)(42, 96)(44, 165)(45, 51)(46, 299)(46, 350)(56, 76)(56, 283)(62, 76)(65, 128)(14, 65)(65, 162)(26, 65)(71, 352)(73, 333)(74, 368)(70, 80)(82, 322)(33, 82)(53, 83)(83, 130)(83, 194)(67, 84)(84, 285)(89, 311)(97, 226)(102, 393)(103, 388)(103, 415)(103, 156)(103, 380)(112, 248)(112, 393)(114, 255)(117, 165)(117, 408)(117, 265)(120, 240)(122, 330)(76, 122)(122, 314)(122, 418)(128, 247)(102, 128)(129, 321)(131, 276)(131, 265)(133, 321)(134, 221)(135, 296)(97, 135)(135, 365)(69, 136)(17, 136)(137, 254)(139, 299)(139, 223)(148, 283)(89, 148)(71, 150)(5, 150)(156, 328)(162, 323)(109, 163)(70, 163)(126, 163)(164, 294)(89, 164)(167, 357)(167, 173)(167, 316)(66, 167)(168, 307)(150, 168)(62, 168)(172, 427)(157, 172)(172, 229)(51, 173)(173, 416)(53, 180)(73, 180)(181, 248)(181, 238)(181, 194)(182, 291)(182, 311)(183, 421)(183, 265)(180, 183)(17, 185)(187, 273)(102, 191)(191, 275)(192, 242)(192, 253)(67, 198)(198, 384)(109, 207)(66, 207)(45, 214)(214, 364)(114, 214)(71, 215)(126, 215)(218, 386)(218, 401)(218, 380)(35, 224)(185, 224)(224, 401)(192, 232)(232, 242)(233, 348)(233, 238)(42, 235)(67, 235)(235, 408)(33, 236)(236, 256)(236, 253)(239, 256)(239, 304)(240, 418)(243, 286)(229, 243)(182, 243)(245, 296)(111, 245)(242, 246)(246, 408)(247, 360)(187, 249)(249, 322)(249, 316)(252, 270)(223, 252)(252, 319)(139, 257)(136, 257)(120, 257)(260, 393)(109, 265)(36, 265)(145, 265)(267, 360)(221, 267)(226, 276)(279, 321)(155, 279)(279, 441)(247, 283)(260, 283)(285, 434)(286, 340)(131, 291)(136, 291)(130, 293)(293, 310)(255, 294)(298, 345)(62, 298)(74, 304)(69, 307)(254, 307)(233, 308)(96, 309)(309, 311)(51, 310)(311, 335)(313, 334)(59, 313)(314, 416)(282, 316)(319, 365)(254, 319)(322, 352)(70, 326)(326, 333)(84, 326)(137, 327)(258, 328)(22, 330)(145, 335)(333, 338)(335, 338)(47, 338)(155, 339)(327, 339)(339, 430)(53, 340)(345, 348)(335, 350)(354, 415)(47, 354)(345, 355)(59, 355)(42, 357)(44, 359)(229, 360)(152, 364)(35, 368)(368, 375)(14, 375)(359, 375)(380, 389)(334, 380)(120, 381)(59, 381)(152, 384)(246, 385)(36, 385)(273, 386)(386, 421)(359, 388)(152, 388)(126, 391)(226, 391)(396, 420)(396, 427)(129, 398)(207, 398)(97, 398)(223, 398)(404, 406)(157, 404)(111, 404)(258, 406)(275, 410)(66, 410)(270, 413)(282, 413)(130, 416)(355, 421)(389, 430)(314, 430)(380, 431)(8, 431)(96, 434)(134, 436)(415, 436)(165, 439)(80, 439)(111, 441)(Dict(5 => 2.0, 56 => 10.0, 35 => 6.0, 114 => 2.0, 110 => 5.0, 67 => 1.0, 117 => 5.0, 145 => 1.0, 197 => 12.0, 45 => 2.0, 73 => 6.0, 182 => 10.0, 164 => 9.0, 112 => 13.0, 64 => 2.0, 151 => 2.0, 90 => 2.0, 4 => 2.0, 13 => 3.0, 86 => 2.0, 54 => 2.0, 191 => 2.0, 168 => 2.0, 91 => 2.0, 62 => 10.0, 158 => 11.0, 176 => 3.0, 122 => 7.0, 58 => 3.0, 52 => 2.0, 199 => 19.0, 12 => 4.0, 75 => 1.0, 173 => 18.0, 111 => 11.0, 148 => 5.0, 188 => 2.0, 92 => 10.0, 41 => 4.0, 43 => 4.0, 69 => 3.0, 68 => 3.0, 171 => 18.0, 98 => 7.0, 82 => 4.0, 118 => 2.0, 119 => 4.0, 130 => 6.0, 84 => 6.0, 39 => 2.0, 77 => 4.0, 7 => 11.0, 25 => 2.0, 95 => 18.0, 126 => 6.0, 71 => 3.0, 103 => 24.0, 76 => 9.0, 93 => 18.0, 2 => 2.0, 124 => 2.0, 18 => 2.0, 26 => 2.0, 147 => 2.0, 87 => 8.0, 127 => 4.0, 140 => 9.0, 169 => 6.0, 79 => 7.0, 16 => 4.0, 20 => 5.0, 200 => 3.0, 195 => 7.0, 180 => 8.0, 141 => 2.0, 160 => 2.0, 187 => 3.0, 19 => 4.0, 49 => 1.0, 44 => 3.0, 9 => 8.0, 146 => 18.0, 189 => 2.0, 74 => 1.0, 138 => 9.0, 106 => 5.0, 109 => 10.0, 61 => 2.0, 107 => 2.0, 102 => 2.0, 57 => 2.0, 128 => 2.0, 152 => 8.0, 70 => 2.0, 88 => 10.0, 129 => 16.0, 120 => 2.0, 78 => 22.0, 105 => 1.0, 24 => 5.0, 37 => 3.0, 1 => 3.0, 137 => 8.0, 53 => 1.0, 47 => 3.0, 154 => 2.0, 99 => 10.0, 166 => 2.0, 198 => 2.0, 14 => 5.0, 3 => 2.0, 80 => 4.0, 96 => 2.0, 178 => 2.0, 33 => 3.0, 149 => 3.0, 155 => 2.0, 48 => 4.0, 113 => 4.0, 15 => 5.0, 65 => 3.0, 174 => 4.0, 97 => 7.0, 165 => 2.0, 134 => 2.0), [1, 2, 4, 7, 9, 13, 14, 15, 16, 20, 24, 25, 26, 35, 37, 41, 43, 44, 49, 61, 64, 65, 67, 68, 69, 71, 73, 77, 78, 79, 82, 84, 86, 87, 90, 92, 93, 95, 99, 102, 103, 105, 106, 107, 109, 110, 111, 112, 113, 114, 117, 119, 129, 137, 138, 145, 146, 147, 152, 158, 160, 174, 176, 180, 187, 188, 191, 197, 200, 3, 5, 12, 18, 19, 33, 39, 45, 47, 48, 52, 53, 54, 56, 57, 58, 62, 70, 74, 75, 76, 80, 88, 91, 96, 97, 98, 118, 120, 122, 124, 126, 127, 128, 130, 134, 140, 141, 148, 149, 151, 154, 155, 164, 165, 166, 168, 169, 171, 173, 178, 182, 189, 195, 198, 199], 325, 394)Set parameter TokenServer to value "solice01.zib.de"
+Set parameter Threads to value 1
+Set parameter OutputFlag to value 1
+Gurobi Optimizer version 12.0.1 build v12.0.1rc0 (linux64 - "Debian GNU/Linux 12 (bookworm)")
+
+CPU model: Intel(R) Xeon(R) Gold 5122 CPU @ 3.60GHz, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 8 physical cores, 16 logical processors, using up to 1 threads
+
+Non-default parameters:
+Threads  1
+
+Optimize a model with 719 rows, 1182 columns and 1970 nonzeros
+Model fingerprint: 0x9f0a5a57
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+00]
+Presolve removed 719 rows and 1182 columns
+Presolve time: 0.00s
+Presolve: All rows and columns removed
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    1.2500000e+02   0.000000e+00   0.000000e+00      0s
+
+Solved in 0 iterations and 0.00 seconds (0.00 work units)
+Optimal objective  1.250000000e+02
+
+User-callback calls 35, time in user-callback 0.01 sec
+elapsed CPU time: 2.012763 seconds
+Set parameter TokenServer to value "solice01.zib.de"
+Set parameter Threads to value 1
+Set parameter OutputFlag to value 1
+Set parameter MIPGap to value 0.0001
+Set parameter MIPGapAbs to value 0.999998
+Set parameter TimeLimit to value 7197.987237
+
+ more cuts: false 0.3733625734724527 false
+is_attach:trueformulation:LEFPA0 394 0
+
+ model loaded
+
+Gurobi Optimizer version 12.0.1 build v12.0.1rc0 (linux64 - "Debian GNU/Linux 12 (bookworm)")
+
+CPU model: Intel(R) Xeon(R) Gold 5122 CPU @ 3.60GHz, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 8 physical cores, 16 logical processors, using up to 1 threads
+
+Non-default parameters:
+TimeLimit  7197.987237
+MIPGapAbs  0.999998
+Threads  1
+
+Optimize a model with 4773 rows, 3637 columns and 11537 nonzeros
+Model fingerprint: 0x0f7abe9d
+Variable types: 1113 continuous, 2524 integer (2524 binary)
+Coefficient statistics:
+  Matrix range     [3e-03, 1e+01]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [3e-03, 1e+01]
+  RHS range        [1e-06, 1e+01]
+Presolve removed 4773 rows and 3637 columns
+Presolve time: 0.01s
+Presolve: All rows and columns removed
+
+Explored 0 nodes (0 simplex iterations) in 0.01 seconds (0.01 work units)
+Thread count was 1 (of 16 available processors)
+
+Solution count 1: 1010 
+
+Optimal solution found (tolerance 1.00e-04)
+Warning: max constraint violation (1.0000e-06) exceeds tolerance
+Best objective 1.010000000000e+03, best bound 1.010000000000e+03, gap 0.0000%
+
+User-callback calls 586, time in user-callback 0.00 sec
+
+ sepatime0 0 0
+1010.0Stat(MathOptInterface.OPTIMAL, 1010.0, 1010.0, 0.0, 0.0, 2.012763, 0.008591890335083008, 0, Main.CFLG.LEFPA, "", #undef)

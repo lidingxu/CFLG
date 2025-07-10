@@ -1,0 +1,101 @@
+Data path: /scratch/opt/lxu/CFLG/benchmarks/random_B
+Instance: r_25_0.4_112.txt
+Result path: /scratch/opt/lxu/CFLG/results/random_B
+Solver: Gurobi
+Time limit: 7200
+Formulation: LEFPA
+Cover: Small
+julia --project=. src/main.jl /scratch/opt/lxu/CFLG/benchmarks/random_B r_25_0.4_112.txt /scratch/opt/lxu/CFLG/results/random_B Gurobi 7200 LEFPA Small
+The latest version of Julia in the `release` channel is 1.11.5+0.x64.linux.gnu. You currently have `1.11.4+0.x64.linux.gnu` installed. Run:
+
+  juliaup update
+
+in your terminal shell to install Julia 1.11.5+0.x64.linux.gnu and update the `release` channel to that version.
+/scratch/opt/lxu/CFLG/benchmarks/random_B Gurobi 7200.0 /scratch/opt/lxu/CFLG/results/random_B r_25_0.4_112.txt LEFPA Small
+/scratch/opt/lxu/CFLG/benchmarks/random_B/r_25_0.4_112.txt
+
+ read graph
+data loaded
+
+
+after absorb:25 25
+
+max_piece:8
+problem_graph/original graph: node: 32/25 edge: 119/112 dlt: 0.16055307291710894 break_avg_len: 0.6044350980408808 break_max_len: 0.9982318395224349Vbar/V, Ebar/E(32, 32, 119, 119)
+(1, 19)(1, 26)(16, 26)(2, 19)(2, 12)(2, 17)(2, 23)(2, 6)(2, 15)(2, 8)(1, 3)(3, 4)(3, 27)(6, 27)(3, 12)(3, 28)(13, 28)(3, 14)(3, 17)(3, 19)(3, 21)(3, 23)(1, 4)(4, 17)(4, 14)(5, 21)(3, 5)(5, 24)(5, 15)(5, 9)(6, 16)(2, 7)(7, 17)(7, 22)(7, 23)(4, 7)(7, 15)(7, 8)(1, 9)(9, 19)(9, 12)(9, 17)(9, 22)(9, 20)(2, 9)(9, 24)(2, 10)(3, 10)(10, 29)(22, 29)(10, 13)(10, 30)(24, 30)(10, 25)(10, 15)(10, 11)(11, 20)(11, 12)(3, 11)(11, 14)(4, 11)(8, 11)(1, 12)(8, 12)(12, 31)(19, 31)(13, 17)(13, 23)(13, 16)(1, 14)(8, 14)(12, 14)(14, 16)(6, 15)(14, 15)(15, 17)(15, 22)(15, 23)(8, 32)(16, 32)(17, 22)(10, 18)(12, 18)(17, 18)(14, 18)(4, 18)(5, 18)(15, 18)(16, 18)(11, 18)(9, 18)(19, 22)(8, 19)(1, 20)(12, 20)(17, 20)(13, 20)(4, 20)(6, 20)(17, 21)(13, 21)(21, 23)(6, 21)(15, 21)(8, 21)(12, 23)(17, 23)(14, 23)(8, 23)(19, 24)(21, 24)(15, 24)(16, 24)(8, 24)(20, 25)(21, 25)(17, 25)(3, 25)(14, 25)(Dict{Int64, Float64}(), Int64[], 32, 119)Set parameter TokenServer to value "solice01.zib.de"
+Set parameter Threads to value 1
+Set parameter OutputFlag to value 1
+Gurobi Optimizer version 12.0.1 build v12.0.1rc0 (linux64 - "Debian GNU/Linux 12 (bookworm)")
+
+CPU model: Intel(R) Xeon(R) Gold 5122 CPU @ 3.60GHz, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 8 physical cores, 16 logical processors, using up to 1 threads
+
+Non-default parameters:
+Threads  1
+
+Optimize a model with 151 rows, 357 columns and 595 nonzeros
+Model fingerprint: 0xc2c2cf5e
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [0e+00, 0e+00]
+Presolve removed 151 rows and 357 columns
+Presolve time: 0.00s
+Presolve: All rows and columns removed
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0   -0.0000000e+00   0.000000e+00   0.000000e+00      0s
+
+Solved in 0 iterations and 0.00 seconds (0.00 work units)
+Optimal objective -0.000000000e+00
+
+User-callback calls 35, time in user-callback 0.01 sec
+elapsed CPU time: 1.79888 seconds
+Set parameter TokenServer to value "solice01.zib.de"
+Set parameter Threads to value 1
+Set parameter OutputFlag to value 1
+Set parameter MIPGap to value 0.0001
+Set parameter MIPGapAbs to value 0.999998
+Set parameter TimeLimit to value 7198.20112
+
+ more cuts: false 0.16055307291710894 false
+is_attach:trueformulation:LEFPA0 119 0
+
+ model loaded
+
+Gurobi Optimizer version 12.0.1 build v12.0.1rc0 (linux64 - "Debian GNU/Linux 12 (bookworm)")
+
+CPU model: Intel(R) Xeon(R) Gold 5122 CPU @ 3.60GHz, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 8 physical cores, 16 logical processors, using up to 1 threads
+
+Non-default parameters:
+TimeLimit  7198.20112
+MIPGapAbs  0.999998
+Threads  1
+
+Optimize a model with 1320 rows, 962 columns and 3507 nonzeros
+Model fingerprint: 0x4e88af44
+Variable types: 270 continuous, 692 integer (692 binary)
+Coefficient statistics:
+  Matrix range     [1e-01, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e-01, 1e+00]
+  RHS range        [1e-01, 1e+00]
+Found heuristic solution: objective 119.0000000
+Presolve removed 1320 rows and 962 columns
+Presolve time: 0.00s
+Presolve: All rows and columns removed
+
+Explored 0 nodes (0 simplex iterations) in 0.00 seconds (0.00 work units)
+Thread count was 1 (of 16 available processors)
+
+Solution count 3: 105 105 119 
+
+Optimal solution found (tolerance 1.00e-04)
+Warning: max constraint violation (1.0000e-06) exceeds tolerance
+Best objective 1.050000000000e+02, best bound 1.050000000000e+02, gap 0.0000%
+
+User-callback calls 434, time in user-callback 0.00 sec
+
+ sepatime0 0 0
+105.0Stat(MathOptInterface.OPTIMAL, 105.0, 105.0, 0.0, 0.0, 1.79888, 0.0038208961486816406, 0, Main.CFLG.LEFPA, "", #undef)
