@@ -23,7 +23,7 @@ styles = ['solid', 'dashed', 'dotted', 'dashdot']
 markers = ['o', "d", "*", "X" ]
 colors = ['magenta', 'blue', 'red', 'green']
 
-algonm_map = {"EF": "EF", "LEFPI" : "EF-PLI", "LEFP" : "EF-PLB", "LEFPA" : "EF-PLTB", "LEFPD": "EF-PLD", "LEFPV": "EF-PLBC", "LEFPV2": "EF-PLBC2",  "EVFP" : "EVF-PB", "LEVFP" : "EVF-PLB", "EFP":"EF-PB", "EFPD": "EF-PD", "EFPV": "EF-PV1", "EFPV2": "EF-PV2"}
+algonm_map = {"EF": "EF", "LEFPI" : "EF-DLI", "LEFP" : "EF-DLB", "LEFPA" : "EF-PB", "LEFPAD": "EF-PE", "LEFPAV": "EF-PBC", "LEFPV2": "EF-PLBC2",  "EVFP" : "EVF-PB", "LEVFP" : "EVF-PLB", "EFP":"EF-DB", "EFPD": "EF-PD", "EFPV": "EF-PV1", "EFPV2": "EF-PV2"}
 
 def parse_name(name):
     s = ""

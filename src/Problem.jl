@@ -230,7 +230,9 @@ function pruning(problem::Problem)
     rho = Dict(v => ( r[v] >= 0 ? r[v] : delta + r[v]) for v in R)
     Ups = Dict(v => y[v] for v in R)
 
-    problem.prob_graph, R_, RE_, R_toR  = projectGraph(graph, VR, R, rho)
+    print((required, rho))
+
+    problem.prob_graph, R_, RE_, R_toR  = projectGraph(graph, VR, R, required, rho, problem.dlt)
     (problem.Ec, problem.Vc, problem.Ep, problem.Vp, problem.EIp, problem.EIc, problem.d) =
         processGraph(problem.prob_graph, problem.dlt, :Partial, problem.cr_tol, problem.c_tol)
     Ups_ = Dict(newv => Ups[R_toR[newv]] for newv in R_)

@@ -85,7 +85,7 @@ function solve!(problem::Problem, solver_name::String, option::Option, formulati
     RE = Set()
     if is_edge && is_attach
         required, Ups, R, RE = pruning(problem)
-        print((Ups, R, problem.prob_graph.node_num, problem.prob_graph.edge_num))
+        #print((Ups, R, RE, required, problem.prob_graph.edge_num))
         if problem.prob_graph.edge_num == 1
             @assert( length(R) == 1 )
             r = first(R)
@@ -552,13 +552,14 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg, eassign,
             @objective(cflg, Min,  sum(ye[ef_id] for ef_id in edge_ids) + sum(yei[ef_id, :a] + yei[ef_id, :b] for ef_id in El))
         else
             @objective(cflg, Min,  sum(ye[ef_id] for ef_id in edge_ids) + sum(yv[v_id] for v_id in Vl) + sum( floor(graph.edges[ef_id].length / (2 * dlt) )
-            - yei[ef_id, :c] +  yei[ef_id, :d]  for ef_id in El) + sum(Ups[v_id] for v_id in R))
+            - yei[ef_id, :c] +  yei[ef_id, :d]  for ef_id in El) + sum(Ups[v_id] for v_id in R) - sum(ye[e_id] for e_id in RE))
         end
     else
         @objective(cflg, Min,  sum(ye[ef_id] for ef_id in edge_ids) )
     end
 
     println("\n model loaded\n")
+    print(cflg)
     optimize!(cflg)
     stat = Stat()
     print("\n sepatime", sepatime, " ", called, " ", realcalled, "\n")
@@ -579,6 +580,7 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg, eassign,
         #for ef_id in edge_ids
         #    print((ef_id,value(ye[ef_id])))
         #end
+        #print(value.(rv))
         print(stat.sol_val)
         for ef_id in El
             #print((2 * dlt, graph.edges[ef_id].length - 2 * dlt, graph.edges[ef_id].length, floor(graph.edges[ef_id].length / (2 * dlt) ) * 2 * dlt, floor(graph.edges[ef_id].length / (2 * dlt) ), " ", value(q[ef_id, :a]), value(q[ef_id, :b]), value(qq[ef_id]) )  )

@@ -338,7 +338,7 @@ function absorbGraph(graph::Graph)
 end
 
 # prune a graph to a smaller graph
-function projectGraph(graph::Graph, VR, R, rho)
+function projectGraph(graph::Graph, VR, R, required, rho, dlt)
 
     # Construct the set of nodes for the induced graph
     induced_nodes = Set{Int}()
@@ -357,13 +357,12 @@ function projectGraph(graph::Graph, VR, R, rho)
     end
 
     # Collect edges where both endpoints are in induced_nodes
-    edge_fields = Vector{Tuple{Int, Int, Float64}}()
+    edge_fields = Vector{Tuple{Int, Int, Float64, Symbol}}()
     for edge in graph.edges
         a = edge.nodes[:a]
         b = edge.nodes[:b]
         if a in induced_nodes && b in induced_nodes
-            print((a, b))
-            push!(edge_fields, (node_map[a], node_map[b], edge.length))
+            push!(edge_fields, (node_map[a], node_map[b], edge.length, edge.etype))
         end
     end
 
@@ -371,7 +370,7 @@ function projectGraph(graph::Graph, VR, R, rho)
     for v in R
         new_node_id = length(node_map) + 1
         node_map[-v] = new_node_id  # Use -v as a unique key for the new node
-        push!(edge_fields, (node_map[v], new_node_id, rho[v]))
+        push!(edge_fields, (node_map[v], new_node_id, required[v] ? rho[v] : dlt - rho[v], :e_normal ))
     end
 
     node_num = length(node_map)
