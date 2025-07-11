@@ -13,7 +13,7 @@ max_dual_bound = -1
 time_limit = 7200
 algorithms  = ["EF", "EFP", "LEFP", "LEFPA", "LEVFP", "None"] #  ["EF", "EFP", "LEVFP", "LEFP", "LEFPI", "LEFPD", "LEFPV", "None"] # ["LEFPI", "LEFP", "LEFPD", "LEFPV",  "None"] # ["LEFPI", "LEFP", "LEFPD", "LEFPV", "None"]
 coverages = ["Small", "Large"]
-benchmarks = ["city", "Kgroup_A", "Kgroup_B", "random_A", "random_B"]
+benchmarks = ["city", "Kgroup_A", "Kgroup_B", "random_A", "random_B", "tree_A", "tree_B"]
 
 pcomp = ["LEFP", "LEVFP"]
 
@@ -23,7 +23,7 @@ styles = ['solid', 'dashed', 'dotted', 'dashdot']
 markers = ['o', "d", "*", "X" ]
 colors = ['magenta', 'blue', 'red', 'green']
 
-algonm_map = {"EF": "EF", "LEFPI" : "EF-DLI", "LEFP" : "EF-DLB", "LEFPA" : "EF-PB", "LEFPAD": "EF-PE", "LEFPAV": "EF-PBC", "LEFPV2": "EF-PLBC2",  "EVFP" : "EVF-PB", "LEVFP" : "EVF-PLB", "EFP":"EF-DB", "EFPD": "EF-PD", "EFPV": "EF-PV1", "EFPV2": "EF-PV2"}
+algonm_map = {"EF": "EF", "LEFPI" : "EF-DLI", "LEFP" : "EF-DLB", "LEFPA" : "EF-PB", "LEFPAD": "EF-PE", "LEFPAV": "EF-PBC", "LEFPV2": "EF-PLBC2",  "EVFP" : "EVF-PB", "LEVFP" : "EVF-DLB", "EFP":"EF-DB", "EFPD": "EF-PD", "EFPV": "EF-PV1", "EFPV2": "EF-PV2"}
 
 def parse_name(name):
     s = ""
@@ -231,7 +231,7 @@ def printtable(algorithms_, benchmarks, has_obj_):
                             bench_entries[benchmark].append(entry)
                             detail += "&" + str(round(entry["time"]/time_limit,1)) + " & "  + str(round(entry["gap"],1)) + "\% & " +  str(round(entry["obj"],1)) + "\%"
                     if not is_find:
-                        if algo == "LEFPA":
+                        if algo == "LEFP":
                             print((instance, cover))
                         entry = copy.copy(defualt_entry)
                         entry["formulation"]  = algo
