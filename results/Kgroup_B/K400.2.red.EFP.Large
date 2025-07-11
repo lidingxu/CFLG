@@ -1,9 +1,9 @@
 instance: K400.2.red
-obj: 37.0
-bound: 25.0
-gap: 0.32432432432432434
-time: 7199.894378185272
-preprocess_time: 0.180241
+obj: 38.0
+bound: 26.0
+gap: 0.3157894736842105
+time: 7199.844871044159
+preprocess_time: 0.165348
 sepa_time: 0.0
-node: 11751
+node: 10205
 formulation: EFP

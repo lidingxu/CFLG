@@ -1,9 +1,9 @@
 instance: K400.6.con.red
 obj: 48.0
-bound: 31.0
-gap: 0.3541666666666667
-time: 7198.264490842819
-preprocess_time: 1.908941
-sepa_time: 4.7015450136255406e14
-node: 10202
+bound: 33.0
+gap: 0.3125
+time: 7198.061763048172
+preprocess_time: 1.946811
+sepa_time: 3.68615193645193e14
+node: 4718
 formulation: LEFPAV

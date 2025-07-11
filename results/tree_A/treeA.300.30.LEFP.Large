@@ -1,9 +1,9 @@
 instance: treeA.300.30
-obj: 62.0
-bound: 62.0
+obj: 61.99999999016312
+bound: 61.99999999016312
 gap: 0.0
-time: 1008.0792818069458
-preprocess_time: 1.350226
+time: 15.929122924804688
+preprocess_time: 1.323177
 sepa_time: 0.0
-node: 182372
+node: 2240
 formulation: LEFP

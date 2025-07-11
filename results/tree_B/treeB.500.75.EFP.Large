@@ -1,9 +1,9 @@
 instance: treeB.500.75
 obj: 100.0
-bound: 98.0
-gap: 0.02
-time: 7199.914470911026
-preprocess_time: 0.096176
+bound: 100.0
+gap: 0.0
+time: 37.641117095947266
+preprocess_time: 0.090232
 sepa_time: 0.0
-node: 680992
+node: 1470
 formulation: EFP

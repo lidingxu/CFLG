@@ -1,9 +1,9 @@
 instance: city_138.txt
-obj: 19.0
+obj: 20.0
 bound: 18.0
-gap: 0.05263157894736842
-time: 7198.3490200042725
-preprocess_time: 1.651993
+gap: 0.1
+time: 7198.361314058304
+preprocess_time: 1.639699
 sepa_time: 0.0
-node: 683961
+node: 648517
 formulation: LEFPAI

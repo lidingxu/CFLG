@@ -2,8 +2,8 @@ instance: K100.8.con.red
 obj: 9.0
 bound: 9.0
 gap: 0.0
-time: 1107.7972009181976
-preprocess_time: 1.179302
+time: 1084.483999967575
+preprocess_time: 1.641965
 sepa_time: 0.0
-node: 42859
+node: 13000
 formulation: LEFPA

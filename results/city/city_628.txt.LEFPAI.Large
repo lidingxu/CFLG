@@ -1,9 +1,9 @@
 instance: city_628.txt
-obj: 98.0
-bound: 86.0
-gap: 0.12244897959183673
-time: 7198.141105890274
-preprocess_time: 1.863973
+obj: 96.0
+bound: 88.0
+gap: 0.08333333333333333
+time: 7198.129693031311
+preprocess_time: 1.875769
 sepa_time: 0.0
-node: 81933
+node: 32522
 formulation: LEFPAI

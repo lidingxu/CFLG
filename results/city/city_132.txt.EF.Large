@@ -2,8 +2,8 @@ instance: city_132.txt
 obj: 22.0
 bound: 20.0
 gap: 0.09090909090909091
-time: 7200.7715520858765
-preprocess_time: 0.041906
+time: 7200.5367550849915
+preprocess_time: 0.033713
 sepa_time: 0.0
-node: 26802
+node: 27645
 formulation: EF

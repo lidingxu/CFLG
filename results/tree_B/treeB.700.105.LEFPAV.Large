@@ -1,9 +1,9 @@
 instance: treeB.700.105
 obj: 141.0
-bound: 138.0
-gap: 0.02127659574468085
-time: 7198.3923761844635
-preprocess_time: 1.614133
-sepa_time: 2.306062495958231e14
-node: 393787
+bound: 141.0
+gap: 0.0
+time: 109.19952321052551
+preprocess_time: 1.912392
+sepa_time: 2.1671701743440928e14
+node: 2912
 formulation: LEFPAV

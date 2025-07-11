@@ -2,8 +2,8 @@ instance: r_20_0.4_69.txt
 obj: 2.0
 bound: 2.0
 gap: 0.0
-time: 0.6905770301818848
-preprocess_time: 0.029955
-sepa_time: 1.5e-323
+time: 0.7296271324157715
+preprocess_time: 0.028959
+sepa_time: 6.9077724257556e-310
 node: 1
 formulation: LEVFP

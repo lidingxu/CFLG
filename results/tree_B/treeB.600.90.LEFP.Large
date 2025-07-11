@@ -1,9 +1,9 @@
 instance: treeB.600.90
 obj: 122.0
-bound: 118.0
-gap: 0.03278688524590164
-time: 7198.581743955612
-preprocess_time: 1.430801
+bound: 121.00000000000026
+gap: 0.008196721311473313
+time: 7198.599131822586
+preprocess_time: 1.414529
 sepa_time: 0.0
-node: 431604
+node: 681941
 formulation: LEFP
