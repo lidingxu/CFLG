@@ -1,9 +1,9 @@
 instance: city_265.txt
-obj: 37.0
-bound: 32.000000000000014
-gap: 0.13513513513513475
-time: 7198.195370912552
-preprocess_time: 1.809774
+obj: 38.0
+bound: 34.0
+gap: 0.10526315789473684
+time: 7198.296808958054
+preprocess_time: 1.708339
 sepa_time: 0.0
-node: 265504
+node: 296338
 formulation: LEFPA

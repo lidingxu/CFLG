@@ -2,8 +2,8 @@ instance: r_25_0.1_36.txt
 obj: 4.0
 bound: 4.0
 gap: 0.0
-time: 1.4792699813842773
-preprocess_time: 0.022143
-sepa_time: 6.90088737775663e-310
+time: 1.6477320194244385
+preprocess_time: 0.027282
+sepa_time: 0.0
 node: 258
 formulation: LEVFP

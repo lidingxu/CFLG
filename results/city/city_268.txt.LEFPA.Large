@@ -1,9 +1,9 @@
 instance: city_268.txt
-obj: 38.0
-bound: 31.0
-gap: 0.18421052631578946
-time: 7198.227901935577
-preprocess_time: 1.778239
+obj: 39.0
+bound: 32.0
+gap: 0.1794871794871795
+time: 7198.338212013245
+preprocess_time: 1.667365
 sepa_time: 0.0
-node: 193030
+node: 157743
 formulation: LEFPA

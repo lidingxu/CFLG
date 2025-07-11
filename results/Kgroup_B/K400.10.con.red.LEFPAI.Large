@@ -1,9 +1,9 @@
 instance: K400.10.con.red
-obj: 38.0
-bound: 25.0
-gap: 0.34210526315789475
-time: 7198.095081090927
-preprocess_time: 2.019939
+obj: 40.0
+bound: 26.0
+gap: 0.35
+time: 7199.023978948593
+preprocess_time: 1.434176
 sepa_time: 0.0
-node: 10361
+node: 10285
 formulation: LEFPAI

@@ -1,9 +1,9 @@
 instance: treeA.700.35
-obj: 1464.0
+obj: 1465.0
 bound: 1305.0
-gap: 0.10860655737704918
-time: 7197.275231122971
-preprocess_time: 2.744191
+gap: 0.10921501706484642
+time: 7196.599740982056
+preprocess_time: 3.440242
 sepa_time: 0.0
-node: 186062
+node: 145493
 formulation: EFP

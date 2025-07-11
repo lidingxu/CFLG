@@ -1,9 +1,9 @@
 instance: K100.9.red
-obj: 56.0
-bound: 56.0
+obj: 118.0
+bound: 118.0
 gap: 0.0
-time: 0.6183469295501709
-preprocess_time: 1.744037
-sepa_time: 1.3839561654910129e13
-node: 1
+time: 3504.278851032257
+preprocess_time: 1.244874
+sepa_time: 5.532661125633591e13
+node: 2487645
 formulation: LEFPAV

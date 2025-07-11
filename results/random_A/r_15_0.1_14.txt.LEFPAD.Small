@@ -3,7 +3,7 @@ obj: 28.0
 bound: 28.0
 gap: 0.0
 time: 0.0
-preprocess_time: 0.360775
-sepa_time: 6.91345759832536e-310
+preprocess_time: 0.449287
+sepa_time: 0.0
 node: 0
 formulation: LEFPAD

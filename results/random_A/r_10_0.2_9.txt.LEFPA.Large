@@ -3,7 +3,7 @@ obj: 2.0
 bound: 2.0
 gap: 0.0
 time: 0.0
-preprocess_time: 0.462442
-sepa_time: 6.94146114456194e-310
+preprocess_time: 0.460438
+sepa_time: 7.4e-323
 node: 0
 formulation: LEFPA

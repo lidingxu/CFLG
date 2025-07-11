@@ -1,9 +1,9 @@
 instance: r_25_0.2_58.txt
-obj: 57.0
-bound: 57.0
+obj: 98.0
+bound: 98.0
 gap: 0.0
-time: 0.00629115104675293
-preprocess_time: 1.744651
+time: 320.93823194503784
+preprocess_time: 1.632171
 sepa_time: 0.0
-node: 1
+node: 249721
 formulation: LEFPA

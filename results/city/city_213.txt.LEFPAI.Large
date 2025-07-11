@@ -1,9 +1,9 @@
 instance: city_213.txt
-obj: 28.0
-bound: 22.0
-gap: 0.21428571428571427
-time: 7198.692066907883
-preprocess_time: 1.309128
+obj: 29.0
+bound: 23.0
+gap: 0.20689655172413793
+time: 7198.256401062012
+preprocess_time: 1.744427
 sepa_time: 0.0
-node: 221702
+node: 217220
 formulation: LEFPAI

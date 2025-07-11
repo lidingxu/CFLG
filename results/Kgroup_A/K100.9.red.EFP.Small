@@ -2,8 +2,8 @@ instance: K100.9.red
 obj: 118.0
 bound: 107.0
 gap: 0.09322033898305085
-time: 7199.883454084396
-preprocess_time: 0.120082
+time: 7199.9470291137695
+preprocess_time: 0.055752
 sepa_time: 0.0
-node: 3344516
+node: 3285558
 formulation: EFP

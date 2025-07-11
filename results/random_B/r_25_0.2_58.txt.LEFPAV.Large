@@ -2,8 +2,8 @@ instance: r_25_0.2_58.txt
 obj: 4.0
 bound: 4.0
 gap: 0.0
-time: 41.65600609779358
-preprocess_time: 1.736825
-sepa_time: 9.789503096458667e13
+time: 44.06584906578064
+preprocess_time: 1.769409
+sepa_time: 1.0164700409102228e14
 node: 4199
 formulation: LEFPAV

@@ -2,8 +2,8 @@ instance: K100.con.red
 obj: 9.0
 bound: 7.000000000000007
 gap: 0.22222222222222143
-time: 7198.691322803497
-preprocess_time: 1.315312
-sepa_time: 3.6833831738875305e13
-node: 378987
+time: 7198.67857503891
+preprocess_time: 1.325892
+sepa_time: 2.7667737712297492e13
+node: 372183
 formulation: LEFPAV

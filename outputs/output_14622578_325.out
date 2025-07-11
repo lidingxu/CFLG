@@ -1,0 +1,187 @@
+Data path: /scratch/opt/lxu/CFLG/benchmarks/random_A
+Instance: r_15_0.1_14.txt
+Result path: /scratch/opt/lxu/CFLG/results/random_A
+Solver: Gurobi
+Time limit: 7200
+Formulation: EFP
+Cover: Large
+julia --project=. src/main.jl /scratch/opt/lxu/CFLG/benchmarks/random_A r_15_0.1_14.txt /scratch/opt/lxu/CFLG/results/random_A Gurobi 7200 EFP Large
+The latest version of Julia in the `release` channel is 1.11.5+0.x64.linux.gnu. You currently have `1.11.4+0.x64.linux.gnu` installed. Run:
+
+  juliaup update
+
+in your terminal shell to install Julia 1.11.5+0.x64.linux.gnu and update the `release` channel to that version.
+/scratch/opt/lxu/CFLG/benchmarks/random_A Gurobi 7200.0 /scratch/opt/lxu/CFLG/results/random_A r_15_0.1_14.txt EFP Large
+/scratch/opt/lxu/CFLG/benchmarks/random_A/r_15_0.1_14.txt
+
+ read graph
+data loaded
+
+problem_graph/original graph: node: 15/15 edge: 14/14 dlt: 1.3060203950506006 break_avg_len: 0.6530101975253003 break_max_len: 0.9684685398380044elapsed CPU time: 0.023847 seconds
+Set parameter TokenServer to value "solice01.zib.de"
+Set parameter Threads to value 1
+Set parameter OutputFlag to value 1
+Set parameter MIPGap to value 0.0001
+Set parameter TimeLimit to value 7199.976153
+
+ more cuts: false 1.3060203950506006 false
+is_attach:falseformulation:EFP0 14 0
+
+ model loaded
+
+Min ye[1] + ye[2] + ye[3] + ye[4] + ye[5] + ye[6] + ye[7] + ye[8] + ye[9] + ye[10] + ye[11] + ye[12] + ye[13] + ye[14]
+Subject to
+ q[1,a] ≥ 0
+ q[2,a] ≥ 0
+ q[3,a] ≥ 0
+ q[4,a] ≥ 0
+ q[5,a] ≥ 0
+ q[6,a] ≥ 0
+ q[7,a] ≥ 0
+ q[8,a] ≥ 0
+ q[9,a] ≥ 0
+ q[10,a] ≥ 0
+ q[11,a] ≥ 0
+ q[12,a] ≥ 0
+ q[13,a] ≥ 0
+ q[14,a] ≥ 0
+ q[1,b] ≥ 0
+ q[2,b] ≥ 0
+ q[3,b] ≥ 0
+ q[4,b] ≥ 0
+ q[5,b] ≥ 0
+ q[6,b] ≥ 0
+ q[7,b] ≥ 0
+ q[8,b] ≥ 0
+ q[9,b] ≥ 0
+ q[10,b] ≥ 0
+ q[11,b] ≥ 0
+ q[12,b] ≥ 0
+ q[13,b] ≥ 0
+ q[14,b] ≥ 0
+ rv[1] ≥ 0
+ rv[2] ≥ 0
+ rv[3] ≥ 0
+ rv[4] ≥ 0
+ rv[5] ≥ 0
+ rv[6] ≥ 0
+ rv[7] ≥ 0
+ rv[8] ≥ 0
+ rv[9] ≥ 0
+ rv[10] ≥ 0
+ rv[11] ≥ 0
+ rv[12] ≥ 0
+ rv[13] ≥ 0
+ rv[14] ≥ 0
+ rv[15] ≥ 0
+ -ye[1] + w[1] ≤ 0
+ -ye[2] - ye[5] - ye[6] + w[2] ≤ 0
+ -ye[3] - ye[7] + w[3] ≤ 0
+ -ye[4] - ye[13] + w[4] ≤ 0
+ -ye[2] - ye[5] - ye[6] - ye[7] + w[5] ≤ 0
+ -ye[2] - ye[5] - ye[6] + w[6] ≤ 0
+ -ye[3] - ye[5] - ye[7] + w[7] ≤ 0
+[[...390 constraints skipped...]]
+ ze[12,(11, :a)] binary
+ ze[12,(9, :a)] binary
+ ze[13,(13, :a)] binary
+ ze[13,(12, :b)] binary
+ ze[14,(8, :b)] binary
+ ze[14,(1, :b)] binary
+ ze[14,(5, :a)] binary
+ ze[14,(6, :b)] binary
+ ze[14,(11, :b)] binary
+ ze[14,(1, :a)] binary
+ ze[14,(6, :a)] binary
+ ze[14,(11, :a)] binary
+ ze[14,(2, :b)] binary
+ ze[14,(7, :a)] binary
+ ze[14,(5, :b)] binary
+ ze[14,(2, :a)] binary
+ ze[14,(10, :a)] binary
+ ze[15,(8, :b)] binary
+ ze[15,(8, :a)] binary
+ ze[15,(11, :a)] binary
+ ze[15,(10, :a)] binary
+ q[1,a] - q[1,b] = 0
+ q[2,a] - q[2,b] = 0
+ q[3,a] - q[3,b] = 0
+ q[4,a] - q[4,b] = 0
+ q[5,a] - q[5,b] = 0
+ q[6,a] - q[6,b] = 0
+ q[7,a] - q[7,b] = 0
+ q[8,a] - q[8,b] = 0
+ q[9,a] - q[9,b] = 0
+ q[10,a] - q[10,b] = 0
+ q[11,a] - q[11,b] = 0
+ q[12,a] - q[12,b] = 0
+ q[13,a] - q[13,b] = 0
+ q[14,a] - q[14,b] = 0
+ x[1] + ze[1,(6, :b)] + ze[1,(11, :b)] = 1
+ x[2] + ze[2,(1, :b)] + ze[2,(11, :b)] + ze[2,(7, :a)] = 1
+ x[3] + ze[3,(3, :b)] + ze[3,(7, :b)] + ze[3,(14, :a)] + ze[3,(3, :a)] + ze[3,(4, :b)] + ze[3,(13, :b)] + ze[3,(7, :a)] + ze[3,(5, :b)] + ze[3,(4, :a)] + ze[3,(13, :a)] + ze[3,(12, :b)] = 1
+ x[4] + ze[4,(3, :b)] + ze[4,(1, :b)] + ze[4,(7, :b)] + ze[4,(11, :b)] + ze[4,(7, :a)] = 1
+ x[5] + ze[5,(3, :b)] + ze[5,(1, :b)] + ze[5,(3, :a)] + ze[5,(6, :b)] + ze[5,(4, :a)] + ze[5,(6, :a)] + ze[5,(2, :b)] + ze[5,(2, :a)] + ze[5,(11, :b)] = 1
+ x[6] + ze[6,(8, :b)] + ze[6,(8, :a)] + ze[6,(10, :b)] + ze[6,(11, :a)] + ze[6,(10, :a)] + ze[6,(9, :b)] + ze[6,(9, :a)] = 1
+ x[7] + ze[7,(8, :b)] + ze[7,(8, :a)] + ze[7,(1, :b)] + ze[7,(6, :b)] + ze[7,(11, :b)] + ze[7,(10, :b)] + ze[7,(11, :a)] + ze[7,(10, :a)] + ze[7,(9, :b)] + ze[7,(9, :a)] = 1
+ x[8] + ze[8,(5, :b)] + ze[8,(5, :a)] + ze[8,(4, :a)] + ze[8,(6, :a)] + ze[8,(2, :b)] = 1
+ x[9] + ze[9,(14, :a)] + ze[9,(13, :a)] = 1
+ x[10] + ze[10,(12, :a)] + ze[10,(14, :b)] + ze[10,(14, :a)] + ze[10,(3, :a)] + ze[10,(13, :b)] + ze[10,(4, :b)] + ze[10,(13, :a)] + ze[10,(4, :a)] + ze[10,(12, :b)] = 1
+ x[11] + ze[11,(14, :a)] + ze[11,(3, :a)] + ze[11,(12, :b)] = 1
+ x[12] + ze[12,(11, :a)] + ze[12,(9, :a)] = 1
+ x[13] + ze[13,(13, :a)] + ze[13,(12, :b)] = 1
+ x[14] + ze[14,(8, :b)] + ze[14,(1, :b)] + ze[14,(5, :a)] + ze[14,(6, :b)] + ze[14,(11, :b)] + ze[14,(1, :a)] + ze[14,(6, :a)] + ze[14,(11, :a)] + ze[14,(2, :b)] + ze[14,(7, :a)] + ze[14,(5, :b)] + ze[14,(2, :a)] + ze[14,(10, :a)] = 1
+ x[15] + ze[15,(8, :b)] + ze[15,(8, :a)] + ze[15,(11, :a)] + ze[15,(10, :a)] = 1
+Gurobi Optimizer version 12.0.1 build v12.0.1rc0 (linux64 - "Debian GNU/Linux 12 (bookworm)")
+
+CPU model: Intel(R) Xeon(R) Gold 5222 CPU @ 3.80GHz, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 8 physical cores, 16 logical processors, using up to 1 threads
+
+Non-default parameters:
+TimeLimit  7199.976153
+Threads  1
+
+Optimize a model with 274 rows, 173 columns and 735 nonzeros
+Model fingerprint: 0x5926f0c4
+Variable types: 43 continuous, 130 integer (130 binary)
+Coefficient statistics:
+  Matrix range     [1e-06, 2e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [3e-01, 1e+00]
+  RHS range        [3e-01, 2e+00]
+Found heuristic solution: objective 6.0000000
+Presolve removed 112 rows and 57 columns
+Presolve time: 0.00s
+Presolved: 162 rows, 116 columns, 574 nonzeros
+Variable types: 23 continuous, 93 integer (93 binary)
+
+Root relaxation: objective 1.753349e+00, 125 iterations, 0.00 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    1.75335    0   55    6.00000    1.75335  70.8%     -    0s
+H    0     0                       5.0000000    1.75335  64.9%     -    0s
+H    0     0                       4.0000000    1.75335  56.2%     -    0s
+     0     0    2.31066    0   38    4.00000    2.31066  42.2%     -    0s
+     0     0    2.61492    0   42    4.00000    2.61492  34.6%     -    0s
+     0     0    3.00000    0   10    4.00000    3.00000  25.0%     -    0s
+     0     0    3.00000    0    2    4.00000    3.00000  25.0%     -    0s
+     0     0    3.00000    0    4    4.00000    3.00000  25.0%     -    0s
+     0     0    3.00000    0   13    4.00000    3.00000  25.0%     -    0s
+     0     0    3.00000    0   13    4.00000    3.00000  25.0%     -    0s
+     0     0    3.00000    0   13    4.00000    3.00000  25.0%     -    0s
+     0     0 infeasible    0         4.00000    4.00000  0.00%     -    0s
+
+Explored 1 nodes (398 simplex iterations) in 0.04 seconds (0.02 work units)
+Thread count was 1 (of 16 available processors)
+
+Solution count 4: 4 4 5 6 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 4.000000000000e+00, best bound 4.000000000000e+00, gap 0.0000%
+
+User-callback calls 667, time in user-callback 0.00 sec
+
+ sepatime0 0 0
+4.0Stat(MathOptInterface.OPTIMAL, 4.0, 4.0, 0.0, 0.0, 0.023847, 0.035446882247924805, 1, Main.CFLG.EFP, "", #undef)

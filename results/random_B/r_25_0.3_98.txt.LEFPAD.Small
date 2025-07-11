@@ -1,9 +1,9 @@
 instance: r_25_0.3_98.txt
-obj: 95.0
-bound: 95.0
+obj: 164.0
+bound: 164.0
 gap: 0.0
-time: 0.012629032135009766
-preprocess_time: 1.735808
+time: 4867.298028945923
+preprocess_time: 1.632932
 sepa_time: 0.0
-node: 1
+node: 661341
 formulation: LEFPAD

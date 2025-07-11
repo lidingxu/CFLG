@@ -1,9 +1,9 @@
 instance: treeA.500.50
-obj: 139.0
-bound: 138.00001184553562
-gap: 0.007194159384635796
-time: 653.2501180171967
-preprocess_time: 1.396014
-sepa_time: 1.752119278278782e14
-node: 172062
+obj: 109.0
+bound: 109.0
+gap: 0.0
+time: 26.10505199432373
+preprocess_time: 1.419163
+sepa_time: 1.3821362005011742e14
+node: 1342
 formulation: LEFPAV

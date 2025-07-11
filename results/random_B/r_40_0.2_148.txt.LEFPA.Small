@@ -1,9 +1,9 @@
 instance: r_40_0.2_148.txt
-obj: 138.0
-bound: 138.0
-gap: 0.0
-time: 0.005012035369873047
-preprocess_time: 1.804732
+obj: 244.0
+bound: 240.0
+gap: 0.01639344262295082
+time: 7198.707985162735
+preprocess_time: 1.293127
 sepa_time: 0.0
-node: 0
+node: 1592226
 formulation: LEFPA

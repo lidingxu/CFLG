@@ -1,0 +1,261 @@
+Data path: /scratch/opt/lxu/CFLG/benchmarks/random_A
+Instance: r_15_0.3_25.txt
+Result path: /scratch/opt/lxu/CFLG/results/random_A
+Solver: Gurobi
+Time limit: 7200
+Formulation: LEFPAV
+Cover: Large
+julia --project=. src/main.jl /scratch/opt/lxu/CFLG/benchmarks/random_A r_15_0.3_25.txt /scratch/opt/lxu/CFLG/results/random_A Gurobi 7200 LEFPAV Large
+The latest version of Julia in the `release` channel is 1.11.5+0.x64.linux.gnu. You currently have `1.11.4+0.x64.linux.gnu` installed. Run:
+
+  juliaup update
+
+in your terminal shell to install Julia 1.11.5+0.x64.linux.gnu and update the `release` channel to that version.
+/scratch/opt/lxu/CFLG/benchmarks/random_A Gurobi 7200.0 /scratch/opt/lxu/CFLG/results/random_A r_15_0.3_25.txt LEFPAV Large
+/scratch/opt/lxu/CFLG/benchmarks/random_A/r_15_0.3_25.txt
+
+ read graph
+data loaded
+
+problem_graph/original graph: node: 15/15 edge: 25/25 dlt: 1.2163645456572976 break_avg_len: 0.6081822728286488 break_max_len: 0.9678305124544612Vbar/V, Ebar/E(15, 15, 25, 25)
+(Dict{Int64, Bool}(), Dict{Int64, Float64}())Set parameter TokenServer to value "solice01.zib.de"
+Set parameter Threads to value 1
+Set parameter OutputFlag to value 1
+Gurobi Optimizer version 12.0.1 build v12.0.1rc0 (linux64 - "Debian GNU/Linux 12 (bookworm)")
+
+CPU model: Intel(R) Xeon(R) Gold 5122 CPU @ 3.60GHz, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 8 physical cores, 16 logical processors, using up to 1 threads
+
+Non-default parameters:
+Threads  1
+
+Optimize a model with 40 rows, 75 columns and 125 nonzeros
+Model fingerprint: 0x876b3fa7
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [0e+00, 0e+00]
+Presolve removed 40 rows and 75 columns
+Presolve time: 0.00s
+Presolve: All rows and columns removed
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0   -0.0000000e+00   0.000000e+00   0.000000e+00      0s
+
+Solved in 0 iterations and 0.00 seconds (0.00 work units)
+Optimal objective -0.000000000e+00
+
+User-callback calls 35, time in user-callback 0.01 sec
+elapsed CPU time: 1.59652 seconds
+Set parameter TokenServer to value "solice01.zib.de"
+Set parameter Threads to value 1
+Set parameter OutputFlag to value 1
+Set parameter MIPGap to value 0.0001
+Set parameter TimeLimit to value 7198.40348
+
+ more cuts: false 1.2163645456572976 false
+is_attach:trueformulation:LEFPAV0 25 0
+Set parameter PreCrush to value 1
+
+ model loaded
+
+Min ye[1] + ye[2] + ye[3] + ye[4] + ye[5] + ye[6] + ye[7] + ye[8] + ye[9] + ye[10] + ye[11] + ye[12] + ye[13] + ye[14] + ye[15] + ye[16] + ye[17] + ye[18] + ye[19] + ye[20] + ye[21] + ye[22] + ye[23] + ye[24] + ye[25] + yv[1] + yv[2] + yv[3] + yv[4] + yv[5] + yv[6] + yv[7] + yv[8] + yv[9] + yv[10] + yv[11] + yv[12] + yv[13] + yv[14] + yv[15]
+Subject to
+ q[1,a] ≥ 0
+ q[2,a] ≥ 0
+ q[3,a] ≥ 0
+ q[4,a] ≥ 0
+ q[5,a] ≥ 0
+ q[6,a] ≥ 0
+ q[7,a] ≥ 0
+ q[8,a] ≥ 0
+ q[9,a] ≥ 0
+ q[10,a] ≥ 0
+ q[11,a] ≥ 0
+ q[12,a] ≥ 0
+ q[13,a] ≥ 0
+ q[14,a] ≥ 0
+ q[15,a] ≥ 0
+ q[16,a] ≥ 0
+ q[17,a] ≥ 0
+ q[18,a] ≥ 0
+ q[19,a] ≥ 0
+ q[20,a] ≥ 0
+ q[21,a] ≥ 0
+ q[22,a] ≥ 0
+ q[23,a] ≥ 0
+ q[24,a] ≥ 0
+ q[25,a] ≥ 0
+ q[1,b] ≥ 0
+ q[2,b] ≥ 0
+ q[3,b] ≥ 0
+ q[4,b] ≥ 0
+ q[5,b] ≥ 0
+ q[6,b] ≥ 0
+ q[7,b] ≥ 0
+ q[8,b] ≥ 0
+ q[9,b] ≥ 0
+ q[10,b] ≥ 0
+ q[11,b] ≥ 0
+ q[12,b] ≥ 0
+ q[13,b] ≥ 0
+ q[14,b] ≥ 0
+ q[15,b] ≥ 0
+ q[16,b] ≥ 0
+ q[17,b] ≥ 0
+ q[18,b] ≥ 0
+ q[19,b] ≥ 0
+ q[20,b] ≥ 0
+ q[21,b] ≥ 0
+ q[22,b] ≥ 0
+ q[23,b] ≥ 0
+ q[24,b] ≥ 0
+ q[25,b] ≥ 0
+[[...1633 constraints skipped...]]
+ yv[6] binary
+ yv[7] binary
+ yv[8] binary
+ yv[9] binary
+ yv[10] binary
+ yv[11] binary
+ yv[12] binary
+ yv[13] binary
+ yv[14] binary
+ yv[15] binary
+ q[1,a] - q[1,b] = 0
+ q[2,a] - q[2,b] = 0
+ q[3,a] - q[3,b] = 0
+ q[4,a] - q[4,b] = 0
+ q[5,a] - q[5,b] = 0
+ q[6,a] - q[6,b] = 0
+ q[7,a] - q[7,b] = 0
+ q[8,a] - q[8,b] = 0
+ q[9,a] - q[9,b] = 0
+ q[10,a] - q[10,b] = 0
+ q[11,a] - q[11,b] = 0
+ q[12,a] - q[12,b] = 0
+ q[13,a] - q[13,b] = 0
+ q[14,a] - q[14,b] = 0
+ q[15,a] - q[15,b] = 0
+ q[16,a] - q[16,b] = 0
+ q[17,a] - q[17,b] = 0
+ q[18,a] - q[18,b] = 0
+ q[19,a] - q[19,b] = 0
+ q[20,a] - q[20,b] = 0
+ q[21,a] - q[21,b] = 0
+ q[22,a] - q[22,b] = 0
+ q[23,a] - q[23,b] = 0
+ q[24,a] - q[24,b] = 0
+ q[25,a] - q[25,b] = 0
+ x[1] + ze[1,(8, :b)] + ze[1,(17, :b)] + ze[1,(1, :b)] + ze[1,(5, :a)] + ze[1,(9, :b)] + ze[1,(14, :b)] + ze[1,(8, :a)] + ze[1,(1, :a)] + ze[1,(19, :a)] + ze[1,(22, :a)] + ze[1,(7, :b)] + ze[1,(6, :a)] + ze[1,(3, :a)] + ze[1,(4, :b)] + ze[1,(21, :b)] + ze[1,(2, :b)] + ze[1,(4, :a)] + ze[1,(21, :a)] + ze[1,(2, :a)] = 1
+ x[2] + ze[2,(8, :b)] + ze[2,(17, :b)] + ze[2,(1, :b)] + ze[2,(19, :b)] + ze[2,(11, :b)] + ze[2,(20, :a)] + ze[2,(9, :b)] + ze[2,(12, :a)] + ze[2,(14, :b)] + ze[2,(8, :a)] + ze[2,(19, :a)] + ze[2,(7, :b)] + ze[2,(11, :a)] + ze[2,(13, :b)] + ze[2,(2, :b)] + ze[2,(10, :b)] + ze[2,(18, :b)] + ze[2,(13, :a)] + ze[2,(4, :a)] + ze[2,(21, :a)] + ze[2,(10, :a)] + ze[2,(12, :b)] + ze[2,(18, :a)] = 1
+ x[3] + ze[3,(8, :b)] + ze[3,(17, :b)] + ze[3,(1, :b)] + ze[3,(23, :b)] + ze[3,(22, :b)] + ze[3,(5, :a)] + ze[3,(11, :b)] + ze[3,(12, :a)] + ze[3,(24, :a)] + ze[3,(14, :b)] + ze[3,(3, :b)] + ze[3,(1, :a)] + ze[3,(19, :a)] + ze[3,(22, :a)] + ze[3,(6, :a)] + ze[3,(11, :a)] + ze[3,(9, :a)] + ze[3,(3, :a)] + ze[3,(4, :b)] + ze[3,(13, :b)] + ze[3,(21, :b)] + ze[3,(2, :b)] + ze[3,(15, :b)] + ze[3,(25, :a)] + ze[3,(18, :b)] + ze[3,(5, :b)] + ze[3,(4, :a)] + ze[3,(13, :a)] + ze[3,(21, :a)] + ze[3,(2, :a)] + ze[3,(12, :b)] + ze[3,(18, :a)] = 1
+ x[4] + ze[4,(1, :b)] + ze[4,(23, :b)] + ze[4,(5, :a)] + ze[4,(11, :b)] + ze[4,(9, :b)] + ze[4,(24, :a)] + ze[4,(8, :a)] + ze[4,(3, :b)] + ze[4,(1, :a)] + ze[4,(23, :a)] + ze[4,(7, :b)] + ze[4,(6, :a)] + ze[4,(25, :b)] + ze[4,(9, :a)] + ze[4,(3, :a)] + ze[4,(4, :b)] + ze[4,(13, :b)] + ze[4,(15, :b)] + ze[4,(10, :b)] + ze[4,(25, :a)] + ze[4,(5, :b)] + ze[4,(16, :b)] + ze[4,(4, :a)] + ze[4,(13, :a)] + ze[4,(2, :a)] + ze[4,(10, :a)] + ze[4,(12, :b)] + ze[4,(18, :a)] = 1
+ x[5] + ze[5,(23, :b)] + ze[5,(11, :b)] + ze[5,(12, :a)] + ze[5,(23, :a)] + ze[5,(7, :b)] + ze[5,(25, :b)] + ze[5,(2, :b)] + ze[5,(7, :a)] + ze[5,(25, :a)] + ze[5,(10, :b)] + ze[5,(16, :b)] + ze[5,(20, :b)] + ze[5,(2, :a)] + ze[5,(10, :a)] + ze[5,(18, :a)] + ze[5,(16, :a)] + ze[5,(9, :b)] + ze[5,(9, :a)] + ze[5,(21, :b)] + ze[5,(21, :a)] + ze[5,(24, :b)] + ze[5,(8, :b)] + ze[5,(1, :b)] + ze[5,(22, :b)] + ze[5,(24, :a)] + ze[5,(14, :b)] + ze[5,(8, :a)] + ze[5,(17, :a)] + ze[5,(3, :b)] + ze[5,(1, :a)] + ze[5,(22, :a)] + ze[5,(14, :a)] + ze[5,(3, :a)] + ze[5,(15, :b)] + ze[5,(5, :b)] + ze[5,(15, :a)] + ze[5,(5, :a)] + ze[5,(6, :b)] + ze[5,(6, :a)] + ze[5,(4, :b)] + ze[5,(13, :b)] + ze[5,(13, :a)] + ze[5,(4, :a)] + ze[5,(12, :b)] = 1
+ x[6] + ze[6,(8, :b)] + ze[6,(17, :b)] + ze[6,(23, :b)] + ze[6,(22, :b)] + ze[6,(5, :a)] + ze[6,(16, :a)] + ze[6,(9, :b)] + ze[6,(12, :a)] + ze[6,(24, :a)] + ze[6,(14, :b)] + ze[6,(8, :a)] + ze[6,(17, :a)] + ze[6,(3, :b)] + ze[6,(23, :a)] + ze[6,(1, :a)] + ze[6,(7, :b)] + ze[6,(6, :a)] + ze[6,(25, :b)] + ze[6,(9, :a)] + ze[6,(14, :a)] + ze[6,(3, :a)] + ze[6,(4, :b)] + ze[6,(15, :b)] + ze[6,(2, :b)] + ze[6,(7, :a)] + ze[6,(25, :a)] + ze[6,(18, :b)] + ze[6,(5, :b)] + ze[6,(16, :b)] + ze[6,(15, :a)] + ze[6,(2, :a)] = 1
+ x[7] + ze[7,(19, :b)] + ze[7,(19, :a)] + ze[7,(6, :b)] + ze[7,(20, :b)] + ze[7,(20, :a)] + ze[7,(11, :a)] + ze[7,(24, :b)] = 1
+ x[8] + ze[8,(8, :b)] + ze[8,(23, :b)] + ze[8,(5, :a)] + ze[8,(6, :b)] + ze[8,(16, :a)] + ze[8,(9, :b)] + ze[8,(12, :a)] + ze[8,(24, :a)] + ze[8,(14, :b)] + ze[8,(8, :a)] + ze[8,(17, :a)] + ze[8,(3, :b)] + ze[8,(1, :a)] + ze[8,(23, :a)] + ze[8,(7, :b)] + ze[8,(6, :a)] + ze[8,(25, :b)] + ze[8,(9, :a)] + ze[8,(14, :a)] + ze[8,(3, :a)] + ze[8,(4, :b)] + ze[8,(15, :b)] + ze[8,(21, :b)] + ze[8,(2, :b)] + ze[8,(7, :a)] + ze[8,(25, :a)] + ze[8,(5, :b)] + ze[8,(16, :b)] + ze[8,(20, :b)] + ze[8,(4, :a)] + ze[8,(15, :a)] + ze[8,(21, :a)] + ze[8,(2, :a)] + ze[8,(13, :a)] + ze[8,(24, :b)] = 1
+ x[9] + ze[9,(8, :b)] + ze[9,(23, :b)] + ze[9,(22, :b)] + ze[9,(5, :a)] + ze[9,(16, :a)] + ze[9,(9, :b)] + ze[9,(12, :a)] + ze[9,(24, :a)] + ze[9,(14, :b)] + ze[9,(8, :a)] + ze[9,(17, :a)] + ze[9,(3, :b)] + ze[9,(23, :a)] + ze[9,(1, :a)] + ze[9,(22, :a)] + ze[9,(7, :b)] + ze[9,(6, :a)] + ze[9,(25, :b)] + ze[9,(9, :a)] + ze[9,(14, :a)] + ze[9,(3, :a)] + ze[9,(4, :b)] + ze[9,(15, :b)] + ze[9,(21, :b)] + ze[9,(2, :b)] + ze[9,(7, :a)] + ze[9,(25, :a)] + ze[9,(5, :b)] + ze[9,(16, :b)] + ze[9,(15, :a)] + ze[9,(2, :a)] = 1
+ x[10] + ze[10,(8, :b)] + ze[10,(17, :b)] + ze[10,(1, :b)] + ze[10,(16, :a)] + ze[10,(11, :b)] + ze[10,(12, :a)] + ze[10,(14, :b)] + ze[10,(17, :a)] + ze[10,(19, :a)] + ze[10,(11, :a)] + ze[10,(14, :a)] + ze[10,(13, :b)] + ze[10,(2, :b)] + ze[10,(7, :a)] + ze[10,(10, :b)] + ze[10,(18, :b)] + ze[10,(13, :a)] + ze[10,(15, :a)] + ze[10,(4, :a)] + ze[10,(21, :a)] + ze[10,(10, :a)] + ze[10,(12, :b)] + ze[10,(18, :a)] = 1
+ x[11] + ze[11,(8, :b)] + ze[11,(1, :b)] + ze[11,(22, :b)] + ze[11,(5, :a)] + ze[11,(11, :b)] + ze[11,(9, :b)] + ze[11,(12, :a)] + ze[11,(14, :b)] + ze[11,(8, :a)] + ze[11,(17, :a)] + ze[11,(1, :a)] + ze[11,(23, :a)] + ze[11,(22, :a)] + ze[11,(19, :a)] + ze[11,(6, :a)] + ze[11,(7, :b)] + ze[11,(11, :a)] + ze[11,(25, :b)] + ze[11,(9, :a)] + ze[11,(14, :a)] + ze[11,(3, :a)] + ze[11,(13, :b)] + ze[11,(4, :b)] + ze[11,(21, :b)] + ze[11,(2, :b)] + ze[11,(7, :a)] + ze[11,(25, :a)] + ze[11,(10, :b)] + ze[11,(5, :b)] + ze[11,(15, :a)] + ze[11,(2, :a)] + ze[11,(10, :a)] + ze[11,(12, :b)] + ze[11,(18, :a)] = 1
+ x[12] + ze[12,(23, :b)] + ze[12,(11, :b)] + ze[12,(12, :a)] + ze[12,(23, :a)] + ze[12,(7, :b)] + ze[12,(25, :b)] + ze[12,(11, :a)] + ze[12,(2, :b)] + ze[12,(7, :a)] + ze[12,(25, :a)] + ze[12,(10, :b)] + ze[12,(18, :b)] + ze[12,(16, :b)] + ze[12,(2, :a)] + ze[12,(10, :a)] + ze[12,(18, :a)] + ze[12,(16, :a)] + ze[12,(9, :b)] + ze[12,(19, :a)] + ze[12,(9, :a)] + ze[12,(21, :a)] + ze[12,(8, :b)] + ze[12,(17, :b)] + ze[12,(1, :b)] + ze[12,(22, :b)] + ze[12,(24, :a)] + ze[12,(14, :b)] + ze[12,(8, :a)] + ze[12,(17, :a)] + ze[12,(3, :b)] + ze[12,(1, :a)] + ze[12,(14, :a)] + ze[12,(3, :a)] + ze[12,(15, :b)] + ze[12,(5, :b)] + ze[12,(15, :a)] + ze[12,(5, :a)] + ze[12,(6, :a)] + ze[12,(13, :b)] + ze[12,(4, :b)] + ze[12,(13, :a)] + ze[12,(4, :a)] + ze[12,(12, :b)] = 1
+ x[13] + ze[13,(13, :a)] + ze[13,(8, :b)] + ze[13,(23, :b)] + ze[13,(1, :b)] + ze[13,(22, :b)] + ze[13,(5, :a)] + ze[13,(6, :b)] + ze[13,(16, :a)] + ze[13,(11, :b)] + ze[13,(12, :a)] + ze[13,(24, :a)] + ze[13,(14, :b)] + ze[13,(3, :b)] + ze[13,(17, :a)] + ze[13,(23, :a)] + ze[13,(1, :a)] + ze[13,(22, :a)] + ze[13,(6, :a)] + ze[13,(25, :b)] + ze[13,(9, :a)] + ze[13,(14, :a)] + ze[13,(3, :a)] + ze[13,(4, :b)] + ze[13,(15, :b)] + ze[13,(21, :b)] + ze[13,(2, :b)] + ze[13,(7, :a)] + ze[13,(25, :a)] + ze[13,(13, :b)] + ze[13,(10, :b)] + ze[13,(5, :b)] + ze[13,(16, :b)] + ze[13,(20, :b)] + ze[13,(4, :a)] + ze[13,(15, :a)] + ze[13,(21, :a)] + ze[13,(2, :a)] + ze[13,(12, :b)] + ze[13,(24, :b)] = 1
+ x[14] + ze[14,(23, :b)] + ze[14,(19, :b)] + ze[14,(22, :b)] + ze[14,(5, :a)] + ze[14,(6, :b)] + ze[14,(20, :a)] + ze[14,(24, :a)] + ze[14,(3, :b)] + ze[14,(1, :a)] + ze[14,(6, :a)] + ze[14,(9, :a)] + ze[14,(3, :a)] + ze[14,(4, :b)] + ze[14,(15, :b)] + ze[14,(25, :a)] + ze[14,(5, :b)] + ze[14,(20, :b)] + ze[14,(2, :a)] + ze[14,(24, :b)] = 1
+ x[15] + ze[15,(8, :b)] + ze[15,(17, :b)] + ze[15,(1, :b)] + ze[15,(23, :b)] + ze[15,(5, :a)] + ze[15,(11, :b)] + ze[15,(9, :b)] + ze[15,(12, :a)] + ze[15,(24, :a)] + ze[15,(14, :b)] + ze[15,(8, :a)] + ze[15,(3, :b)] + ze[15,(1, :a)] + ze[15,(19, :a)] + ze[15,(22, :a)] + ze[15,(7, :b)] + ze[15,(6, :a)] + ze[15,(11, :a)] + ze[15,(3, :a)] + ze[15,(13, :b)] + ze[15,(4, :b)] + ze[15,(21, :b)] + ze[15,(2, :b)] + ze[15,(15, :b)] + ze[15,(18, :b)] + ze[15,(13, :a)] + ze[15,(4, :a)] + ze[15,(21, :a)] + ze[15,(2, :a)] + ze[15,(12, :b)] + ze[15,(18, :a)] = 1
+Gurobi Optimizer version 12.0.1 build v12.0.1rc0 (linux64 - "Debian GNU/Linux 12 (bookworm)")
+
+CPU model: Intel(R) Xeon(R) Gold 5122 CPU @ 3.60GHz, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 8 physical cores, 16 logical processors, using up to 1 threads
+
+Non-default parameters:
+TimeLimit  7198.40348
+PreCrush  1
+Threads  1
+
+Optimize a model with 1084 rows, 584 columns and 3132 nonzeros
+Model fingerprint: 0x4cac2824
+Variable types: 65 continuous, 519 integer (519 binary)
+Coefficient statistics:
+  Matrix range     [1e-06, 2e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [3e-01, 1e+00]
+  RHS range        [3e-01, 2e+00]
+Found heuristic solution: objective 6.0000000
+Presolve removed 244 rows and 77 columns
+Presolve time: 0.03s
+Presolved: 840 rows, 507 columns, 4530 nonzeros
+Variable types: 40 continuous, 467 integer (467 binary)
+
+Root relaxation: objective 9.726203e-01, 425 iterations, 0.01 seconds (0.01 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    0.97262    0   91    6.00000    0.97262  83.8%     -    0s
+H    0     0                       5.0000000    0.97262  80.5%     -    0s
+H    0     0                       3.0000000    0.97262  67.6%     -    0s
+elapsed CPU time: 1.3839562780191613e13 seconds
+     0     0    1.27282    0   92    3.00000    1.27282  57.6%     -    0s
+elapsed CPU time: 1.3835058459009092e13 seconds
+     0     0    1.36497    0  113    3.00000    1.36497  54.5%     -    0s
+elapsed CPU time: 0.002566 seconds
+     0     0    1.37655    0  124    3.00000    1.37655  54.1%     -    0s
+elapsed CPU time: 0.002433 seconds
+     0     0    1.66667    0   50    3.00000    1.66667  44.4%     -    0s
+elapsed CPU time: 1.383956315814809e13 seconds
+     0     0    1.80000    0   50    3.00000    1.80000  40.0%     -    0s
+elapsed CPU time: 0.002381 seconds
+     0     0    1.80000    0   84    3.00000    1.80000  40.0%     -    0s
+elapsed CPU time: 4.61619111270338e12 seconds
+     0     0    1.80000    0   79    3.00000    1.80000  40.0%     -    0s
+elapsed CPU time: 0.00237 seconds
+     0     0    1.80000    0   70    3.00000    1.80000  40.0%     -    0s
+     0     0    1.81818    0   88    3.00000    1.81818  39.4%     -    0s
+     0     0    1.81818    0   86    3.00000    1.81818  39.4%     -    0s
+     0     0    1.81818    0   85    3.00000    1.81818  39.4%     -    0s
+elapsed CPU time: 0.002486 seconds
+     0     0    2.00000    0   63    3.00000    2.00000  33.3%     -    0s
+elapsed CPU time: 4.606331615843453e12 seconds
+     0     0    2.00000    0   53    3.00000    2.00000  33.3%     -    0s
+     0     0    2.00000    0   52    3.00000    2.00000  33.3%     -    0s
+elapsed CPU time: 0.002476 seconds
+     0     0    2.00000    0   64    3.00000    2.00000  33.3%     -    0s
+     0     0    2.00000    0   56    3.00000    2.00000  33.3%     -    0s
+elapsed CPU time: 0.002339 seconds
+     0     0    2.00000    0   78    3.00000    2.00000  33.3%     -    1s
+elapsed CPU time: 9.217798719787764e12 seconds
+     0     0    2.00000    0   35    3.00000    2.00000  33.3%     -    1s
+     0     0    2.00000    0   36    3.00000    2.00000  33.3%     -    1s
+     0     0    2.00000    0   54    3.00000    2.00000  33.3%     -    1s
+     0     0    2.00000    0   69    3.00000    2.00000  33.3%     -    1s
+     0     0    2.00000    0   51    3.00000    2.00000  33.3%     -    1s
+elapsed CPU time: 0.002391 seconds
+     0     0    2.00000    0   75    3.00000    2.00000  33.3%     -    1s
+     0     0    2.00000    0   79    3.00000    2.00000  33.3%     -    1s
+elapsed CPU time: 0.002425 seconds
+     0     0    2.00000    0   64    3.00000    2.00000  33.3%     -    1s
+elapsed CPU time: 0.00234 seconds
+
+Cutting planes:
+  User: 6
+  Cover: 6
+  Implied bound: 4
+  Clique: 1
+  MIR: 7
+  GUB cover: 2
+  Zero half: 3
+  RLT: 2
+  Relax-and-lift: 9
+
+Explored 1 nodes (2322 simplex iterations) in 1.07 seconds (0.24 work units)
+Thread count was 1 (of 16 available processors)
+
+Solution count 4: 3 5 5 6 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 3.000000000000e+00, best bound 3.000000000000e+00, gap 0.0000%
+
+User-callback calls 712, time in user-callback 1.56 sec
+
+ sepatime5.99545058456834e13 2147 16
+3.0Stat(MathOptInterface.OPTIMAL, 3.0, 3.0, 0.0, 5.99545058456834e13, 1.59652, 1.0715529918670654, 1, Main.CFLG.LEFPAV, "", #undef)

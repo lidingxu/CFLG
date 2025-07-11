@@ -2,8 +2,8 @@ instance: r_30_0.3_131.txt
 obj: 208.0
 bound: 205.0
 gap: 0.014423076923076924
-time: 7199.974385023117
-preprocess_time: 0.02691
-sepa_time: 6.9053987030044e-310
-node: 1089073
+time: 7199.961844921112
+preprocess_time: 0.039793
+sepa_time: 0.0
+node: 1009520
 formulation: LEVFP

@@ -2,8 +2,8 @@
 # Set variables
 timelimit=7200
 timebound=7400
-formulations=("EF" "EFP" "LEFP" "LEVFP" "LEFPAD" "LEFPAV" "LEFPA" "LEFPAI") #("LEFPD" "LEFPV" "EF" "EFP" "LEFP" "LEFPI" "LEVFP" "None")
-covers=("Small")
+formulations=("EF" "EFP" "LEFP" "LEVFP" "LEFPAD" "LEFPAV" "LEFPA" "LEFPAI" "None") #("LEFPD" "LEFPV" "EF" "EFP" "LEFP" "LEFPI" "LEVFP" "None")
+covers=("Large")
 solver="Gurobi" # "Gurobi", "CPLEX", "GLPK", "SCIP".
 datapath="$PWD/benchmarks"
 resultpath="$PWD/results"

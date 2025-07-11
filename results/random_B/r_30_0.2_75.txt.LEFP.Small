@@ -1,9 +1,9 @@
 instance: r_30_0.2_75.txt
 obj: 126.0
-bound: 125.00000259959623
-gap: 0.007936487304791833
-time: 4939.024816989899
-preprocess_time: 1.006909
+bound: 126.0
+gap: 0.0
+time: 4734.639354944229
+preprocess_time: 0.934115
 sepa_time: 0.0
-node: 1189112
+node: 1189137
 formulation: LEFP

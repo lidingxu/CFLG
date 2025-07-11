@@ -1,9 +1,9 @@
 instance: r_25_0.3_98.txt
-obj: 95.0
-bound: 95.0
+obj: 164.0
+bound: 164.0
 gap: 0.0
-time: 0.00392603874206543
-preprocess_time: 1.741229
-sepa_time: 0.0
-node: 0
+time: 1204.049369096756
+preprocess_time: 1.648991
+sepa_time: 7.839280968159102e13
+node: 489815
 formulation: LEFPAV

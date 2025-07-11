@@ -2,8 +2,8 @@ instance: r_10_0.1_12.txt
 obj: 23.0
 bound: 23.0
 gap: 0.0
-time: 46.018584966659546
-preprocess_time: 0.028304
+time: 45.99217104911804
+preprocess_time: 0.030464
 sepa_time: 0.0
 node: 46330
 formulation: EFP

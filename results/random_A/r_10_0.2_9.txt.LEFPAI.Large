@@ -3,7 +3,7 @@ obj: 2.0
 bound: 2.0
 gap: 0.0
 time: 0.0
-preprocess_time: 0.452616
-sepa_time: 1.0e-323
+preprocess_time: 0.444097
+sepa_time: 6.1e-322
 node: 0
 formulation: LEFPAI

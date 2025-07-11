@@ -1,0 +1,227 @@
+Data path: /scratch/opt/lxu/CFLG/benchmarks/random_A
+Instance: r_10_0.3_12.txt
+Result path: /scratch/opt/lxu/CFLG/results/random_A
+Solver: Gurobi
+Time limit: 7200
+Formulation: LEFPAV
+Cover: Large
+julia --project=. src/main.jl /scratch/opt/lxu/CFLG/benchmarks/random_A r_10_0.3_12.txt /scratch/opt/lxu/CFLG/results/random_A Gurobi 7200 LEFPAV Large
+The latest version of Julia in the `release` channel is 1.11.5+0.x64.linux.gnu. You currently have `1.11.4+0.x64.linux.gnu` installed. Run:
+
+  juliaup update
+
+in your terminal shell to install Julia 1.11.5+0.x64.linux.gnu and update the `release` channel to that version.
+/scratch/opt/lxu/CFLG/benchmarks/random_A Gurobi 7200.0 /scratch/opt/lxu/CFLG/results/random_A r_10_0.3_12.txt LEFPAV Large
+/scratch/opt/lxu/CFLG/benchmarks/random_A/r_10_0.3_12.txt
+
+ read graph
+data loaded
+
+problem_graph/original graph: node: 10/10 edge: 12/12 dlt: 1.221004914463064 break_avg_len: 0.610502457231532 break_max_len: 0.9875583338039858Vbar/V, Ebar/E(9, 10, 11, 12)
+(Dict{Int64, Bool}(3 => 1), Dict(3 => 0.9875583338039858))Set parameter TokenServer to value "solice01.zib.de"
+Set parameter Threads to value 1
+Set parameter OutputFlag to value 1
+Gurobi Optimizer version 12.0.1 build v12.0.1rc0 (linux64 - "Debian GNU/Linux 12 (bookworm)")
+
+CPU model: Intel(R) Xeon(R) Gold 5122 CPU @ 3.60GHz, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 8 physical cores, 16 logical processors, using up to 1 threads
+
+Non-default parameters:
+Threads  1
+
+Optimize a model with 22 rows, 36 columns and 60 nonzeros
+Model fingerprint: 0x10781431
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+00]
+Presolve removed 22 rows and 36 columns
+Presolve time: 0.00s
+Presolve: All rows and columns removed
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    1.0000000e+00   0.000000e+00   0.000000e+00      0s
+
+Solved in 0 iterations and 0.00 seconds (0.00 work units)
+Optimal objective  1.000000000e+00
+
+User-callback calls 35, time in user-callback 0.01 sec
+elapsed CPU time: 1.729902 seconds
+Set parameter TokenServer to value "solice01.zib.de"
+Set parameter Threads to value 1
+Set parameter OutputFlag to value 1
+Set parameter MIPGap to value 0.0001
+Set parameter TimeLimit to value 7198.270098
+
+ more cuts: false 1.221004914463064 false
+is_attach:trueformulation:LEFPAV0 12 0
+Set parameter PreCrush to value 1
+
+ model loaded
+
+Min ye[1] + ye[2] + ye[3] + ye[4] + ye[5] + ye[6] + ye[7] + ye[8] + ye[9] + ye[10] + ye[11] + yv[1] + yv[2] + yv[3] + yv[4] + yv[5] + yv[6] + yv[7] + yv[8] + yv[9] + yv[10]
+Subject to
+ q[1,a] ≥ 0
+ q[2,a] ≥ 0
+ q[3,a] ≥ 0
+ q[4,a] ≥ 0
+ q[5,a] ≥ 0
+ q[6,a] ≥ 0
+ q[7,a] ≥ 0
+ q[8,a] ≥ 0
+ q[9,a] ≥ 0
+ q[10,a] ≥ 0
+ q[11,a] ≥ 0
+ q[12,a] ≥ 0
+ q[1,b] ≥ 0
+ q[2,b] ≥ 0
+ q[3,b] ≥ 0
+ q[4,b] ≥ 0
+ q[5,b] ≥ 0
+ q[6,b] ≥ 0
+ q[7,b] ≥ 0
+ q[8,b] ≥ 0
+ q[9,b] ≥ 0
+ q[10,b] ≥ 0
+ q[11,b] ≥ 0
+ q[12,b] ≥ 0
+ rv[1] ≥ 0
+ rv[2] ≥ 0
+ rv[3] ≥ 0
+ rv[4] ≥ 0
+ rv[5] ≥ 0
+ rv[6] ≥ 0
+ rv[7] ≥ 0
+ rv[8] ≥ 0
+ rv[9] ≥ 0
+ rv[10] ≥ 0
+ -q[12,b] + 0.9875593338039859 yv[10] ≤ 1.0000000000287557e-6
+ -ye[1] - ye[2] - ye[5] - ye[7] + w[1] ≤ 0
+ -ye[1] - ye[2] - ye[5] - ye[8] + w[2] ≤ 0
+ -ye[3] + w[3] ≤ 0
+ -ye[4] + w[4] ≤ 0
+ -ye[1] - ye[2] - ye[5] - ye[7] + w[5] ≤ 0
+ -ye[6] + w[6] ≤ 0
+ -ye[1] - ye[5] - ye[7] + w[7] ≤ 0
+ -ye[2] - ye[8] + w[8] ≤ 0
+ -ye[9] + w[9] ≤ 0
+ -ye[10] + w[10] ≤ 0
+ -ye[11] + w[11] ≤ 0
+ -ye[12] + w[12] ≤ 0
+ -0.2992493328570236 w[1] - rv[2] - rv[9] ≤ -0.2992493328570236
+ -0.45231002978367224 w[2] - rv[1] - rv[9] ≤ -0.45231002978367224
+ -0.36556280351855097 w[3] - rv[7] - rv[8] ≤ -0.36556280351855097
+[[...476 constraints skipped...]]
+ ze[8,(4, :a)] binary
+ ze[8,(12, :b)] binary
+ ze[9,(8, :b)] binary
+ ze[9,(6, :b)] binary
+ ze[9,(11, :b)] binary
+ ze[9,(9, :b)] binary
+ ze[9,(8, :a)] binary
+ ze[9,(7, :b)] binary
+ ze[9,(6, :a)] binary
+ ze[9,(9, :a)] binary
+ ze[9,(3, :a)] binary
+ ze[9,(7, :a)] binary
+ ze[9,(10, :b)] binary
+ ze[9,(10, :a)] binary
+ ze[10,(3, :b)] binary
+ ze[10,(4, :b)] binary
+ yv[1] binary
+ yv[2] binary
+ yv[3] binary
+ yv[4] binary
+ yv[5] binary
+ yv[6] binary
+ yv[7] binary
+ yv[8] binary
+ yv[9] binary
+ yv[10] binary
+ q[1,a] - q[1,b] = 0
+ q[2,a] - q[2,b] = 0
+ q[3,a] - q[3,b] = 0
+ q[4,a] - q[4,b] = 0
+ q[5,a] - q[5,b] = 0
+ q[6,a] - q[6,b] = 0
+ q[7,a] - q[7,b] = 0
+ q[8,a] - q[8,b] = 0
+ q[9,a] - q[9,b] = 0
+ q[10,a] - q[10,b] = 0
+ q[11,a] - q[11,b] = 0
+ q[12,a] - q[12,b] = 0
+ x[1] + ze[1,(1, :b)] + ze[1,(5, :b)] + ze[1,(1, :a)] + ze[1,(5, :a)] + ze[1,(6, :a)] + ze[1,(7, :a)] + ze[1,(10, :a)] + ze[1,(9, :b)] + ze[1,(9, :a)] = 1
+ x[2] + ze[2,(8, :b)] + ze[2,(1, :b)] + ze[2,(5, :a)] + ze[2,(6, :b)] + ze[2,(11, :b)] + ze[2,(9, :b)] + ze[2,(12, :a)] + ze[2,(8, :a)] + ze[2,(3, :b)] + ze[2,(1, :a)] + ze[2,(7, :b)] + ze[2,(6, :a)] + ze[2,(9, :a)] + ze[2,(3, :a)] + ze[2,(4, :b)] + ze[2,(2, :b)] + ze[2,(7, :a)] + ze[2,(10, :b)] + ze[2,(5, :b)] + ze[2,(2, :a)] + ze[2,(10, :a)] = 1
+ x[3] + ze[3,(8, :b)] + ze[3,(1, :b)] + ze[3,(5, :a)] + ze[3,(6, :b)] + ze[3,(11, :b)] + ze[3,(9, :b)] + ze[3,(8, :a)] + ze[3,(1, :a)] + ze[3,(7, :b)] + ze[3,(6, :a)] + ze[3,(9, :a)] + ze[3,(3, :a)] + ze[3,(2, :b)] + ze[3,(10, :b)] + ze[3,(7, :a)] + ze[3,(5, :b)] + ze[3,(2, :a)] + ze[3,(10, :a)] = 1
+ x[4] + ze[4,(8, :b)] + ze[4,(1, :b)] + ze[4,(5, :a)] + ze[4,(9, :b)] + ze[4,(8, :a)] + ze[4,(1, :a)] + ze[4,(7, :b)] + ze[4,(6, :a)] + ze[4,(9, :a)] + ze[4,(2, :b)] + ze[4,(7, :a)] + ze[4,(10, :b)] + ze[4,(5, :b)] + ze[4,(2, :a)] + ze[4,(10, :a)] = 1
+ x[5] + ze[5,(12, :a)] + ze[5,(3, :b)] + ze[5,(3, :a)] + ze[5,(4, :b)] + ze[5,(6, :b)] + ze[5,(4, :a)] + ze[5,(11, :b)] + ze[5,(11, :a)] = 1
+ x[6] + ze[6,(8, :b)] + ze[6,(1, :b)] + ze[6,(5, :a)] + ze[6,(9, :b)] + ze[6,(1, :a)] + ze[6,(7, :b)] + ze[6,(6, :a)] + ze[6,(9, :a)] + ze[6,(2, :b)] + ze[6,(7, :a)] + ze[6,(10, :b)] + ze[6,(5, :b)] + ze[6,(10, :a)] = 1
+ x[7] + ze[7,(1, :b)] + ze[7,(5, :a)] + ze[7,(6, :b)] + ze[7,(11, :b)] + ze[7,(12, :a)] + ze[7,(3, :b)] + ze[7,(1, :a)] + ze[7,(6, :a)] + ze[7,(11, :a)] + ze[7,(9, :a)] + ze[7,(3, :a)] + ze[7,(4, :b)] + ze[7,(2, :b)] + ze[7,(7, :a)] + ze[7,(5, :b)] + ze[7,(4, :a)] = 1
+ x[8] + ze[8,(5, :a)] + ze[8,(6, :b)] + ze[8,(11, :b)] + ze[8,(12, :a)] + ze[8,(3, :b)] + ze[8,(1, :a)] + ze[8,(6, :a)] + ze[8,(11, :a)] + ze[8,(3, :a)] + ze[8,(4, :b)] + ze[8,(7, :a)] + ze[8,(4, :a)] + ze[8,(12, :b)] = 1
+ x[9] + ze[9,(8, :b)] + ze[9,(6, :b)] + ze[9,(11, :b)] + ze[9,(9, :b)] + ze[9,(8, :a)] + ze[9,(7, :b)] + ze[9,(6, :a)] + ze[9,(9, :a)] + ze[9,(3, :a)] + ze[9,(7, :a)] + ze[9,(10, :b)] + ze[9,(10, :a)] = 1
+ x[10] + ze[10,(3, :b)] + ze[10,(4, :b)] = 1
+ ye[12] = 0
+ q[12,a] = 0
+Gurobi Optimizer version 12.0.1 build v12.0.1rc0 (linux64 - "Debian GNU/Linux 12 (bookworm)")
+
+CPU model: Intel(R) Xeon(R) Gold 5122 CPU @ 3.60GHz, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 8 physical cores, 16 logical processors, using up to 1 threads
+
+Non-default parameters:
+TimeLimit  7198.270098
+PreCrush  1
+Threads  1
+
+Optimize a model with 337 rows, 205 columns and 940 nonzeros
+Model fingerprint: 0x2f81137b
+Variable types: 34 continuous, 171 integer (171 binary)
+Coefficient statistics:
+  Matrix range     [1e-06, 2e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [3e-01, 1e+00]
+  RHS range        [1e-06, 2e+00]
+Found heuristic solution: objective 4.0000000
+Presolve removed 129 rows and 63 columns
+Presolve time: 0.01s
+Presolved: 208 rows, 142 columns, 998 nonzeros
+Variable types: 20 continuous, 122 integer (122 binary)
+
+Root relaxation: objective 1.248408e+00, 118 iterations, 0.00 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    1.24841    0   32    4.00000    1.24841  68.8%     -    0s
+H    0     0                       3.0000000    1.24841  58.4%     -    0s
+elapsed CPU time: 1.385137653441584e13 seconds
+     0     0    1.52978    0   29    3.00000    1.52978  49.0%     -    0s
+elapsed CPU time: 0.000719 seconds
+     0     0    1.64189    0   29    3.00000    1.64189  45.3%     -    0s
+     0     0    1.65295    0   19    3.00000    1.65295  44.9%     -    0s
+elapsed CPU time: 0.00073 seconds
+     0     0    2.00000    0   15    3.00000    2.00000  33.3%     -    0s
+elapsed CPU time: 0.000721 seconds
+     0     0    2.00000    0   15    3.00000    2.00000  33.3%     -    0s
+elapsed CPU time: 0.000692 seconds
+     0     0    2.00000    0   14    3.00000    2.00000  33.3%     -    0s
+H    0     0                       2.0000000    2.00000  0.00%     -    0s
+     0     0    2.00000    0   14    2.00000    2.00000  0.00%     -    0s
+
+Cutting planes:
+  Gomory: 2
+  Cover: 6
+  Clique: 1
+  MIR: 4
+
+Explored 1 nodes (293 simplex iterations) in 0.67 seconds (0.02 work units)
+Thread count was 1 (of 16 available processors)
+
+Solution count 3: 2 3 4 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 2.000000000000e+00, best bound 2.000000000000e+00, gap 0.0000%
+
+User-callback calls 781, time in user-callback 1.48 sec
+
+ sepatime1.385137653441584e13 811 5
+2.0Stat(MathOptInterface.OPTIMAL, 2.0, 2.0, 0.0, 1.385137653441584e13, 1.729902, 0.669234037399292, 1, Main.CFLG.LEFPAV, "", #undef)

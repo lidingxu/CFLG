@@ -2,8 +2,8 @@ instance: K100.9.red
 obj: 3.0
 bound: 3.0
 gap: 0.0
-time: 3.374138116836548
-preprocess_time: 1.753166
+time: 2.680543899536133
+preprocess_time: 1.18156
 sepa_time: 0.0
 node: 1
 formulation: LEFPAD

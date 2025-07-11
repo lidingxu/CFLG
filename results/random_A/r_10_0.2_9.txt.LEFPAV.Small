@@ -3,7 +3,7 @@ obj: 19.0
 bound: 19.0
 gap: 0.0
 time: 0.0
-preprocess_time: 0.45995
-sepa_time: 2.75859452885e-313
+preprocess_time: 0.465193
+sepa_time: 7.4e-323
 node: 0
 formulation: LEFPAV

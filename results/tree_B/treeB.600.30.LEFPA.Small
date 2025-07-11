@@ -1,9 +1,9 @@
 instance: treeB.600.30
-obj: 1057.0
-bound: 1057.0
+obj: 1240.0
+bound: 1240.0
 gap: 0.0
-time: 0.0039179325103759766
-preprocess_time: 1.414744
+time: 4191.009742975235
+preprocess_time: 1.212761
 sepa_time: 0.0
-node: 0
+node: 3068906
 formulation: LEFPA

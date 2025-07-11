@@ -1,9 +1,9 @@
 instance: K200.con.red
-obj: 216.0
-bound: 216.0
-gap: 0.0
-time: 0.0603179931640625
-preprocess_time: 1.835201
+obj: 438.0
+bound: 426.0
+gap: 0.0273972602739726
+time: 7198.342063903809
+preprocess_time: 1.662293
 sepa_time: 0.0
-node: 1
+node: 753324
 formulation: LEFPA

@@ -1,0 +1,261 @@
+Data path: /scratch/opt/lxu/CFLG/benchmarks/tree_B
+Instance: treeB.300.15
+Result path: /scratch/opt/lxu/CFLG/results/tree_B
+Solver: Gurobi
+Time limit: 7200
+Formulation: LEFPAD
+Cover: Large
+julia --project=. src/main.jl /scratch/opt/lxu/CFLG/benchmarks/tree_B treeB.300.15 /scratch/opt/lxu/CFLG/results/tree_B Gurobi 7200 LEFPAD Large
+The latest version of Julia in the `release` channel is 1.11.5+0.x64.linux.gnu. You currently have `1.11.4+0.x64.linux.gnu` installed. Run:
+
+  juliaup update
+
+in your terminal shell to install Julia 1.11.5+0.x64.linux.gnu and update the `release` channel to that version.
+/scratch/opt/lxu/CFLG/benchmarks/tree_B Gurobi 7200.0 /scratch/opt/lxu/CFLG/results/tree_B treeB.300.15 LEFPAD Large
+/scratch/opt/lxu/CFLG/benchmarks/tree_B/treeB.300.15
+
+ read graph
+data loaded
+
+problem_graph/original graph: node: 300/300 edge: 314/314 dlt: 3.04644848069629 break_avg_len: 1.523224240348145 break_max_len: 1.996631463959332Vbar/V, Ebar/E(86, 300, 100, 314)
+(Dict{Int64, Bool}(150 => 0, 279 => 1, 55 => 1, 202 => 1, 179 => 1, 72 => 1, 220 => 0, 30 => 1, 52 => 1, 111 => 0, 53 => 0, 289 => 1, 234 => 0, 67 => 0, 69 => 0, 190 => 1, 121 => 1, 73 => 0, 85 => 1, 227 => 1, 262 => 0, 138 => 0, 119 => 1, 51 => 1, 216 => 0, 203 => 1, 225 => 1, 103 => 1, 228 => 1, 259 => 0, 152 => 1, 247 => 1, 93 => 1, 34 => 1, 211 => 1, 129 => 1, 147 => 1, 250 => 1, 183 => 0, 226 => 0, 100 => 0, 134 => 0), Dict(150 => 1.9287329049041675, 279 => 1.6971930024957722, 55 => 1.4481745495865708, 202 => 1.0126521501658532, 179 => 1.8305716337803184, 72 => 3.0307207946148473, 220 => 1.5170776075351942, 30 => 1.5166272517149342, 52 => 0.2386561967007219, 111 => 0.9050033466021201, 53 => 1.6723948610081885, 289 => 2.774705763156548, 234 => 0.09350461379765695, 67 => 0.0188768292186694, 69 => 0.2840130383134647, 190 => 2.794852468899081, 121 => 0.3197625926477332, 73 => 1.1404553461680726, 85 => 2.74522333092641, 227 => 1.5924746190637018, 262 => 0.3796191349152864, 138 => 1.9711698030843556, 119 => 1.7080184857110314, 51 => 1.3022675887804356, 216 => 2.201721315107211, 203 => 1.4597393476017464, 225 => 2.0674662161778627, 103 => 1.8801073452552302, 228 => 1.9512041198605616, 259 => 1.7267590976852394, 152 => 1.919617656902767, 247 => 1.9346218786140001, 93 => 1.6213356565861579, 34 => 1.8796399860018953, 211 => 2.299190444775313, 129 => 1.9288871684071216, 147 => 1.6901635541405517, 250 => 1.3155479440059865, 183 => 0.3610297934355775, 226 => 1.5553849713872954, 100 => 0.10653331406299982, 134 => 1.8289277682949754))Set parameter TokenServer to value "solice01.zib.de"
+Set parameter Threads to value 1
+Set parameter OutputFlag to value 1
+Gurobi Optimizer version 12.0.1 build v12.0.1rc0 (linux64 - "Debian GNU/Linux 12 (bookworm)")
+
+CPU model: Intel(R) Xeon(R) Gold 5122 CPU @ 3.60GHz, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 8 physical cores, 16 logical processors, using up to 1 threads
+
+Non-default parameters:
+Threads  1
+
+Optimize a model with 270 rows, 426 columns and 710 nonzeros
+Model fingerprint: 0x454b109e
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+00]
+Presolve removed 270 rows and 426 columns
+Presolve time: 0.00s
+Presolve: All rows and columns removed
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    4.2000000e+01   0.000000e+00   0.000000e+00      0s
+
+Solved in 0 iterations and 0.00 seconds (0.00 work units)
+Optimal objective  4.200000000e+01
+
+User-callback calls 35, time in user-callback 0.01 sec
+elapsed CPU time: 1.699866 seconds
+Set parameter TokenServer to value "solice01.zib.de"
+Set parameter Threads to value 1
+Set parameter OutputFlag to value 1
+Set parameter MIPGap to value 0.0001
+Set parameter TimeLimit to value 7198.300134
+
+ more cuts: false 3.04644848069629 false
+is_attach:trueformulation:LEFPAD0 142 0
+
+ model loaded
+
+Min ye[1] + ye[2] + ye[3] + ye[4] + ye[5] + ye[6] + ye[7] + ye[8] + ye[9] + ye[10] + ye[11] + ye[12] + ye[13] + ye[14] + ye[15] + ye[16] + ye[17] + ye[18] + ye[19] + ye[20] + ye[21] + ye[22] + ye[23] + ye[24] + ye[25] + ye[26] + ye[27] + ye[28] + ye[29] + ye[30] + [[...168 terms omitted...]] + yv[99] + yv[100] + yv[101] + yv[102] + yv[103] + yv[104] + yv[105] + yv[106] + yv[107] + yv[108] + yv[109] + yv[110] + yv[111] + yv[112] + yv[113] + yv[114] + yv[115] + yv[116] + yv[117] + yv[118] + yv[119] + yv[120] + yv[121] + yv[122] + yv[123] + yv[124] + yv[125] + yv[126] + yv[127] + yv[128] + 43
+Subject to
+ q[1,a] ≥ 0
+ q[2,a] ≥ 0
+ q[3,a] ≥ 0
+ q[4,a] ≥ 0
+ q[5,a] ≥ 0
+ q[6,a] ≥ 0
+ q[7,a] ≥ 0
+ q[8,a] ≥ 0
+ q[9,a] ≥ 0
+ q[10,a] ≥ 0
+ q[11,a] ≥ 0
+ q[12,a] ≥ 0
+ q[13,a] ≥ 0
+ q[14,a] ≥ 0
+ q[15,a] ≥ 0
+ q[16,a] ≥ 0
+ q[17,a] ≥ 0
+ q[18,a] ≥ 0
+ q[19,a] ≥ 0
+ q[20,a] ≥ 0
+ q[21,a] ≥ 0
+ q[22,a] ≥ 0
+ q[23,a] ≥ 0
+ q[24,a] ≥ 0
+ q[25,a] ≥ 0
+ q[26,a] ≥ 0
+ q[27,a] ≥ 0
+ q[28,a] ≥ 0
+ q[29,a] ≥ 0
+ q[30,a] ≥ 0
+ q[31,a] ≥ 0
+ q[32,a] ≥ 0
+ q[33,a] ≥ 0
+ q[34,a] ≥ 0
+ q[35,a] ≥ 0
+ q[36,a] ≥ 0
+ q[37,a] ≥ 0
+ q[38,a] ≥ 0
+ q[39,a] ≥ 0
+ q[40,a] ≥ 0
+ q[41,a] ≥ 0
+ q[42,a] ≥ 0
+ q[43,a] ≥ 0
+ q[44,a] ≥ 0
+ q[45,a] ≥ 0
+ q[46,a] ≥ 0
+ q[47,a] ≥ 0
+ q[48,a] ≥ 0
+ q[49,a] ≥ 0
+ q[50,a] ≥ 0
+[[...10582 constraints skipped...]]
+ ye[135] = 1
+ ye[136] = 1
+ ye[137] = 0
+ ye[138] = 0
+ ye[139] = 0
+ ye[140] = 0
+ ye[141] = 1
+ ye[142] = 1
+ q[101,a] = 1.529370873161096
+ q[102,a] = 3.0275716514776208
+ q[103,a] = 1.9059931345282175
+ q[104,a] = 2.6854186872607126
+ q[105,a] = 2.14144513409417
+ q[106,a] = 0
+ q[107,a] = 0
+ q[108,a] = 2.9399151666332903
+ q[109,a] = 0
+ q[110,a] = 1.0752786776119345
+ q[111,a] = 0
+ q[112,a] = 0
+ q[113,a] = 0
+ q[114,a] = 0
+ q[115,a] = 0
+ q[116,a] = 0
+ q[117,a] = 0
+ q[118,a] = 0
+ q[119,a] = 0
+ q[120,a] = 0
+ q[121,a] = 1.4910635093089948
+ q[122,a] = 0
+ q[123,a] = 1.2175207124013148
+ q[124,a] = 0
+ q[125,a] = 2.952943866898633
+ q[126,a] = 0
+ q[127,a] = 0
+ q[128,a] = 2.7624354423828255
+ q[129,a] = 0
+ q[130,a] = 0
+ q[131,a] = 0.8447271655890791
+ q[132,a] = 0
+ q[133,a] = 0
+ q[134,a] = 0
+ q[135,a] = 2.6668293457810037
+ q[136,a] = 1.1177155757921227
+ q[137,a] = 0
+ q[138,a] = 0
+ q[139,a] = 0
+ q[140,a] = 0
+ q[141,a] = 1.3196893830110508
+ q[142,a] = 1.3740536196881017
+Gurobi Optimizer version 12.0.1 build v12.0.1rc0 (linux64 - "Debian GNU/Linux 12 (bookworm)")
+
+CPU model: Intel(R) Xeon(R) Gold 5122 CPU @ 3.60GHz, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 8 physical cores, 16 logical processors, using up to 1 threads
+
+Non-default parameters:
+TimeLimit  7198.300134
+Threads  1
+
+Optimize a model with 5232 rows, 3676 columns and 14548 nonzeros
+Model fingerprint: 0x30bf4126
+Variable types: 1774 continuous, 1902 integer (1902 binary)
+Coefficient statistics:
+  Matrix range     [2e-03, 3e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [2e-01, 3e+00]
+  RHS range        [1e-06, 3e+00]
+Presolve removed 2628 rows and 1593 columns
+Presolve time: 0.06s
+Presolved: 2604 rows, 2083 columns, 8213 nonzeros
+Variable types: 1053 continuous, 1030 integer (1030 binary)
+Found heuristic solution: objective 143.0000000
+Found heuristic solution: objective 104.0000000
+
+Root relaxation: objective 5.607849e+01, 1493 iterations, 0.02 seconds (0.02 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0   56.07849    0  181  104.00000   56.07849  46.1%     -    0s
+H    0     0                     102.0000000   56.07849  45.0%     -    0s
+H    0     0                      85.0000000   56.07849  34.0%     -    0s
+H    0     0                      82.0000000   56.07849  31.6%     -    0s
+H    0     0                      81.0000000   56.07849  30.8%     -    0s
+     0     0   58.43252    0  276   81.00000   58.43252  27.9%     -    0s
+     0     0   58.43473    0  275   81.00000   58.43473  27.9%     -    0s
+H    0     0                      77.0000000   58.52331  24.0%     -    0s
+     0     0   58.65613    0  259   77.00000   58.65613  23.8%     -    0s
+     0     0   58.67431    0  259   77.00000   58.67431  23.8%     -    0s
+     0     0   58.67431    0  258   77.00000   58.67431  23.8%     -    0s
+     0     0   59.68263    0  298   77.00000   59.68263  22.5%     -    0s
+     0     0   59.74304    0  294   77.00000   59.74304  22.4%     -    0s
+     0     0   59.75151    0  289   77.00000   59.75151  22.4%     -    0s
+     0     0   59.75151    0  295   77.00000   59.75151  22.4%     -    0s
+     0     0   61.08094    0  276   77.00000   61.08094  20.7%     -    0s
+     0     0   61.08094    0  275   77.00000   61.08094  20.7%     -    0s
+H    0     0                      72.0000000   61.41933  14.7%     -    0s
+H    0     0                      71.0000000   61.41933  13.5%     -    0s
+     0     0   61.41933    0  257   71.00000   61.41933  13.5%     -    0s
+     0     0   61.41933    0  262   71.00000   61.41933  13.5%     -    0s
+     0     0   61.41933    0  268   71.00000   61.41933  13.5%     -    0s
+     0     0   62.00000    0  278   71.00000   62.00000  12.7%     -    0s
+     0     0   62.00000    0  222   71.00000   62.00000  12.7%     -    0s
+     0     0   62.00000    0  239   71.00000   62.00000  12.7%     -    0s
+     0     0   62.00000    0  236   71.00000   62.00000  12.7%     -    0s
+H    0     0                      70.0000000   62.00000  11.4%     -    0s
+     0     0   62.00000    0  226   70.00000   62.00000  11.4%     -    0s
+     0     0   62.00000    0  103   70.00000   62.00000  11.4%     -    0s
+H    0     0                      69.0000000   62.00000  10.1%     -    0s
+     0     0   62.00000    0  115   69.00000   62.00000  10.1%     -    0s
+     0     0   62.00000    0  114   69.00000   62.00000  10.1%     -    0s
+H    0     0                      68.0000000   62.00000  8.82%     -    0s
+     0     0   62.00000    0  148   68.00000   62.00000  8.82%     -    0s
+     0     0   62.00000    0  112   68.00000   62.00000  8.82%     -    0s
+     0     0   62.00000    0  112   68.00000   62.00000  8.82%     -    0s
+H    0     0                      67.0000000   62.00000  7.46%     -    0s
+     0     2   62.50000    0   99   67.00000   62.50000  6.72%     -    0s
+H   52    51                      66.0000000   62.50000  5.30%  61.8    1s
+H  435   156                      65.0000000   62.72222  3.50%  45.8    1s
+   735   301   63.50000    7   27   65.00000   63.50000  2.31%  69.3    5s
+H  807   295                      64.0000000   64.00000  0.00%  82.9    6s
+
+Cutting planes:
+  Gomory: 10
+  Lift-and-project: 5
+  Cover: 6
+  Implied bound: 9
+  MIR: 13
+  Flow cover: 8
+  GUB cover: 12
+  Zero half: 14
+  RLT: 25
+  Relax-and-lift: 1
+  BQP: 8
+
+Explored 808 nodes (79313 simplex iterations) in 6.15 seconds (4.13 work units)
+Thread count was 1 (of 16 available processors)
+
+Solution count 10: 64 65 65 ... 68
+
+Optimal solution found (tolerance 1.00e-04)
+Warning: max constraint violation (2.5961e-06) exceeds tolerance
+Best objective 6.400000000000e+01, best bound 6.400000000000e+01, gap 0.0000%
+
+User-callback calls 5103, time in user-callback 0.01 sec
+
+ sepatime0 0 0
+64.0Stat(MathOptInterface.OPTIMAL, 64.0, 64.0, 0.0, 0.0, 1.699866, 6.154045104980469, 808, Main.CFLG.LEFPAD, "", #undef)

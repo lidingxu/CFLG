@@ -2,8 +2,8 @@ instance: treeA.600.30
 obj: 1240.0
 bound: 1240.0
 gap: 0.0
-time: 56.110809087753296
-preprocess_time: 0.08551
-sepa_time: 5.0e-324
+time: 56.60348701477051
+preprocess_time: 0.083402
+sepa_time: 6.949853613718e-310
 node: 11265
 formulation: LEVFP

@@ -2,8 +2,8 @@ instance: r_30_0.3_131.txt
 obj: 210.0
 bound: 193.0
 gap: 0.08095238095238096
-time: 7199.9015510082245
-preprocess_time: 0.106393
+time: 7199.933284044266
+preprocess_time: 0.072346
 sepa_time: 0.0
-node: 1590427
+node: 1801520
 formulation: EFP
