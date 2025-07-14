@@ -113,7 +113,7 @@ def Stat(algo, coverage):
 
 
 def add(stat, entry):
-    stat["solved"] += 1 if  float(entry["absgap"]) < 0.9999999 else 0
+    stat["solved"] += 1 if  float(entry["gap"]) < 1e-4 else 0
     stat["solution"] += not entry["missing"]
     stat["total"] += 1
     if not (entry["gap"] >= 0 and entry["gap"] <= 100):
@@ -290,10 +290,14 @@ def printtable(algorithms_, benchmarks, has_obj_):
                 bench_entries["Large"].append(entry)
 
     test_benchs = ["Small", "Large"]
+    solved = {}
     for benchmark in test_benchs:
         # benchmark_wise statistics
+        solved[benchmark] = {}
         for cover in coverages:
+            solved[benchmark][cover] = {}
             for algo in algorithms_:
+                solved[benchmark][cover][algo] = set()
                 bench_tab = ""
                 stat = Stat(algo, cover)
                 #print(algo, cover)
@@ -301,11 +305,15 @@ def printtable(algorithms_, benchmarks, has_obj_):
                     if entry["formulation"] == algo and entry["coverage"] == cover:
                         #print(entry["time"], entry["absgap"], entry["obj"], entry["bound"])
                         add(stat, entry)
+                        if entry["gap"] <= 1e-4:
+                            solved[benchmark][cover][algo].add(entry["instance"])
                         #print(entry)
                 display = avgStat(stat)
                 #print(display)
                 benchdict[(benchmark, cover, algo)] = gettab(stat, False if cover == "Small" else True)
 
+    #print(  solved["Large"]["Large"]["EFP"] - solved["Large"]["Large"]["LEVFP"], "\n",  solved["Large"]["Large"]["LEVFP"] - solved["Large"]["Large"]["EFP"] )
+    #print(  solved["Large"]["Large"]["EFP"] - solved["Large"]["Large"]["LEVFP"], "\n",  solved["Large"]["Large"]["LEVFP"] - solved["Large"]["Large"]["EFP"] )
     # p-test
     ys = {}
     for algo_ in pcomp:
