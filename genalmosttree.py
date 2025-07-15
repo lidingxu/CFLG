@@ -72,8 +72,8 @@ def graph_to_string(G):
         length = random.uniform(1, 2)
         lines.append(f"{u + 1} {v + 1} {length}")
     return "\n".join(lines)
-ns = [20]
-ps = [0.2,0.25,0.3]
+ns = [100, 150, 200, 250, 300, 350]
+ps = [0.1,0.15,0.2]
 # Example usage
 outdir = "benchmarks"
 os.makedirs(outdir, exist_ok=True)
