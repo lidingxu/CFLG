@@ -1,0 +1,89 @@
+Data path: /scratch/opt/lxu/CFLG/benchmarks/tree_A
+Instance: treeA.40.2
+Result path: /scratch/opt/lxu/CFLG/results/tree_A
+Solver: Gurobi
+Time limit: 7200
+Formulation: LEVFP
+Cover: Large
+julia --project=. src/main.jl /scratch/opt/lxu/CFLG/benchmarks/tree_A treeA.40.2 /scratch/opt/lxu/CFLG/results/tree_A Gurobi 7200 LEVFP Large
+The latest version of Julia in the `release` channel is 1.11.6+0.x64.linux.gnu. You currently have `1.11.4+0.x64.linux.gnu` installed. Run:
+
+  juliaup update
+
+in your terminal shell to install Julia 1.11.6+0.x64.linux.gnu and update the `release` channel to that version.
+/scratch/opt/lxu/CFLG/benchmarks/tree_A Gurobi 7200.0 /scratch/opt/lxu/CFLG/results/tree_A treeA.40.2 LEVFP Large
+/scratch/opt/lxu/CFLG/benchmarks/tree_A/treeA.40.2
+
+ read graph
+data loaded
+
+problem_graph/original graph: node: 40/40 edge: 41/41 dlt: 2.99634141773228 break_avg_len: 1.49817070886614 break_max_len: 1.9232361025850708elapsed CPU time: 0.024247 seconds
+Set parameter TokenServer to value "solice01.zib.de"
+Set parameter Threads to value 1
+Set parameter OutputFlag to value 1
+Set parameter MIPGap to value 0.0001
+Set parameter TimeLimit to value 7199.975753
+
+ model loaded
+
+Gurobi Optimizer version 12.0.1 build v12.0.1rc0 (linux64 - "Debian GNU/Linux 12 (bookworm)")
+
+CPU model: Intel(R) Xeon(R) Gold 5222 CPU @ 3.80GHz, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 8 physical cores, 16 logical processors, using up to 1 threads
+
+Non-default parameters:
+TimeLimit  7199.975753
+Threads  1
+
+Optimize a model with 1458 rows, 660 columns and 3885 nonzeros
+Model fingerprint: 0xc33f6cdb
+Variable types: 81 continuous, 579 integer (579 binary)
+Coefficient statistics:
+  Matrix range     [1e-06, 4e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 2e+00]
+  RHS range        [1e+00, 4e+00]
+Found heuristic solution: objective 16.0000000
+Presolve removed 479 rows and 96 columns
+Presolve time: 0.05s
+Presolved: 979 rows, 564 columns, 5160 nonzeros
+Variable types: 76 continuous, 488 integer (488 binary)
+
+Root relaxation: objective 9.000000e+00, 412 iterations, 0.01 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+H    0     0                       9.0000000    9.00000  0.00%     -    0s
+     0     0    9.00000    0  139    9.00000    9.00000  0.00%     -    0s
+
+Explored 1 nodes (412 simplex iterations) in 0.06 seconds (0.05 work units)
+Thread count was 1 (of 16 available processors)
+
+Solution count 2: 9 16 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 9.000000000000e+00, best bound 9.000000000000e+00, gap 0.0000%
+
+User-callback calls 891, time in user-callback 0.00 sec
+Stat(MathOptInterface.OPTIMAL, 9.0, 9.0, 0.0, 6.9133601498988e-310, 0.024247, 0.05761885643005371, 1, Main.CFLG.LEVFP, "", #undef)
+ERROR: LoadError: SystemError: opening file "/scratch/opt/lxu/CFLG/results/tree_A/treeA.40.2.LEVFP.Large": No such file or directory
+Stacktrace:
+ [1] systemerror(p::String, errno::Int32; extrainfo::Nothing)
+   @ Base ./error.jl:176
+ [2] systemerror
+   @ ./error.jl:175 [inlined]
+ [3] open(fname::String; lock::Bool, read::Nothing, write::Nothing, create::Nothing, truncate::Bool, append::Nothing)
+   @ Base ./iostream.jl:295
+ [4] open
+   @ ./iostream.jl:277 [inlined]
+ [5] open(fname::String, mode::String; lock::Bool)
+   @ Base ./iostream.jl:358
+ [6] open
+   @ ./iostream.jl:357 [inlined]
+ [7] main(args::Vector{String})
+   @ Main /scratch/opt/lxu/CFLG/src/main.jl:51
+ [8] top-level scope
+   @ /scratch/opt/lxu/CFLG/src/main.jl:57
+in expression starting at /scratch/opt/lxu/CFLG/src/main.jl:57
+srun: error: htc-cmp485: task 0: Exited with exit code 1

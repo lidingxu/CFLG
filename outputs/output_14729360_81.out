@@ -1,0 +1,161 @@
+Data path: /scratch/opt/lxu/CFLG/benchmarks/Kgroup_A
+Instance: K100.9.red
+Result path: /scratch/opt/lxu/CFLG/results/Kgroup_A
+Solver: Gurobi
+Time limit: 7200
+Formulation: EF
+Cover: Large
+julia --project=. src/main.jl /scratch/opt/lxu/CFLG/benchmarks/Kgroup_A K100.9.red /scratch/opt/lxu/CFLG/results/Kgroup_A Gurobi 7200 EF Large
+The latest version of Julia in the `release` channel is 1.11.6+0.x64.linux.gnu. You currently have `1.11.4+0.x64.linux.gnu` installed. Run:
+
+  juliaup update
+
+in your terminal shell to install Julia 1.11.6+0.x64.linux.gnu and update the `release` channel to that version.
+/scratch/opt/lxu/CFLG/benchmarks/Kgroup_A Gurobi 7200.0 /scratch/opt/lxu/CFLG/results/Kgroup_A K100.9.red EF Large
+/scratch/opt/lxu/CFLG/benchmarks/Kgroup_A/K100.9.red
+
+ read graph
+data loaded
+
+
+after absorb:21 22
+
+max_piece:2
+problem_graph/original graph: node: 30/22 edge: 78/70 dlt: 0.5840503453289713 break_avg_len: 0.26207387290402545 break_max_len: 0.5elapsed CPU time: 0.027789 seconds
+Set parameter TokenServer to value "solice01.zib.de"
+Set parameter Threads to value 1
+Set parameter OutputFlag to value 1
+Set parameter MIPGap to value 0.0001
+Set parameter TimeLimit to value 7199.972211
+
+ model loaded
+
+Gurobi Optimizer version 12.0.1 build v12.0.1rc0 (linux64 - "Debian GNU/Linux 12 (bookworm)")
+
+CPU model: Intel(R) Xeon(R) Gold 5222 CPU @ 3.80GHz, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 8 physical cores, 16 logical processors, using up to 1 threads
+
+Non-default parameters:
+TimeLimit  7199.972211
+Threads  1
+
+Optimize a model with 1424202 rows, 482664 columns and 3792282 nonzeros
+Model fingerprint: 0x5f1a0aeb
+Variable types: 7098 continuous, 475566 integer (475566 binary)
+Coefficient statistics:
+  Matrix range     [2e-02, 6e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [2e-02, 5e-01]
+  RHS range        [6e-04, 6e+00]
+Presolve removed 384939 rows and 85388 columns (presolve time = 5s)...
+Presolve removed 385583 rows and 85388 columns (presolve time = 10s)...
+Presolve removed 530022 rows and 169583 columns (presolve time = 15s)...
+Presolve removed 530022 rows and 169583 columns (presolve time = 20s)...
+Presolve removed 530022 rows and 169583 columns (presolve time = 25s)...
+Presolve removed 530022 rows and 169583 columns (presolve time = 30s)...
+Presolve removed 530022 rows and 169583 columns (presolve time = 35s)...
+Presolve removed 530022 rows and 169583 columns (presolve time = 40s)...
+Presolve removed 530022 rows and 169583 columns (presolve time = 45s)...
+Presolve removed 530022 rows and 169583 columns (presolve time = 50s)...
+Presolve removed 530022 rows and 169583 columns (presolve time = 55s)...
+Presolve removed 530022 rows and 169583 columns (presolve time = 60s)...
+Presolve removed 530022 rows and 178084 columns (presolve time = 72s)...
+Presolve removed 746701 rows and 184546 columns (presolve time = 75s)...
+Presolve removed 748657 rows and 185200 columns
+Presolve time: 76.84s
+Presolved: 675545 rows, 297464 columns, 1789382 nonzeros
+Variable types: 1064 continuous, 296400 integer (296400 binary)
+Found heuristic solution: objective 77.0000000
+Found heuristic solution: objective 76.0000000
+
+Root simplex log...
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    0.0000000e+00   1.802647e+02   0.000000e+00     85s
+    3529    0.0000000e+00   1.019734e+02   0.000000e+00     85s
+   28370    9.9686626e-05   1.243100e+02   0.000000e+00     90s
+   43673    1.4214118e-04   1.281753e+02   0.000000e+00     95s
+   55924    1.7743220e-04   1.407804e+02   0.000000e+00    101s
+   59956    2.9521653e-02   1.191075e+02   0.000000e+00    106s
+   62520    5.5882311e-02   1.042916e+02   0.000000e+00    111s
+   65606    1.4284774e-01   1.827120e+02   0.000000e+00    115s
+   67866    1.4286090e-01   2.445527e+02   0.000000e+00    120s
+   69506    1.4287983e-01   2.267848e+02   0.000000e+00    125s
+   70776    1.4288559e-01   1.784243e+02   0.000000e+00    130s
+   71776    1.4288903e-01   1.686366e+02   0.000000e+00    136s
+   72616    1.4289166e-01   1.789829e+02   0.000000e+00    140s
+   73476    1.4289686e-01   1.896223e+02   0.000000e+00    145s
+   74276    1.4290017e-01   1.699626e+02   0.000000e+00    150s
+   74976    1.4290477e-01   1.444455e+02   0.000000e+00    155s
+   75776    1.4291246e-01   1.712680e+02   0.000000e+00    161s
+   76396    1.4291571e-01   1.867626e+02   0.000000e+00    165s
+   77126    1.4291952e-01   1.578168e+02   0.000000e+00    170s
+   77846    1.4292148e-01   1.578782e+02   0.000000e+00    176s
+   78426    1.4292225e-01   1.591198e+02   0.000000e+00    180s
+   79116    1.4292400e-01   2.169646e+02   0.000000e+00    186s
+   79666    1.4292536e-01   1.386579e+02   0.000000e+00    190s
+   80216    1.4292677e-01   1.517267e+02   0.000000e+00    195s
+   80826    1.4293070e-01   1.573532e+02   0.000000e+00    200s
+   81416    1.4293493e-01   1.428486e+02   0.000000e+00    206s
+   81956    1.4294035e-01   1.353652e+02   0.000000e+00    211s
+   82496    1.4294559e-01   1.337296e+02   0.000000e+00    216s
+   82856    1.4294985e-01   1.200136e+02   0.000000e+00    220s
+   83396    1.4295092e-01   1.166807e+02   0.000000e+00    226s
+   83936    1.4336424e-01   6.503913e+01   0.000000e+00    231s
+   85046    1.4339111e-01   6.350209e+01   0.000000e+00    236s
+   86096    1.4339466e-01   5.856298e+01   0.000000e+00    240s
+   87356    1.4340196e-01   5.030562e+01   0.000000e+00    245s
+   88596    1.4340850e-01   4.216562e+01   0.000000e+00    250s
+   89586    1.4575398e-01   1.094677e+02   0.000000e+00    255s
+   93026    1.4644489e-01   2.654005e+01   0.000000e+00    260s
+  104235    1.4647302e-01   2.261229e+01   0.000000e+00    265s
+  106156    1.4776275e-01   1.436712e+01   0.000000e+00    271s
+  112704    1.4800759e-01   0.000000e+00   0.000000e+00    275s
+  112704    1.4800759e-01   0.000000e+00   0.000000e+00    275s
+
+Use crossover to convert LP symmetric solution to basic solution...
+
+Root crossover log...
+
+      55 DPushes remaining with DInf 0.0000000e+00               275s
+       0 DPushes remaining with DInf 0.0000000e+00               275s
+
+   40595 PPushes remaining with PInf 0.0000000e+00               275s
+       0 PPushes remaining with PInf 0.0000000e+00               279s
+
+  Push phase complete: Pinf 0.0000000e+00, Dinf 1.7055801e-14    279s
+
+
+Root simplex log...
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+  153326    1.4800759e-01   0.000000e+00   0.000000e+00    279s
+  153326    1.4800759e-01   0.000000e+00   0.000000e+00    279s
+
+Root relaxation: objective 1.480076e-01, 153326 iterations, 198.38 seconds (271.90 work units)
+Total elapsed time = 319.87s (DegenMoves)
+Total elapsed time = 357.71s (DegenMoves)
+Total elapsed time = 364.49s (DegenMoves)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    0.14801    0 41123   76.00000    0.14801   100%     -  722s
+     0     0    0.14801    0 41122   76.00000    0.14801   100%     -  723s
+H    0     0                       5.0000000    0.14801  97.0%     -  729s
+H    0     0                       4.0000000    0.14801  96.3%     -  738s
+     0     0          -    0         4.00000    0.14801  96.3%     - 7199s
+
+Cutting planes:
+  Learned: 740
+
+Explored 1 nodes (1890531 simplex iterations) in 7200.12 seconds (6504.21 work units)
+Thread count was 1 (of 16 available processors)
+
+Solution count 4: 4 5 76 77 
+
+Time limit reached
+Best objective 4.000000000000e+00, best bound 1.000000000000e+00, gap 75.0000%
+
+User-callback calls 52924, time in user-callback 0.22 sec
+Stat(MathOptInterface.TIME_LIMIT, 4.0, 1.0, 0.75, 0.0, 0.027789, 7200.137485980988, 1, Main.CFLG.EF, "", #undef)

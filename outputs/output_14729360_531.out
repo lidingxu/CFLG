@@ -1,0 +1,112 @@
+Data path: /scratch/opt/lxu/CFLG/benchmarks/tree_A
+Instance: treeA.20.4
+Result path: /scratch/opt/lxu/CFLG/results/tree_A
+Solver: Gurobi
+Time limit: 7200
+Formulation: EF
+Cover: Large
+julia --project=. src/main.jl /scratch/opt/lxu/CFLG/benchmarks/tree_A treeA.20.4 /scratch/opt/lxu/CFLG/results/tree_A Gurobi 7200 EF Large
+The latest version of Julia in the `release` channel is 1.11.6+0.x64.linux.gnu. You currently have `1.11.4+0.x64.linux.gnu` installed. Run:
+
+  juliaup update
+
+in your terminal shell to install Julia 1.11.6+0.x64.linux.gnu and update the `release` channel to that version.
+/scratch/opt/lxu/CFLG/benchmarks/tree_A Gurobi 7200.0 /scratch/opt/lxu/CFLG/results/tree_A treeA.20.4 EF Large
+/scratch/opt/lxu/CFLG/benchmarks/tree_A/treeA.20.4
+
+ read graph
+data loaded
+
+problem_graph/original graph: node: 20/20 edge: 23/23 dlt: 3.1578579375058005 break_avg_len: 1.5789289687529002 break_max_len: 1.9111126488091186elapsed CPU time: 0.012007 seconds
+Set parameter TokenServer to value "solice01.zib.de"
+Set parameter Threads to value 1
+Set parameter OutputFlag to value 1
+Set parameter MIPGap to value 0.0001
+Set parameter TimeLimit to value 7199.987993
+
+ model loaded
+
+Gurobi Optimizer version 12.0.1 build v12.0.1rc0 (linux64 - "Debian GNU/Linux 12 (bookworm)")
+
+CPU model: Intel(R) Xeon(R) Gold 5222 CPU @ 3.80GHz, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 8 physical cores, 16 logical processors, using up to 1 threads
+
+Non-default parameters:
+TimeLimit  7199.987993
+Threads  1
+
+Optimize a model with 38617 rows, 14444 columns and 101867 nonzeros
+Model fingerprint: 0x92921120
+Variable types: 1403 continuous, 13041 integer (13041 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 4e+01]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 2e+00]
+  RHS range        [1e-02, 4e+01]
+Found heuristic solution: objective 23.0000000
+Presolve removed 29408 rows and 10144 columns
+Presolve time: 0.79s
+Presolved: 9209 rows, 4300 columns, 26022 nonzeros
+Variable types: 131 continuous, 4169 integer (4169 binary)
+
+Root relaxation: objective 5.263158e-01, 3485 iterations, 0.16 seconds (0.23 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    0.52632    0  876   23.00000    0.52632  97.7%     -    1s
+     0     0    0.52632    0  876   23.00000    0.52632  97.7%     -    1s
+H    0     0                       5.0000000    0.52632  89.5%     -    1s
+     0     0    3.00000    0  162    5.00000    3.00000  40.0%     -    2s
+     0     0    3.25455    0  215    5.00000    3.25455  34.9%     -    2s
+     0     0    3.25455    0  208    5.00000    3.25455  34.9%     -    2s
+     0     0    3.57386    0  212    5.00000    3.57386  28.5%     -    2s
+     0     0    3.57386    0  211    5.00000    3.57386  28.5%     -    2s
+H    0     0                       4.0000000    3.57386  10.7%     -    2s
+     0     0    3.57386    0  211    4.00000    3.57386  10.7%     -    2s
+
+Cutting planes:
+  Learned: 37
+  Gomory: 2
+  Cover: 33
+  Implied bound: 21
+  Clique: 33
+  MIR: 22
+  StrongCG: 1
+  Flow cover: 1
+  Zero half: 2
+  RLT: 196
+  Relax-and-lift: 25
+  BQP: 35
+  PSD: 1
+
+Explored 1 nodes (14803 simplex iterations) in 2.64 seconds (2.58 work units)
+Thread count was 1 (of 16 available processors)
+
+Solution count 3: 4 5 23 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 4.000000000000e+00, best bound 4.000000000000e+00, gap 0.0000%
+
+User-callback calls 1294, time in user-callback 0.01 sec
+Stat(MathOptInterface.OPTIMAL, 4.0, 4.0, 0.0, 6.944881878653e-310, 0.012007, 2.6438889503479004, 1, Main.CFLG.EF, "", #undef)
+ERROR: LoadError: SystemError: opening file "/scratch/opt/lxu/CFLG/results/tree_A/treeA.20.4.EF.Large": No such file or directory
+Stacktrace:
+ [1] systemerror(p::String, errno::Int32; extrainfo::Nothing)
+   @ Base ./error.jl:176
+ [2] systemerror
+   @ ./error.jl:175 [inlined]
+ [3] open(fname::String; lock::Bool, read::Nothing, write::Nothing, create::Nothing, truncate::Bool, append::Nothing)
+   @ Base ./iostream.jl:295
+ [4] open
+   @ ./iostream.jl:277 [inlined]
+ [5] open(fname::String, mode::String; lock::Bool)
+   @ Base ./iostream.jl:358
+ [6] open
+   @ ./iostream.jl:357 [inlined]
+ [7] main(args::Vector{String})
+   @ Main /scratch/opt/lxu/CFLG/src/main.jl:51
+ [8] top-level scope
+   @ /scratch/opt/lxu/CFLG/src/main.jl:57
+in expression starting at /scratch/opt/lxu/CFLG/src/main.jl:57
+srun: error: htc-cmp485: task 0: Exited with exit code 1

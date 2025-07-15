@@ -1,0 +1,133 @@
+Data path: /scratch/opt/lxu/CFLG/benchmarks/tree_B
+Instance: treeB.30.3
+Result path: /scratch/opt/lxu/CFLG/results/tree_B
+Solver: Gurobi
+Time limit: 7200
+Formulation: LEFPAI
+Cover: Large
+julia --project=. src/main.jl /scratch/opt/lxu/CFLG/benchmarks/tree_B treeB.30.3 /scratch/opt/lxu/CFLG/results/tree_B Gurobi 7200 LEFPAI Large
+The latest version of Julia in the `release` channel is 1.11.6+0.x64.linux.gnu. You currently have `1.11.4+0.x64.linux.gnu` installed. Run:
+
+  juliaup update
+
+in your terminal shell to install Julia 1.11.6+0.x64.linux.gnu and update the `release` channel to that version.
+/scratch/opt/lxu/CFLG/benchmarks/tree_B Gurobi 7200.0 /scratch/opt/lxu/CFLG/results/tree_B treeB.30.3 LEFPAI Large
+/scratch/opt/lxu/CFLG/benchmarks/tree_B/treeB.30.3
+
+ read graph
+data loaded
+
+problem_graph/original graph: node: 30/30 edge: 32/32 dlt: 2.9905916754792687 break_avg_len: 1.4952958377396344 break_max_len: 1.9852215206607577Vbar/V, Ebar/E(23, 30, 25, 32)
+Set parameter TokenServer to value "solice01.zib.de"
+Set parameter Threads to value 1
+Set parameter OutputFlag to value 1
+Gurobi Optimizer version 12.0.1 build v12.0.1rc0 (linux64 - "Debian GNU/Linux 12 (bookworm)")
+
+CPU model: Intel(R) Xeon(R) Gold 5222 CPU @ 3.80GHz, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 8 physical cores, 16 logical processors, using up to 1 threads
+
+Non-default parameters:
+Threads  1
+
+Optimize a model with 50 rows, 78 columns and 130 nonzeros
+Model fingerprint: 0xa3b1949d
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+00]
+Presolve removed 36 rows and 48 columns
+Presolve time: 0.00s
+Presolved: 14 rows, 30 columns, 46 nonzeros
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    2.2000000e+01   8.000000e+00   0.000000e+00      0s
+       8    1.4000000e+01   0.000000e+00   0.000000e+00      0s
+
+Solved in 8 iterations and 0.00 seconds (0.00 work units)
+Optimal objective  1.400000000e+01
+
+User-callback calls 114, time in user-callback 0.00 sec
+elapsed CPU time: 0.999779 seconds
+Set parameter TokenServer to value "solice01.zib.de"
+Set parameter Threads to value 1
+Set parameter OutputFlag to value 1
+Set parameter MIPGap to value 0.0001
+Set parameter TimeLimit to value 7199.000221
+
+ more cuts: false 2.9905916754792687 false
+is_attach:trueformulation:LEFPAI0 26 24
+
+ model loaded
+
+Gurobi Optimizer version 12.0.1 build v12.0.1rc0 (linux64 - "Debian GNU/Linux 12 (bookworm)")
+
+CPU model: Intel(R) Xeon(R) Gold 5222 CPU @ 3.80GHz, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 8 physical cores, 16 logical processors, using up to 1 threads
+
+Non-default parameters:
+TimeLimit  7199.000221
+Threads  1
+
+Optimize a model with 542 rows, 424 columns and 1448 nonzeros
+Model fingerprint: 0xc6cd286e
+Model has 296 simple general constraints
+  296 INDICATOR
+Variable types: 76 continuous, 348 integer (348 binary)
+Coefficient statistics:
+  Matrix range     [7e-02, 2e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [7e-02, 2e+00]
+  RHS range        [7e-02, 3e+00]
+  GenCon rhs range [1e-02, 3e+00]
+  GenCon coe range [1e+00, 1e+00]
+Presolve removed 213 rows and 223 columns
+Presolve time: 0.02s
+Presolved: 329 rows, 201 columns, 1602 nonzeros
+Variable types: 42 continuous, 159 integer (159 binary)
+Found heuristic solution: objective 14.0000000
+Found heuristic solution: objective 13.0000000
+
+Root relaxation: objective 5.032625e+00, 128 iterations, 0.00 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    5.03263    0   18   13.00000    5.03263  61.3%     -    0s
+H    0     0                       9.0000000    5.03263  44.1%     -    0s
+H    0     0                       6.0000000    5.03263  16.1%     -    0s
+     0     0    5.03263    0   18    6.00000    5.03263  16.1%     -    0s
+
+Explored 1 nodes (168 simplex iterations) in 0.02 seconds (0.02 work units)
+Thread count was 1 (of 16 available processors)
+
+Solution count 4: 6 9 13 14 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 6.000000000000e+00, best bound 6.000000000000e+00, gap 0.0000%
+
+User-callback calls 978, time in user-callback 0.00 sec
+
+ sepatime0 0 0
+6.0
+Stat(MathOptInterface.OPTIMAL, 6.0, 6.0, 0.0, 0.0, 0.999779, 0.02092599868774414, 1, Main.CFLG.LEFPAI, "", #undef)
+ERROR: LoadError: SystemError: opening file "/scratch/opt/lxu/CFLG/results/tree_B/treeB.30.3.LEFPAI.Large": No such file or directory
+Stacktrace:
+ [1] systemerror(p::String, errno::Int32; extrainfo::Nothing)
+   @ Base ./error.jl:176
+ [2] systemerror
+   @ ./error.jl:175 [inlined]
+ [3] open(fname::String; lock::Bool, read::Nothing, write::Nothing, create::Nothing, truncate::Bool, append::Nothing)
+   @ Base ./iostream.jl:295
+ [4] open
+   @ ./iostream.jl:277 [inlined]
+ [5] open(fname::String, mode::String; lock::Bool)
+   @ Base ./iostream.jl:358
+ [6] open
+   @ ./iostream.jl:357 [inlined]
+ [7] main(args::Vector{String})
+   @ Main /scratch/opt/lxu/CFLG/src/main.jl:51
+ [8] top-level scope
+   @ /scratch/opt/lxu/CFLG/src/main.jl:57
+in expression starting at /scratch/opt/lxu/CFLG/src/main.jl:57
+srun: error: htc-cmp483: task 0: Exited with exit code 1

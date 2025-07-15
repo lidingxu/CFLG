@@ -1,0 +1,108 @@
+Data path: /scratch/opt/lxu/CFLG/benchmarks/tree_A
+Instance: treeA.40.2
+Result path: /scratch/opt/lxu/CFLG/results/tree_A
+Solver: Gurobi
+Time limit: 7200
+Formulation: EF
+Cover: Large
+julia --project=. src/main.jl /scratch/opt/lxu/CFLG/benchmarks/tree_A treeA.40.2 /scratch/opt/lxu/CFLG/results/tree_A Gurobi 7200 EF Large
+The latest version of Julia in the `release` channel is 1.11.6+0.x64.linux.gnu. You currently have `1.11.4+0.x64.linux.gnu` installed. Run:
+
+  juliaup update
+
+in your terminal shell to install Julia 1.11.6+0.x64.linux.gnu and update the `release` channel to that version.
+/scratch/opt/lxu/CFLG/benchmarks/tree_A Gurobi 7200.0 /scratch/opt/lxu/CFLG/results/tree_A treeA.40.2 EF Large
+/scratch/opt/lxu/CFLG/benchmarks/tree_A/treeA.40.2
+
+ read graph
+data loaded
+
+problem_graph/original graph: node: 40/40 edge: 41/41 dlt: 2.99634141773228 break_avg_len: 1.49817070886614 break_max_len: 1.9232361025850708elapsed CPU time: 0.012723 seconds
+Set parameter TokenServer to value "solice01.zib.de"
+Set parameter Threads to value 1
+Set parameter OutputFlag to value 1
+Set parameter MIPGap to value 0.0001
+Set parameter TimeLimit to value 7199.987277
+
+ model loaded
+
+Gurobi Optimizer version 12.0.1 build v12.0.1rc0 (linux64 - "Debian GNU/Linux 12 (bookworm)")
+
+CPU model: Intel(R) Xeon(R) Gold 5222 CPU @ 3.80GHz, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 8 physical cores, 16 logical processors, using up to 1 threads
+
+Non-default parameters:
+TimeLimit  7199.987277
+Threads  1
+
+Optimize a model with 214881 rows, 77162 columns and 569121 nonzeros
+Model fingerprint: 0xdd3d0cc5
+Variable types: 4961 continuous, 72201 integer (72201 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 7e+01]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 2e+00]
+  RHS range        [2e-03, 7e+01]
+Found heuristic solution: objective 41.0000000
+Presolve removed 193294 rows and 66925 columns
+Presolve time: 4.07s
+Presolved: 21587 rows, 10237 columns, 60422 nonzeros
+Variable types: 294 continuous, 9943 integer (9943 binary)
+Performing another presolve...
+Presolve removed 18875 rows and 2072 columns
+Presolve time: 0.34s
+
+Root relaxation: objective 7.343747e+00, 928 iterations, 0.02 seconds (0.02 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    7.34375    0   28   41.00000    7.34375  82.1%     -    4s
+H    0     0                       9.0000000    7.34375  18.4%     -    4s
+     0     0 infeasible    0         9.00000    9.00000  0.00%     -    4s
+
+Cutting planes:
+  Learned: 6
+  Gomory: 6
+  Cover: 19
+  Implied bound: 9
+  Clique: 7
+  MIR: 8
+  Flow cover: 9
+  GUB cover: 1
+  Zero half: 21
+  RLT: 7
+  Relax-and-lift: 10
+  BQP: 2
+  PSD: 1
+
+Explored 1 nodes (3057 simplex iterations) in 4.68 seconds (4.21 work units)
+Thread count was 1 (of 16 available processors)
+
+Solution count 3: 9 41 41 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 9.000000000000e+00, best bound 9.000000000000e+00, gap 0.0000%
+
+User-callback calls 839, time in user-callback 0.01 sec
+Stat(MathOptInterface.OPTIMAL, 9.0, 9.0, 0.0, 0.0, 0.012723, 4.681742906570435, 1, Main.CFLG.EF, "", #undef)
+ERROR: LoadError: SystemError: opening file "/scratch/opt/lxu/CFLG/results/tree_A/treeA.40.2.EF.Large": No such file or directory
+Stacktrace:
+ [1] systemerror(p::String, errno::Int32; extrainfo::Nothing)
+   @ Base ./error.jl:176
+ [2] systemerror
+   @ ./error.jl:175 [inlined]
+ [3] open(fname::String; lock::Bool, read::Nothing, write::Nothing, create::Nothing, truncate::Bool, append::Nothing)
+   @ Base ./iostream.jl:295
+ [4] open
+   @ ./iostream.jl:277 [inlined]
+ [5] open(fname::String, mode::String; lock::Bool)
+   @ Base ./iostream.jl:358
+ [6] open
+   @ ./iostream.jl:357 [inlined]
+ [7] main(args::Vector{String})
+   @ Main /scratch/opt/lxu/CFLG/src/main.jl:51
+ [8] top-level scope
+   @ /scratch/opt/lxu/CFLG/src/main.jl:57
+in expression starting at /scratch/opt/lxu/CFLG/src/main.jl:57
+srun: error: htc-cmp488: task 0: Exited with exit code 1

@@ -1,0 +1,115 @@
+Data path: /scratch/opt/lxu/CFLG/benchmarks/tree_B
+Instance: treeB.30.1
+Result path: /scratch/opt/lxu/CFLG/results/tree_B
+Solver: Gurobi
+Time limit: 7200
+Formulation: EF
+Cover: Large
+julia --project=. src/main.jl /scratch/opt/lxu/CFLG/benchmarks/tree_B treeB.30.1 /scratch/opt/lxu/CFLG/results/tree_B Gurobi 7200 EF Large
+The latest version of Julia in the `release` channel is 1.11.6+0.x64.linux.gnu. You currently have `1.11.4+0.x64.linux.gnu` installed. Run:
+
+  juliaup update
+
+in your terminal shell to install Julia 1.11.6+0.x64.linux.gnu and update the `release` channel to that version.
+/scratch/opt/lxu/CFLG/benchmarks/tree_B Gurobi 7200.0 /scratch/opt/lxu/CFLG/results/tree_B treeB.30.1 EF Large
+/scratch/opt/lxu/CFLG/benchmarks/tree_B/treeB.30.1
+
+ read graph
+data loaded
+
+problem_graph/original graph: node: 30/30 edge: 30/30 dlt: 2.9766661178149247 break_avg_len: 1.4883330589074624 break_max_len: 1.9852215206607577elapsed CPU time: 0.011929 seconds
+Set parameter TokenServer to value "solice01.zib.de"
+Set parameter Threads to value 1
+Set parameter OutputFlag to value 1
+Set parameter MIPGap to value 0.0001
+Set parameter TimeLimit to value 7199.988071
+
+ model loaded
+
+Gurobi Optimizer version 12.0.1 build v12.0.1rc0 (linux64 - "Debian GNU/Linux 12 (bookworm)")
+
+CPU model: Intel(R) Xeon(R) Gold 5222 CPU @ 3.80GHz, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 8 physical cores, 16 logical processors, using up to 1 threads
+
+Non-default parameters:
+TimeLimit  7199.988071
+Threads  1
+
+Optimize a model with 85530 rows, 31560 columns and 225930 nonzeros
+Model fingerprint: 0xfbebc408
+Variable types: 2730 continuous, 28830 integer (28830 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 3e+01]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 2e+00]
+  RHS range        [7e-03, 3e+01]
+Found heuristic solution: objective 30.0000000
+Presolve removed 67120 rows and 23226 columns
+Presolve time: 1.86s
+Presolved: 18410 rows, 8334 columns, 50122 nonzeros
+Variable types: 171 continuous, 8163 integer (8163 binary)
+
+Root relaxation: objective 8.429644e-01, 4312 iterations, 0.23 seconds (0.37 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    0.84296    0 1199   30.00000    0.84296  97.2%     -    3s
+     0     0    0.84296    0 1206   30.00000    0.84296  97.2%     -    3s
+H    0     0                       8.0000000    0.84296  89.5%     -    3s
+H    0     0                       7.0000000    0.84296  88.0%     -    3s
+     0     0    0.85815    0 1143    7.00000    0.85815  87.7%     -    3s
+     0     0    6.00000    0   36    7.00000    6.00000  14.3%     -    5s
+     0     0    6.00000    0   35    7.00000    6.00000  14.3%     -    5s
+     0     0    6.00000    0   34    7.00000    6.00000  14.3%     -    5s
+     0     0    6.00000    0   35    7.00000    6.00000  14.3%     -    5s
+     0     0    6.00000    0   35    7.00000    6.00000  14.3%     -    5s
+     0     0    6.00000    0   44    7.00000    6.00000  14.3%     -    5s
+     0     0    6.00000    0   51    7.00000    6.00000  14.3%     -    5s
+     0     0    6.00000    0   12    7.00000    6.00000  14.3%     -    5s
+     0     0    6.00000    0   81    7.00000    6.00000  14.3%     -    5s
+     0     0    6.00000    0  144    7.00000    6.00000  14.3%     -    5s
+     0     0    6.00000    0  105    7.00000    6.00000  14.3%     -    5s
+     0     0    6.00000    0   96    7.00000    6.00000  14.3%     -    5s
+
+Cutting planes:
+  Learned: 18
+  Gomory: 2
+  Cover: 28
+  Implied bound: 5
+  Clique: 2
+  MIR: 10
+  Zero half: 3
+  RLT: 1
+  Relax-and-lift: 23
+
+Explored 1 nodes (21326 simplex iterations) in 5.14 seconds (5.09 work units)
+Thread count was 1 (of 16 available processors)
+
+Solution count 6: 7 7 8 ... 30
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 7.000000000000e+00, best bound 7.000000000000e+00, gap 0.0000%
+
+User-callback calls 2178, time in user-callback 0.01 sec
+Stat(MathOptInterface.OPTIMAL, 7.0, 7.0, 0.0, 0.0, 0.011929, 5.144402027130127, 1, Main.CFLG.EF, "", #undef)
+ERROR: LoadError: SystemError: opening file "/scratch/opt/lxu/CFLG/results/tree_B/treeB.30.1.EF.Large": No such file or directory
+Stacktrace:
+ [1] systemerror(p::String, errno::Int32; extrainfo::Nothing)
+   @ Base ./error.jl:176
+ [2] systemerror
+   @ ./error.jl:175 [inlined]
+ [3] open(fname::String; lock::Bool, read::Nothing, write::Nothing, create::Nothing, truncate::Bool, append::Nothing)
+   @ Base ./iostream.jl:295
+ [4] open
+   @ ./iostream.jl:277 [inlined]
+ [5] open(fname::String, mode::String; lock::Bool)
+   @ Base ./iostream.jl:358
+ [6] open
+   @ ./iostream.jl:357 [inlined]
+ [7] main(args::Vector{String})
+   @ Main /scratch/opt/lxu/CFLG/src/main.jl:51
+ [8] top-level scope
+   @ /scratch/opt/lxu/CFLG/src/main.jl:57
+in expression starting at /scratch/opt/lxu/CFLG/src/main.jl:57
+srun: error: htc-cmp483: task 0: Exited with exit code 1

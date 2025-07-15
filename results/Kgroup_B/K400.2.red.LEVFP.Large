@@ -2,8 +2,8 @@ instance: K400.2.red
 obj: 38.0
 bound: 25.0
 gap: 0.34210526315789475
-time: 7199.840898036957
-preprocess_time: 0.172422
+time: 7199.902815818787
+preprocess_time: 0.120033
 sepa_time: 0.0
-node: 958
+node: 996
 formulation: LEVFP

@@ -2,8 +2,8 @@ instance: r_40_0.1_84.txt
 obj: 6.0
 bound: 6.0
 gap: 0.0
-time: 7.192533016204834
-preprocess_time: 1.671455
+time: 19.368645906448364
+preprocess_time: 1.046671
 sepa_time: 0.0
-node: 339
+node: 3930
 formulation: LEFPAI
