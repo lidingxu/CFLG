@@ -83,8 +83,10 @@ function solve!(problem::Problem, solver_name::String, option::Option, formulati
     Ups = nothing
     R = Set()
     RE = Set()
+    RtoR_ = Dict{Int, Int}()
+    EtoE_ = Dict{Int, Int}()
     if is_edge && is_attach
-        required, Ups, R, RE = pruning(problem)
+        required, Ups, R, RE, RtoR_,  EtoE_ = pruning(problem)
         #print((Ups, R, RE, required, problem.prob_graph.edge_num))
         if problem.prob_graph.edge_num == 1
             @assert( length(R) == 1 )
@@ -138,7 +140,7 @@ function solve!(problem::Problem, solver_name::String, option::Option, formulati
     if is_edge
         if is_preprocess
             #stat, sol = solveFPVs!(problem::Problem, formulation::FormulationSet, cflg, Pi)
-            stat, sol = solveEFP!(problem, formulation, cflg, eassign, vassign, required, Ups, R, RE)
+            stat, sol = solveEFP!(problem, formulation, cflg, eassign, vassign, required, Ups, R, RE, RtoR_,  EtoE_)
             #stat, sol = solveEFP_!(problem, formulation, cflg, eassign, vassign)
         else
             stat, sol = solveEF!(problem, formulation, cflg)
@@ -220,7 +222,7 @@ function vAssign(problem::Problem, solver_name::String, option::Option)
 end
 
 # edge model disjunctive formulation (preprocessed)
-function solveEFP!(problem::Problem, formulation::FormulationSet, cflg, eassign, vassign, required, Ups, R, RE)
+function solveEFP_!(problem::Problem, formulation::FormulationSet, cflg, eassign, vassign, required, Ups, R, RE)
     is_indicator = mask(formulation, MSK_ISI)
     is_lifted = mask(formulation, MSK_ISD)
     is_cuts = mask(formulation, MSK_ISV)
@@ -265,7 +267,6 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg, eassign,
         ze[v_id in node_ids, efi in EIp[v_id]], Bin # disjunctive indicator variable on edges
         #yv[ef_id in Vsl], Bin
     end)
-
 
     # basic constraints
     @constraints(cflg, begin
@@ -315,7 +316,6 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg, eassign,
         #for ef_id in edge_ids
         #    print((ef_id,value(ye[ef_id])))
         #end
-        #print(value.(rv))
         print(stat.sol_val)
         for ef_id in El
             #print((2 * dlt, graph.edges[ef_id].length - 2 * dlt, graph.edges[ef_id].length, floor(graph.edges[ef_id].length / (2 * dlt) ) * 2 * dlt, floor(graph.edges[ef_id].length / (2 * dlt) ), " ", value(q[ef_id, :a]), value(q[ef_id, :b]), value(qq[ef_id]) )  )
@@ -332,7 +332,7 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg, eassign,
 end
 
 # edge model disjunctive formulation (preprocessed)
-function solveEFP!(problem::Problem, formulation::FormulationSet, cflg, eassign, vassign, required, Ups, R, RE)
+function solveEFP!(problem::Problem, formulation::FormulationSet, cflg, eassign, vassign, required, Ups, R, RE, RtoR_, EtoE_)
     is_indicator = mask(formulation, MSK_ISI)
     is_lifted = mask(formulation, MSK_ISD)
     is_cuts = mask(formulation, MSK_ISV)
@@ -448,6 +448,7 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg, eassign,
     end
 
     # basic constraints
+    Ecover = Es
     @constraints(cflg, begin
         # bounds on variables
         [ef_id in Es], q[ef_id, :a] == q[ef_id, :b]  # same coordinate in short edges
@@ -461,16 +462,19 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg, eassign,
         [v_id in Vs], x[v_id] >= 1 - sum( (1 - w[e_id]) for e_id in adjacent_edges[v_id])  # ajdacent non covered 2]
         [v_id in Vs, e_id in adjacent_edges[v_id]], x[v_id] <= w[e_id]  # ajdacent non covered 2
         # shared constraints on short edge covering
-        [e_id in Es], (graph.edges[e_id].length *  (1+problem.cr_tol) + problem.c_tol) * (1 - w[e_id]) <= rv[graph.edges[e_id].nodes[:a]] + rv[graph.edges[e_id].nodes[:b]] # jointly complete cover condition
+        [e_id in Ecover], (graph.edges[e_id].length *  (1+problem.cr_tol) + problem.c_tol) * (1 - w[e_id]) <= rv[graph.edges[e_id].nodes[:a]] + rv[graph.edges[e_id].nodes[:b]] # jointly complete cover condition
         # shared constraints on long edge modelling
         [ef_id in El], q[ef_id, :a] <= rv[graph.edges[ef_id].nodes[:a]] + dlt # long edge left cover
         [ef_id in El], graph.edges[ef_id].length - q[ef_id, :b] <= rv[graph.edges[ef_id].nodes[:b]] + dlt # long edge right cover
         # disjunctive activation constraints
         [v_id in node_ids], x[v_id] + sum(ze[v_id, efi] for efi in EIp[v_id]) == 1 # big-M SOS-1 constraint
         [v_id in node_ids, efi in EIp[v_id]], ze[v_id, efi] <= ifelse(graph.edges[efi[1]].etype == :e_long, 1, ye[efi[1]]) # edge activated constraint
+        end)
+
+    @constraints(cflg, begin
         # projection fixing
-        [(i, e_id) in enumerate(RE)], ye[e_id] == ( required[R[i]]  ? 0 : 1 )
-        [(i, e_id) in enumerate(RE)], q[e_id, :a] == ( required[R[i]]  ? 0 :
+        [(i, e_id) in enumerate(RE)], ye[e_id] >= ( required[R[i]]  ? 0 : 1 )
+        [(i, e_id) in enumerate(RE)], q[e_id, :a] == ( required[R[i]]  ? (graph.edges[e_id].nodes[:a] == R[i] ? 0.0 : graph.edges[e_id].length ) :
           (graph.edges[e_id].nodes[:a] == R[i] ? graph.edges[e_id].length  : 0.0 ) )
     end)
 
@@ -507,6 +511,9 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg, eassign,
         else
             # bigM constraints
             @constraints(cflg, begin
+                #[v_id in node_ids], rv[v_id] <=  problem.dlt * (1 - x[v_id]) # big M on x
+                #[v_id in node_ids, efi in EIp[v_id]], rv[v_id] <= (problem.dlt + problem.dlt)  * (1 - ze[v_id, efi]) + problem.dlt  -
+                #    ( problem.d[lor(v_id, graph.edges[efi[1]].nodes[efi[2]])] +  ifelse(efi[2] == :a , q[efi[1],:a], (graph.edges[efi[1]].length - q[efi[1],:b]) ))  # big M on edges
                 [v_id in node_ids], rv[v_id] <=  problem.Uv[v_id] * (1 - x[v_id]) # big M on x
                 [v_id in node_ids, efi in EIp[v_id]], rv[v_id] <= problem.Me[(v_id, efi[1], efi[2])]  * (1 - ze[v_id, efi]) + problem.dlte[(v_id, efi[1], efi[2])]  -
                 ( problem.d[lor(v_id, graph.edges[efi[1]].nodes[efi[2]])] +  ifelse(efi[2] == :a , q[efi[1],:a], (graph.edges[efi[1]].length - q[efi[1],:b]) ))  # big M on edges
@@ -669,13 +676,14 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg, eassign,
         end
     end
 
+
     # objective
     if longedge
         if longedge1
             @objective(cflg, Min,  sum(ye[ef_id] for ef_id in edge_ids) + sum(yei[ef_id, :a] + yei[ef_id, :b] for ef_id in El))
         else
             @objective(cflg, Min,  sum(ye[ef_id] for ef_id in edge_ids) + sum(yv[v_id] for v_id in Vl) + sum( floor(graph.edges[ef_id].length / (2 * dlt) )
-            - yei[ef_id, :c] +  yei[ef_id, :d]  for ef_id in El) + sum(Ups[v_id] for v_id in R) - sum(ye[e_id] for e_id in RE))
+            - yei[ef_id, :c] +  yei[ef_id, :d]  for ef_id in El) + sum(Ups[v_id] for v_id in R)  - sum(required[R[i]] ? 0 : ye[ef_id] for (i, ef_id) in enumerate(RE); init=0))
         end
     else
         @objective(cflg, Min,  sum(ye[ef_id] for ef_id in edge_ids) )
@@ -683,6 +691,7 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg, eassign,
 
     println("\n model loaded\n")
     #print(cflg)
+    JuMP.write_to_file(cflg, "debug.lp")
     optimize!(cflg)
     stat = Stat()
     print("\n sepatime", sepatime, " ", called, " ", realcalled, "\n")
@@ -703,8 +712,8 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg, eassign,
         #for ef_id in edge_ids
         #    print((ef_id,value(ye[ef_id])))
         #end
-        #print(value.(rv))
         print(stat.sol_val)
+        print("\n")
         for ef_id in El
             #print((2 * dlt, graph.edges[ef_id].length - 2 * dlt, graph.edges[ef_id].length, floor(graph.edges[ef_id].length / (2 * dlt) ) * 2 * dlt, floor(graph.edges[ef_id].length / (2 * dlt) ), " ", value(q[ef_id, :a]), value(q[ef_id, :b]), value(qq[ef_id]) )  )
             #print((value(2 * dlt * (floor(graph.edges[ef_id].length / (2 * dlt) ) - yec[ef_id] )), value(2 * dlt * (floor(graph.edges[ef_id].length / (2 * dlt) ) - yec[ef_id] ) + qq[ef_id]), value( floor(graph.edges[ef_id].length / (2 * dlt) ) - yec[ef_id] + 1 - yv[graph.edges[ef_id].nodes[:a]] - yv[graph.edges[ef_id].nodes[:b]] ), value(yec[ef_id]), value(yv[graph.edges[ef_id].nodes[:a]]), value(yv[graph.edges[ef_id].nodes[:b]] )))

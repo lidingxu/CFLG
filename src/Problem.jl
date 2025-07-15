@@ -137,6 +137,9 @@ function pruning(problem::Problem)
 
     ch, pr, R, L = findAttachedTrees(graph)
 
+    R = Set(collect(R)[2])
+
+
     VR = Set{Int}()
     function getVR(graph, ch, pr, v)
         push!(VR, v)
@@ -153,7 +156,7 @@ function pruning(problem::Problem)
             eid = graph.node2edge[lor(vid, chld)]
             edge = graph.edges[eid]
             len = edge.length
-            print((eid, len), ",")
+            print((eid, len, edge.nodes), ",")
         end
         print("\n")
     end
@@ -230,12 +233,14 @@ function pruning(problem::Problem)
     rho = Dict(v => ( r[v] >= 0 ? r[v] : delta + r[v]) for v in R)
     Ups = Dict(v => y[v] for v in R)
 
-    print((required, rho))
+    #print((required, "\n", rho, "\n", Ups, "\n", keys(rho)), "\n")
 
-    problem.prob_graph, R_, RE_, R_toR  = projectGraph(graph, VR, R, required, rho, problem.dlt)
+    problem.prob_graph, R_, RE_, R_toR, RtoR_, EtoE_  = projectGraph(graph, VR, R, required, rho, problem.dlt)
+    #print(problem.prob_graph.edges, "\n", graph.edges)
+    mode = :Partial
     (problem.Ec, problem.Vc, problem.Ep, problem.Vp, problem.EIp, problem.EIc, problem.d) =
-        processGraph(problem.prob_graph, problem.dlt, :Partial, problem.cr_tol, problem.c_tol)
+        processGraph(problem.prob_graph, problem.dlt, mode, problem.cr_tol, problem.c_tol)
     Ups_ = Dict(newv => Ups[R_toR[newv]] for newv in R_)
     required_ = Dict(newv => required[R_toR[newv]] for newv in R_)
-    return required_, Ups_, R_,  RE_
+    return required_, Ups_, R_,  RE_, RtoR_, EtoE_
 end

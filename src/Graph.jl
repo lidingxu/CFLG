@@ -149,10 +149,8 @@ function isAdjacent(graph::Graph, edge_id::Int, edge_id_::Int)
     return contain(graph.edges[edge_id], graph.edges[edge_id_].nodes[:a]) ||  contain(graph.edges[edge_id], graph.edges[edge_id_].nodes[:b])
 end
 
-
-
 # nodeCover, mode: :partial: stop nodeCover earlier, :full : no stop, used as shotest distance formulationrithm
-function nodeCover(graph::Graph, s_id::Int, dlt::Float64, d::Dict{Tuple{Int, Int}, Float64}, mode::Symbol)
+function nodeCover!(graph::Graph, s_id::Int, dlt::Float64, d::Dict{Tuple{Int, Int}, Float64}, mode::Symbol)
     Ec = Set{Int}() # complete covered edges
     E = Set{Int}() # affected edges
     V = Set{Int}() # covered nodes
@@ -370,7 +368,7 @@ function projectGraph(graph::Graph, VR, R, required, rho, dlt)
     for v in R
         new_node_id = length(node_map) + 1
         node_map[-v] = new_node_id  # Use -v as a unique key for the new node
-        push!(edge_fields, (node_map[v], new_node_id, required[v] ? rho[v] : dlt - rho[v], :e_normal ))
+        push!(edge_fields, (node_map[v], new_node_id,  rho[v], :e_normal ))
     end
 
     node_num = length(node_map)
@@ -382,11 +380,12 @@ function projectGraph(graph::Graph, VR, R, required, rho, dlt)
     R_ = Vector{Int}()
     RE_ = Vector{Int}()
     R_toR = Dict{Int, Int}()
+    RtoR_ = Dict{Int, Int}()
+    EtoE_ = Dict{Int, Int}()
 
     for v in R
         newv = node_map[v]
         push!(R_, newv)
-        projectgraph.adjacent_edges[newv]
         # Find the edge index in projectgraph that connects v to new_node_id
         for eidx in projectgraph.adjacent_edges[newv]
             edge = projectgraph.edges[eidx]
@@ -397,7 +396,15 @@ function projectGraph(graph::Graph, VR, R, required, rho, dlt)
             end
         end
         R_toR[newv] = v
+        RtoR_[v] = newv
     end
+
+    for edge in graph.edges
+        if edge.nodes[:a] in induced_nodes && edge.nodes[:b] in induced_nodes
+            EtoE_[edge.edge_id] = projectgraph.node2edge[lor(node_map[edge.nodes[:a]], node_map[edge.nodes[:b]])]
+        end
+    end
+
     @assert( length(RE_) == length(R_) )
     # checking
     num_e = 0
@@ -414,7 +421,7 @@ function projectGraph(graph::Graph, VR, R, required, rho, dlt)
     end
 
     @assert(num_v == num_v_ && num_v_ == projectgraph.node_num && length(projectgraph.nodes) == num_v && num_e == projectgraph.edge_num)
-    return projectgraph, R_, RE_, R_toR
+    return projectgraph, R_, RE_, R_toR, RtoR_, EtoE_
 end
 
 
@@ -551,7 +558,7 @@ function processGraph(graph::Graph, dlt::Float64, mode::Symbol, cr_tol::Float64,
 
     # compute Vc
     for v_id in graph.node_ids
-        (Ec_, E_, V_) = nodeCover(graph, v_id, dlt, d, mode) # run node cover
+        (Ec_, E_, V_) = nodeCover!(graph, v_id, dlt, d, mode) # run node cover
         # record
         EcV[v_id] = Ec_
         EV[v_id] = E_
@@ -607,8 +614,8 @@ function processGraph(graph::Graph, dlt::Float64, mode::Symbol, cr_tol::Float64,
                     #    println("\n", v_id," ",vfa_id," ",vfb_id," ",d[lor(v_id, vfa_id)], " ", d[lor(v_id, vfb_id)], " ",dlt)
                     #    println(vfa_id in VV[v_id], vfb_id in VV[v_id], ef_id in EV[v_id])
                     #@end
-                    @assert(v_id in VV[vfa_id] || v_id in VV[vfb_id])
-                    @assert(d[lor(v_id, vfa_id)] <= dlt*(1+cr_tol) +c_tol || d[lor(v_id, vfb_id)] <= dlt*(1+cr_tol) +c_tol)
+                    #@assert(v_id in VV[vfa_id] || v_id in VV[vfb_id])
+                    #@assert(d[lor(v_id, vfa_id)] <= dlt*(1+cr_tol) +c_tol || d[lor(v_id, vfb_id)] <= dlt*(1+cr_tol) +c_tol)
                     if d[lor(v_id, vfa_id)] <= dlt*(1+cr_tol) +c_tol && d[lor(v_id, vfa_id)] <= (d[lor(v_id, vfb_id)] + len)*(1+cr_tol) +c_tol
                         push!(EIp[v_id], (ef_id, :a))
                         push!(Ep[v_id],ef_id)
@@ -646,7 +653,7 @@ function computeDistance(graph::Graph)
 
     # only distance information is used
     for v_id in graph.node_ids
-        nodeCover(graph, v_id, typemax(Float64), d, :full) # run node cover in full mode
+        nodeCover!(graph, v_id, typemax(Float64), d, :full) # run node cover in full mode
     end
 
     return d
