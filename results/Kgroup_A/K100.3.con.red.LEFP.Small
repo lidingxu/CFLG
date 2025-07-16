@@ -1,0 +1,9 @@
+instance: K100.3.con.red
+obj: 200.0
+bound: 199.0
+gap: 0.005
+time: 7198.760822057724
+preprocess_time: 1.241122
+sepa_time: 0.0
+node: 2055883
+formulation: LEFP
