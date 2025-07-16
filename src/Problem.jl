@@ -137,9 +137,6 @@ function pruning(problem::Problem)
 
     ch, pr, R, L = findAttachedTrees(graph)
 
-    R = Set(collect(R)[2])
-
-
     VR = Set{Int}()
     function getVR(graph, ch, pr, v)
         push!(VR, v)
