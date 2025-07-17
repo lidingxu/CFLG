@@ -2,8 +2,8 @@ instance: r_10_0.1_12.txt
 obj: 2.0
 bound: 2.0
 gap: 0.0
-time: 0.01721501350402832
-preprocess_time: 0.969653
+time: 0.041378021240234375
+preprocess_time: 1.305262
 sepa_time: 0.0
 node: 1
 formulation: LEFPA

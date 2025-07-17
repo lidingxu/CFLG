@@ -2,8 +2,8 @@ instance: r_20_0.1_23.txt
 obj: 44.0
 bound: 44.0
 gap: 0.0
-time: 0.10856294631958008
-preprocess_time: 1.297982
+time: 0.06699800491333008
+preprocess_time: 1.320324
 sepa_time: 0.0
-node: 49
+node: 1
 formulation: LEFPA

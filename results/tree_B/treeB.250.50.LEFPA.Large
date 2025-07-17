@@ -2,8 +2,8 @@ instance: treeB.250.50
 obj: 52.0
 bound: 52.0
 gap: 0.0
-time: 14.078292846679688
-preprocess_time: 1.052122
+time: 9.348453998565674
+preprocess_time: 1.341573
 sepa_time: 0.0
-node: 1187
+node: 1095
 formulation: LEFPA

@@ -1,9 +1,9 @@
 instance: treeA.250.50
-obj: 52.999999777777774
-bound: 52.999999777777774
+obj: 53.0
+bound: 53.0
 gap: 0.0
-time: 10.564759969711304
-preprocess_time: 1.051285
+time: 64.78703999519348
+preprocess_time: 1.349537
 sepa_time: 0.0
-node: 565
+node: 10238
 formulation: LEFPAI

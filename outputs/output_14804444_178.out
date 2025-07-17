@@ -1,0 +1,99 @@
+Data path: /scratch/opt/lxu/CFLG/benchmarks/Kgroup_B
+Instance: K400.red
+Result path: /scratch/opt/lxu/CFLG/results/Kgroup_B
+Solver: Gurobi
+Time limit: 7200
+Formulation: LEFPAV
+Cover: Small
+julia --project=. src/main.jl /scratch/opt/lxu/CFLG/benchmarks/Kgroup_B K400.red /scratch/opt/lxu/CFLG/results/Kgroup_B Gurobi 7200 LEFPAV Small
+The latest version of Julia in the `release` channel is 1.11.6+0.x64.linux.gnu. You currently have `1.11.4+0.x64.linux.gnu` installed. Run:
+
+  juliaup update
+
+in your terminal shell to install Julia 1.11.6+0.x64.linux.gnu and update the `release` channel to that version.
+/scratch/opt/lxu/CFLG/benchmarks/Kgroup_B Gurobi 7200.0 /scratch/opt/lxu/CFLG/results/Kgroup_B K400.red LEFPAV Small
+/scratch/opt/lxu/CFLG/benchmarks/Kgroup_B/K400.red
+
+ read graph
+data loaded
+
+
+after absorb:231 231
+
+max_piece:20
+problem_graph/original graph: node: 322/231 edge: 1005/914 dlt: 0.05018066207441731 break_avg_len: 0.18254776173539236 break_max_len: 1.0Vbar/V, Ebar/E(322, 322, 1005, 1005)
+Set parameter TokenServer to value "solice01.zib.de"
+Set parameter Threads to value 1
+Set parameter OutputFlag to value 1
+Gurobi Optimizer version 12.0.1 build v12.0.1rc0 (linux64 - "Debian GNU/Linux 12 (bookworm)")
+
+CPU model: Intel(R) Xeon(R) Gold 5122 CPU @ 3.60GHz, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 8 physical cores, 16 logical processors, using up to 1 threads
+
+Non-default parameters:
+Threads  1
+
+Optimize a model with 1327 rows, 3015 columns and 5025 nonzeros
+Model fingerprint: 0x70b76f22
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+00]
+Presolve removed 183 rows and 274 columns
+Presolve time: 0.01s
+Presolved: 1144 rows, 2741 columns, 4568 nonzeros
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    1.0050000e+03   7.360000e+02   0.000000e+00      0s
+    1313    3.2200000e+02   0.000000e+00   0.000000e+00      0s
+
+Solved in 1313 iterations and 0.01 seconds (0.01 work units)
+Optimal objective  3.220000000e+02
+
+User-callback calls 1389, time in user-callback 0.01 sec
+elapsed CPU time: 1.455427 seconds
+Set parameter TokenServer to value "solice01.zib.de"
+Set parameter Threads to value 1
+Set parameter OutputFlag to value 1
+Set parameter MIPGap to value 0.0001
+Set parameter TimeLimit to value 7198.544573
+
+ more cuts: false 0.05018066207441731 false
+is_attach:trueformulation:LEFPAV788 217 91
+Set parameter PreCrush to value 1
+
+ model loaded
+
+ERROR: LoadError: MathOptInterface.GetAttributeNotAllowed{Gurobi.CallbackFunction}: Getting attribute Gurobi.CallbackFunction() cannot be performed: Gurobi.Optimizer does not support getting the attribute Gurobi.CallbackFunction(). You may want to use a `CachingOptimizer` in `AUTOMATIC` mode or you may need to call `reset_optimizer` before doing this operation if the `CachingOptimizer` is in `MANUAL` mode.
+Stacktrace:
+  [1] get_fallback(model::Gurobi.Optimizer, attr::Gurobi.CallbackFunction)
+    @ MathOptInterface /scratch/opt/lxu/CFLG/.julia_depot/packages/MathOptInterface/jGuEH/src/attributes.jl:409
+  [2] get(::Gurobi.Optimizer, ::Gurobi.CallbackFunction)
+    @ MathOptInterface /scratch/opt/lxu/CFLG/.julia_depot/packages/MathOptInterface/jGuEH/src/attributes.jl:390
+  [3] _pass_attribute(dest::MathOptInterface.Bridges.LazyBridgeOptimizer{MathOptInterface.Utilities.GenericModel{Float64, MathOptInterface.Utilities.ObjectiveContainer{Float64}, MathOptInterface.Utilities.VariablesContainer{Float64}, MathOptInterface.FileFormats.LP.ModelFunctionConstraints{Float64}}}, src::Gurobi.Optimizer, index_map::MathOptInterface.Utilities.IndexMap, attr::Gurobi.CallbackFunction)
+    @ MathOptInterface.Utilities /scratch/opt/lxu/CFLG/.julia_depot/packages/MathOptInterface/jGuEH/src/Utilities/copy.jl:49
+  [4] pass_attributes(dest::MathOptInterface.Bridges.LazyBridgeOptimizer{MathOptInterface.Utilities.GenericModel{Float64, MathOptInterface.Utilities.ObjectiveContainer{Float64}, MathOptInterface.Utilities.VariablesContainer{Float64}, MathOptInterface.FileFormats.LP.ModelFunctionConstraints{Float64}}}, src::Gurobi.Optimizer, index_map::MathOptInterface.Utilities.IndexMap)
+    @ MathOptInterface.Utilities /scratch/opt/lxu/CFLG/.julia_depot/packages/MathOptInterface/jGuEH/src/Utilities/copy.jl:38
+  [5] default_copy_to(dest::MathOptInterface.Bridges.LazyBridgeOptimizer{MathOptInterface.Utilities.GenericModel{Float64, MathOptInterface.Utilities.ObjectiveContainer{Float64}, MathOptInterface.Utilities.VariablesContainer{Float64}, MathOptInterface.FileFormats.LP.ModelFunctionConstraints{Float64}}}, src::Gurobi.Optimizer)
+    @ MathOptInterface.Utilities /scratch/opt/lxu/CFLG/.julia_depot/packages/MathOptInterface/jGuEH/src/Utilities/copy.jl:391
+  [6] copy_to(dest::MathOptInterface.Bridges.LazyBridgeOptimizer{MathOptInterface.Utilities.GenericModel{Float64, MathOptInterface.Utilities.ObjectiveContainer{Float64}, MathOptInterface.Utilities.VariablesContainer{Float64}, MathOptInterface.FileFormats.LP.ModelFunctionConstraints{Float64}}}, src::Gurobi.Optimizer)
+    @ MathOptInterface.Bridges /scratch/opt/lxu/CFLG/.julia_depot/packages/MathOptInterface/jGuEH/src/Bridges/bridge_optimizer.jl:443
+  [7] copy_to(dest::MathOptInterface.Bridges.LazyBridgeOptimizer{MathOptInterface.Utilities.GenericModel{Float64, MathOptInterface.Utilities.ObjectiveContainer{Float64}, MathOptInterface.Utilities.VariablesContainer{Float64}, MathOptInterface.FileFormats.LP.ModelFunctionConstraints{Float64}}}, src::JuMP.Model)
+    @ JuMP /scratch/opt/lxu/CFLG/.julia_depot/packages/JuMP/xlp0s/src/copy.jl:345
+  [8] _copy_to_bridged_model(f::Function, model::JuMP.Model)
+    @ JuMP /scratch/opt/lxu/CFLG/.julia_depot/packages/JuMP/xlp0s/src/file_formats.jl:20
+  [9] write_to_file(model::JuMP.Model, filename::String; format::MathOptInterface.FileFormats.FileFormat, kwargs::@Kwargs{})
+    @ JuMP /scratch/opt/lxu/CFLG/.julia_depot/packages/JuMP/xlp0s/src/file_formats.jl:52
+ [10] write_to_file
+    @ /scratch/opt/lxu/CFLG/.julia_depot/packages/JuMP/xlp0s/src/file_formats.jl:46 [inlined]
+ [11] solveEFP!(problem::Problem, formulation::FormulationSet, cflg::JuMP.Model, eassign::Vector{Vector{Any}}, vassign::Vector{Int64}, required::Dict{Int64, Bool}, Ups::Dict{Int64, Float64}, R::Vector{Int64}, RE::Vector{Int64}, RtoR_::Dict{Int64, Int64}, EtoE_::Dict{Int64, Int64})
+    @ Main.CFLG /scratch/opt/lxu/CFLG/src/Algorithm.jl:694
+ [12] solve!(problem::Problem, solver_name::String, option::Option, formulation::String)
+    @ Main.CFLG /scratch/opt/lxu/CFLG/src/Algorithm.jl:143
+ [13] main(args::Vector{String})
+    @ Main /scratch/opt/lxu/CFLG/src/main.jl:39
+ [14] top-level scope
+    @ /scratch/opt/lxu/CFLG/src/main.jl:57
+in expression starting at /scratch/opt/lxu/CFLG/src/main.jl:57
+srun: error: htc-cmp444: task 0: Exited with exit code 1

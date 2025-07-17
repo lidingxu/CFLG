@@ -1,9 +1,9 @@
 instance: city_479.txt
-obj: 909.0
+obj: 908.9999990996167
 bound: 892.0
-gap: 0.0187018701870187
-time: 7198.452712059021
-preprocess_time: 1.549547
+gap: 0.01870186921502264
+time: 7198.927107095718
+preprocess_time: 1.074021
 sepa_time: 0.0
-node: 1509864
+node: 1423570
 formulation: LEFPAI

@@ -2,8 +2,8 @@ instance: treeA.100.20
 obj: 19.0
 bound: 19.0
 gap: 0.0
-time: 2.533910036087036
-preprocess_time: 1.022613
+time: 1.462550163269043
+preprocess_time: 1.309947
 sepa_time: 0.0
-node: 440
+node: 164
 formulation: LEFPAI

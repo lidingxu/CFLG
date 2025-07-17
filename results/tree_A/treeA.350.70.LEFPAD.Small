@@ -1,9 +1,9 @@
 instance: treeA.350.70
-obj: 803.0
-bound: 788.0
-gap: 0.0186799501867995
-time: 7198.938501834869
-preprocess_time: 1.063448
+obj: 804.0
+bound: 793.0
+gap: 0.013681592039800995
+time: 7198.978875875473
+preprocess_time: 1.022749
 sepa_time: 0.0
-node: 382971
+node: 402239
 formulation: LEFPAD

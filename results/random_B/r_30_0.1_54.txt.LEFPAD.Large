@@ -2,8 +2,8 @@ instance: r_30_0.1_54.txt
 obj: 5.0
 bound: 5.0
 gap: 0.0
-time: 17.177446126937866
-preprocess_time: 1.038471
+time: 38.79951500892639
+preprocess_time: 1.319177
 sepa_time: 0.0
-node: 2169
+node: 2747
 formulation: LEFPAD
