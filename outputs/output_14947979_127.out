@@ -1,0 +1,177 @@
+Data path: /scratch/opt/lxu/CFLG/benchmarks/tree_A
+Instance: treeA.200.30
+Result path: /scratch/opt/lxu/CFLG/results/tree_A
+Solver: Gurobi
+Time limit: 7200
+Formulation: LEFPAV
+Cover: Large
+julia --project=. src/main.jl /scratch/opt/lxu/CFLG/benchmarks/tree_A treeA.200.30 /scratch/opt/lxu/CFLG/results/tree_A Gurobi 7200 LEFPAV Large
+The latest version of Julia in the `release` channel is 1.11.6+0.x64.linux.gnu. You currently have `1.11.4+0.x64.linux.gnu` installed. Run:
+
+  juliaup update
+
+in your terminal shell to install Julia 1.11.6+0.x64.linux.gnu and update the `release` channel to that version.
+/scratch/opt/lxu/CFLG/benchmarks/tree_A Gurobi 7200.0 /scratch/opt/lxu/CFLG/results/tree_A treeA.200.30 LEFPAV Large
+/scratch/opt/lxu/CFLG/benchmarks/tree_A/treeA.200.30
+
+ read graph
+data loaded
+
+problem_graph/original graph: node: 200/200 edge: 229/229 dlt: 3.01659423687247 break_avg_len: 1.508297118436235 break_max_len: 1.989306290380763Vbar/V, Ebar/E(106, 200, 135, 229)
+Set parameter TokenServer to value "solice01.zib.de"
+Set parameter Threads to value 1
+Set parameter OutputFlag to value 1
+Gurobi Optimizer version 12.0.1 build v12.0.1rc0 (linux64 - "Debian GNU/Linux 12 (bookworm)")
+
+CPU model: Intel(R) Xeon(R) Gold 5222 CPU @ 3.80GHz, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 8 physical cores, 16 logical processors, using up to 1 threads
+
+Non-default parameters:
+Threads  1
+
+Optimize a model with 329 rows, 537 columns and 895 nonzeros
+Model fingerprint: 0x7c2efcef
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+00]
+Presolve removed 166 rows and 205 columns
+Presolve time: 0.00s
+Presolved: 163 rows, 332 columns, 524 nonzeros
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    1.7900000e+02   9.300000e+01   0.000000e+00      0s
+      68    1.0600000e+02   0.000000e+00   0.000000e+00      0s
+
+Solved in 68 iterations and 0.00 seconds (0.00 work units)
+Optimal objective  1.060000000e+02
+
+User-callback calls 147, time in user-callback 0.00 sec
+elapsed CPU time: 0.952578 seconds
+Set parameter TokenServer to value "solice01.zib.de"
+Set parameter Threads to value 1
+Set parameter OutputFlag to value 1
+Set parameter MIPGap to value 0.0001
+Set parameter TimeLimit to value 7199.047422
+
+ more cuts: false 3.01659423687247 false
+is_attach:trueformulation:LEFPAV0 179 150
+Set parameter PreCrush to value 1
+
+ model loaded
+
+Gurobi Optimizer version 12.0.1 build v12.0.1rc0 (linux64 - "Debian GNU/Linux 12 (bookworm)")
+
+CPU model: Intel(R) Xeon(R) Gold 5222 CPU @ 3.80GHz, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 8 physical cores, 16 logical processors, using up to 1 threads
+
+Non-default parameters:
+TimeLimit  7199.047422
+PreCrush  1
+Threads  1
+
+Optimize a model with 6036 rows, 3085 columns and 16645 nonzeros
+Model fingerprint: 0x6529583e
+Variable types: 508 continuous, 2577 integer (2577 binary)
+Coefficient statistics:
+  Matrix range     [1e-06, 6e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [8e-02, 3e+00]
+  RHS range        [8e-02, 6e+00]
+Presolve removed 2696 rows and 1079 columns
+Presolve time: 0.11s
+Presolved: 3340 rows, 2006 columns, 14785 nonzeros
+Variable types: 265 continuous, 1741 integer (1741 binary)
+Found heuristic solution: objective 122.0000000
+Found heuristic solution: objective 113.0000000
+
+Root relaxation: objective 3.927909e+01, 1650 iterations, 0.03 seconds (0.03 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0   39.27909    0  283  113.00000   39.27909  65.2%     -    0s
+H    0     0                     106.0000000   39.27909  62.9%     -    0s
+H    0     0                      57.0000000   39.27909  31.1%     -    0s
+H    0     0                      50.0000000   39.27909  21.4%     -    0s
+elapsed CPU time: 1.8440256839141984e13 seconds
+     0     0   42.30998    0  226   50.00000   42.30998  15.4%     -    0s
+elapsed CPU time: 1.383427498825483e13 seconds
+     0     0   42.30998    0  186   50.00000   42.30998  15.4%     -    0s
+elapsed CPU time: 0.00722 seconds
+     0     0   44.16761    0  247   50.00000   44.16761  11.7%     -    0s
+elapsed CPU time: 9.226316627778217e12 seconds
+     0     0   44.26683    0  246   50.00000   44.26683  11.5%     -    0s
+elapsed CPU time: 0.007372 seconds
+     0     0   44.26683    0  270   50.00000   44.26683  11.5%     -    0s
+elapsed CPU time: 0.00724 seconds
+     0     0   45.00000    0  238   50.00000   45.00000  10.0%     -    0s
+H    0     0                      49.0000000   45.00000  8.16%     -    0s
+H    0     0                      48.0000000   45.00000  6.25%     -    0s
+elapsed CPU time: 0.007496 seconds
+     0     0   45.00000    0  207   48.00000   45.00000  6.25%     -    0s
+elapsed CPU time: 0.007383 seconds
+     0     0   45.00000    0  175   48.00000   45.00000  6.25%     -    0s
+elapsed CPU time: 0.007387 seconds
+     0     0   45.00000    0  153   48.00000   45.00000  6.25%     -    1s
+elapsed CPU time: 0.007834 seconds
+     0     0   45.00000    0  146   48.00000   45.00000  6.25%     -    1s
+elapsed CPU time: 0.008271 seconds
+     0     0   45.00000    0  140   48.00000   45.00000  6.25%     -    1s
+elapsed CPU time: 0.008244 seconds
+     0     0   45.00000    0   60   48.00000   45.00000  6.25%     -    1s
+H    0     0                      47.0000000   45.00000  4.26%     -    1s
+elapsed CPU time: 0.048294 seconds
+     0     0   45.00000    0  127   47.00000   45.00000  4.26%     -    1s
+elapsed CPU time: 0.007064 seconds
+     0     0   45.00000    0   49   47.00000   45.00000  4.26%     -    1s
+elapsed CPU time: 0.007265 seconds
+     0     0   45.00000    0   84   47.00000   45.00000  4.26%     -    1s
+elapsed CPU time: 0.00716 seconds
+     0     0   45.00000    0   76   47.00000   45.00000  4.26%     -    1s
+elapsed CPU time: 0.007124 seconds
+     0     0   45.00000    0   92   47.00000   45.00000  4.26%     -    1s
+elapsed CPU time: 0.007079 seconds
+     0     0   45.00000    0   59   47.00000   45.00000  4.26%     -    1s
+elapsed CPU time: 1.8440701570120164e13 seconds
+     0     0   45.00000    0  115   47.00000   45.00000  4.26%     -    1s
+elapsed CPU time: 3.501467793104106e9 seconds
+     0     0   45.00000    0   31   47.00000   45.00000  4.26%     -    1s
+elapsed CPU time: 0.007286 seconds
+     0     0   45.00000    0   65   47.00000   45.00000  4.26%     -    1s
+elapsed CPU time: 6.814068694326459e9 seconds
+     0     0   45.00000    0   70   47.00000   45.00000  4.26%     -    1s
+elapsed CPU time: 0.007373 seconds
+     0     0   45.00000    0   76   47.00000   45.00000  4.26%     -    1s
+elapsed CPU time: 0.007216 seconds
+elapsed CPU time: 0.007387 seconds
+     0     2   45.00000    0   43   47.00000   45.00000  4.26%     -    1s
+   885   349   46.00000   34   76   47.00000   45.00914  4.24%  38.8    5s
+
+Cutting planes:
+  Gomory: 13
+  Cover: 7
+  Implied bound: 9
+  Clique: 1
+  MIR: 17
+  Mixing: 3
+  Flow cover: 47
+  GUB cover: 4
+  Zero half: 2
+  RLT: 8
+  Relax-and-lift: 1
+
+Explored 915 nodes (77659 simplex iterations) in 7.06 seconds (5.19 work units)
+Thread count was 1 (of 16 available processors)
+
+Solution count 10: 47 47 47 ... 106
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 4.700000000000e+01, best bound 4.700000000000e+01, gap 0.0000%
+
+User-callback calls 5689, time in user-callback 1.27 sec
+
+ sepatime5.995186556178281e13 10277 25
+47.0
+Stat(MathOptInterface.OPTIMAL, 47.0, 47.0, 0.0, 5.995186556178281e13, 0.952578, 7.05692982673645, 915, Main.CFLG.LEFPAV, "", #undef)
