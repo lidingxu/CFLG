@@ -691,7 +691,7 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg, eassign,
 
     println("\n model loaded\n")
     #print(cflg)
-    JuMP.write_to_file(cflg, "debug.lp")
+    #JuMP.write_to_file(cflg, "debug.lp")
     optimize!(cflg)
     stat = Stat()
     print("\n sepatime", sepatime, " ", called, " ", realcalled, "\n")

@@ -11,7 +11,7 @@ from scipy import stats
 min_primal_bound = 2**31
 max_dual_bound = -1
 time_limit = 7200
-algorithms  = ["EF", "EFP", "LEFP", "LEFPA", "LEVFP", "None"] #  ["EF", "EFP", "LEVFP", "LEFP", "LEFPI", "LEFPD", "LEFPV", "None"] # ["LEFPI", "LEFP", "LEFPD", "LEFPV",  "None"] # ["LEFPI", "LEFP", "LEFPD", "LEFPV", "None"]
+algorithms  = ["LEFPA", "LEFPAI", "LEFPAD", "LEFPAV", "None"] #  ["EF", "EFP", "LEVFP", "LEFP", "LEFPI", "LEFPD", "LEFPV", "None"] # ["LEFPI", "LEFP", "LEFPD", "LEFPV",  "None"] # ["LEFPI", "LEFP", "LEFPD", "LEFPV", "None"]
 coverages = ["Small", "Large"]
 benchmarks = ["city", "Kgroup_A", "Kgroup_B", "random_A", "random_B", "tree_A", "tree_B"]
 
@@ -23,7 +23,7 @@ styles = ['solid', 'dashed', 'dotted', 'dashdot']
 markers = ['o', "d", "*", "X" ]
 colors = ['magenta', 'blue', 'red', 'green']
 
-algonm_map = {"EF": "EF", "LEFPI" : "EF-DLI", "LEFP" : "EF-DLB", "LEFPA" : "EF-PB", "LEFPAD": "EF-PE", "LEFPAV": "EF-PBC", "LEFPV2": "EF-PLBC2",  "EVFP" : "EVF-PB", "LEVFP" : "EVF-DLB", "EFP":"EF-DB", "EFPD": "EF-PD", "EFPV": "EF-PV1", "EFPV2": "EF-PV2"}
+algonm_map = {"EF": "EF", "LEFPI" : "EF-DLI", "LEFP" : "EF-DLB", "LEFPA" : "EF-PB", "LEFPAI" : "EF-PI", "LEFPAD": "EF-PE", "LEFPAV": "EF-PBC", "LEFPV2": "EF-PLBC2",  "EVFP" : "EVF-PB", "LEVFP" : "EVF-DLB", "EFP":"EF-DB", "EFPD": "EF-PD", "EFPV": "EF-PV1", "EFPV2": "EF-PV2"}
 
 def parse_name(name):
     s = ""
@@ -189,10 +189,13 @@ def printtable(algorithms_, benchmarks, has_obj_):
 
     path = Path(os.getcwd())
 
+    benchmarks_size = {}
+
     for benchmark in benchmarks:
         # parse all results and logs, create solution for each instance
         bench_dir_path = str(path.parent.absolute()) + "/benchmarks/" + benchmark
         instances = os.listdir(bench_dir_path)
+        benchmarks_size[benchmark] = len(instances)
         bench_instances[benchmark] = instances
 
         result_dir_path = str(path.parent.absolute()) + "/results/" + benchmark
@@ -249,6 +252,7 @@ def printtable(algorithms_, benchmarks, has_obj_):
     file.write(detail)
     file.close()
 
+    print("benchmarks size: ", benchmarks_size)
     bench_instances = {}
     bench_instances["Small"] = []
     bench_instances["Large"] = []
@@ -262,7 +266,7 @@ def printtable(algorithms_, benchmarks, has_obj_):
     dense_list["Large"] = []
     for k in instances_entries:
         entry = instances_entries[k]
-        if entry["org_edge"] <= 150:
+        if entry["org_edge"] <= 180:
             maxsmall= max(maxsmall, entry["org_edge"])
             bench_instances["Small"].append(entry["instance"])
             edge_list["Small"].append(entry["org_edge"])
