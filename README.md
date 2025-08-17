@@ -64,7 +64,7 @@ The `None` option is used for computing the parameters of subdivided and degree-
 
 ## References
 
-If you find cflg useful in your work, we kindly request that you cite the following paper draft ([arXiv preprint](http://arxiv.org/abs/1808.05290)), which is recommended reading for advanced users:
+If you find cflg useful in your work, we kindly request that you cite the following paper draft ([arXiv preprint](https://arxiv.org/abs/2203.00284)), which is recommended reading for advanced users:
 
     @misc{pelegrín2022continuous,
         title={Continuous Covering on Networks: Strong Mixed Integer Programming Formulations},
