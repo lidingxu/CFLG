@@ -20,7 +20,7 @@ and one of the following MILP solvers:
 
 
 ## Benchmarks
-There are six benchmarks `city`, `Kgroup_A`, `Kgroup_B`, `random_A`, `random_B` and `test`. Each benchmark contains instances in `.txt` file format.
+There are six benchmarks `city`, `Kgroup_A`, `Kgroup_B`, `random_A`, `random_B`, `tree_A`, `tree_B` and `test`. Each benchmark contains instances in `.txt` file format.
 
 Each instance file contains data of a graph. Its first line contains the number of nodes and edges of the graph; Edges are represented as a list from the second line: each line indicates an edge's end nodes and weight.
 
@@ -31,34 +31,27 @@ You can run `cflg.jl` via the following command as the following example:
 julia src/main.jl data_folder instance result_folder solver time_limit algorithm raidus
 ```
 
-The settings of the above arguments are as follows.
-  * `solver`: one of the solvers in `CPLEX`, `GLPK` and `Gurobi`.
-  * `time_limit`:  time limit in seconds.
-  * `instance`:  the instance path.
-  * `algorithm`: one of the algorithms in `EF`, `F0`, `F`, `SF`, `RF`, `SFD` and `None`.
-  * `raidus`: the coverage raidus.
 
-To reproduce the computational results in the accompanied paper, clear the `results` directory, go to the `test` directory, and execute the following command in the terminal (in *Linux*)
-```
-/bin/bash run.sh
-```
-Note that you should change the solver option `solver` and the GNU parallel test option `gnuparalleltest` according to their availability in your system.
+The algorithm option names and short descriptions (features are inferred from the bitmask flags):
 
 
-### Algorithm Option
-The algorithm option is summarized in the following table.
+| Algorithm | Model | Edge vs Edge-Vertex | Delimitation (P0) | Bound tighten (P1) | Valid Ineq. (V) | Disjunctive (D) | Long edge (L) | Indicator (I) | Attached pruning (A) | Comment |
+|---|:---:|:-------------------:|:-----------------:|:------------------:|:---------------:|:-------:|:-----------:|:-------------:|:--------------------:|---------|
+| `EF`     | Yes | Edge        | No  | No  | No  | No  | No  | No  | No  | Edge model (Fröhlich et al.) |
+| `EFP0`   | Yes | Edge        | Yes | No  | No  | No  | No  | No  | No  | Edge model + delimitation (simple processing) |
+| `EFP`    | Yes | Edge        | Yes | Yes | No  | No  | No  | No  | No  | Edge big‑M + delimitation + bound tightening |
+| `EVF`    | Yes | Edge‑Vertex | No  | No  | No  | No  | No  | No  | No  | Edge‑vertex big‑M formulation |
+| `EVFP`   | Yes | Edge‑Vertex | Yes | Yes | No  | No  | No  | No  | No  | EVF + processing (bound tightening + delimitation) |
+| `EVFPV`  | Yes | Edge‑Vertex | Yes | Yes | Yes | No  | No  | No  | No  | EVFP + simple valid inequalities |
+| `LEVFP`  | Yes | Edge‑Vertex | Yes | Yes | No  | No  | Yes | No  | No  | Long edge‑vertex big‑M + processing |
+| `LEFPI`  | Yes | Edge        | Yes | Yes | No  | No  | Yes | Yes | No  | Edge model with long‑edge + indicator |
+| `LEFP`   | Yes | Edge        | Yes | Yes | No  | No  | Yes | No  | No  | Long‑edge edge model + processing |
+| `LEFPD`  | Yes | Edge        | Yes | Yes | No  | Yes | Yes | No  | No  | LEFP + disjunctive formulation |
+| `LEFPV`  | Yes | Edge        | Yes | Yes | Yes | No  | Yes | No  | No  | LEFP + valid inequalities |
+| `None`   | No  | —           | No  | No  | No  | No  | No  | No  | No  | Not a model — compute statistics (original, degree‑2‑free, subdivided) |
 
+Use the exact algorithm name (e.g., `LEFPB`, `None`) when invoking the program.
 
-|     | Continuous demand |  Continuous facility |   Set delimitation  | Strengthenning| Long edge| Model size | Input graph     | Comment|
-|-----|-------------------|----------------------|---------------------|---------------|----------|------------|-----------------|--------|
-| `EF`|      Yes          | Yes                  | No                  |   No          | No       | Very large | Subdivided graph|From [Covering edges in networks](https://onlinelibrary.wiley.com/doi/full/10.1002/net.21924)
-| `F0`|      Yes          | Yes                  | No                  |   No          | No       | Large     | Subdivided graph| Naive model
-| `F` |      Yes          | Yes                  | Yes                 |   No          | No       | Medium     | Subdivided graph|Complete model
-| `SF`|      Yes          | Yes                  | Yes                 |   Yes         | No       | Meidum     | Subdivided graph|Strenghtenned model
-| `RF`|      Yes          | Yes                  | Yes                 |   Yes         | Yes      | Small      | Degree-2-free graph| Reduced model
-| `SFD`|      No         | Yes                  | Yes                 |   Yes         | No       | Very small     | Subdivided graph|Discrete model
-
-The `None` option is used for computing the parameters of subdivided and degree-2-free graphs.
 
 
 
@@ -74,5 +67,4 @@ If you find cflg useful in your work, we kindly request that you cite the follow
         archivePrefix={arXiv},
         primaryClass={math.OC}
     }
-
 

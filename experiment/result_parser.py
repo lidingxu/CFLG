@@ -11,7 +11,7 @@ from scipy import stats
 min_primal_bound = 2**31
 max_dual_bound = -1
 time_limit = 7200
-algorithms  = ["LEFPA", "LEFPAI", "LEFPAD", "LEFPAV", "None"] #  ["EF", "EFP", "LEVFP", "LEFP", "LEFPI", "LEFPD", "LEFPV", "None"] # ["LEFPI", "LEFP", "LEFPD", "LEFPV",  "None"] # ["LEFPI", "LEFP", "LEFPD", "LEFPV", "None"]
+algorithms  = ["LEFP", "LEVFP", "None"] #  ["EF", "EFP", "LEVFP", "LEFP", "LEFPI", "LEFPD", "LEFPV", "None"] # ["LEFPI", "LEFP", "LEFPD", "LEFPV",  "None"] # ["LEFPI", "LEFP", "LEFPD", "LEFPV", "None"]
 coverages = ["Small", "Large"]
 benchmarks = ["city", "Kgroup_A", "Kgroup_B", "random_A", "random_B", "tree_A", "tree_B"]
 
@@ -109,10 +109,11 @@ int_keys = [ "solved", "total"]
 
 
 def Stat(algo, coverage):
-    return {"algorithm": algo, "cover": coverage, "solved": 0, "total": 0, "solution": 0, "gap": 0.0, "time":0.0, "node":  0.0, "cdual": 0.0, "cprimal": 0.0, "obj": 0.0, "obj_": 0.0}
+    return {"algorithm": algo, "cover": coverage, "solved": 0, "total": 0, "solution": 0, "gap": 0.0, "time":0.0, "node":  0.0, "cdual": 0.0, "cprimal": 0.0, "obj": 0.0, "obj_": 0.0, "solves": []}
 
 
 def add(stat, entry):
+    stat["solves"].append(( entry["gap"]))
     stat["solved"] += 1 if  float(entry["gap"]) < 1e-4 else 0
     stat["solution"] += not entry["missing"]
     stat["total"] += 1
@@ -122,7 +123,6 @@ def add(stat, entry):
     for key in sgm_keys:
         if key in entry:
             stat[key] += np.log(float(entry[key])+ shift[key])
-
 def parsed(name):
     return name.replace("_", "\_")
 
@@ -133,13 +133,6 @@ def avgStat(stat):
             stat[key] = np.exp(stat[key] / stat["total"])- shift[key]
         else:
             stat[key] = defualt_entry[key]
-        val = stat[key]
-        if key in int_keys:
-            val = int(val)
-        else:
-            val = round(val,1)
-        stat[key] = val
-
 
     display = ""
 
@@ -315,7 +308,8 @@ def printtable(algorithms_, benchmarks, has_obj_):
                 display = avgStat(stat)
                 #print(display)
                 benchdict[(benchmark, cover, algo)] = gettab(stat, False if cover == "Small" else True)
-
+                if cover == "Large" and benchmark == "Large":
+                    print(algo, stat["solved"], stat["solves"])
     #print(  solved["Large"]["Large"]["EFP"] - solved["Large"]["Large"]["LEVFP"], "\n",  solved["Large"]["Large"]["LEVFP"] - solved["Large"]["Large"]["EFP"] )
     #print(  solved["Large"]["Large"]["EFP"] - solved["Large"]["Large"]["LEVFP"], "\n",  solved["Large"]["Large"]["LEVFP"] - solved["Large"]["Large"]["EFP"] )
     # p-test
