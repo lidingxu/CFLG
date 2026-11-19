@@ -5,20 +5,23 @@
 # same command lists only the missing runs when resubmitting.
 #
 # Instances (all in benchmarks/):
-#   main group: city, Kgroup, random and the core tree instances (instance seed s1, p in {0.1, 0.15, 0.2}:
-#               one per generator x n x p, the design of the paper's tree sets) -> all main formulations
-#   tree group: the other tree instances (s2, s3, and every instance with p >= 0.3) -> tree-study formulations
-#               (the tree study uses the core instances too; their runs come from the main group)
+#   tree instances: one per generator x n in {100,...,350} x p in {0.1, 0.15, 0.2, 0.3, 0.4, 0.5}
+#   main group: city, Kgroup, random and the core tree instances (p in {0.1, 0.15, 0.2}, the design of the
+#               paper's tree sets) -> all main formulations
+#   tree group: the tree instances with p in {0.3, 0.4, 0.5} -> tree-study formulations (additional network
+#               study; it also uses the core tree instances, whose runs come from the main group)
 #
 # usage: bash jobs.sh [job_list_file]
 #   JOB_GROUPS="main tree"      which job groups to list (default both)
 #   TREE_SIZES="100 200 300"    restrict the tree group to these sizes n (default all)
-#   SEEDS="0 1 2"               solver seeds (seed 0 = Gurobi's default)
+#   SEEDS="0 1 2"               solver seeds of the main group (seed 0 = Gurobi's default)
+#   TREE_SEEDS="0 1 2"          solver seeds of the tree group
 joblist=${1:-job_list.txt}
 timelimit=7200
 solver="Gurobi" # "Gurobi", "CPLEX", "GLPK", "SCIP".
 covers=("Small" "Large")
-seeds=(${SEEDS:-0 1 2})
+main_seeds=(${SEEDS:-0 1 2})
+tree_seeds=(${TREE_SEEDS:-0 1 2})
 groups=(${JOB_GROUPS:-main tree})
 datapath="$PWD/benchmarks"
 resultpath="$PWD/results_rev"
@@ -32,11 +35,11 @@ main_small_formulations=("LEFPAU")
 tree_formulations=("LEVFP" "LEFP" "LEFPA" "LEFPAF")
 tree_sizes=" ${TREE_SIZES:-100 150 200 250 300 350} "
 
-# tree instance <prefix>.<n>.<extra>.s<seed> is a core instance if seed = 1 and p = extra/n <= 0.2
+# tree instance <prefix>.<n>.<extra>.s<seed> is a core instance if p = extra/n <= 0.2
 is_core_tree() {
-  local n extra seed
-  IFS=. read -r _ n extra seed <<< "$1"
-  [[ $seed == "s1" && $((5 * extra)) -le $n ]]
+  local n extra
+  IFS=. read -r _ n extra _ <<< "$1"
+  [[ $((5 * extra)) -le $n ]]
 }
 
 rm -f "$joblist"
@@ -54,6 +57,8 @@ add_job() { # benchmark instance formulation cover [seed]
 
 add_runs() { # benchmark instance group formulations...
   local benchmark=$1 instance=$2 group=$3; shift 3
+  local seeds=("${main_seeds[@]}")
+  [[ $group == "tree" ]] && seeds=("${tree_seeds[@]}")
   for cover in "${covers[@]}"; do
     add_job "$benchmark" "$instance" "None" "$cover"
     local extra=()
