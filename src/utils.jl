@@ -21,6 +21,7 @@ MSK_ISB  =  UInt16(0b0000000000100000)   # is Benders decomposition
 MSK_ISL1=   UInt16(0b0000000000010000)   # is using long edge modeling
 MSK_ISA =   UInt16(0b0000000000001000)   # is attached tree pruning
 MSK_ISF =   UInt16(0b0000000000000100)   # is using the dominance filter on disjunction pairs
+MSK_ISN =   UInt16(0b0000000000000010)   # is using a null (empty) callback with PreCrush=1, baseline for user cuts
 
 @inline mask(formulation, MSK::UInt16)= ( UInt16(formulation) & MSK != MSK_ZERO )
 
@@ -55,6 +56,7 @@ MSK_ISF =   UInt16(0b0000000000000100)   # is using the dominance filter on disj
     LEFPAIF =   MSK_ISMOD | MSK_ISE  | MSK_ISP0 | MSK_ISP1 | MSK_ISL | MSK_ISI | MSK_ISA | MSK_ISF           # EF-PI with dominance filter
     LEFPADF =   MSK_ISMOD | MSK_ISE  | MSK_ISP0 | MSK_ISP1 | MSK_ISD | MSK_ISL | MSK_ISA | MSK_ISF           # EF-PE with dominance filter
     LEFPAVF =   MSK_ISMOD | MSK_ISE  | MSK_ISP0 | MSK_ISP1 | MSK_ISL | MSK_ISV | MSK_ISA | MSK_ISF           # EF-PBC with dominance filter
+    LEFPAN  =   MSK_ISMOD | MSK_ISE  | MSK_ISP0 | MSK_ISP1 | MSK_ISL | MSK_ISA | MSK_ISN                     # EF-PB with a null callback and PreCrush=1 (baseline for EF-PBC)
     None   =   MSK_ZERO                                                      # not a model, just record statistics of original graph, degree-2-free graph, subdivided graph
 end
 
@@ -79,9 +81,11 @@ struct Option
     log_level::Int # log level
     thread::Int # thread number
     silent::Bool # silent model
+    seed::Int # random seed of the solver (main model only; auxiliary models keep the default seed)
+    log_file::String # solver log file of the main model ("" = none)
 
-    function Option(time_limit::Float64=360.0,  rel_gap::Float64=1e-4, log_level::Int=1, thread::Int=1, silent::Bool=true)
-        new(time_limit, rel_gap, log_level, thread, silent)
+    function Option(time_limit::Float64=360.0,  rel_gap::Float64=1e-4, log_level::Int=1, thread::Int=1, silent::Bool=true, seed::Int=0, log_file::String="")
+        new(time_limit, rel_gap, log_level, thread, silent, seed, log_file)
     end
 end
 
@@ -98,11 +102,54 @@ mutable struct Stat
     formulation::FormulationSet
     instance::String
     solver_name::String
+    extra::Dict{String, Any} # run statistics (timings, model size, cuts, preprocessing), see RUNINFO
 
 
     function Stat()
-        new()
+        s = new()
+        s.sol_val = NaN # stays NaN if no feasible solution was found
+        s.bound = NaN
+        s.gap = NaN
+        s.sepatime = 0.0
+        s.preprocess_time = 0.0
+        s.time = 0.0
+        s.node = 0
+        s.extra = Dict{String, Any}()
+        return s
     end
+end
+
+# solver name and version, recorded in every result file
+function solverVersion(solver_name::String)
+    if solver_name == "Gurobi"
+        a, b, c = Ref{Cint}(), Ref{Cint}(), Ref{Cint}()
+        Gurobi.GRBversion(a, b, c)
+        return "Gurobi-$(a[]).$(b[]).$(c[])"
+    end
+    return solver_name
+end
+
+# statistics of the current run, filled during solve! and copied into Stat.extra
+const RUNINFO = Dict{String, Any}()
+# wall-clock deadline of the current run: preprocessing + model building + solving <= time limit
+const DEADLINE = Ref{Float64}(Inf)
+
+# optimize the main model within the remaining time and record its size and the model-building time
+function timedOptimize!(model)
+    RUNINFO["model_vars"] = JuMP.num_variables(model)
+    RUNINFO["model_cons"] = JuMP.num_constraints(model; count_variable_in_set_constraints = false)
+    RUNINFO["model_bins"] = JuMP.num_constraints(model, VariableRef, MOI.ZeroOne)
+    t0 = time()
+    if haskey(RUNINFO, "t_build_start")
+        RUNINFO["build_time"] = t0 - RUNINFO["t_build_start"]
+    end
+    if isfinite(DEADLINE[])
+        set_time_limit_sec(model, max(1.0, DEADLINE[] - t0))
+    end
+    optimize!(model)
+    RUNINFO["wall_solve_time"] = time() - t0
+    RUNINFO["has_solution"] = has_values(model)
+    return
 end
 
 function try_import(name::Symbol)

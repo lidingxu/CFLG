@@ -64,6 +64,8 @@ function solve!(problem::Problem, solver_name::String, option::Option, formulati
         formulation = LEFPADF
     elseif formulation == "LEFPAVF"
         formulation = LEFPAVF
+    elseif formulation == "LEFPAN"
+        formulation = LEFPAN
     elseif formulation == "None"
         formulation = None
     else
@@ -79,8 +81,10 @@ function solve!(problem::Problem, solver_name::String, option::Option, formulati
     is_long = mask(formulation, MSK_ISL)
     is_attach = mask(formulation, MSK_ISA)
 
-    # preprocess the problem
-    CPUtic()
+    # preprocess the problem (wall-clock timing, consistent with the solver's wall-clock time limit)
+    empty!(RUNINFO)
+    t_start = time()
+    DEADLINE[] = t_start + option.time_limit
     graph_stats = preprocess!(problem, formulation)
 
     if formulation == None
@@ -102,9 +106,12 @@ function solve!(problem::Problem, solver_name::String, option::Option, formulati
             ups = Ups[r] + required[r]
             @assert( ups >= 0)
             sol_val = ups
-            preprocess_time = CPUtoc()
+            preprocess_time = time() - t_start
             stat = Stat()
             stat.preprocess_time = preprocess_time
+            RUNINFO["build_time"] = 0.0
+            RUNINFO["total_time"] = time() - t_start
+            merge!(stat.extra, RUNINFO)
             stat.termintaion_status = OPTIMAL
             stat.node = 0
             stat.sol_val = sol_val
@@ -121,6 +128,7 @@ function solve!(problem::Problem, solver_name::String, option::Option, formulati
     # dominance filter on disjunction pairs (EF-PBF, EF-PIF, EF-PEF, EF-PBCF), after pruning rebuilds EIp
     if is_edge && mask(formulation, MSK_ISP0) && mask(formulation, MSK_ISF)
         nrem = dominanceFilter!(problem)
+        RUNINFO["filter_pairs_removed"] = nrem
         print("\n dominance filter: removed ", nrem, " pairs\n")
     end
 
@@ -146,10 +154,20 @@ function solve!(problem::Problem, solver_name::String, option::Option, formulati
         eassign, vassign = vAssign(problem, solver_name, option)
     end
 
-    preprocess_time = CPUtoc()
+    preprocess_time = time() - t_start
 
     # initialize a JuMP with the option
+    RUNINFO["t_build_start"] = time()
     cflg = initModel(solver_name, option, option.time_limit - preprocess_time)
+    # the seed and the log file apply to the main model only, so preprocessing (e.g. vAssign) is seed-independent
+    if solver_name == "Gurobi"
+        if option.log_file != ""
+            set_optimizer_attribute(cflg, "LogFile", option.log_file)
+        end
+        set_optimizer_attribute(cflg, "Seed", option.seed)
+    elseif solver_name == "CPLEX"
+        set_optimizer_attribute(cflg, "CPXPARAM_RandomSeed", option.seed)
+    end
 
     if is_edge
         if is_preprocess
@@ -166,6 +184,9 @@ function solve!(problem::Problem, solver_name::String, option::Option, formulati
     end
 
     stat.preprocess_time = preprocess_time
+    RUNINFO["total_time"] = time() - t_start
+    delete!(RUNINFO, "t_build_start")
+    merge!(stat.extra, RUNINFO)
     println(stat)
 
     return stat
@@ -310,7 +331,7 @@ function solveEFP_!(problem::Problem, formulation::FormulationSet, cflg, eassign
 
     println("\n model loaded\n")
     #print(cflg)
-    optimize!(cflg)
+    timedOptimize!(cflg)
     stat = Stat()
     print("\n sepatime", sepatime, " ", called, " ", realcalled, "\n")
     sol = Vector{Tuple{Symbol,Int, Float64}}();
@@ -556,7 +577,7 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg, eassign,
             if resultS[] != GRB_OPTIMAL && resultS[] != GRB_SUBOPTIMAL
                 return
             end
-            CPUtic()
+            t_sep0 = time()
             realcalled += 1
             Gurobi.load_callback_variable_primal(cb_data, cb_where)
             ze_val = callback_value.(Ref(cb_data), ze)
@@ -587,11 +608,13 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg, eassign,
                 if rv_val[v_id] > val + 1e-6
                     cut = @build_constraint( rv[v_id]  <= 1e-7 + expr  )
                     MOI.submit(cflg, MOI.UserCut(cb_data), cut)
+                    added += 1
                 end
             end
-            sepatime += CPUtoc()
+            sepatime += time() - t_sep0
         end
         function user_cut_callback2(cb_data, cb_where::Cint)
+            called += 1
             if cb_where != GRB_CB_MIPNODE
                 return
             end
@@ -606,7 +629,8 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg, eassign,
             if resultS[] != GRB_OPTIMAL && resultS[] != GRB_SUBOPTIMAL
                 return
             end
-            CPUtic()
+            t_sep0 = time()
+            realcalled += 1
             Gurobi.load_callback_variable_primal(cb_data, cb_where)
             ze_vals = callback_value.(Ref(cb_data), ze)
             q_vals = callback_value.(Ref(cb_data), q)
@@ -647,6 +671,7 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg, eassign,
                 if rv_vals[v_id] > val + 1e-6 && is_project
                     cut = @build_constraint( rv[v_id]  <= 1e-7 + expr )
                     MOI.submit(cflg, MOI.UserCut(cb_data), cut)
+                    added += 1
                 end
             end
             for e_id in graph.edge_ids
@@ -662,6 +687,7 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg, eassign,
                         cut = @build_constraint(cutexpr <= 1e-7)
                         #cut = @build_constraint(rexprs[va] + rexprs[vb] >= letol * (1 - w[e_id]) )
                         MOI.submit(cflg, MOI.UserCut(cb_data), cut)
+                        added += 1
                     end
                 else
                     # r_va + delta >= qa
@@ -670,6 +696,7 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg, eassign,
                         cut = @build_constraint(cutexpr <= 1e-7)
                         #cut = @build_constraint(rexprs[va] + dlt >=  q[e_id, :a])
                         MOI.submit(cflg, MOI.UserCut(cb_data), cut)
+                        added += 1
                     end
                     # r_vb + delta >= le - qb
                     cutexpr, cutviolate = singleRowCut(rv_exprs[vb], [(1, q[e_id, :b], q_vals[e_id, :b], :cont)],  [], le - rv_constants[vb] - dlt)
@@ -677,10 +704,11 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg, eassign,
                         cut = @build_constraint(cutexpr <= 1e-7)
                         #cut = @build_constraint(rexprs[vb] + dlt >=  le - q[e_id, :b])
                         MOI.submit(cflg, MOI.UserCut(cb_data), cut)
+                        added += 1
                     end
                 end
             end
-            sepatime += CPUtoc()
+            sepatime += time() - t_sep0
         end
         set_optimizer_attribute(cflg, "PreCrush", 1)
         if is_cuts
@@ -688,6 +716,14 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg, eassign,
         elseif is_morecuts
             MOI.set(cflg, Gurobi.CallbackFunction(), user_cut_callback2)
         end
+    elseif mask(formulation, MSK_ISN)
+        # null callback: same solver settings as the cut formulations (callback registered, PreCrush=1), but no cuts
+        function null_callback(cb_data, cb_where::Cint)
+            called += 1
+            return
+        end
+        set_optimizer_attribute(cflg, "PreCrush", 1)
+        MOI.set(cflg, Gurobi.CallbackFunction(), null_callback)
     end
 
 
@@ -706,9 +742,12 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg, eassign,
     println("\n model loaded\n")
     #print(cflg)
     # JuMP.write_to_file(cflg, "debug.lp")
-    optimize!(cflg)
+    timedOptimize!(cflg)
     stat = Stat()
     print("\n sepatime", sepatime, " ", called, " ", realcalled, "\n")
+    RUNINFO["cb_calls"] = called
+    RUNINFO["sepa_rounds"] = realcalled
+    RUNINFO["cuts_submitted"] = added
     sol = Vector{Tuple{Symbol,Int, Float64}}();
     stat.termintaion_status = termination_status(cflg)
     stat.bound = objective_bound(cflg)
@@ -790,7 +829,7 @@ function solveEF!(problem::Problem, formulation::FormulationSet, cflg)
     # objective
     @objective(cflg, Min, sum(y[ef_id] for ef_id in graph.edge_ids))
     println("\n model loaded\n")
-    optimize!(cflg)
+    timedOptimize!(cflg)
 
     stat = Stat();
     sol = Vector{Tuple{Symbol,Int, Float64}}();
@@ -946,7 +985,7 @@ function solveFPVs!(problem::Problem, formulation::FormulationSet, cflg, Pi, is_
     @objective(cflg, Min, (usev ? sum(yv[vf_id] for vf_id in graph.node_ids) : 0) +  sum(ye[ef_id] for ef_id in graph.edge_ids))
 
     println("\n model loaded\n")
-    optimize!(cflg)
+    timedOptimize!(cflg)
     stat = Stat();
     sol = Vector{Tuple{Symbol,Int, Float64}}();
     stat.termintaion_status = termination_status(cflg)
@@ -1062,7 +1101,7 @@ function solveLEVF!(problem::Problem, formulation::FormulationSet, cflg)
     @objective(cflg, Min,  sum(yv[vf_id] for vf_id in graph.node_ids) + sum((edges[ef_id].etype == :e_long ? fac_num[ef_id] - u[ef_id] : ye[ef_id]) for ef_id in graph.edge_ids))
 
     println("\n model loaded\n")
-    optimize!(cflg)
+    timedOptimize!(cflg)
 
     stat = Stat();
     sol = Vector{Tuple{Symbol,Int, Float64}}();
@@ -1170,7 +1209,7 @@ function solveEFPD!(problem::Problem, formulation::FormulationSet, cflg, is_bend
     @objective(cflg, Min,  sum(ye[ef_id] for ef_id in graph.edge_ids))
 
     println("\n model loaded\n")
-    optimize!(cflg)
+    timedOptimize!(cflg)
     stat = Stat();
     sol = Vector{Tuple{Symbol,Int, Float64}}();
     stat.termintaion_status = termination_status(cflg)
@@ -1233,7 +1272,7 @@ function solveEFPI!(problem::Problem, formulation::FormulationSet, cflg)
     @objective(cflg, Min,  sum(ye[ef_id] for ef_id in graph.edge_ids))
 
     println("\n model loaded\n")
-    optimize!(cflg)
+    timedOptimize!(cflg)
     stat = Stat();
     sol = Vector{Tuple{Symbol,Int, Float64}}();
     stat.termintaion_status = termination_status(cflg)

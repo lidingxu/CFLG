@@ -269,6 +269,18 @@ function pruning(problem::Problem)
     rho = Dict(v => ( r[v] >= 0 ? r[v] : delta + r[v]) for v in R)
     Ups = Dict(v => y[v] for v in R)
 
+    # pruning statistics (graph before projection = subdivided graph)
+    total_len = sum(edge.length for edge in graph.edges; init = 0.0)
+    core_len = sum(graph.edges[eid].length for eid in Ebar; init = 0.0)
+    RUNINFO["prune_nodes_before"] = graph.node_num
+    RUNINFO["prune_edges_before"] = graph.edge_num
+    RUNINFO["prune_roots"] = length(R)
+    RUNINFO["prune_tree_nodes"] = length(setdiff(VR, R))
+    RUNINFO["prune_tree_edges"] = graph.edge_num - length(Ebar)
+    RUNINFO["prune_tree_len_share"] = total_len > 0 ? 1 - core_len / total_len : 0.0
+    RUNINFO["prune_fixed_facilities"] = sum(values(Ups); init = 0.0)
+    RUNINFO["prune_required_roots"] = count(values(required))
+
     #print((required, "\n", rho, "\n", Ups, "\n", keys(rho)), "\n")
 
     problem.prob_graph, R_, RE_, R_toR, RtoR_, EtoE_  = projectGraph(graph, VR, R, required, rho, problem.dlt)
@@ -276,6 +288,8 @@ function pruning(problem::Problem)
     mode = :Partial
     (problem.Ec, problem.Vc, problem.Ep, problem.Vp, problem.EIp, problem.EIc, problem.d) =
         processGraph(problem.prob_graph, problem.dlt, mode, problem.cr_tol, problem.c_tol)
+    RUNINFO["prune_nodes_after"] = problem.prob_graph.node_num
+    RUNINFO["prune_edges_after"] = problem.prob_graph.edge_num
     Ups_ = Dict(newv => Ups[R_toR[newv]] for newv in R_)
     required_ = Dict(newv => required[R_toR[newv]] for newv in R_)
     return required_, Ups_, R_,  RE_, RtoR_, EtoE_
