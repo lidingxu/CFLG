@@ -126,6 +126,45 @@ function bounds!(prob::Problem)
 end
 
 
+"""
+    dominanceFilter!(prob::Problem) -> Int
+
+Remove dominated disjunction pairs from `prob.EIp` and return how many were removed.
+
+For a vertex `v` and an edge `f = (u_a, u_b)` of length `l_f` with both `(f, a)` and `(f, b)` in `EIp[v]`,
+the pair `(f, b)` is dominated by `(f, a)` if `d(v, u_b) >= d(v, u_a) + l_f` (and symmetrically): then
+`tau_vfb(q) = d(v, u_b) + l_f - q >= d(v, u_a) + q = tau_vfa(q)` for every `q` in `[0, l_f]`, so reaching the
+facility on `f` through `u_b` never gives more residual coverage than through `u_a`. Both pairs share the same
+SOS constraint and the same activation `z <= y_f`, so any solution with `z_vfb = 1` stays feasible with
+`z_vfa = 1` instead. By the triangle inequality the test fires exactly when the shortest path from `v` to
+`u_b` runs along `f`. For long edges the condition can never hold for two pairs that are both in `EIp[v]`.
+
+Must be called after `processGraph`/`pruning` (which rebuild `EIp`) and before `bounds!`.
+"""
+function dominanceFilter!(prob::Problem)
+    graph = prob.prob_graph
+    nrem = 0
+    for v_id in graph.node_ids
+        kept = Set{Tuple{Int, Symbol}}()
+        for (ef_id, end_node) in prob.EIp[v_id]
+            other = (ef_id, end_node == :a ? :b : :a)
+            ef = graph.edges[ef_id]
+            if other in prob.EIp[v_id]
+                d_this = prob.d[lor(v_id, ef.nodes[end_node])]
+                d_other = prob.d[lor(v_id, ef.nodes[other[2]])]
+                if d_this >= d_other + ef.length - 1e-9 * max(1.0, ef.length)
+                    nrem += 1
+                    continue
+                end
+            end
+            push!(kept, (ef_id, end_node))
+        end
+        prob.EIp[v_id] = kept
+    end
+    return nrem
+end
+
+
 function pruning(problem::Problem)
     # Find all maximal attached trees in the graph
     # Output:

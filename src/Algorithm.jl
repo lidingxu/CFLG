@@ -110,6 +110,12 @@ function solve!(problem::Problem, solver_name::String, option::Option, formulati
         end
     end
 
+    # dominance filter on disjunction pairs (EF-PB, EF-PI, EF-PE, EF-PBC), after pruning rebuilds EIp
+    if is_edge && is_long && is_attach && mask(formulation, MSK_ISP0)
+        nrem = dominanceFilter!(problem)
+        print("\n dominance filter: removed ", nrem, " pairs\n")
+    end
+
     # bound tightenning
     if mask(formulation, MSK_ISP0) && mask(formulation, MSK_ISP1)
         bounds!(problem)
