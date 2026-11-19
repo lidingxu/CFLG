@@ -1,96 +1,91 @@
-import networkx as nx
-import matplotlib.pyplot as plt
-import random
+"""Generate almost-tree networks (tree_A: Pruefer-random labeled tree, tree_B: random BFS tree) plus extra edges.
+
+Every instance uses its own random.Random(seed) for the tree, the extra edges and the edge lengths, so the
+output is reproducible. (The original benchmarks/tree_A files were generated with the extra edges and edge
+lengths drawn from Python's unseeded global random stream and cannot be regenerated; they are kept as is.)
+
+Default: the tree study of the revision, written to benchmarks_tree/tree_{A,B}/<prefix>.<n>.<extra>.s<seed>
+    python genalmosttree.py
+    python genalmosttree.py --ns 100 200 300 --ps 0.3 0.4 0.5 --seeds 1 2 3 --outdir benchmarks_tree
+"""
+import argparse
 import os
+import random
 
-def generate_almost_tree(n, extra_edges, seed=None):
-    # Step 1: Generate a random spanning tree with n nodes
-    tree = nx.random_labeled_tree(n, seed=seed)
+import networkx as nx
 
-    # Step 2: Add a few random extra edges to make it "almost a tree"
+
+def add_extra_edges(tree, extra_edges, rng):
+    # add extra edges (creating cycles) until extra_edges were added or too many attempts failed
     nodes = list(tree.nodes())
     added = 0
     attempts = 0
     max_attempts = 10 * extra_edges  # avoid infinite loops
-
     while added < extra_edges and attempts < max_attempts:
-        u, v = random.sample(nodes, 2)
-        if not tree.has_edge(u, v) and not nx.has_path(tree, u, v):
-            # avoid adding an edge that makes it a tree again
-            tree.add_edge(u, v)
-            added += 1
-        elif not tree.has_edge(u, v):
-            # we allow adding edges that create cycles
+        u, v = rng.sample(nodes, 2)
+        if not tree.has_edge(u, v):
             tree.add_edge(u, v)
             added += 1
         attempts += 1
-
     return tree
 
-def random_bfs_tree(n, extra_edges, seed=None):
-    random.seed(seed)
-    G = nx.empty_graph(n)
+
+def generate_almost_tree(n, extra_edges, rng):
+    # random labeled spanning tree (uniform via Pruefer sequences) plus extra edges
+    tree = nx.random_labeled_tree(n, seed=rng)
+    return add_extra_edges(tree, extra_edges, rng)
+
+
+def random_bfs_tree(n, extra_edges, rng):
+    # BFS tree where each parent gets 1-3 children, plus extra edges
     available = list(range(n))
-    root = available.pop(random.randrange(len(available)))
+    root = available.pop(rng.randrange(len(available)))
     tree = nx.Graph()
     tree.add_node(root)
     queue = [root]
     while available and queue:
         parent = queue.pop(0)
-        num_children = random.randint(1, min(3, len(available)))  # small branching
-        children = random.sample(available, num_children)
+        num_children = rng.randint(1, min(3, len(available)))  # small branching
+        children = rng.sample(available, num_children)
         for child in children:
             tree.add_edge(parent, child)
             queue.append(child)
             available.remove(child)
+    return add_extra_edges(tree, extra_edges, rng)
 
-    # Step 2: Add a few random extra edges to make it "almost a tree"
-    nodes = list(tree.nodes())
-    added = 0
-    attempts = 0
-    max_attempts = 10 * extra_edges  # avoid infinite loops
 
-    while added < extra_edges and attempts < max_attempts:
-        u, v = random.sample(nodes, 2)
-        if not tree.has_edge(u, v) and not nx.has_path(tree, u, v):
-            # avoid adding an edge that makes it a tree again
-            tree.add_edge(u, v)
-            added += 1
-        elif not tree.has_edge(u, v):
-            # we allow adding edges that create cycles
-            tree.add_edge(u, v)
-            added += 1
-        attempts += 1
-
-    return tree
-
-def graph_to_string(G):
-    lines = []
-    lines.append(f"{G.number_of_nodes()} {G.number_of_edges()}")
+def graph_to_string(G, rng):
+    lines = [f"{G.number_of_nodes()} {G.number_of_edges()}"]
     for u, v in G.edges():
-        # If you want to assign a random length, for example between 1 and 10:
-        length = random.uniform(1, 2)
+        length = rng.uniform(1, 2)  # edge lengths uniform in [1, 2]
         lines.append(f"{u + 1} {v + 1} {length}")
     return "\n".join(lines)
-ns = [100, 150, 200, 250, 300, 350]
-ps = [0.1,0.15,0.2]
-# Example usage
-outdir = "benchmarks"
-os.makedirs(outdir, exist_ok=True)
-i = 0
-for method in [generate_almost_tree, random_bfs_tree]:
-    for n in ns:
-        for p in ps:
-            extra = int(n * p)
-            G = method(n, extra, seed=42)
-            gstring = graph_to_string(G)
-            subdir = f"tree_{'A' if i == 0 else 'B'}"
-            subdir_ = f"tree{'A' if i == 0 else 'B'}"
-            outsubdir = os.path.join(outdir, subdir)
-            os.makedirs(outsubdir, exist_ok=True)
-            filename = f"{subdir_}.{n}.{extra}"
-            filepath = os.path.join(outsubdir, filename)
-            with open(filepath, "w") as f:
-                f.write(gstring)
 
-    i += 1
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument("--ns", type=int, nargs="+", default=[100, 150, 200, 250, 300, 350])
+    parser.add_argument("--ps", type=float, nargs="+", default=[0.1, 0.15, 0.2, 0.3, 0.4, 0.5])
+    parser.add_argument("--seeds", type=int, nargs="+", default=[1, 2, 3])
+    parser.add_argument("--outdir", default="benchmarks_tree")
+    args = parser.parse_args()
+
+    count = 0
+    for prefix, method in (("treeA", generate_almost_tree), ("treeB", random_bfs_tree)):
+        outsubdir = os.path.join(args.outdir, "tree_" + prefix[-1])
+        os.makedirs(outsubdir, exist_ok=True)
+        for n in args.ns:
+            for p in args.ps:
+                extra = int(n * p)
+                for s in args.seeds:
+                    rng = random.Random(f"{prefix}-{n}-{p}-{s}")  # one deterministic stream per instance
+                    G = method(n, extra, rng)
+                    assert nx.is_connected(G)
+                    with open(os.path.join(outsubdir, f"{prefix}.{n}.{extra}.s{s}"), "w") as f:
+                        f.write(graph_to_string(G, rng))
+                    count += 1
+    print(f"wrote {count} instances to {args.outdir}")
+
+
+if __name__ == "__main__":
+    main()
