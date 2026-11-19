@@ -1,12 +1,12 @@
 """Generate almost-tree networks (tree_A: Pruefer-random labeled tree, tree_B: random BFS tree) plus extra edges.
 
 Every instance uses its own random.Random(seed) for the tree, the extra edges and the edge lengths, so the
-output is reproducible. (The original benchmarks/tree_A files were generated with the extra edges and edge
-lengths drawn from Python's unseeded global random stream and cannot be regenerated; they are kept as is.)
+output is reproducible. (The earlier tree_A instances drew their extra edges and edge lengths from Python's
+unseeded global random stream and could not be regenerated; they were replaced by this set.)
 
-Default: the tree study of the revision, written to benchmarks_tree/tree_{A,B}/<prefix>.<n>.<extra>.s<seed>
+Default: the benchmark tree sets, written to benchmarks/tree_{A,B}/<prefix>.<n>.<extra>.s<seed>
     python genalmosttree.py
-    python genalmosttree.py --ns 100 200 300 --ps 0.3 0.4 0.5 --seeds 1 2 3 --outdir benchmarks_tree
+    python genalmosttree.py --ns 100 200 300 --ps 0.3 0.4 0.5 --seeds 1 2 3 --outdir benchmarks
 """
 import argparse
 import os
@@ -67,7 +67,7 @@ def main():
     parser.add_argument("--ns", type=int, nargs="+", default=[100, 150, 200, 250, 300, 350])
     parser.add_argument("--ps", type=float, nargs="+", default=[0.1, 0.15, 0.2, 0.3, 0.4, 0.5])
     parser.add_argument("--seeds", type=int, nargs="+", default=[1, 2, 3])
-    parser.add_argument("--outdir", default="benchmarks_tree")
+    parser.add_argument("--outdir", default="benchmarks")
     args = parser.parse_args()
 
     count = 0
