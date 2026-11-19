@@ -22,6 +22,7 @@ MSK_ISL1=   UInt16(0b0000000000010000)   # is using long edge modeling
 MSK_ISA =   UInt16(0b0000000000001000)   # is attached tree pruning
 MSK_ISF =   UInt16(0b0000000000000100)   # is using the dominance filter on disjunction pairs
 MSK_ISN =   UInt16(0b0000000000000010)   # is using a null (empty) callback with PreCrush=1, baseline for user cuts
+MSK_ISU =   UInt16(0b0000000000000001)   # is skipping the vertex-assignment: every long edge keeps both internal endpoints
 
 @inline mask(formulation, MSK::UInt16)= ( UInt16(formulation) & MSK != MSK_ZERO )
 
@@ -57,6 +58,7 @@ MSK_ISN =   UInt16(0b0000000000000010)   # is using a null (empty) callback with
     LEFPADF =   MSK_ISMOD | MSK_ISE  | MSK_ISP0 | MSK_ISP1 | MSK_ISD | MSK_ISL | MSK_ISA | MSK_ISF           # EF-PE with dominance filter
     LEFPAVF =   MSK_ISMOD | MSK_ISE  | MSK_ISP0 | MSK_ISP1 | MSK_ISL | MSK_ISV | MSK_ISA | MSK_ISF           # EF-PBC with dominance filter
     LEFPAN  =   MSK_ISMOD | MSK_ISE  | MSK_ISP0 | MSK_ISP1 | MSK_ISL | MSK_ISA | MSK_ISN                     # EF-PB with a null callback and PreCrush=1 (baseline for EF-PBC)
+    LEFPAU  =   MSK_ISMOD | MSK_ISE  | MSK_ISP0 | MSK_ISP1 | MSK_ISL | MSK_ISA | MSK_ISU                     # EF-PB without vertex-assignment (ablation of Section 3.3)
     None   =   MSK_ZERO                                                      # not a model, just record statistics of original graph, degree-2-free graph, subdivided graph
 end
 

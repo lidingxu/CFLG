@@ -66,6 +66,8 @@ function solve!(problem::Problem, solver_name::String, option::Option, formulati
         formulation = LEFPAVF
     elseif formulation == "LEFPAN"
         formulation = LEFPAN
+    elseif formulation == "LEFPAU"
+        formulation = LEFPAU
     elseif formulation == "None"
         formulation = None
     else
@@ -152,6 +154,19 @@ function solve!(problem::Problem, solver_name::String, option::Option, formulati
     vassign = nothing
     if is_edge && is_long
         eassign, vassign = vAssign(problem, solver_name, option)
+        graph = problem.prob_graph
+        Elong = [e for e in graph.edge_ids if graph.edges[e].etype == :e_long]
+        if mask(formulation, MSK_ISU)
+            # no vertex-assignment: every long edge keeps both internal (degree >= 2) endpoints, i.e. the full
+            # long-edge system for every long edge; short edges are not affected
+            for e in Elong
+                eassign[e] = [v for v in (graph.edges[e].nodes[:a], graph.edges[e].nodes[:b]) if length(graph.adjacent_edges[v]) >= 2]
+            end
+        end
+        RUNINFO["long_edges"] = length(Elong)
+        for k in 0:2 # number of long edges with k assigned endpoints
+            RUNINFO["long_assigned_$k"] = count(e -> length(eassign[e]) == k, Elong)
+        end
     end
 
     preprocess_time = time() - t_start
@@ -470,9 +485,9 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg, eassign,
                 [ef_id in El], yei[ef_id, :c] <= 1 - yv[graph.edges[ef_id].nodes[:a]]
                 [ef_id in El], yei[ef_id, :c] <= 1 - yv[graph.edges[ef_id].nodes[:b]]
                 #[ef_id in El], yei[ef_id, :c] >= yv[graph.edges[ef_id].nodes[:a]] +  yv[graph.edges[ef_id].nodes[:b]] - 1
-                [ef_id in El2], yei[ef_id, :d] <= yei[ef_id, :a]
-                [ef_id in El2], yei[ef_id, :d] <= yei[ef_id, :b]
-                [ef_id in El2], yei[ef_id, :d] >= yei[ef_id, :a] + yei[ef_id, :b] - 1
+                [ef_id in El2], yei[ef_id, :d] <= yv[graph.edges[ef_id].nodes[:a]] # y_ed = y_va * y_vb
+                [ef_id in El2], yei[ef_id, :d] <= yv[graph.edges[ef_id].nodes[:b]]
+                [ef_id in El2], yei[ef_id, :d] >= yv[graph.edges[ef_id].nodes[:a]] + yv[graph.edges[ef_id].nodes[:b]] - 1
                 [ef_id in El], q[ef_id, :b] == q[ef_id, :a] + 2 * dlt * (floor(graph.edges[ef_id].length / (2 * dlt) ) - yei[ef_id, :c] ) + (graph.edges[ef_id].length -  2 * dlt * floor(graph.edges[ef_id].length / (2 * dlt)) ) * yei[ef_id, :d] # long edge coordinate relation
                 [ef_id in Elfixd], yei[ef_id, :d] == 0
                 [ef_id in Elfixloca], q[ef_id, :a] <= (2 * dlt + problem.c_tol) * (1 - yv[graph.edges[ef_id].nodes[:a]])  # long edge facility

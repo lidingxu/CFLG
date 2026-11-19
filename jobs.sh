@@ -26,6 +26,8 @@ resultpath="$PWD/results_rev"
 # main: Part I (EVF-DLB, EF, EF-DB, EF-DLB, EF-PB), Part II (EF-PI, EF-PE, EF-PBC),
 # EF-PBN (null-callback baseline of EF-PBC) and the dominance-filter variants (EF-PBF, EF-PIF, EF-PEF, EF-PBCF)
 main_formulations=("LEVFP" "EF" "EFP" "LEFP" "LEFPA" "LEFPAI" "LEFPAD" "LEFPAV" "LEFPAN" "LEFPAF" "LEFPAIF" "LEFPADF" "LEFPAVF")
+# small radius only: EF-PBU (EF-PB without vertex-assignment; at large radius the models are identical)
+main_small_formulations=("LEFPAU")
 # tree study: EVF-DLB (SOTA), EF-DLB (EF-PB without attached-tree projection), EF-PB, EF-PBF
 tree_formulations=("LEVFP" "LEFP" "LEFPA" "LEFPAF")
 tree_sizes=" ${TREE_SIZES:-100 150 200 250 300 350} "
@@ -50,11 +52,13 @@ add_job() { # benchmark instance formulation cover [seed]
   total=$((total + 1))
 }
 
-add_runs() { # benchmark instance formulations...
-  local benchmark=$1 instance=$2; shift 2
+add_runs() { # benchmark instance group formulations...
+  local benchmark=$1 instance=$2 group=$3; shift 3
   for cover in "${covers[@]}"; do
     add_job "$benchmark" "$instance" "None" "$cover"
-    for formulation in "$@"; do
+    local extra=()
+    [[ $group == "main" && $cover == "Small" ]] && extra=("${main_small_formulations[@]}")
+    for formulation in "$@" "${extra[@]}"; do
       for seed in "${seeds[@]}"; do
         add_job "$benchmark" "$instance" "$formulation" "$cover" "$seed"
       done
@@ -69,10 +73,10 @@ for benchmark in $(ls "$datapath"); do
   [[ $benchmark == "test" ]] && continue
   for instance in $(ls "$datapath/$benchmark"); do
     if [[ $benchmark != tree_* ]] || is_core_tree "$instance"; then
-      [[ " ${groups[*]} " == *" main "* ]] && add_runs "$benchmark" "$instance" "${main_formulations[@]}"
+      [[ " ${groups[*]} " == *" main "* ]] && add_runs "$benchmark" "$instance" main "${main_formulations[@]}"
     else
       n=$(echo "$instance" | cut -d. -f2)
-      [[ " ${groups[*]} " == *" tree "* && $tree_sizes == *" $n "* ]] && add_runs "$benchmark" "$instance" "${tree_formulations[@]}"
+      [[ " ${groups[*]} " == *" tree "* && $tree_sizes == *" $n "* ]] && add_runs "$benchmark" "$instance" tree "${tree_formulations[@]}"
     fi
   done
 done
