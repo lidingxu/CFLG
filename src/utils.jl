@@ -20,6 +20,7 @@ MSK_ISC  =  UInt16(0b0000000001000000)   # is cover preprocessing
 MSK_ISB  =  UInt16(0b0000000000100000)   # is Benders decomposition
 MSK_ISL1=   UInt16(0b0000000000010000)   # is using long edge modeling
 MSK_ISA =   UInt16(0b0000000000001000)   # is attached tree pruning
+MSK_ISF =   UInt16(0b0000000000000100)   # is using the dominance filter on disjunction pairs
 
 @inline mask(formulation, MSK::UInt16)= ( UInt16(formulation) & MSK != MSK_ZERO )
 
@@ -50,6 +51,10 @@ MSK_ISA =   UInt16(0b0000000000001000)   # is attached tree pruning
     LEFPB  =   MSK_ISMOD | MSK_ISE  | MSK_ISP0 | MSK_ISP1 | MSK_ISB | MSK_ISL             # edge model big-M formulation with processing (bound tightenning and delimited cover) and Benders decomposition
     LEFPAD  =   MSK_ISMOD | MSK_ISE  | MSK_ISP0 | MSK_ISP1 | MSK_ISD | MSK_ISL | MSK_ISA             # edge model disjunctive programming formulation with processing (delimited cover)
     LEFPDB =   MSK_ISMOD | MSK_ISE  | MSK_ISP0 | MSK_ISP1 | MSK_ISD | MSK_ISB | MSK_ISL   # edge model disjunctive programming formulation with processing (delimited cover) and Benders decomposition
+    LEFPAF  =   MSK_ISMOD | MSK_ISE  | MSK_ISP0 | MSK_ISP1 | MSK_ISL | MSK_ISA | MSK_ISF                     # EF-PB with dominance filter
+    LEFPAIF =   MSK_ISMOD | MSK_ISE  | MSK_ISP0 | MSK_ISP1 | MSK_ISL | MSK_ISI | MSK_ISA | MSK_ISF           # EF-PI with dominance filter
+    LEFPADF =   MSK_ISMOD | MSK_ISE  | MSK_ISP0 | MSK_ISP1 | MSK_ISD | MSK_ISL | MSK_ISA | MSK_ISF           # EF-PE with dominance filter
+    LEFPAVF =   MSK_ISMOD | MSK_ISE  | MSK_ISP0 | MSK_ISP1 | MSK_ISL | MSK_ISV | MSK_ISA | MSK_ISF           # EF-PBC with dominance filter
     None   =   MSK_ZERO                                                      # not a model, just record statistics of original graph, degree-2-free graph, subdivided graph
 end
 
