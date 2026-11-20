@@ -6,7 +6,9 @@
 #SBATCH --mem=8G
 #SBATCH --time=02:20:00
 #SBATCH --output=outputs/output_%A_%a.out
-#SBATCH --partition=opt_int
+#SBATCH --partition=big
+#SBATCH --hint=nomultithread
+#SBATCH --constraint=Gold6342
 
 # JOBLIST: job list file, OFFSET: index of the first line of this array chunk (both set by runjobs.sh)
 JOBLIST=${JOBLIST:-job_list.txt}
