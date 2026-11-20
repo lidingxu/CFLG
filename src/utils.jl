@@ -127,6 +127,8 @@ function solverVersion(solver_name::String)
         a, b, c = Ref{Cint}(), Ref{Cint}(), Ref{Cint}()
         Gurobi.GRBversion(a, b, c)
         return "Gurobi-$(a[]).$(b[]).$(c[])"
+    elseif solver_name == "SCIP"
+        return "SCIP-$(SCIP.SCIP_versionnumber())"
     end
     return solver_name
 end
@@ -151,6 +153,13 @@ function timedOptimize!(model)
     optimize!(model)
     RUNINFO["wall_solve_time"] = time() - t0
     RUNINFO["has_solution"] = has_values(model)
+    if solver_name(model) == "SCIP" && backend(model) isa SCIP.Optimizer
+        scip = backend(model).inner.scip[]
+        RUNINFO["root_lp_bound"] = SCIP.SCIPgetFirstLPDualboundRoot(scip) # root LP before cuts
+        RUNINFO["root_bound"] = SCIP.SCIPgetDualboundRoot(scip)           # dual bound after the root node
+        RUNINFO["cuts_applied_all"] = SCIP.SCIPgetNCutsApplied(scip)      # cuts of all separators
+        SCIP.SCIPprintStatistics(scip, C_NULL)                            # into the log file
+    end
     return
 end
 
@@ -176,6 +185,7 @@ function initiLPModel(solver_name::String, option::Option)
         model = Model(GLPK.Optimizer)
     elseif solver_name == "SCIP"
         model = Model(SCIP.Optimizer)
+        set_silent(model)
     else
         println("unkown solver name\n")
         @assert(false)
@@ -205,11 +215,12 @@ function initModel(solver_name::String,  option::Option, time_limit_sec)
         set_optimizer_attribute(model, "tm_lim", time_limit_sec) #
         #to do
     elseif solver_name == "SCIP"
-        model = Model(SCIP.Optimizer)
+        model = direct_model(SCIP.Optimizer())
+        set_optimizer_attribute(model, "display/verblevel", option.log_level == 0 ? 0 : 4)
         set_optimizer_attribute(model, "limits/gap", option.rel_gap)
         set_optimizer_attribute(model, "limits/time", time_limit_sec)
         set_optimizer_attribute(model, "limits/absgap", 1)
-        set_optimizer_attribute(model, "timing/clocktype", 1) # CPU clock time
+        set_optimizer_attribute(model, "timing/clocktype", 2) # wall clock, like Gurobi and the run deadline
     else
         println("unkown solver name\n")
         @assert(false)

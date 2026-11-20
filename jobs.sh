@@ -12,19 +12,20 @@
 #               study; it also uses the core tree instances, whose runs come from the main group)
 #
 # usage: bash jobs.sh [job_list_file]
+#   SOLVER=Gurobi               MIP solver (default SCIP)
 #   JOB_GROUPS="main tree"      which job groups to list (default both)
 #   TREE_SIZES="100 200 300"    restrict the tree group to these sizes n (default all)
-#   SEEDS="0 1 2"               solver seeds of the main group (seed 0 = Gurobi's default)
+#   SEEDS="0 1 2"               solver seeds of the main group (seed 0 = the solver's default)
 #   TREE_SEEDS="0 1 2"          solver seeds of the tree group
 joblist=${1:-job_list.txt}
 timelimit=7200
-solver="Gurobi" # "Gurobi", "CPLEX", "GLPK", "SCIP".
+solver=${SOLVER:-SCIP} # MIP solver: "SCIP" (default), "Gurobi", "CPLEX", "GLPK"
 covers=("Small" "Large")
 main_seeds=(${SEEDS:-0 1 2})
 tree_seeds=(${TREE_SEEDS:-0 1 2})
 groups=(${JOB_GROUPS:-main tree})
 datapath="$PWD/benchmarks"
-resultpath="$PWD/results_rev"
+resultpath="$PWD/results_rev/$solver" # per solver, so that the skip of existing results never mixes solvers
 
 # main: Part I (EVF-DLB, EF, EF-DB, EF-DLB, EF-PB), Part II (EF-PI, EF-PE, EF-PBC),
 # EF-PBN (null-callback baseline of EF-PBC) and the dominance-filter variants (EF-PBF, EF-PIF, EF-PEF, EF-PBCF)

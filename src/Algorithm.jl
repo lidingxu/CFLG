@@ -182,6 +182,11 @@ function solve!(problem::Problem, solver_name::String, option::Option, formulati
         set_optimizer_attribute(cflg, "Seed", option.seed)
     elseif solver_name == "CPLEX"
         set_optimizer_attribute(cflg, "CPXPARAM_RandomSeed", option.seed)
+    elseif solver_name == "SCIP"
+        set_optimizer_attribute(cflg, "randomization/randomseedshift", option.seed)
+        if option.log_file != ""
+            SCIP.SCIPsetMessagehdlrLogfile(backend(cflg).inner.scip[], option.log_file)
+        end
     end
 
     if is_edge
@@ -229,6 +234,12 @@ function vAssign(problem::Problem, solver_name::String, option::Option)
     end)
 
     @objective(model, Max, sum(α[e] for e in graph.edge_ids))
+    if solver_name != "Gurobi"
+        # the LP relaxation is integral (totally unimodular), but a solver may return a non-vertex optimum of the
+        # LP (SCIP does); solve the equivalent 0/1 program instead
+        set_binary.(α)
+        set_binary.(β)
+    end
 
     #print(model)
     optimize!(model)
@@ -576,25 +587,10 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg, eassign,
     realcalled = 0
     added = 0
     if is_cuts || is_morecuts
-        function user_cut_callback(cb_data, cb_where::Cint)
-            called += 1
-            if cb_where != GRB_CB_MIPNODE
-                return
-            end
-            resultP = Ref{Cdouble}()
-            GRBcbget(cb_data, cb_where, GRB_CB_MIPNODE_NODCNT, resultP)
-            if resultP[] >= 1.0
-                #GRBterminate(backend(cflg))
-                return
-            end
-            resultS = Ref{Cint}()
-            GRBcbget(cb_data, cb_where, GRB_CB_MIPNODE_STATUS, resultS)
-            if resultS[] != GRB_OPTIMAL && resultS[] != GRB_SUBOPTIMAL
-                return
-            end
+        # rank-1 lift-and-project separation at the current LP solution (solver-independent)
+        function separate_lp_cuts(cb_data)
             t_sep0 = time()
             realcalled += 1
-            Gurobi.load_callback_variable_primal(cb_data, cb_where)
             ze_val = callback_value.(Ref(cb_data), ze)
             q_val = callback_value.(Ref(cb_data), q)
             rv_val = callback_value.(Ref(cb_data), rv)
@@ -627,6 +623,32 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg, eassign,
                 end
             end
             sepatime += time() - t_sep0
+        end
+        # Gurobi: separate at the root node only (node count 0), when the node LP is solved
+        function user_cut_callback(cb_data, cb_where::Cint)
+            called += 1
+            if cb_where != GRB_CB_MIPNODE
+                return
+            end
+            resultP = Ref{Cdouble}()
+            GRBcbget(cb_data, cb_where, GRB_CB_MIPNODE_NODCNT, resultP)
+            if resultP[] >= 1.0
+                #GRBterminate(backend(cflg))
+                return
+            end
+            resultS = Ref{Cint}()
+            GRBcbget(cb_data, cb_where, GRB_CB_MIPNODE_STATUS, resultS)
+            if resultS[] != GRB_OPTIMAL && resultS[] != GRB_SUBOPTIMAL
+                return
+            end
+            Gurobi.load_callback_variable_primal(cb_data, cb_where)
+            separate_lp_cuts(cb_data)
+        end
+        # SCIP: separate at the root node only (depth 0)
+        function scip_cut_callback(cb_data)
+            called += 1
+            SCIP.SCIPgetDepth(backend(cflg).inner.scip[]) == 0 || return
+            separate_lp_cuts(cb_data)
         end
         function user_cut_callback2(cb_data, cb_where::Cint)
             called += 1
@@ -725,20 +747,34 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg, eassign,
             end
             sepatime += time() - t_sep0
         end
-        set_optimizer_attribute(cflg, "PreCrush", 1)
-        if is_cuts
-            MOI.set(cflg, Gurobi.CallbackFunction(), user_cut_callback)
-        elseif is_morecuts
-            MOI.set(cflg, Gurobi.CallbackFunction(), user_cut_callback2)
+        if solver_name(cflg) == "SCIP"
+            @assert is_cuts "SCIP: only the rank-1 cuts (EF-PBC) are supported"
+            MOI.set(cflg, MOI.UserCutCallback(), scip_cut_callback)
+        else
+            set_optimizer_attribute(cflg, "PreCrush", 1)
+            if is_cuts
+                MOI.set(cflg, Gurobi.CallbackFunction(), user_cut_callback)
+            elseif is_morecuts
+                MOI.set(cflg, Gurobi.CallbackFunction(), user_cut_callback2)
+            end
         end
     elseif mask(formulation, MSK_ISN)
-        # null callback: same solver settings as the cut formulations (callback registered, PreCrush=1), but no cuts
-        function null_callback(cb_data, cb_where::Cint)
-            called += 1
-            return
+        # null callback: same solver settings as the cut formulations (callback registered, PreCrush=1 for
+        # Gurobi), but no cuts
+        if solver_name(cflg) == "SCIP"
+            function scip_null_callback(cb_data)
+                called += 1
+                return
+            end
+            MOI.set(cflg, MOI.UserCutCallback(), scip_null_callback)
+        else
+            function null_callback(cb_data, cb_where::Cint)
+                called += 1
+                return
+            end
+            set_optimizer_attribute(cflg, "PreCrush", 1)
+            MOI.set(cflg, Gurobi.CallbackFunction(), null_callback)
         end
-        set_optimizer_attribute(cflg, "PreCrush", 1)
-        MOI.set(cflg, Gurobi.CallbackFunction(), null_callback)
     end
 
 
@@ -763,6 +799,11 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg, eassign,
     RUNINFO["cb_calls"] = called
     RUNINFO["sepa_rounds"] = realcalled
     RUNINFO["cuts_submitted"] = added
+    if solver_name(cflg) == "SCIP" && backend(cflg).moi_separator !== nothing
+        sepa_ptr = backend(cflg).inner.sepas[backend(cflg).moi_separator]
+        RUNINFO["cuts_found_by_solver"] = SCIP.SCIPsepaGetNCutsFound(sepa_ptr)
+        RUNINFO["cuts_applied"] = SCIP.SCIPsepaGetNCutsApplied(sepa_ptr)
+    end
     sol = Vector{Tuple{Symbol,Int, Float64}}();
     stat.termintaion_status = termination_status(cflg)
     stat.bound = objective_bound(cflg)

@@ -14,9 +14,10 @@ To use cflg, it requires:
 - JuMP,
 
 and one of the following MILP solvers:
+- SCIP (default; SCIP.jl 0.12.8 with SCIP 10.0.3, installed with the package environment),
+- Gurobi,
 - CPLEX,
-- GLPK,
-- Gurobi.
+- GLPK.
 
 
 ## Benchmarks
