@@ -28,6 +28,6 @@ echo "Cover: $cover"
 echo "Seed: $seed"
 echo "Host: $(hostname), CPU: $(lscpu | grep 'Model name' | sed 's/Model name: *//')"
 
-# julia --project=. src/main.jl benchmarks/test testg.txt none CPLEX 20 LEFPA Small 0
+# julia --project=. src/main.jl benchmarks/test testg.txt none SCIP 20 LEFPA Small 0
 echo "julia" "--project=."  "src/main.jl" "$datapath" "$instance" "$resultpath" "$solver" "$timelimit" "$formulation" "$cover" $seed
 srun julia --project=. src/main.jl "$datapath" "$instance" "$resultpath" "$solver" "$timelimit" "$formulation" "$cover" $seed

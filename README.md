@@ -16,7 +16,6 @@ To use cflg, it requires:
 and one of the following MILP solvers:
 - SCIP (default; SCIP.jl 0.12.8 with SCIP 10.0.3, installed with the package environment),
 - Gurobi,
-- CPLEX,
 - GLPK.
 
 
@@ -33,7 +32,7 @@ Run one instance with
 ```
 julia --project=. src/main.jl data_folder instance result_folder solver time_limit algorithm radius [seed]
 ```
-where `solver` is `SCIP`, `Gurobi`, `CPLEX` or `GLPK`, `radius` is `Small` or `Large`, and `seed` sets the solver's random seed (0 = the solver's default). The result file is `result_folder/instance.algorithm.radius[.sseed]`; the solver log is written next to it with the suffix `.log`.
+where `solver` is `SCIP`, `Gurobi` or `GLPK`, `radius` is `Small` or `Large`, and `seed` sets the solver's random seed (0 = the solver's default). The result file is `result_folder/instance.algorithm.radius[.sseed]`; the solver log is written next to it with the suffix `.log`.
 
 
 The algorithm option names and short descriptions (features are inferred from the bitmask flags):

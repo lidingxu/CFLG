@@ -39,7 +39,7 @@ function main(args)
     has_seed = length(args) == 8
     seed = has_seed ? parse(Int, args[8]) : 0
 
-    solver_names = ["Gurobi", "CPLEX", "GLPK", "SCIP"]
+    solver_names = ["Gurobi", "GLPK", "SCIP"]
     covers = ["Small", "Large"]
     println(instance_dir, " ", solver_name, " ", time_limit, " ", output_dir, " ", instance_name, " ", formulation, " ", cover, " seed ", seed)
     @assert(solver_name in solver_names)

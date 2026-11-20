@@ -4,11 +4,6 @@ module CFLG
     using CPUTime
     using MutableNamedTuples
     try
-        using CPLEX
-    catch e
-    end
-
-    try
         using Gurobi
     catch e
     end

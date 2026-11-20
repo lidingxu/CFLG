@@ -14,11 +14,6 @@ using CFLG
 		import Gurobi
 	    catch e
 	    end
-        elseif solver_name == "CPLEX"
-	    try 
-		import CPLEX
-	    catch e
-	    end
         elseif solver_name == "GLPK"
 	    try 
 		import GLPK

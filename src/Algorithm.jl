@@ -80,6 +80,8 @@ function solve!(problem::Problem, solver_name::String, option::Option, formulati
     is_edge = mask(formulation, MSK_ISE)
     is_preprocess = mask(formulation, MSK_ISP0) || mask(formulation, MSK_ISP1)
     is_benders = mask(formulation, MSK_ISB)
+    # the Benders formulations (EFPB, EFPDB, LEFPB, LEFPDB) used CPLEX's Benders decomposition
+    is_benders && error("Benders formulations need CPLEX, which is no longer supported")
     is_long = mask(formulation, MSK_ISL)
     is_attach = mask(formulation, MSK_ISA)
 
@@ -180,8 +182,6 @@ function solve!(problem::Problem, solver_name::String, option::Option, formulati
             set_optimizer_attribute(cflg, "LogFile", option.log_file)
         end
         set_optimizer_attribute(cflg, "Seed", option.seed)
-    elseif solver_name == "CPLEX"
-        set_optimizer_attribute(cflg, "CPXPARAM_RandomSeed", option.seed)
     elseif solver_name == "SCIP"
         set_optimizer_attribute(cflg, "randomization/randomseedshift", option.seed)
         if option.log_file != ""
@@ -366,12 +366,7 @@ function solveEFP_!(problem::Problem, formulation::FormulationSet, cflg, eassign
     stat.gap = relative_gap(cflg)
     stat.time = solve_time(cflg)
     stat.sepatime = sepatime
-    if solver_name(cflg) == "CPLEX"
-        cpx = backend(cflg)
-        stat.node = CPLEX.CPXgetnodecnt(cpx.env, cpx.lp)
-    else
-        stat.node = Int32(node_count(cflg))
-    end
+    stat.node = Int32(node_count(cflg))
     if has_values(cflg)
         stat.sol_val = objective_value(cflg)
         #for ef_id in edge_ids
@@ -810,12 +805,7 @@ function solveEFP!(problem::Problem, formulation::FormulationSet, cflg, eassign,
     stat.gap = relative_gap(cflg)
     stat.time = solve_time(cflg)
     stat.sepatime = sepatime
-    if solver_name(cflg) == "CPLEX"
-        cpx = backend(cflg)
-        stat.node = CPLEX.CPXgetnodecnt(cpx.env, cpx.lp)
-    else
-        stat.node = Int32(node_count(cflg))
-    end
+    stat.node = Int32(node_count(cflg))
     if has_values(cflg)
         stat.sol_val = objective_value(cflg)
         #for ef_id in edge_ids
@@ -893,12 +883,7 @@ function solveEF!(problem::Problem, formulation::FormulationSet, cflg)
     stat.bound = objective_bound(cflg)
     stat.gap = relative_gap(cflg)
     stat.time = solve_time(cflg)
-    if solver_name(cflg) == "CPLEX"
-        cpx = backend(cflg)
-        stat.node = CPLEX.CPXgetnodecnt(cpx.env, cpx.lp)
-    else
-        stat.node = Int32(node_count(cflg))
-    end
+    stat.node = Int32(node_count(cflg))
 
     stat.formulation = formulation
     stat.instance = problem.instance
@@ -958,11 +943,6 @@ function solveFPVs!(problem::Problem, formulation::FormulationSet, cflg, Pi, is_
         ze[v_id in graph.node_ids, efi in EIp[v_id]], Bin # big-M modelling variable on edges
     end)
 
-    if is_benders
-        master_variables = [ye..., x..., w..., ze..., q...]
-        sub_variables = rv
-        setModelAnottion(cflg, master_variables, sub_variables)
-    end
     # vertex facility related variables
     if usev
         print("vertex var\n")
@@ -1048,12 +1028,7 @@ function solveFPVs!(problem::Problem, formulation::FormulationSet, cflg, Pi, is_
     stat.bound = objective_bound(cflg)
     stat.gap = relative_gap(cflg)
     stat.time = solve_time(cflg)
-    if solver_name(cflg) == "CPLEX"
-        cpx = backend(cflg)
-        stat.node = CPLEX.CPXgetnodecnt(cpx.env, cpx.lp)
-    else
-        stat.node = Int32(node_count(cflg))
-    end
+    stat.node = Int32(node_count(cflg))
     stat.formulation = formulation
     stat.instance = problem.instance
     if has_values(cflg)
@@ -1165,12 +1140,7 @@ function solveLEVF!(problem::Problem, formulation::FormulationSet, cflg)
     stat.bound = objective_bound(cflg)
     stat.gap = relative_gap(cflg)
     stat.time = solve_time(cflg)
-    if solver_name(cflg) == "CPLEX"
-        cpx = backend(cflg)
-        stat.node = CPLEX.CPXgetnodecnt(cpx.env, cpx.lp)
-    else
-        stat.node = Int32(node_count(cflg))
-    end
+    stat.node = Int32(node_count(cflg))
 
     stat.formulation = formulation
     stat.instance = problem.instance
@@ -1232,18 +1202,6 @@ function solveEFPD!(problem::Problem, formulation::FormulationSet, cflg, is_bend
         ze[v_id in graph.node_ids, efi in EIp[v_id]], Bin # disjunctive indicator variable on edges
     end)
 
-    if is_benders
-        master_variables = [ye..., x..., w..., ze..., q...]
-        sub_variables = [rv..., barqvei..., qvei...]
-        setModelAnottion(cflg, master_variables, sub_variables)
-        #@constraints(cflg, begin
-        #[v_id in graph.node_ids], rv[v_id] <=  problem.Uv[v_id]  * (1 - x[v_id]) # big M on x
-        #[v_id in graph.node_ids, efi in EIp[v_id]], rv[v_id] <= (
-        # problem.Me[(v_id, efi[1], efi[2])] ) * (1 - ze[v_id, efi]) + ( problem.dlte[(v_id, efi[1], efi[2])] ) -
-        # ( problem.d[lor(v_id, graph.edges[efi[1]].nodes[efi[2]])] +  ifelse(efi[2] == :a , q[efi[1]], (graph.edges[efi[1]].length - q[efi[1]]) ))  # big M on edges
-        #end)
-    end
-
     # constraints
     @constraints(cflg, begin
         [e_id in graph.edge_ids, ef_id in problem.Ec[e_id]], w[e_id] >= ye[ef_id] # complete cover by edges: open
@@ -1272,12 +1230,7 @@ function solveEFPD!(problem::Problem, formulation::FormulationSet, cflg, is_bend
     stat.bound = objective_bound(cflg)
     stat.gap = relative_gap(cflg)
     stat.time = solve_time(cflg)
-    if solver_name(cflg) == "CPLEX"
-        cpx = backend(cflg)
-        stat.node = CPLEX.CPXgetnodecnt(cpx.env, cpx.lp)
-    else
-        stat.node = Int32(node_count(cflg))
-    end
+    stat.node = Int32(node_count(cflg))
     stat.formulation = formulation
 
     stat.instance = problem.instance
@@ -1335,12 +1288,7 @@ function solveEFPI!(problem::Problem, formulation::FormulationSet, cflg)
     stat.bound = objective_bound(cflg)
     stat.gap = relative_gap(cflg)
     stat.time = solve_time(cflg)
-    if solver_name(cflg) == "CPLEX"
-        cpx = backend(cflg)
-        stat.node = CPLEX.CPXgetnodecnt(cpx.env, cpx.lp)
-    else
-        stat.node = Int32(node_count(cflg))
-    end
+    stat.node = Int32(node_count(cflg))
     stat.formulation = formulation
 
     stat.instance = problem.instance

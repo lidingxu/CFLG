@@ -3,7 +3,7 @@ timelimit=1800
 timebound=2200
 formulations=("EF" "EFP" "EFPV" "EFPV2" "EFPI" "EFPD" "EVFP" "LEVFP" "None")
 covers=("Small" "Large")
-solver="SCIP" # "SCIP" (default), "Gurobi", "CPLEX", "GLPK".
+solver="SCIP" # "SCIP" (default), "Gurobi", "GLPK".
 datapath="$PWD/benchmarks"
 resultpath="$PWD/results"
 gnuparalleltest=0 # enable: 1, disable: 0
@@ -20,7 +20,7 @@ runInstance() {
     formulation=$7
     cover=$8
     "
-    # example: julia  src/main.jl "benchmarks/test" "K400.10.con.red" "results/test" "CPLEX" "100" "LEFP" "Small"
+    # example: julia  src/main.jl "benchmarks/test" "K400.10.con.red" "results/test" "SCIP" "100" "LEFP" "Small"
     "$juliabin"  src/main.jl "$benchmark_dir" "$instance" "$result_dir" "$solver" "$timelimit"  "$formulation" "$cover"
                 
 }

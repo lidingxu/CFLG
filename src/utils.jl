@@ -178,9 +178,6 @@ function initiLPModel(solver_name::String, option::Option)
         model = direct_model(Gurobi.Optimizer())
         set_optimizer_attribute(model, "Threads", option.thread)
         set_optimizer_attribute(model, "OutputFlag", option.log_level)
-    elseif solver_name == "CPLEX"
-        model = direct_model(CPLEX.Optimizer())
-        set_optimizer_attribute(model, "CPXPARAM_Threads", option.thread)
     elseif solver_name == "GLPK"
         model = Model(GLPK.Optimizer)
     elseif solver_name == "SCIP"
@@ -202,13 +199,6 @@ function initModel(solver_name::String,  option::Option, time_limit_sec)
         set_optimizer_attribute(model, "MIPGap", option.rel_gap)
         #set_optimizer_attribute(model, "MIPGapAbs", 1 - 2e-6) # Gurobi does not support absolute gap, so set it to a large value
         set_optimizer_attribute(model, "TimeLimit", time_limit_sec) # note Gurobi only supports wall-clock time
-    elseif solver_name == "CPLEX"
-        model = direct_model(CPLEX.Optimizer())
-        set_optimizer_attribute(model, "CPXPARAM_Threads", option.thread)
-        set_optimizer_attribute(model, "CPXPARAM_MIP_Tolerances_MIPGap", option.rel_gap)
-        #set_optimizer_attribute(model, "CPXPARAM_MIP_Tolerances_AbsMIPGap",  1 - 2e-6)
-        set_optimizer_attribute(model, "CPXPARAM_ClockType", 1) # CPU clock time
-        set_optimizer_attribute(model, "CPXPARAM_TimeLimit", time_limit_sec)
     elseif solver_name == "GLPK"
         model = Model(GLPK.Optimizer)
         set_optimizer_attribute(model, "mip_gap", option.rel_gap)
@@ -229,54 +219,6 @@ function initModel(solver_name::String,  option::Option, time_limit_sec)
 end
 
 
-
-function add_annotation(
-    model::JuMP.Model,
-    variable_classification::Dict;
-    all_variables::Bool = true,
-)
-    num_variables = sum(length(it) for it in values(variable_classification))
-    if all_variables
-        @assert num_variables == JuMP.num_variables(model)
-    end
-    indices, annotations = CPXINT[], CPXLONG[]
-    for (key, value) in variable_classification
-        for variable_ref in value
-            push!(indices, variable_ref.index.value - 1)
-            push!(annotations, CPX_BENDERS_MASTERVALUE + key)
-        end
-    end
-    cplex = backend(model)
-    index_p = Ref{CPXINT}()
-    CPXnewlongannotation(
-        cplex.env,
-        cplex.lp,
-        CPX_BENDERS_ANNOTATION,
-        CPX_BENDERS_MASTERVALUE,
-    )
-    CPXgetlongannotationindex(
-        cplex.env,
-        cplex.lp,
-        CPX_BENDERS_ANNOTATION,
-        index_p,
-    )
-    CPXsetlongannotations(
-        cplex.env,
-        cplex.lp,
-        index_p[],
-        CPX_ANNOTATIONOBJ_COL,
-        length(indices),
-        indices,
-        annotations,
-    )
-    return
-end
-
-function setModelAnottion(model::JuMP.Model, master_variables, sub_variables)
-    set_optimizer_attribute(model, "CPXPARAM_Benders_Strategy", 1)
-    variable_classification = Dict(0 => master_variables, 1 => sub_variables)
-    add_annotation(model, variable_classification)
-end
 
 # single row cut for array1 + array1 >= lb
 function singleRowCut(array1, array2, array3, lb)

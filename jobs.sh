@@ -19,7 +19,7 @@
 #   TREE_SEEDS="0 1 2"          solver seeds of the tree group
 joblist=${1:-job_list.txt}
 timelimit=7200
-solver=${SOLVER:-SCIP} # MIP solver: "SCIP" (default), "Gurobi", "CPLEX", "GLPK"
+solver=${SOLVER:-SCIP} # MIP solver: "SCIP" (default), "Gurobi", "GLPK"
 covers=("Small" "Large")
 main_seeds=(${SEEDS:-0 1 2})
 tree_seeds=(${TREE_SEEDS:-0 1 2})
