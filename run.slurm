@@ -3,7 +3,7 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=1
 #SBATCH --nodes=1
-#SBATCH --mem=8G
+#SBATCH --mem=16G
 #SBATCH --time=02:20:00
 #SBATCH --output=outputs/output_%A_%a.out
 #SBATCH --partition=big
