@@ -28,10 +28,8 @@ datapath="$PWD/benchmarks"
 resultpath="$PWD/results_rev/$solver" # per solver, so that the skip of existing results never mixes solvers
 
 # main: Part I (EVF-DLB, EF, EF-DB, EF-DLB, EF-PB), Part II (EF-PI, EF-PE, EF-PBC),
-# EF-PBN (null-callback baseline of EF-PBC) and the dominance-filter variants (EF-PBF, EF-PIF, EF-PEF, EF-PBCF)
-main_formulations=("LEVFP" "EF" "EFP" "LEFP" "LEFPA" "LEFPAI" "LEFPAD" "LEFPAV" "LEFPAN" "LEFPAF" "LEFPAIF" "LEFPADF" "LEFPAVF")
-# small radius only: EF-PBU (EF-PB without vertex-assignment; at large radius the models are identical)
-main_small_formulations=("LEFPAU")
+# the dominance-filter variants (EF-PBF, EF-PIF, EF-PEF, EF-PBCF) and EF-PBU (EF-PB without vertex-assignment)
+main_formulations=("LEVFP" "EF" "EFP" "LEFP" "LEFPA" "LEFPAI" "LEFPAD" "LEFPAV" "LEFPAF" "LEFPAIF" "LEFPADF" "LEFPAVF" "LEFPAU")
 # tree study: EVF-DLB (SOTA), EF-DLB (EF-PB without attached-tree projection), EF-PB, EF-PBF
 tree_formulations=("LEVFP" "LEFP" "LEFPA" "LEFPAF")
 tree_sizes=" ${TREE_SIZES:-100 150 200 250 300 350} "
@@ -62,9 +60,7 @@ add_runs() { # benchmark instance group formulations...
   [[ $group == "tree" ]] && seeds=("${tree_seeds[@]}")
   for cover in "${covers[@]}"; do
     add_job "$benchmark" "$instance" "None" "$cover"
-    local extra=()
-    [[ $group == "main" && $cover == "Small" ]] && extra=("${main_small_formulations[@]}")
-    for formulation in "$@" "${extra[@]}"; do
+    for formulation in "$@"; do
       for seed in "${seeds[@]}"; do
         add_job "$benchmark" "$instance" "$formulation" "$cover" "$seed"
       done
