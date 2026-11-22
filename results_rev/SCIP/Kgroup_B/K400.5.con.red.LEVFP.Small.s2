@@ -1,0 +1,26 @@
+instance: K400.5.con.red
+obj: 1353.0
+bound: 1260.9118307557121
+gap: 0.0730329964380586
+time: 7199.694176
+preprocess_time: 0.1896839141845703
+sepa_time: 0.0
+node: 42327
+formulation: LEVFP
+status: TIME_LIMIT
+cover: Small
+seed: 2
+build_time: 0.11829710006713867
+total_time: 7200.016066074371
+host: htc-cmp518.zib.de
+cpu: Intel(R) Xeon(R) Gold 6342 CPU @ 2.80GHz
+solver_version: SCIP-10.0.3
+julia_version: 1.11.4
+cuts_applied_all: 1243044
+has_solution: true
+model_bins: 8478
+model_cons: 20148
+model_vars: 9707
+root_bound: 1249.258119492384
+root_lp_bound: 1215.3022224941324
+wall_solve_time: 7199.702647924423

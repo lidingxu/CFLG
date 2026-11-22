@@ -1,0 +1,26 @@
+instance: K100.9.red
+obj: 3.0
+bound: 3.0
+gap: 0.0
+time: 36.606077
+preprocess_time: 0.020259857177734375
+sepa_time: 0.0
+node: 350
+formulation: LEVFP
+status: OPTIMAL
+cover: Large
+seed: 2
+build_time: 0.15346002578735352
+total_time: 36.78812003135681
+host: htc-cmp501.zib.de
+cpu: Intel(R) Xeon(R) Gold 6342 CPU @ 2.80GHz
+solver_version: SCIP-10.0.3
+julia_version: 1.11.4
+cuts_applied_all: 2725
+has_solution: true
+model_bins: 2791
+model_cons: 6637
+model_vars: 2899
+root_bound: 1.8000000000000034
+root_lp_bound: 1.1367052595121467
+wall_solve_time: 36.610877990722656

@@ -1,0 +1,26 @@
+instance: r_10_0.1_12.txt
+obj: 2.0
+bound: 2.0
+gap: 0.0
+time: 2.932667
+preprocess_time: 0.00018215179443359375
+sepa_time: 0.0
+node: 1
+formulation: EF
+status: OPTIMAL
+cover: Large
+seed: 2
+build_time: 0.026010990142822266
+total_time: 3.038267135620117
+host: htc-cmp531.zib.de
+cpu: Intel(R) Xeon(R) Gold 6342 CPU @ 2.80GHz
+solver_version: SCIP-10.0.3
+julia_version: 1.11.4
+cuts_applied_all: 166
+has_solution: true
+model_bins: 1956
+model_cons: 5724
+model_vars: 2328
+root_bound: 1.0e20
+root_lp_bound: 0.41463414634146345
+wall_solve_time: 2.93363881111145

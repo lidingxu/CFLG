@@ -1,0 +1,26 @@
+instance: treeB.250.37.s1
+obj: 50.0
+bound: 48.0
+gap: 0.041666666666666664
+time: 7199.801074
+preprocess_time: 0.12521600723266602
+sepa_time: 0.0
+node: 245312
+formulation: LEVFP
+status: TIME_LIMIT
+cover: Large
+seed: 1
+build_time: 0.07501101493835449
+total_time: 7200.00705909729
+host: htc-cmp525.zib.de
+cpu: Intel(R) Xeon(R) Gold 6342 CPU @ 2.80GHz
+solver_version: SCIP-10.0.3
+julia_version: 1.11.4
+cuts_applied_all: 661585
+has_solution: true
+model_bins: 5075
+model_cons: 12692
+model_vars: 5611
+root_bound: 47.35609930314595
+root_lp_bound: 38.569735421402356
+wall_solve_time: 7199.804102897644

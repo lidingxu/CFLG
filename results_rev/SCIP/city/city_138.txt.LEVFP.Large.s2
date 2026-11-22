@@ -1,0 +1,26 @@
+instance: city_138.txt
+obj: 22.0
+bound: 13.080702538820598
+gap: 0.6818668519300798
+time: 7199.943589
+preprocess_time: 0.020338058471679688
+sepa_time: 0.0
+node: 447921
+formulation: LEVFP
+status: TIME_LIMIT
+cover: Large
+seed: 2
+build_time: 0.03886890411376953
+total_time: 7200.008958101273
+host: htc-cmp515.zib.de
+cpu: Intel(R) Xeon(R) Gold 6342 CPU @ 2.80GHz
+solver_version: SCIP-10.0.3
+julia_version: 1.11.4
+cuts_applied_all: 998624
+has_solution: true
+model_bins: 2387
+model_cons: 5916
+model_vars: 2602
+root_bound: 12.133667502088555
+root_lp_bound: 8.158255746169722
+wall_solve_time: 7199.945463180542
